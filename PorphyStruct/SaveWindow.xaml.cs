@@ -1,18 +1,14 @@
-﻿using HelixToolkit.Wpf;
-using OxyPlot;
+﻿using OxyPlot;
 using OxyPlot.OpenXml;
 using OxyPlot.Pdf;
 using OxyPlot.Reporting;
 using OxyPlot.Wpf;
+using PorphyStruct.Chemistry;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Media.Media3D;
-using System.Windows.Shapes;
 using winforms = System.Windows.Forms;
 
 namespace PorphyStruct
@@ -157,9 +153,11 @@ namespace PorphyStruct
 		private ReportStyle GetReportStyle()
 		{
 			string lang = Properties.Settings.Default.exportLang;
-			ReportStyle reportStyle = new ReportStyle(Properties.Settings.Default.defaultFont, Properties.Settings.Default.defaultFont, Properties.Settings.Default.defaultFont);
-			reportStyle.FigureTextFormatString = (lang == "de" ? "Abbildung " : "Figure ") + "{0}. {1}";
-			reportStyle.TableCaptionFormatString = (lang == "de" ? "Tabelle " : "Table ") + "{0}. {1}";
+			ReportStyle reportStyle = new ReportStyle(Properties.Settings.Default.defaultFont, Properties.Settings.Default.defaultFont, Properties.Settings.Default.defaultFont)
+			{
+				FigureTextFormatString = (lang == "de" ? "Abbildung " : "Figure ") + "{0}. {1}",
+				TableCaptionFormatString = (lang == "de" ? "Tabelle " : "Table ") + "{0}. {1}"
+			};
 			return reportStyle;
 		}
 

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PorphyStruct
+﻿namespace PorphyStruct.Simulations
 {
 	public class SimParam
 	{
@@ -29,9 +23,5 @@ namespace PorphyStruct
 			this.start = start;
 		}
 
-		public SimParam(string title, object p1, double v, object p2)
-		{
-			this.title = title;
-		}
 	}
 }

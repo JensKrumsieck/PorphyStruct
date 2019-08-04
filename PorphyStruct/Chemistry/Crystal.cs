@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PorphyStruct
+﻿namespace PorphyStruct.Chemistry
 {
 	/// <summary>
 	/// wrapper for molecule with crystal parameters

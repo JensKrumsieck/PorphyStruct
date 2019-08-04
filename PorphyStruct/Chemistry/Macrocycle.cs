@@ -7,7 +7,8 @@ using OxyPlot.Axes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-namespace PorphyStruct
+
+namespace PorphyStruct.Chemistry
 {
 	public class Macrocycle : Molecule
 	{
@@ -760,7 +761,7 @@ namespace PorphyStruct
 		/// <returns>ArrowAnnotation aka Bond</returns>
         public static ArrowAnnotation DrawBond(AtomDataPoint a1, AtomDataPoint a2, int mode = 0)
         {
-			OxyColor color = OxyColors.Black;
+			OxyColor color;
 			if (Properties.Settings.Default.singleColor)
 			{
 				color = Atom.modesSingleColor[mode];

@@ -2,6 +2,8 @@
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+using PorphyStruct.Chemistry;
+using PorphyStruct.Simulations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,12 +63,12 @@ namespace PorphyStruct
 			synchronizationContext = SynchronizationContext.Current;
 			this.cycle = cycle;
 			this.parentView = pv;
-			param = new List<SimParam>();
-
-
-			param.Add(new SimParam("Doming", 0));
-			param.Add(new SimParam("Ruffling", 0));
-			param.Add(new SimParam("Saddling", 0));
+			param = new List<SimParam>
+			{
+				new SimParam("Doming", 0),
+				new SimParam("Ruffling", 0),
+				new SimParam("Saddling", 0)
+			};
 			if (cycle.type == Macrocycle.Type.Corrole || cycle.type == Macrocycle.Type.Corrphycene || cycle.type == Macrocycle.Type.Porphycene)
 			{
 				param.Add(new SimParam("Waving 2 (X)", 0));

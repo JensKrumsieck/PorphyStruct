@@ -112,32 +112,32 @@
       <DependentUpon>CompareWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helix.Override\Viewport3DHelper.cs" />
-    <Compile Include="Mol2File.cs" />
+    <Compile Include="Files\Mol2File.cs" />
     <Compile Include="Oxy.Override\AlternativeAxis.cs" />
     <Compile Include="Oxy.Override\AlternativeAxisRenderer.cs" />
-    <Compile Include="Displacements.cs" />
+    <Compile Include="Simulations\Displacements.cs" />
     <Compile Include="Info.xaml.cs">
       <DependentUpon>Info.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LeastSquares.cs" />
+    <Compile Include="Simulations\LeastSquares.cs" />
     <Compile Include="Oxy.Override\LinearAxis.cs" />
     <Compile Include="Oxy.Override\OxyUtils.cs" />
-    <Compile Include="Result.cs" />
+    <Compile Include="Simulations\Result.cs" />
     <Compile Include="SaveWindow.xaml.cs">
       <DependentUpon>SaveWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SimParam.cs" />
-    <Compile Include="Simulation.cs" />
+    <Compile Include="Simulations\SimParam.cs" />
+    <Compile Include="Chemistry\Simulation.cs" />
     <Compile Include="SimWindow.xaml.cs">
       <DependentUpon>SimWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Wizard.xaml.cs">
       <DependentUpon>Wizard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="XYZFile.cs" />
+    <Compile Include="Files\XYZFile.cs" />
     <Page Include="CompareWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -154,11 +154,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Atom.cs" />
+    <Compile Include="Chemistry\Atom.cs" />
     <Compile Include="AtomDataPoint.cs" />
-    <Compile Include="CifFile.cs" />
-    <Compile Include="Crystal.cs" />
-    <Compile Include="Macrocycle.cs" />
+    <Compile Include="Files\CifFile.cs" />
+    <Compile Include="Chemistry\Crystal.cs" />
+    <Compile Include="Chemistry\Macrocycle.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -181,7 +181,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Molecule.cs" />
+    <Compile Include="Chemistry\Molecule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

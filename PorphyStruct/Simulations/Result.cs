@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MathNet.Numerics.LinearAlgebra;
+﻿using MathNet.Numerics.LinearAlgebra;
 
-namespace PorphyStruct
+namespace PorphyStruct.Simulations
 {
-    public class Result
+	public class Result
     {
         public Vector<double> Conformation, Coefficients;
         public double[] Error;

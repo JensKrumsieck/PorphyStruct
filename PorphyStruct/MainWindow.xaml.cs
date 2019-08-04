@@ -4,6 +4,8 @@ using MathNet.Spatial.Euclidean;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+using PorphyStruct.Chemistry;
+using PorphyStruct.Files;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,9 +33,7 @@ namespace PorphyStruct
 		private bool normalize = false;
 		private bool hasDifference = false;
 		public bool invert = false;
-
-		private readonly SynchronizationContext synchronizationContext;
-
+		
 		public Simulation simulation = null;
         public Macrocycle.Type type = Macrocycle.Type.Corrole;
         public SnackbarMessageQueue MessageQueue = new SnackbarMessageQueue(TimeSpan.FromSeconds(2));
@@ -45,7 +45,6 @@ namespace PorphyStruct
         {
             InitializeComponent();
             Snack.MessageQueue = MessageQueue;
-			synchronizationContext = SynchronizationContext.Current;
         }
 
 		/// <summary>

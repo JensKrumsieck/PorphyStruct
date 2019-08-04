@@ -1,7 +1,7 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 
-namespace PorphyStruct
+namespace PorphyStruct.Simulations
 {
 	/// <summary>
 	/// Library of Displacements

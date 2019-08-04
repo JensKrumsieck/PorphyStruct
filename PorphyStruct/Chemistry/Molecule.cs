@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace PorphyStruct
+namespace PorphyStruct.Chemistry
 {
 	public class Molecule
     {

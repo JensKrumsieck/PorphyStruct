@@ -1,5 +1,6 @@
 ﻿using OxyPlot;
 using OxyPlot.Series;
+using PorphyStruct.Chemistry;
 
 namespace PorphyStruct
 {

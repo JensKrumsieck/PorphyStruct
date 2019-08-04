@@ -1,9 +1,10 @@
-﻿using System;
+﻿using PorphyStruct.Chemistry;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace PorphyStruct
+namespace PorphyStruct.Files
 {
 	class Mol2File
 	{

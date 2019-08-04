@@ -1,8 +1,9 @@
-﻿using System;
+﻿using PorphyStruct.Chemistry;
+using System;
 using System.Globalization;
 using System.Linq;
 
-namespace PorphyStruct
+namespace PorphyStruct.Files
 {
 	class XYZFile
     {
@@ -23,11 +24,12 @@ namespace PorphyStruct
             //read cif-File and get parameters & coordinates
             string text = System.IO.File.ReadAllText(this.Path);
             string[] lines = text.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None);
-            //atom count is first line, second line is title
-            //PLEASE DO NOT USE XYZ Files with non cartesian coordinates
-            Molecule molecule = new Molecule();
-            molecule.Title = lines[1];
-            
+			//atom count is first line, second line is title
+			//PLEASE DO NOT USE XYZ Files with non cartesian coordinates
+			Molecule molecule = new Molecule()
+			{
+				Title = lines[1]
+			};
             //works fine...but where to get Atom Numbering??
             for(int i = 0; i <= lines.Count() - 1; i++)
             {

@@ -2,8 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using PorphyStruct.Chemistry;
 
-namespace PorphyStruct
+namespace PorphyStruct.Simulations
 {
 	/// <summary>
 	/// Class used to simulate a Conformation with calculating errors

@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Media;
 using OxyPlot;
 
-namespace PorphyStruct
+namespace PorphyStruct.Chemistry
 {
 	public class Atom
     {

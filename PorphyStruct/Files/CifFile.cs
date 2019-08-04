@@ -1,10 +1,11 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
+using PorphyStruct.Chemistry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PorphyStruct
+namespace PorphyStruct.Files
 {
 	class CifFile
     {

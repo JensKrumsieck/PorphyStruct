@@ -2,7 +2,7 @@
 using OxyPlot.Series;
 using System.Collections.Generic;
 
-namespace PorphyStruct
+namespace PorphyStruct.Chemistry
 {
 	public class Simulation : Macrocycle
 	{
