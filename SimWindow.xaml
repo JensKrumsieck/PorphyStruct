@@ -1,0 +1,62 @@
+﻿<Window x:Class="PorphyStruct.SimWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:local="clr-namespace:PorphyStruct"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="Simulation of Macrocyclic Conformation (Least Squares Fitting)" Height="450" Width="900" Closing="Window_Closing">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="12*" />
+            <ColumnDefinition Width="90" />
+            <ColumnDefinition Width="90" />
+            <ColumnDefinition Width="90" />
+            <ColumnDefinition Width="90" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <oxy:PlotView x:Name="simView" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3"></oxy:PlotView>
+        <DataGrid x:Name="simGrid" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" CanUserSortColumns="False" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding title}" Header="Con." IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding start,StringFormat=N4}" Header="Start"/>
+                <DataGridTextColumn Binding="{Binding current, StringFormat=N6}" Header="Current"/>
+                <DataGridTextColumn Binding="{Binding best, StringFormat=N6}" Header="Best" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Label Grid.Row="1" Grid.Column="1"  Grid.ColumnSpan="2" Content="Min RMSD (Y, Deriv., Int.):"/>
+        <Label Grid.Row="3" Grid.Column="1" Content="Fit Target: " VerticalAlignment="Top"/>
+        <CheckBox Content="Data" Grid.Column="2" Grid.Row="3"  x:Name="fitDataCB" IsChecked="True" Checked="FitDataCB_Checked" Unchecked="FitDataCB_Checked" />
+        <CheckBox Content="Deriv." Grid.Column="3" Grid.Row="3" x:Name="fitDerivCB" IsChecked="True"  Checked="FitDerivCB_Checked" Unchecked="FitDerivCB_Checked"/>
+        <CheckBox Content="Int." Grid.Column="4" Grid.Row="3" x:Name="fitIntCB" IsChecked="True" Checked="FitIntCB_Checked" Unchecked="FitIntCB_Checked" />
+
+        <TextBox  Grid.Row="1" Grid.Column="3" Text="NaN" x:Name="ErrTB" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <Button Content="Start" Grid.Column="1" Grid.Row="4" VerticalAlignment="Top" Width="75" x:Name="startBtn" Click="StartBtn_Click"/>
+        <Button Content="Stop" Grid.Column="3" Grid.Row="4" VerticalAlignment="Top" Width="75" x:Name="stopBtn" Click="StopBtn_Click" IsEnabled="False"/>
+        <Label Content="Simulation Mode" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" />
+        <ComboBox x:Name="modeCB" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Width="250" Margin="175,0,0,0" VerticalAlignment="Top" SelectionChanged="ModeCB_SelectionChanged">
+            <ComboBox.Items>
+                <ComboBoxItem Content="Monte Carlo" />
+                <ComboBoxItem Content="Monte Carlo + Simplex" IsSelected="True" />
+            </ComboBox.Items>
+        </ComboBox>
+        <Button x:Name="finishSimBtn" Grid.Column="0" Grid.Row="4" Width="200" Content="Finalize Simulation" IsEnabled="False" VerticalAlignment="Top" Click="FinishSimBtn_Click"/>
+        <CheckBox Content="Calc. /w startparam. only" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Top" x:Name="firstOnlyCB" Checked="FirstOnlyCB_Checked" Unchecked="FirstOnlyCB_Checked"/>
+        <CheckBox Content="Set best as start values" Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Top" x:Name="keepBestCB" IsChecked="True"/>
+    </Grid>
+</Window>

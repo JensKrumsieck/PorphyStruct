@@ -1,0 +1,55 @@
+﻿<Window x:Class="PorphyStruct.Info"
+         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PorphyStruct"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}" 
+        Title="Info" 
+        Height="450" Width="450" ResizeMode="NoResize">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Image  Grid.Row="0"  Grid.Column="0" Grid.ColumnSpan="2" Source="/PorphyStruct;component/Resources/porphystructlogo.png"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" TextAlignment="Center">
+            <Run FontSize="50" FontWeight="Medium" FontFamily="Berlin Sans FB">PorphyStruct { }</Run><LineBreak/>
+            <Run FontWeight="ExtraLight" FontSize="20">Structural Analysis of Porphyrinoids</Run><LineBreak/>
+            <Run FontWeight="ExtraLight" FontSize="10" Text="Version: " />
+            <TextBlock FontWeight="ExtraLight" FontSize="10" Text="{Binding AssemblyVersion}" />
+        </TextBlock>
+        <Label Content="Developed by:" Grid.Row="2" Grid.Column="0"/>
+        <Label Content="Jens Krumsieck" Grid.Row="2" Grid.Column="1"/>
+        <TextBlock Grid.Column="1" Grid.Row="3">
+            Institut für Anorganische und Analytische Chemie<LineBreak/>
+            TU Braunschweig<LineBreak/>
+            Hagenring 30, D-38106 Braunschweig<LineBreak/>
+        </TextBlock>
+        <Label Content="Used Libraries:" Grid.Row="4" Grid.Column="0" />
+        <TextBlock Grid.Row="4" Grid.Column="1" Grid.RowSpan="2">
+                <Hyperlink NavigateUri="https://github.com/oxyplot/oxyplot" RequestNavigate="Hyperlink_RequestNavigate">Oxyplot</Hyperlink> by Oystein Bjorke (MIT License)<LineBreak />
+                <Hyperlink NavigateUri="https://www.mathdotnet.com/" RequestNavigate="Hyperlink_RequestNavigate">Math.Net (Numerics/Spatial)</Hyperlink> (MIT/X11 License)<LineBreak />
+                <Hyperlink NavigateUri="http://helix-toolkit.github.io/" RequestNavigate="Hyperlink_RequestNavigate">Helix Toolkit</Hyperlink> (MITLicense)<LineBreak />
+                <Hyperlink NavigateUri="https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit" RequestNavigate="Hyperlink_RequestNavigate">MaterialDesign in XAML Toolkit</Hyperlink> (MIT License)<LineBreak />
+        </TextBlock>
+
+    </Grid>
+</Window>

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.421
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PorphyStruct", "PorphyStruct.csproj", "{C00515E1-56E8-4457-AE6F-EA82254DF746}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C00515E1-56E8-4457-AE6F-EA82254DF746}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C00515E1-56E8-4457-AE6F-EA82254DF746}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C00515E1-56E8-4457-AE6F-EA82254DF746}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C00515E1-56E8-4457-AE6F-EA82254DF746}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9312A421-83C6-4274-B91E-3AFF0A3B64BC}
+	EndGlobalSection
+EndGlobal
