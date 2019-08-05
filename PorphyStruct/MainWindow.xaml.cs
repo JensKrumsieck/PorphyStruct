@@ -322,18 +322,39 @@ namespace PorphyStruct
 			pm.InvalidatePlot(true);
 
 
+            //update simstack
+            UpdateStack();
+
             //update plane coordinates
             Plane pl = cycle.GetMeanPlane();
             UnitVecTB.Text = "(" + pl.A.ToString("G3") + "," + pl.B.ToString("G3") + "," + pl.C.ToString("G3") + ")";
             DistTB.Text = pl.D.ToString("G3");
         }
+        /// <summary>
+        /// Update Sim WrapPanel
+        /// </summary>
+        public void UpdateStack()
+        {
+            simStack.Children.Clear();
+            if(simulation != null)
+            {
+                foreach(string key in simulation.par.Keys)
+                {
+                    Chip c = new Chip();
+                    c.Content = key + ": " + simulation.par[key].ToString(System.Globalization.CultureInfo.InvariantCulture) + "%";
+                    c.Margin = new Thickness(0,0,4,4);
+                    if(type == Macrocycle.Type.Porphyrin) c.FontSize = 8;
+                    simStack.Children.Add(c);
+                }
+            }
+        }
 
-		/// <summary>
-		/// gets highest Y Value (or lowest)
-		/// </summary>
-		/// <param name="data">AtomDataPoints</param>
-		/// <returns>highest/lowest Y Value</returns>
-		private double GetNormalizationFactor(List<AtomDataPoint> data)
+        /// <summary>
+        /// gets highest Y Value (or lowest)
+        /// </summary>
+        /// <param name="data">AtomDataPoints</param>
+        /// <returns>highest/lowest Y Value</returns>
+        private double GetNormalizationFactor(List<AtomDataPoint> data)
 		{
 			//find min & max
 			double min = 0;
@@ -720,8 +741,29 @@ namespace PorphyStruct
 					displaceView.Model = null;
 				displaceView.InvalidatePlot();
 
-				//handle file open
-				if (System.IO.Path.GetExtension(path) == ".cif")
+                //clear sim
+                this.simulation = null;
+                //update simstack
+                UpdateStack();
+
+                //reset values
+                normFac = 0;
+                oldIndex = -1;
+
+                //reset comparison
+                comp1Path = "";
+                comp2Path = "";
+
+                //reset buttons
+                normalize = invert = hasDifference = false;
+                NormalizeButton.Foreground = InvertButton.Foreground = DiffSimButton.Foreground = CompButton.Foreground = Brushes.Black;
+
+                //disable delete&diff sim button
+                DelSimButton.IsEnabled = false;
+                DiffSimButton.IsEnabled = false;
+
+                //handle file open
+                if (System.IO.Path.GetExtension(path) == ".cif")
 					OpenCif();
 				else if (System.IO.Path.GetExtension(path) == ".mol" || System.IO.Path.GetExtension(path) == ".mol2")
 					OpenMol2();

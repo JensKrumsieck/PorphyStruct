@@ -15,7 +15,7 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
 FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="Structural Analysis of Porphyrinoids (PorphyStruct)" Height="700" Width="1200" Loaded="Window_Loaded">
+        Title="Structural Analysis of Porphyrinoids (PorphyStruct)" Height="780" Width="1230" Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -117,7 +117,7 @@ FontFamily="{DynamicResource MaterialDesignFont}"
                 </Button>
             </ToolBar>
         </ToolBarTray>
-        <DataGrid Grid.Column="0" Grid.Row="1" TargetUpdated="CoordGrid_TargetUpdated" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="coordGrid" CanUserSortColumns="True" CanUserAddRows="False" ItemsSource="{Binding}" AutoGenerateColumns="False" SelectionChanged="CoordGrid_SelectionChanged" Grid.ColumnSpan="1"  Grid.RowSpan="1">
+        <DataGrid Grid.Column="0" Grid.Row="1" TargetUpdated="CoordGrid_TargetUpdated" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="coordGrid" CanUserSortColumns="True" CanUserAddRows="False" ItemsSource="{Binding}" AutoGenerateColumns="False" SelectionChanged="CoordGrid_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Identifier,NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Identifier"/>
                 <DataGridCheckBoxColumn Binding="{Binding isMacrocycle, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Is Macrocycle" SortDirection="Descending"/>
@@ -131,22 +131,26 @@ FontFamily="{DynamicResource MaterialDesignFont}"
                 <ImageBrush ImageSource="Resources/porphystructlogo.png" Stretch="None"/>
             </oxy:PlotView.Background>
         </oxy:PlotView>
-        <h:HelixViewport3D Grid.Column="2" Grid.Row="1" x:Name="MolViewer" ShowViewCube="False" ShowCoordinateSystem="True" Grid.RowSpan="1" ZoomExtentsWhenLoaded="True">
+        <h:HelixViewport3D Grid.Column="2" Grid.Row="1" x:Name="MolViewer" ShowViewCube="False" ShowCoordinateSystem="True" ZoomExtentsWhenLoaded="True">
             <h:DefaultLights/>
         </h:HelixViewport3D>
-        <Grid Grid.Row="2" Grid.Column="1">
+        <WrapPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" x:Name="simStack" Margin="10"/>
+        <Grid Grid.Row="2" Grid.Column="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3.2*"/>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="DistTB" Grid.Column="4"  TextWrapping="Wrap" Text="0" VerticalAlignment="Top"  IsReadOnly="True"/>
-            <TextBox x:Name="UnitVecTB" Grid.Column="2" TextWrapping="Wrap" Text="(0,0,0)" VerticalAlignment="Top" IsReadOnly="True" />
-            <Label Content="Unit Vector" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Label Content="Distance" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Label Content="Current mean plane:" Grid.Column="0" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top"/>
+            <TextBox x:Name="DistTB"  Grid.Row="1" Grid.Column="3"  TextWrapping="Wrap" Text="0" VerticalAlignment="Top"  IsReadOnly="True"/>
+            <TextBox x:Name="UnitVecTB" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" Text="(0,0,0)" VerticalAlignment="Top" IsReadOnly="True" />
+            <Label Content="Unit Vector" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label Content="Distance" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label Content="Current mean plane:" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Top" FontWeight="Bold"/>
         </Grid>
         <materialDesign:Snackbar Grid.Row="2" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" x:Name="Snack" MessageQueue="{Binding MessageQueue}" Margin="0,0,0,0.5" />
     </Grid>
