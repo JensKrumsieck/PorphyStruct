@@ -24,4 +24,5 @@ With **PorphyStruct{ }** displacement diagrams can be generated and simulated to
 * [Math.NET](https://www.mathdotnet.com/)(Numerics/Spatial) (MIT/X11 License)
 * [Helix Toolkit](http://helix-toolkit.github.io/) (MIT License)
 * [Material Design in XAML Toolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit) (MIT License)
-
+* [Fody](https://github.com/Fody/Fody) (MIT License)
+* [Fody.Costura](https://github.com/Fody/Costura) (MIT License)

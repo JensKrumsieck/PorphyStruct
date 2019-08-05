@@ -25,9 +25,7 @@
             <RowDefinition Height="3*" />
             <RowDefinition Height="1*" />
             <RowDefinition Height="2*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
+            <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
         <Image  Grid.Row="0"  Grid.Column="0" Grid.ColumnSpan="2" Source="/PorphyStruct;component/Resources/porphystructlogo.png"/>
         <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" TextAlignment="Center">
@@ -44,11 +42,13 @@
             Hagenring 30, D-38106 Braunschweig<LineBreak/>
         </TextBlock>
         <Label Content="Used Libraries:" Grid.Row="4" Grid.Column="0" />
-        <TextBlock Grid.Row="4" Grid.Column="1" Grid.RowSpan="2">
+        <TextBlock Grid.Row="4" Grid.Column="1">
                 <Hyperlink NavigateUri="https://github.com/oxyplot/oxyplot" RequestNavigate="Hyperlink_RequestNavigate">Oxyplot</Hyperlink> by Oystein Bjorke (MIT License)<LineBreak />
                 <Hyperlink NavigateUri="https://www.mathdotnet.com/" RequestNavigate="Hyperlink_RequestNavigate">Math.Net (Numerics/Spatial)</Hyperlink> (MIT/X11 License)<LineBreak />
-                <Hyperlink NavigateUri="http://helix-toolkit.github.io/" RequestNavigate="Hyperlink_RequestNavigate">Helix Toolkit</Hyperlink> (MITLicense)<LineBreak />
+                <Hyperlink NavigateUri="http://helix-toolkit.github.io/" RequestNavigate="Hyperlink_RequestNavigate">Helix Toolkit</Hyperlink> (MIT License)<LineBreak />
                 <Hyperlink NavigateUri="https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit" RequestNavigate="Hyperlink_RequestNavigate">MaterialDesign in XAML Toolkit</Hyperlink> (MIT License)<LineBreak />
+                <Hyperlink NavigateUri="https://github.com/Fody/Fody" RequestNavigate="Hyperlink_RequestNavigate">Fody</Hyperlink> (MIT License)<LineBreak/>
+                <Hyperlink NavigateUri="https://github.com/Fody/Costura" RequestNavigate="Hyperlink_RequestNavigate">Fody.Costura</Hyperlink> (MIT License)<LineBreak/>
         </TextBlock>
 
     </Grid>

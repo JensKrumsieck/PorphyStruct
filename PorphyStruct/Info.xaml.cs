@@ -33,5 +33,6 @@ namespace PorphyStruct
 		{
 			System.Diagnostics.Process.Start(e.Uri.ToString());
 		}
-	}
+
+    }
 }
