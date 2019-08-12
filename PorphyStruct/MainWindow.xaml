@@ -142,9 +142,9 @@ FontFamily="{DynamicResource MaterialDesignFont}"
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="3.5*"/>
                 <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
             <TextBox x:Name="DistTB"  Grid.Row="1" Grid.Column="3"  TextWrapping="Wrap" Text="0" VerticalAlignment="Top"  IsReadOnly="True"/>
             <TextBox x:Name="UnitVecTB" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" Text="(0,0,0)" VerticalAlignment="Top" IsReadOnly="True" />
