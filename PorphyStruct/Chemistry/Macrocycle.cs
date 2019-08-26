@@ -894,6 +894,20 @@ namespace PorphyStruct.Chemistry
 			}
 
 			return xR;
-		}		
-	}
+		}
+
+        /// <summary>
+        /// Gets the absolute mean displacement over all atoms
+        /// </summary>
+        /// <returns></returns>
+        public double MeanDisplacement()
+        {
+            double sum = 0;
+            foreach (AtomDataPoint dp in dataPoints)
+            {
+                sum += Math.Abs(dp.Value);
+            }
+            return sum / dataPoints.Count;
+        }
+    }
 }

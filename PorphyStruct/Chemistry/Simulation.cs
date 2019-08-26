@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PorphyStruct.Chemistry
 {
-	public class Simulation : Macrocycle
+    public class Simulation : Macrocycle
 	{
 		public bool isNormalized = true;
 		public bool isInverted = false;
@@ -68,7 +68,6 @@ namespace PorphyStruct.Chemistry
 			{
 				pm.Annotations.Add(a);
 			}
-
 		}
 	}
 }
