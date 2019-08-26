@@ -14,7 +14,7 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
 FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="Open File" Height="550" Width="800" ResizeMode="NoResize">
+        Title="Open File" Height="550" Width="835" ResizeMode="NoResize">
     <Grid Margin="10,0,10,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
@@ -48,23 +48,91 @@ FontFamily="{DynamicResource MaterialDesignFont}"
             <LineBreak/>
              Mol2-files may contain crystallographic identifiers. If that is the case, then these are handled analogously to CIF files, otherwise analogously to XYZ files.
 
-         </TextBlock>
+        </TextBlock>
+        <!--obsolete
         <Image  Grid.Row="3"  Grid.Column="0" Grid.ColumnSpan="2">
             <Image.Source>
                 <BitmapImage DecodePixelWidth="1500" UriSource="/PorphyStruct;component/Resources/corr.png"/>
             </Image.Source>
         </Image>
-        <TextBox x:Name="pathTextBox" Grid.Row="4" Grid.Column="0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="" Height="40" Width="270" HorizontalAlignment="Left">
-            <materialDesign:HintAssist.Hint>
-                <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
-                    <TextBlock>Please choose a file...</TextBlock>
-                </StackPanel>
-            </materialDesign:HintAssist.Hint>
-        </TextBox>
-        
-        <Button HorizontalAlignment="Right"  Grid.Row="4" Grid.Column="0"  Content="Select File" Width="100" Click="FileOpen_Click" Margin="0,0,10,0"/>
-
+        -->
+        <ListBox Style="{StaticResource MaterialDesignToolToggleListBox}"
+                 HorizontalAlignment="Center"
+                 Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" x:Name="TypeListBox"
+                 SelectedIndex="0">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                <Border x:Name="border" 
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        BorderBrush="{TemplateBinding BorderBrush}" 
+                                        Background="{TemplateBinding Background}"
+                                        CornerRadius="5">
+                                    <ContentPresenter x:Name="content"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="true">
+                                        <Setter Property="BorderBrush" Value="IndianRed" />
+                                        <Setter Property="BorderThickness" Value="3" />
+                                        <Setter Property="Background" Value="WhiteSmoke" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBoxItem x:Name="Corrole" Padding="0">
+                <Image>
+                    <Image.Source>
+                        <BitmapImage DecodePixelWidth="1000" UriSource="/PorphyStruct;component/Resources/Corrole.png"/>
+                    </Image.Source>
+                </Image>
+            </ListBoxItem>
+            <ListBoxItem x:Name="Porphyrin" Padding="0">
+                <Image>
+                    <Image.Source>
+                        <BitmapImage DecodePixelWidth="1000" UriSource="/PorphyStruct;component/Resources/Porphyrin.png"/>
+                    </Image.Source>
+                </Image>
+            </ListBoxItem>
+            <ListBoxItem x:Name="Norcorrole" Padding="0">
+                <Image>
+                    <Image.Source>
+                        <BitmapImage DecodePixelWidth="1000" UriSource="/PorphyStruct;component/Resources/Norcorrole.png"/>
+                    </Image.Source>
+                </Image>
+            </ListBoxItem>
+            <ListBoxItem x:Name="Corrphycene" Padding="0">
+                <Image>
+                    <Image.Source>
+                        <BitmapImage DecodePixelWidth="1000" UriSource="/PorphyStruct;component/Resources/Corrphycene.png"/>
+                    </Image.Source>
+                </Image>
+            </ListBoxItem>
+            <ListBoxItem x:Name="Porphycene" Padding="0">
+                <Image>
+                    <Image.Source>
+                        <BitmapImage DecodePixelWidth="1000" UriSource="/PorphyStruct;component/Resources/Porphycene.png"/>
+                    </Image.Source>
+                </Image>
+            </ListBoxItem>
+        </ListBox>
+        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+            <TextBox x:Name="pathTextBox" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="" Height="40" Width="350">
+                <materialDesign:HintAssist.Hint>
+                    <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
+                        <TextBlock>Please choose a file...</TextBlock>
+                    </StackPanel>
+                </materialDesign:HintAssist.Hint>
+            </TextBox>
+            <Button  Content="Select File" Width="100" Click="FileOpen_Click" Margin="20,0,0,0"/>
+        </StackPanel>
+        <!--obsolete
         <Label Grid.Row="4" Grid.Column="1"  Content="Macrocycle Type" Margin="5,0,0,0" FontWeight="Bold"/>
+
         <ComboBox Grid.Row="4" Grid.Column="1"  x:Name="CycleTypeCB" Margin="10,0,0,0">
             <ComboBoxItem Content="Corrole" IsSelected="True"/>
             <ComboBoxItem Content="Porphyrin"/>
@@ -72,6 +140,7 @@ FontFamily="{DynamicResource MaterialDesignFont}"
             <ComboBoxItem Content="Corrphycene" />
             <ComboBoxItem Content="Porphycene" />
         </ComboBox>
+        -->
         <Button Content="Ok" Grid.Row="5" Grid.Column="0" Width="100" Click="Ok_Click" IsDefault="True"/>
         <Button Content="Cancel" Grid.Row="5" Grid.Column="1"  Width="100" Click="Cancel_Click" IsCancel="True"/>
     </Grid>

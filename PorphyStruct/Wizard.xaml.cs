@@ -72,8 +72,8 @@ namespace PorphyStruct
 		/// </summary>
         public int getType
         {
-            //0 = corrole, 1 = porphyrin
-            get { return CycleTypeCB.SelectedIndex; }
+            //0 = corrole, 1 = porphyrin, 2 = norcorrole, 3 = corrphycene, 4 = porphycene
+            get { return TypeListBox.SelectedIndex; }
         }
     }
 }
