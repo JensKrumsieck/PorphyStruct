@@ -209,7 +209,7 @@ namespace PorphyStruct
 					"von Metallo" + type.ToLower() + "en zurückgeführt. Die simulierte Zusammensetzung ist nachfolgender Tabelle zu entnehmen."
 					: "Using the least squares method, the conformation of the" + type.ToLower() + "was traced back to the vibration normal modes of " +
 					"metallo" + type.ToLower() + "s. The simulated composition is shown in the following table."));
-				simu.AddPropertyTable(lang == "de" ? "Simulationsparameter" : "Simulationparameters", sim.par);
+				simu.AddPropertyTable((lang == "de" ? "Simulationsparameter mit einem mittleren Auslenkungsparameter von " : "Simulationparameters with a mean displacement parameter of") + sim.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture), sim.par);
 				simu.AddParagraph((lang == "de" 
 						? "Die Summen der Auslenkungsfehlerquadrate ergibt für die Daten, deren Ableitung und Integral die folgenden Werte: "
 						: "The sums of squared displacement errors for data, derivative and integral are: ")

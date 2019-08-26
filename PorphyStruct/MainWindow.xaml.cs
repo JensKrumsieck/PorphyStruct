@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,10 +18,10 @@ using System.Windows.Media;
 
 namespace PorphyStruct
 {
-	/// <summary>
-	/// Interaktionslogik für MainWindow.xaml
-	/// </summary>
-	public partial class MainWindow : Window
+    /// <summary>
+    /// Interaktionslogik für MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
     {
         private Macrocycle old = new Macrocycle(new List<Atom>());
 

@@ -905,7 +905,7 @@ namespace PorphyStruct.Chemistry
             double sum = 0;
             foreach (AtomDataPoint dp in dataPoints)
             {
-                sum += Math.Abs(dp.Value);
+                sum += Math.Abs(dp.Y);
             }
             return sum / dataPoints.Count;
         }

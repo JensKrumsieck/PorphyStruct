@@ -281,7 +281,21 @@ namespace PorphyStruct
 						catch { }
 						simView.Model.Series.Add(new ScatterSeries() { ItemsSource = (List<AtomDataPoint>)o, Title = "Best", MarkerFill = OxyColors.LawnGreen, MarkerType = Properties.Settings.Default.simMarkerType });
 						simView.InvalidatePlot();
-					}), bestConf.dataPoints);
+
+                        //update meadDisplacement BUT! Denormalize before!
+                        double fac = Application.Current.Windows.OfType<MainWindow>().First().normFac;
+                        List<AtomDataPoint> tmp = new List<AtomDataPoint>();
+                        foreach (AtomDataPoint dp in bestConf.dataPoints)
+                        {
+                            tmp.Add(new AtomDataPoint(dp.X, dp.Y * fac, dp.atom));
+                        }
+                        Macrocycle tmpC = new Macrocycle(cycle.Atoms)
+                        {
+                            dataPoints = tmp
+                        };
+                        meanDisPar.Content = tmpC.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture);
+
+                    }), bestConf.dataPoints);
 
 				}
 				//if cb is set return...
