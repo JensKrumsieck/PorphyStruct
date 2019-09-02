@@ -101,8 +101,6 @@ namespace PorphyStruct
 		{
             //plot that shit
             Oxy.Override.StandardPlotModel pm = new Oxy.Override.StandardPlotModel();
-            LinearAxis x = pm.xAxis;
-            Oxy.Override.LinearAxis y = pm.yAxis;
 
             ScatterSeries series = new ScatterSeries
 			{
