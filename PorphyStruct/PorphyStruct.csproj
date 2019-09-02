@@ -157,6 +157,7 @@
     </Compile>
     <Compile Include="Simulations\SimParam.cs" />
     <Compile Include="Chemistry\Simulation.cs" />
+    <Compile Include="Simulations\Simplex.cs" />
     <Compile Include="SimWindow.xaml.cs">
       <DependentUpon>SimWindow.xaml</DependentUpon>
     </Compile>
