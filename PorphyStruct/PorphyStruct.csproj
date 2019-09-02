@@ -138,13 +138,17 @@
     <Compile Include="Oxy.Override\AlternativeAxis.cs" />
     <Compile Include="Oxy.Override\AlternativeAxisRenderer.cs" />
     <Compile Include="Oxy.Override\StandardPlotModel.cs" />
+    <Compile Include="Simulations\Conformation.cs" />
     <Compile Include="Simulations\Displacements.cs" />
     <Compile Include="Info.xaml.cs">
       <DependentUpon>Info.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Simulations\Error.cs" />
+    <Compile Include="Simulations\IParameterProvider.cs" />
     <Compile Include="Simulations\LeastSquares.cs" />
     <Compile Include="Oxy.Override\LinearAxis.cs" />
     <Compile Include="Oxy.Override\OxyUtils.cs" />
+    <Compile Include="Simulations\MonteCarlo.cs" />
     <Compile Include="Simulations\Result.cs" />
     <Compile Include="SaveWindow.xaml.cs">
       <DependentUpon>SaveWindow.xaml</DependentUpon>
