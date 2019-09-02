@@ -8,7 +8,7 @@ namespace PorphyStruct.Simulations
         /// <summary>
         /// gets or sets the parameters
         /// </summary>
-        double[] Parameters {get; set;}
+        double[] Parameters { get; set; }
 
         /// <summary>
         /// The Function to evaluate

@@ -4,45 +4,45 @@ using System.Text.RegularExpressions;
 
 namespace PorphyStruct.Chemistry
 {
-	public class Molecule
+    public class Molecule
     {
         public string Title = "";
         //public List<Atom> Atoms = new List<Atom>();
         public List<Atom> Atoms = new List<Atom>();
 
-		/// <summary>
-		/// Construct Molecule
-		/// </summary>
+        /// <summary>
+        /// Construct Molecule
+        /// </summary>
         public Molecule()
         {
             //does nothing right now..
         }
 
-		/// <summary>
-		/// Construct Molecule with title
-		/// <seealso cref="Molecule"/>
-		/// </summary>
-		/// <param name="title"></param>
+        /// <summary>
+        /// Construct Molecule with title
+        /// <seealso cref="Molecule"/>
+        /// </summary>
+        /// <param name="title"></param>
         public Molecule(string title)
         {
             this.Title = title;
         }
 
-		/// <summary>
-		/// Construct Molecule with AtomList
-		/// <seealso cref="Molecule"/>
-		/// </summary>
-		/// <param name="title"></param>
-		public Molecule(List<Atom> Atoms)
+        /// <summary>
+        /// Construct Molecule with AtomList
+        /// <seealso cref="Molecule"/>
+        /// </summary>
+        /// <param name="title"></param>
+        public Molecule(List<Atom> Atoms)
             : this()
         {
             this.Atoms = Atoms;
         }
 
-		/// <summary>
-		/// Set Is Macrocycle for Atoms
-		/// </summary>
-		/// <param name="type"></param>
+        /// <summary>
+        /// Set Is Macrocycle for Atoms
+        /// </summary>
+        /// <param name="type"></param>
         public void SetIsMacrocycle(Macrocycle.Type type)
         {
             bool idiot = false;

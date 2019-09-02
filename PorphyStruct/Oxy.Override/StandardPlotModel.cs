@@ -1,6 +1,5 @@
 ﻿using OxyPlot;
 using OxyPlot.Axes;
-using OxyPlot.Series;
 using System.Collections.Generic;
 
 namespace PorphyStruct.Oxy.Override
@@ -12,15 +11,15 @@ namespace PorphyStruct.Oxy.Override
     {
         public OxyPlot.Axes.LinearAxis xAxis;
         public LinearAxis yAxis;
-        
+
         public StandardPlotModel()
             : base()
         {
             IsLegendVisible = false;
-			LegendPosition = LegendPosition.RightTop;
-			DefaultFontSize = Properties.Settings.Default.defaultFontSize;
-			LegendFontSize = Properties.Settings.Default.defaultFontSize;
-			DefaultFont = Properties.Settings.Default.defaultFont;
+            LegendPosition = LegendPosition.RightTop;
+            DefaultFontSize = Properties.Settings.Default.defaultFontSize;
+            LegendFontSize = Properties.Settings.Default.defaultFontSize;
+            DefaultFont = Properties.Settings.Default.defaultFont;
             PlotAreaBorderThickness = new OxyThickness(Properties.Settings.Default.lineThickness);
 
             OxyPlot.Axes.LinearAxis x = new OxyPlot.Axes.LinearAxis
@@ -64,7 +63,7 @@ namespace PorphyStruct.Oxy.Override
                 x.AxislineStyle = LineStyle.Solid;
                 x.AxislineThickness = Properties.Settings.Default.lineThickness;
             }
-            
+
             this.Axes.Add(x);
             this.Axes.Add(y);
 

@@ -7,23 +7,23 @@ using System.Linq;
 
 namespace PorphyStruct.Files
 {
-	class CifFile
+    class CifFile
     {
         public string Path = "";
 
-		/// <summary>
-		/// Constructs a CIF File Object from given File
-		/// </summary>
-		/// <param name="path">Filepath</param>
+        /// <summary>
+        /// Constructs a CIF File Object from given File
+        /// </summary>
+        /// <param name="path">Filepath</param>
         public CifFile(string path)
         {
             this.Path = path;
         }
 
-		/// <summary>
-		/// Builds a Molecule/Crystal Object out of raw data
-		/// </summary>
-		/// <returns>Crystal</returns>
+        /// <summary>
+        /// Builds a Molecule/Crystal Object out of raw data
+        /// </summary>
+        /// <returns>Crystal</returns>
         public Crystal GetMolecule()
         {
             //read cif-File and get parameters & coordinates
@@ -105,6 +105,6 @@ namespace PorphyStruct.Files
             return molecule;
         }
 
-        
+
     }
 }

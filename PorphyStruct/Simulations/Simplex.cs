@@ -20,11 +20,11 @@ namespace PorphyStruct.Simulations
             this.cycle = cycle;
             rnd = new Random();
             error = new double[Parameters.Length + 1];
-            for(int i = 0; i < Parameters.Length; i++)
+            for (int i = 0; i < Parameters.Length; i++)
             {
                 error[i] = double.PositiveInfinity;
             }
-            
+
         }
 
         /// <summary>
@@ -63,9 +63,9 @@ namespace PorphyStruct.Simulations
         /// <returns></returns>
         public Result Evaluate(double[] parameters)
         {
-            if(SimParam.AbsSum(parameters) != 1)
+            if (SimParam.AbsSum(parameters) != 1)
             {
-                for(int i = 0; i < parameters.Length; i++)
+                for (int i = 0; i < parameters.Length; i++)
                 {
                     parameters[i] /= SimParam.AbsSum(parameters);
                 }
