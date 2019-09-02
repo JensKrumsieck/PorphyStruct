@@ -154,7 +154,7 @@ namespace PorphyStruct
             while (running)
             {
                 //get result
-                Result result = new Result(new double[] { }, new double[] { }, new double[] { });
+                Result result = new Result(Conformation: Array.Empty<double>(), Coefficients: Array.Empty<double>(), Error: Array.Empty<double>());
                 if (firstOnly) result = Conformation.Calculate(cycle, coeff);
                 else
                 {
