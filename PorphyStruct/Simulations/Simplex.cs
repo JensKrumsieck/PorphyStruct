@@ -24,6 +24,7 @@ namespace PorphyStruct.Simulations
             {
                 error[i] = double.PositiveInfinity;
             }
+            
         }
 
         /// <summary>
@@ -72,6 +73,10 @@ namespace PorphyStruct.Simulations
             return Function(cycle, parameters);
         }
 
+        /// <summary>
+        /// generates next coefficients
+        /// </summary>
+        /// <returns></returns>
         public Result Next()
         {
             //set probe points

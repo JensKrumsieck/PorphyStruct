@@ -41,11 +41,6 @@ namespace PorphyStruct
         public Macrocycle cycle;
         public List<SimParam> param; //list of all simulation parameters
         private Simplex simplex = null; //simplex matrix
-        private double[] lastCurrent = null;
-        private double[] err = null;
-        private double[] intErr = null;
-        private double[] derErr = null;
-        int[] indices = null;
 
         //error array
         private double[] currentErr = new double[] { double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity };
@@ -170,7 +165,6 @@ namespace PorphyStruct
                     {
                         simplex.Parameters = coeff;
                         result = simplex.Next();
-
                     }
 
                 }
