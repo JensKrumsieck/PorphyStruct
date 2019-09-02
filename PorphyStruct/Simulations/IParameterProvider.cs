@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PorphyStruct.Chemistry;
+using System;
 
 namespace PorphyStruct.Simulations
 {
@@ -12,7 +13,7 @@ namespace PorphyStruct.Simulations
         /// <summary>
         /// The Function to evaluate
         /// </summary>
-        Func<double[], Result> Function { get; set; }
+        Func<Macrocycle, double[], Result> Function { get; set; }
 
         /// <summary>
         /// returns current error

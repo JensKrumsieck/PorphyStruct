@@ -1,16 +1,18 @@
-﻿using System;
+﻿using PorphyStruct.Chemistry;
+using System;
 
 namespace PorphyStruct.Simulations
 {
     class MonteCarlo : IParameterProvider
     {
         protected Random rnd;
+        protected Macrocycle cycle;
 
-        public MonteCarlo(Func<double[], Result> function, double[] param)
+        public MonteCarlo(Func<Macrocycle, double[], Result> function, double[] param, Macrocycle cycle)
         {
             Parameters = param;
             Function = function;
-
+            this.cycle = cycle;
             rnd = new Random();
         }
 
@@ -24,7 +26,7 @@ namespace PorphyStruct.Simulations
         /// The Function
         /// </summary>
         /// <see cref="IParameterProvider.Function"/>
-        public Func<double[], Result> Function { get; set; }
+        public Func<Macrocycle, double[], Result> Function { get; set; }
 
         /// <summary>
         /// Evaluates current data
@@ -33,7 +35,7 @@ namespace PorphyStruct.Simulations
         /// <returns></returns>
         public Result Evaluate()
         {
-            return Function(Parameters);
+            return Function(cycle, Parameters);
         }
 
         public Result Next()
@@ -42,6 +44,13 @@ namespace PorphyStruct.Simulations
             for (int i = 0; i < Parameters.Length; i++)
             {
                 Parameters[i] = rnd.Next(-100, 101);
+            }
+
+            //norm
+            double sum = SimParam.AbsSum(Parameters);
+            for (int i = 0; i < Parameters.Length; i++)
+            {
+                Parameters[i] /= sum;
             }
             //evaluates
             return Evaluate();

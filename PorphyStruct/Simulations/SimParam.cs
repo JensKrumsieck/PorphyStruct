@@ -1,4 +1,6 @@
-﻿namespace PorphyStruct.Simulations
+﻿using System;
+
+namespace PorphyStruct.Simulations
 {
 	public class SimParam
 	{
@@ -22,6 +24,20 @@
 			this.best = best;
 			this.start = start;
 		}
+
+        /// <summary>
+        /// calculates the absolute sum
+        /// </summary>
+        /// <param name="d"></param>
+        public static double AbsSum(double[] d)
+        {
+            double sum = 0;
+            foreach (double i in d)
+            {
+                sum += Math.Abs(i);
+            }
+            return sum;
+        }
 
 	}
 }

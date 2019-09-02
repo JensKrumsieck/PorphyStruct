@@ -48,6 +48,9 @@ namespace PorphyStruct
 		private double[] derErr = null;
 		int[] indices = null;
 
+        //error array
+        private double[] currentErr = new double[] { double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity };
+
 		//Simulation Mode Setter
 		private enum SimulationMode { MonteCarlo, Simplex };
 		private SimulationMode type = SimulationMode.MonteCarlo;
@@ -144,27 +147,46 @@ namespace PorphyStruct
 		/// </summary>
 		private void Simulate()
 		{
-			this.param = (List<SimParam>)simGrid.ItemsSource;
+            this.param = (List<SimParam>)simGrid.ItemsSource;
 			double[] coeff = new double[param.Count()];
+
+            //set start values
 			for (int i = 0; i < param.Count; i++)
 			{
 				coeff[i] = param[i].start;
 			}
-			LeastSquares ls = new LeastSquares(param, cycle);
 			while (running)
 			{
-				//simulate vector
-				double sum = 0;
-				foreach (double i in coeff)
-				{
-					sum += Math.Abs(i);
-				}
-				Tuple<Vector<double>, Result> Result = ls.Simulate(MathNet.Numerics.LinearAlgebra.Double.DenseVector.OfArray(coeff) / sum);
-				for (int i = 0; i < coeff.Length; i++)
-				{
-					this.param[i].current = coeff[i] / sum;
+                //get result
+                Result result = new Result(new double[] { }, new double[] { }, new double[] { });
+                if (firstOnly) result = Conformation.Calculate(cycle, coeff);
+                else
+                {
+                    if (type == SimulationMode.MonteCarlo) {
+                        Parallel.Invoke(() =>
+                        {
+                            MonteCarlo mc = new MonteCarlo(Conformation.Calculate, coeff, cycle);
+                            result = mc.Next();
+                        });
+                    }
+                    else //simplex
+                    {
+                        Parallel.Invoke(() =>
+                        {
+                            MonteCarlo mc = new MonteCarlo(Conformation.Calculate, coeff, cycle);
+                            result = mc.Next();
+                        });
+                    }
+                    
+                }
 
+                //write current
+				for (int i = 0; i < result.Coefficients.Length; i++)
+				{
+                    this.param[i].current = result.Coefficients[i];
 				}
+
+                //plot current
 				if ((DateTime.Now - previousTime).Milliseconds >= 500)
 				{
 					Macrocycle currentConf = new Macrocycle(cycle.Atoms)
@@ -174,7 +196,7 @@ namespace PorphyStruct
 					for (int i = 0; i < currentConf.dataPoints.Count; i++)
 					{
 						//write new y data
-						currentConf.dataPoints[i] = new AtomDataPoint(currentConf.dataPoints[i].X, Result.Item1[i], currentConf.dataPoints[i].atom);
+						currentConf.dataPoints[i] = new AtomDataPoint(currentConf.dataPoints[i].X, result.Conformation[i], currentConf.dataPoints[i].atom);
 					}
 					synchronizationContext.Post(new SendOrPostCallback(o =>
 					{
@@ -190,20 +212,20 @@ namespace PorphyStruct
 				}
 
 				//get new best values if every single error is smaller or the overall sum is smaller
-				if (Result.Item2 != null && IsNewBest(Result.Item2, ls))
-				{
-					ls.currentMin = Result.Item2.Error[0];
-					ls.currentDeriv = Result.Item2.Error[1];
-					ls.currentIntegral = Result.Item2.Error[2];
+				if (IsNewBest(result))
+                {
+                    currentErr[0] = result.Error[0];
+                    currentErr[1] = result.Error[1];
+                    currentErr[2] = result.Error[2];
 
 					//new bestvalues
 
-					for (int i = 0; i < Result.Item2.Coefficients.ToArray().Count(); i++)
+					for (int i = 0; i < result.Coefficients.ToArray().Count(); i++)
 					{
-						this.param[i].best = Result.Item2.Coefficients.ToArray()[i];
+						this.param[i].best = result.Coefficients.ToArray()[i];
 
 					}
-					double[] err = Result.Item2.Error;
+					double[] err = result.Error;
 					synchronizationContext.Post(new SendOrPostCallback(o =>
 					{
 						double[] error = (double[])o;
@@ -219,7 +241,7 @@ namespace PorphyStruct
 					for (int i = 0; i < bestConf.dataPoints.Count; i++)
 					{
 						//write new y data
-						bestConf.dataPoints[i] = new AtomDataPoint(bestConf.dataPoints[i].X, Result.Item1[i], bestConf.dataPoints[i].atom);
+						bestConf.dataPoints[i] = new AtomDataPoint(bestConf.dataPoints[i].X, result.Conformation[i], bestConf.dataPoints[i].atom);
 					}
 					synchronizationContext.Post(new SendOrPostCallback(o =>
 					{
@@ -278,7 +300,7 @@ namespace PorphyStruct
 		/// <param name="result">Result Object (for getting current errors)</param>
 		/// <param name="ls">LeastSquares Object (for getting current minima)</param>
 		/// <returns></returns>
-		public bool IsNewBest(Result result, LeastSquares ls)
+		public bool IsNewBest(Result result)
 		{
 			//set error vars
 			double error = result.Error[0];
@@ -288,11 +310,11 @@ namespace PorphyStruct
 			//check targets
 			List<Tuple<double, double>> errorTargets = new List<Tuple<double, double>>();
 			if (targetData)
-				errorTargets.Add(new Tuple<double, double>(error, ls.currentMin));
+				errorTargets.Add(new Tuple<double, double>(error, currentErr[0]));
 			if (targetDeriv)
-				errorTargets.Add(new Tuple<double, double>(derErr, ls.currentDeriv));
+				errorTargets.Add(new Tuple<double, double>(derErr, currentErr[1]));
 			if (targetInt)
-				errorTargets.Add(new Tuple<double, double>(intErr, ls.currentIntegral));
+				errorTargets.Add(new Tuple<double, double>(intErr, currentErr[2]));
 
 			double targetSum = 0;
 			double lsSum = 0;
@@ -341,7 +363,6 @@ namespace PorphyStruct
 		/// <returns>New Parameters</returns>
 		private double[] Simplex(double[] current)
 		{
-			LeastSquares ls = new LeastSquares(param, cycle);
 			Tuple<Vector<double>, Result> result;
 			//set probe points
 			double[] centroid;
@@ -374,7 +395,7 @@ namespace PorphyStruct
 				intErr = new double[N + 1];
 				derErr = new double[N + 1];
 				//add current 
-				if (LeastSquares.AbsSum(current) == 0) //add random not zero vector
+				if (SimParam.AbsSum(current) == 0) //add random not zero vector
 				{
 					current = MonteCarlo();
 				}
@@ -385,11 +406,11 @@ namespace PorphyStruct
 				}
 				lastCurrent = current;
 
-				result = ls.Simulate(MathNet.Numerics.LinearAlgebra.Double.DenseVector.OfArray(current) / LeastSquares.AbsSum(current));
+				//result = ls.Simulate(MathNet.Numerics.LinearAlgebra.Double.DenseVector.OfArray(current) / LeastSquares.AbsSum(current));
 				simplex[0] = current;
-				err[0] = result.Item2.Error[0];
-				intErr[0] = result.Item2.Error[2];
-				derErr[0] = result.Item2.Error[1];
+				//err[0] = result.Item2.Error[0];
+				//intErr[0] = result.Item2.Error[2];
+				//derErr[0] = result.Item2.Error[1];
 				//evaluate
 				for (int il = 1; il <= N; il++)
 				{
@@ -402,10 +423,10 @@ namespace PorphyStruct
 			//evaluate
 			for (int il = 1; il <= N; il++)
 			{
-				result = ls.Simulate(MathNet.Numerics.LinearAlgebra.Double.DenseVector.OfArray(simplex[il]) / LeastSquares.AbsSum(simplex[il]));
-				err[il] = result.Item2.Error[0];
-				intErr[il] = result.Item2.Error[2];
-				derErr[il] = result.Item2.Error[1];
+				//result = ls.Simulate(MathNet.Numerics.LinearAlgebra.Double.DenseVector.OfArray(simplex[il]) / LeastSquares.AbsSum(simplex[il]));
+				////err[il] = result.Item2.Error[0];
+				//intErr[il] = result.Item2.Error[2];
+				//derErr[il] = result.Item2.Error[1];
 				indices[il] = il;
 			}
 
@@ -446,10 +467,10 @@ namespace PorphyStruct
 			{
 				reflection[il] = centroid[il] + (centroid[il] - simplex[indices[N]][il]);
 			}
-			result = ls.Simulate(MathNet.Numerics.LinearAlgebra.Double.DenseVector.OfArray(reflection) / LeastSquares.AbsSum(reflection));
-			reflectionErr = result.Item2.Error[0];
-			reflectionIntErr = result.Item2.Error[2];
-			reflectionDerErr = result.Item2.Error[1];
+			////result = ls.Simulate(MathNet.Numerics.LinearAlgebra.Double.DenseVector.OfArray(reflection) / LeastSquares.AbsSum(reflection));
+			//reflectionErr = result.Item2.Error[0];
+			//reflectionIntErr = result.Item2.Error[2];
+			//reflectionDerErr = result.Item2.Error[1];
 
 			//step 5:
 			//if reflection is best, expand and remove weakest point for best of reflection and expansion, return
@@ -461,10 +482,10 @@ namespace PorphyStruct
 				{
 					expansion[ie] = centroid[ie] + 0.5 * (reflection[ie] - centroid[ie]);
 				}
-				result = ls.Simulate(MathNet.Numerics.LinearAlgebra.Double.DenseVector.OfArray(expansion) / LeastSquares.AbsSum(expansion));
-				expansionErr = result.Item2.Error[0];
-				expansionIntErr = result.Item2.Error[2];
-				expansionDerErr = result.Item2.Error[1];
+				////result = ls.Simulate(MathNet.Numerics.LinearAlgebra.Double.DenseVector.OfArray(expansion) / LeastSquares.AbsSum(expansion));
+				//expansionErr = result.Item2.Error[0];
+				//expansionIntErr = result.Item2.Error[2];
+				//expansionDerErr = result.Item2.Error[1];
 
 				if (expansionErr < reflectionErr && expansionDerErr < reflectionDerErr && expansionIntErr < reflectionIntErr)
 				{
@@ -498,10 +519,10 @@ namespace PorphyStruct
 			{
 				contraction[il] = centroid[il] + 0.5 * (simplex[indices[N]][il] - centroid[il]);
 			}
-			result = ls.Simulate(MathNet.Numerics.LinearAlgebra.Double.DenseVector.OfArray(contraction) / LeastSquares.AbsSum(contraction));
-			contractionErr = result.Item2.Error[0];
-			contractionDerErr = result.Item2.Error[1];
-			contractionIntErr = result.Item2.Error[2];
+			//result = ls.Simulate(MathNet.Numerics.LinearAlgebra.Double.DenseVector.OfArray(contraction) / LeastSquares.AbsSum(contraction));
+			//contractionErr = result.Item2.Error[0];
+			//contractionDerErr = result.Item2.Error[1];
+			//contractionIntErr = result.Item2.Error[2];
 
 			if (contractionErr < err[N] && contractionDerErr < derErr[N] && contractionIntErr < intErr[N])
 			{
