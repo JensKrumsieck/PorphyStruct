@@ -8,6 +8,7 @@ namespace PorphyStruct.Simulations
         public double current { get; set; }
         public double best { get; set; }
         public double start { get; set; }
+        public bool optimize { get; set; }
 
 
         /// <summary>
@@ -17,12 +18,13 @@ namespace PorphyStruct.Simulations
         /// <param name="start">Startvalue</param>
         /// <param name="best">Bestvalue</param>
         /// <param name="current">Currentvalue</param>
-        public SimParam(string title, double start, double best = 0, double current = 0)
+        public SimParam(string title, double start, double best = 0, double current = 0, bool optimize = true)
         {
             this.title = title;
             this.current = current;
             this.best = best;
             this.start = start;
+            this.optimize = optimize;
         }
 
         /// <summary>

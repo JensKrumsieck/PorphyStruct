@@ -1,5 +1,6 @@
 ﻿using PorphyStruct.Chemistry;
 using System;
+using System.Collections.Generic;
 
 namespace PorphyStruct.Simulations
 {
@@ -8,12 +9,16 @@ namespace PorphyStruct.Simulations
         protected Random rnd;
         protected Macrocycle cycle;
 
+        //indices which remain zero (checkbox unset)
+        public List<int> Indices { get; set; }
+
         public MonteCarlo(Func<Macrocycle, double[], Result> function, double[] param, Macrocycle cycle)
         {
             Parameters = param;
             Function = function;
             this.cycle = cycle;
             rnd = new Random();
+            Indices = new List<int>();
         }
 
         /// <summary>
@@ -38,12 +43,19 @@ namespace PorphyStruct.Simulations
             return Function(cycle, Parameters);
         }
 
+        /// <summary>
+        /// provides next values
+        /// </summary>
+        /// <returns></returns>
         public Result Next()
         {
             //sets next parameters
             for (int i = 0; i < Parameters.Length; i++)
             {
-                Parameters[i] = rnd.Next(-100, 101);
+                if (Indices.Contains(i))
+                    Parameters[i] = 0;
+                else
+                    Parameters[i] = rnd.Next(-100, 101);
             }
 
             //norm

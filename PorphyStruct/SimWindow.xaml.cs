@@ -142,12 +142,14 @@ namespace PorphyStruct
         private void Simulate()
         {
             this.param = (List<SimParam>)simGrid.ItemsSource;
-            double[] coeff = new double[param.Count()];
+            double[] coeff = new double[param.Count];
+            List<int> indices = new List<int>();
             this.simplex = new Simplex(Conformation.Calculate, coeff, cycle);
             //set start values
             for (int i = 0; i < param.Count; i++)
             {
                 coeff[i] = param[i].start;
+                if (!param[i].optimize) indices.Add(i);
             }
             while (running)
             {
@@ -159,11 +161,13 @@ namespace PorphyStruct
                     if (type == SimulationMode.MonteCarlo)
                     {
                         MonteCarlo mc = new MonteCarlo(Conformation.Calculate, coeff, cycle);
+                        mc.Indices = indices;
                         result = mc.Next();
                     }
                     else //simplex
                     {
                         simplex.Parameters = coeff;
+                        simplex.Indices = indices;
                         result = simplex.Next();
                     }
 

@@ -18,10 +18,10 @@ FontFamily="{DynamicResource MaterialDesignFont}"
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="12*" />
-            <ColumnDefinition Width="90" />
-            <ColumnDefinition Width="90" />
-            <ColumnDefinition Width="90" />
-            <ColumnDefinition Width="90" />
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="100" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="10*" />
@@ -33,6 +33,7 @@ FontFamily="{DynamicResource MaterialDesignFont}"
         <oxy:PlotView x:Name="simView" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"></oxy:PlotView>
         <DataGrid x:Name="simGrid" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" CanUserSortColumns="False" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
             <DataGrid.Columns>
+                <DataGridCheckBoxColumn Binding="{Binding optimize}" Header="Use?" />
                 <DataGridTextColumn Binding="{Binding title}" Header="Con." IsReadOnly="True"/>
                 <DataGridTextColumn Binding="{Binding start,StringFormat=N4}" Header="Start"/>
                 <DataGridTextColumn Binding="{Binding current, StringFormat=N6}" Header="Current"/>

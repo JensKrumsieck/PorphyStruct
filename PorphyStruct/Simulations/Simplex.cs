@@ -1,5 +1,6 @@
 ﻿using PorphyStruct.Chemistry;
 using System;
+using System.Collections.Generic;
 
 namespace PorphyStruct.Simulations
 {
@@ -7,6 +8,11 @@ namespace PorphyStruct.Simulations
     {
         protected Random rnd;
         protected Macrocycle cycle;
+
+        /// <summary>
+        /// inidcates which values remain constant
+        /// </summary>
+        public List<int> Indices { get; set; }
 
         protected double[][] simplex = null;
         protected double[] lastCurrent;
@@ -24,6 +30,7 @@ namespace PorphyStruct.Simulations
             {
                 error[i] = double.PositiveInfinity;
             }
+            Indices = new List<int>();
 
         }
 
@@ -183,7 +190,7 @@ namespace PorphyStruct.Simulations
         {
             //build montecarlo instance
             MonteCarlo mc = new MonteCarlo(Conformation.Calculate, Parameters, cycle);
-
+            mc.Indices = Indices;
             //step 1:
             //build initial simplex with N+1 points
             if (lastCurrent == null)
@@ -230,10 +237,12 @@ namespace PorphyStruct.Simulations
                 centroid[il] = 0;
                 for (int ie = 0; ie <= N; ie++)
                 {
-                    if (ie != indices[N])
+                    if (ie != indices[N] && !Indices.Contains(il))
                     {
                         centroid[il] += simplex[ie][il] / N;
                     }
+                    else if (Indices.Contains(il))
+                        centroid[il] = 0;
                 }
             }
             return centroid;
@@ -249,7 +258,8 @@ namespace PorphyStruct.Simulations
             double[] reflection = new double[centroid.Length];
             for (int il = 0; il < centroid.Length; il++)
             {
-                reflection[il] = centroid[il] + (centroid[il] - simplex[indices[centroid.Length]][il]);
+                if (!Indices.Contains(il)) reflection[il] = centroid[il] + (centroid[il] - simplex[indices[centroid.Length]][il]);
+                else reflection[il] = 0;
             }
             return reflection;
         }
@@ -265,7 +275,9 @@ namespace PorphyStruct.Simulations
             double[] expansion = new double[centroid.Length];
             for (int ie = 0; ie < centroid.Length; ie++)
             {
-                expansion[ie] = centroid[ie] + 0.5 * (reflection[ie] - centroid[ie]);
+                if (!Indices.Contains(ie))
+                    expansion[ie] = centroid[ie] + 0.5 * (reflection[ie] - centroid[ie]);
+                else expansion[ie] = 0;
             }
             return expansion;
         }
@@ -280,7 +292,9 @@ namespace PorphyStruct.Simulations
             double[] contraction = new double[centroid.Length];
             for (int il = 0; il < centroid.Length; il++)
             {
-                contraction[il] = centroid[il] + 0.5 * (simplex[indices[centroid.Length]][il] - centroid[il]);
+                if (!Indices.Contains(il))
+                    contraction[il] = centroid[il] + 0.5 * (simplex[indices[centroid.Length]][il] - centroid[il]);
+                else contraction[il] = 0;
             }
             return contraction;
         }
@@ -292,7 +306,8 @@ namespace PorphyStruct.Simulations
             {
                 for (int il = 0; il < Parameters.Length; il++)
                 {
-                    simplex[ie][il] = best[il] + 0.5 * (simplex[ie][il] - best[il]);
+                    if (!Indices.Contains(il)) simplex[ie][il] = best[il] + 0.5 * (simplex[ie][il] - best[il]);
+                    else simplex[ie][il] = 0;
                 }
             }
         }
