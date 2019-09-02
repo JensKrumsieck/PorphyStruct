@@ -137,6 +137,7 @@
     <Compile Include="Files\Mol2File.cs" />
     <Compile Include="Oxy.Override\AlternativeAxis.cs" />
     <Compile Include="Oxy.Override\AlternativeAxisRenderer.cs" />
+    <Compile Include="Oxy.Override\StandardPlotModel.cs" />
     <Compile Include="Simulations\Displacements.cs" />
     <Compile Include="Info.xaml.cs">
       <DependentUpon>Info.xaml</DependentUpon>

@@ -99,73 +99,22 @@ namespace PorphyStruct
 		/// </summary>
 		private void PlotExp()
 		{
-			//plot that shit
-			PlotModel pm = new PlotModel
-			{
-				IsLegendVisible = true,
-				LegendPosition = LegendPosition.RightTop,
-				DefaultFontSize = Properties.Settings.Default.defaultFontSize,
-				LegendFontSize = Properties.Settings.Default.defaultFontSize,
-				DefaultFont = Properties.Settings.Default.defaultFont,
-				PlotAreaBorderThickness = new OxyThickness(Properties.Settings.Default.lineThickness)
-			};
-			ScatterSeries series = new ScatterSeries
+            //plot that shit
+            Oxy.Override.StandardPlotModel pm = new Oxy.Override.StandardPlotModel();
+            LinearAxis x = pm.xAxis;
+            Oxy.Override.LinearAxis y = pm.yAxis;
+
+            ScatterSeries series = new ScatterSeries
 			{
 				MarkerType = Properties.Settings.Default.markerType,
 				ItemsSource = cycle.dataPoints
 			};
 
-			LinearAxis x = new LinearAxis
-			{
-				Title = "X/Å",
-				Position = AxisPosition.Bottom,
-				Key = "X",
-				IsAxisVisible = Properties.Settings.Default.xAxis,
-				MajorGridlineThickness = Properties.Settings.Default.lineThickness,
-				TitleFormatString = Properties.Settings.Default.titleFormat,
-			};
-			double min = 0;
-			double max = 0;
-			//scale X
-			if (Properties.Settings.Default.autoscaleX)
-			{
-				//find min & max automatically
-				foreach (AtomDataPoint dp in cycle.dataPoints)
-				{
-					if (dp.X < min)
-						min = dp.X;
-					if (dp.X > max)
-						max = dp.X;
-				}
-				min = min - 1;
-				max = max + 1;
-			}
-			else
-			{
-				//set min & max manually
-				min = Properties.Settings.Default.minX;
-				max = Properties.Settings.Default.maxX;
-			}
-			x.Zoom(min, max);
-			x.AbsoluteMinimum = min;
-			x.AbsoluteMaximum = max;
+            pm.ScaleX(cycle.dataPoints);
 
-			pm.Axes.Add(x);
-
-			//add de color axis
-			RangeColorAxis xR = cycle.buildColorAxis();
+            //add de color axis
+            RangeColorAxis xR = cycle.buildColorAxis();
 			pm.Axes.Add(xR);
-
-			LinearAxis y = new LinearAxis
-			{
-				Title = "Norm. Δ_{msp}/Å",
-				Position = AxisPosition.Left,
-				Key = "Y",
-				IsAxisVisible = true,
-				MajorGridlineThickness = Properties.Settings.Default.lineThickness,
-				TitleFormatString = Properties.Settings.Default.titleFormat,
-			};
-			pm.Axes.Add(y);
 			pm.Series.Add(series);
 
 			simView.Model = pm;

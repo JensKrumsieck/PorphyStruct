@@ -51,16 +51,11 @@ namespace PorphyStruct
 		/// </summary>
         public void Analyze()
         {
-			string[] dontMark = Properties.Settings.Default.dontMark.Split(',');			
-			//plot that shit
-			PlotModel pm = new PlotModel
-			{
-				IsLegendVisible = false,
-				DefaultFontSize = Properties.Settings.Default.defaultFontSize,
-				LegendFontSize = Properties.Settings.Default.defaultFontSize,
-				DefaultFont = Properties.Settings.Default.defaultFont,
-				PlotAreaBorderThickness = new OxyThickness(Properties.Settings.Default.lineThickness)
-			};
+			string[] dontMark = Properties.Settings.Default.dontMark.Split(',');
+            //plot that shit
+            Oxy.Override.StandardPlotModel pm = new Oxy.Override.StandardPlotModel();
+            LinearAxis x = pm.xAxis;
+            Oxy.Override.LinearAxis y = pm.yAxis;
 
 			//generate cycle
 			Macrocycle cycle = new Macrocycle(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.isMacrocycle).ToList())
@@ -149,54 +144,12 @@ namespace PorphyStruct
 				}
 			}
 
-			LinearAxis x = new LinearAxis
-			{
-				Title = "X",
-				Unit = "Å",
-				Position = AxisPosition.Bottom,
-				Key = "X",
-				IsAxisVisible = Properties.Settings.Default.xAxis,
-				MajorGridlineThickness = Properties.Settings.Default.lineThickness,
-				AbsoluteMinimum = Properties.Settings.Default.minX,
-				AbsoluteMaximum = Properties.Settings.Default.maxX,
-				TitleFormatString = Properties.Settings.Default.titleFormat,
-				LabelFormatter = Oxy.Override.OxyUtils._axisFormatter
-			};
-			pm.Axes.Add(x);
-
+			
 			if (!Properties.Settings.Default.singleColor)
 			{
 				//build atom coloring axis
 				OxyPlot.Axes.RangeColorAxis xR = cycle.buildColorAxis();
 				pm.Axes.Add(xR);
-			}
-
-			//use my override for title rotation :) works unexpectedly good :D
-			PorphyStruct.Oxy.Override.LinearAxis y = new PorphyStruct.Oxy.Override.LinearAxis
-			{
-				Title = "Δ_{msp}",
-				Unit = "Å",
-				Position = AxisPosition.Left,
-				Key = "Y",
-				IsAxisVisible = true,
-				MajorGridlineThickness = Properties.Settings.Default.lineThickness,
-				TitleFormatString = Properties.Settings.Default.titleFormat,
-				LabelFormatter = Oxy.Override.OxyUtils._axisFormatter
-			};
-
-			//handle settings
-			if (PorphyStruct.Properties.Settings.Default.rotateTitle)
-			{
-				y.AxisTitleDistance = 15;
-			}
-
-			if (!Properties.Settings.Default.showBox)
-			{
-				pm.PlotAreaBorderThickness = new OxyThickness(0);
-				y.AxislineStyle = LineStyle.Solid;
-				y.AxislineThickness = Properties.Settings.Default.lineThickness;
-				x.AxislineStyle = LineStyle.Solid;
-				x.AxislineThickness = Properties.Settings.Default.lineThickness;
 			}
 
 			ScatterSeries series = new ScatterSeries
@@ -209,7 +162,6 @@ namespace PorphyStruct
 			if (Properties.Settings.Default.singleColor)
 				series.MarkerFill = Atom.modesSingleColor[0];
 
-			pm.Axes.Add(y);
 			pm.Series.Add(series);
 
             displaceView.Model = pm;
@@ -234,67 +186,23 @@ namespace PorphyStruct
 			}
 
 			//scale if neccessary
-			double min = 0;
-			double max = 0;
 			if (!normalize)
 			{
-				if (Properties.Settings.Default.autoscaleY)
-				{
-					//find min & max automatically
-					foreach (AtomDataPoint dp in data)
-					{
-						if (dp.Y < min)
-							min = dp.Y;
-						if (dp.Y > max)
-							max = dp.Y;
-					}
-					min = min - 0.05;
-					max = max + 0.05;
-				}
-				else
-				{
-					//set min & max manually
-					min = Properties.Settings.Default.minY;
-					max = Properties.Settings.Default.maxY;
-				}
-			}
+                pm.ScaleY(data);
+            }
 			else
 			{
-				min = -1.1;
-				max = 1.1;
-			}
-			y.Zoom(min, max);
-			y.AbsoluteMinimum = min;
-			y.AbsoluteMaximum = max;
+				double min = -1.1;
+				double max = 1.1;
+                y.Zoom(min, max);
+                y.AbsoluteMinimum = min;
+                y.AbsoluteMaximum = max;
+            }
 
-			min = 0; max = 0;
-			//scale X
-			if (Properties.Settings.Default.autoscaleX)
-			{
-				//find min & max automatically
-				foreach (AtomDataPoint dp in data)
-				{
-					if (dp.X < min)
-						min = dp.X;
-					if (dp.X > max)
-						max = dp.X;
-				}
-				min = min - 1;
-				max = max + 1;
-			}
-			else
-			{
-				//set min & max manually
-				min = Properties.Settings.Default.minX;
-				max = Properties.Settings.Default.maxX;
-			}
-			x.AbsoluteMinimum = min;
-			x.AbsoluteMaximum = max;
-			x.Zoom(min, max);
+            pm.ScaleX(data);
 
-
-			//comparison
-			if (comp1Path != "")
+            //comparison
+            if (comp1Path != "")
 			{
 				Simulation com = CompareWindow.GetData(comp1Path);
 				// dont mark(comp1)

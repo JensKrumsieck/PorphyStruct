@@ -4,7 +4,7 @@
 //just a copy of the oxyplot original, but implementing my Alternative Axis
 namespace PorphyStruct.Oxy.Override
 {
-	class LinearAxis : AlternativeAxis
+	public class LinearAxis : AlternativeAxis
 	{/// <summary>
 	 /// Initializes a new instance of the <see cref="LinearAxis" /> class.
 	 /// </summary>
