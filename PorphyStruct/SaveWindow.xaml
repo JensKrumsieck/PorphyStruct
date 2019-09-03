@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:h="http://helix-toolkit.org/wpf"
+        xmlns:properties="clr-namespace:PorphyStruct.Properties"
         xmlns:oxy="http://oxyplot.org/wpf"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PorphyStruct"
@@ -18,6 +19,11 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Save File" Height="400" Width="620" ResizeMode="NoResize">
     <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="8*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
         <Grid.Resources>
             <sys:ArrayList x:Key="SaveTypes">
                 <local:FileType Title="Graph" Icon="{materialDesign:PackIcon Kind=ChartScatterplotHexbin, Size=50}"
@@ -39,7 +45,7 @@
                                 secondary="{materialDesign:PackIcon Kind=Ring, Size=17}" Extension="ixyz" />
             </sys:ArrayList>
         </Grid.Resources>
-        <ListBox SelectionMode="Extended" ItemsSource="{Binding Mode=OneWay, Source={StaticResource SaveTypes}}" x:Name="TypeList"
+        <ListBox SelectionMode="Extended" ItemsSource="{Binding Mode=OneWay, Source={StaticResource SaveTypes}}" x:Name="TypeList" Grid.Row="0"
                  Style="{StaticResource MaterialDesignToolToggleFlatListBox}" materialDesign:ListBoxAssist.IsToggle="True" HorizontalAlignment="Center">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -59,7 +65,26 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="285,310,0,0" Click="Button_Click"/>
-
+        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" >
+            <TextBox Width="200" Margin="0,0,10,0" x:Name="PathTB" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=savePath}">
+                <materialDesign:HintAssist.Hint>
+                    <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
+                        <TextBlock>Folder Path</TextBlock>
+                    </StackPanel>
+                </materialDesign:HintAssist.Hint>
+            </TextBox>
+            <Button Content="Search" Width="75"  Click="SeachButton_Click" Grid.Row="1" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="" HorizontalAlignment="Center" VerticalAlignment="Bottom" >
+            <TextBox Width="200" Margin="0,0,10,0" x:Name="NameTB" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="">
+                <materialDesign:HintAssist.Hint>
+                    <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
+                        <TextBlock>Filename</TextBlock>
+                    </StackPanel>
+                </materialDesign:HintAssist.Hint>
+            </TextBox>
+            <Button Content="Save" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="75"  Click="SaveButton_Click"/>
+        </StackPanel>
+        
     </Grid>
 </Window>

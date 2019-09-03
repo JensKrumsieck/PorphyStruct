@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:PorphyStruct"
         xmlns:properties="clr-namespace:PorphyStruct.Properties"
         mc:Ignorable="d"
-         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"

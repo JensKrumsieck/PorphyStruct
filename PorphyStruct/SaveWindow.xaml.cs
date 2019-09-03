@@ -7,11 +7,10 @@ using OxyPlot.Wpf;
 using PorphyStruct.Chemistry;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using winforms = System.Windows.Forms;
+using System.Windows;
 
 namespace PorphyStruct
 {
@@ -32,9 +31,10 @@ namespace PorphyStruct
             this.cycle = cycle;
             this.sim = sim;
             DataContext = this;
+            NameTB.Text = cycle.Title;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             List<FileType> types = new List<FileType>();
             foreach (object o in TypeList.SelectedItems)
@@ -62,6 +62,7 @@ namespace PorphyStruct
                         break;
                 }
             }
+            this.Close();
         }
 
         /// <summary>
@@ -191,7 +192,7 @@ namespace PorphyStruct
                 Title = (lang == "de" ? "Analyse " : "Analysis "),
             };
             ReportSection main = new ReportSection();
-            report.AddHeader(1, (lang == "de" ? "Konformationsanalyse " : "Conformational analysis ") +"TEXT" + " - " + cycle.Title);
+            report.AddHeader(1, (lang == "de" ? "Konformationsanalyse " : "Conformational analysis ") + "TEXT" + " - " + cycle.Title);
             report.Add(main);
             string type = "";
             if (cycle.type == Macrocycle.Type.Corrole)
@@ -235,6 +236,20 @@ namespace PorphyStruct
             return report;
         }
 
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            if (Properties.Settings.Default.savePath != "")
+                initialDir = Properties.Settings.Default.savePath;
+            winforms.FolderBrowserDialog fbd = new winforms.FolderBrowserDialog
+            {
+                SelectedPath = initialDir
+            };
+            if (fbd.ShowDialog() == winforms.DialogResult.OK)
+            {
+                PathTB.Text = fbd.SelectedPath;
+            }
+        }
     }
 
     public struct FileType
@@ -249,18 +264,4 @@ namespace PorphyStruct
             return Title + "." + Extension;
         }
     }
-    //    private void Search_Click(object sender, RoutedEventArgs e)
-    //    {
-    //        //string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-    //        //if (Properties.Settings.Default.savePath != "")
-    //        //    initialDir = Properties.Settings.Default.savePath;
-    //        //winforms.FolderBrowserDialog fbd = new winforms.FolderBrowserDialog
-    //        //{
-    //        //    SelectedPath = initialDir
-    //        //};
-    //        //if (fbd.ShowDialog() == winforms.DialogResult.OK)
-    //        //{
-    //        //    PathTB.Text = fbd.SelectedPath;
-    //        //}
-    //    }
 }
