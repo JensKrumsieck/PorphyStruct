@@ -133,7 +133,6 @@
     <Compile Include="CompareWindow.xaml.cs">
       <DependentUpon>CompareWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Helix.Override\Viewport3DHelper.cs" />
     <Compile Include="Files\Mol2File.cs" />
     <Compile Include="Oxy.Override\AlternativeAxis.cs" />
     <Compile Include="Oxy.Override\AlternativeAxisRenderer.cs" />
@@ -282,10 +281,12 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Fody.5.1.1\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.5.1.1\build\Fody.targets'))" />
     <Error Condition="!Exists('..\packages\Costura.Fody.4.0.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.4.0.0\build\Costura.Fody.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeAnalysis.Metrics.2.9.4\build\Microsoft.CodeAnalysis.Metrics.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeAnalysis.Metrics.2.9.4\build\Microsoft.CodeAnalysis.Metrics.targets'))" />
   </Target>
   <PropertyGroup>
     <PostBuildEvent>if NOT $(ConfigurationName) == Debug (
 del "$(TargetDir)*.xml", "$(TargetDir)*.pdb"
 )</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\packages\Microsoft.CodeAnalysis.Metrics.2.9.4\build\Microsoft.CodeAnalysis.Metrics.targets" Condition="Exists('..\packages\Microsoft.CodeAnalysis.Metrics.2.9.4\build\Microsoft.CodeAnalysis.Metrics.targets')" />
 </Project>
