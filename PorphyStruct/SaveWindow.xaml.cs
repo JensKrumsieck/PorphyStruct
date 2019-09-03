@@ -1,4 +1,5 @@
-﻿using OxyPlot;
+﻿using MaterialDesignThemes.Wpf;
+using OxyPlot;
 using OxyPlot.OpenXml;
 using OxyPlot.Pdf;
 using OxyPlot.Reporting;
@@ -6,6 +7,7 @@ using OxyPlot.Wpf;
 using PorphyStruct.Chemistry;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -18,7 +20,6 @@ namespace PorphyStruct
     /// </summary>
     public partial class SaveWindow : Window
     {
-        public enum Format { png, svg, dat, pdf, docx, MiXYZ, iXYZ };
         public PlotModel model;
         public Macrocycle cycle;
         public Simulation sim;
@@ -30,122 +31,138 @@ namespace PorphyStruct
             this.model = model;
             this.cycle = cycle;
             this.sim = sim;
+            DataContext = this;
         }
 
-        /// <summary>
-        /// Handle Search Button Click
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Search_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            if (Properties.Settings.Default.savePath != "")
-                initialDir = Properties.Settings.Default.savePath;
-            winforms.FolderBrowserDialog fbd = new winforms.FolderBrowserDialog
+            List<FileType> types = new List<FileType>();
+            foreach (object o in TypeList.SelectedItems)
             {
-                SelectedPath = initialDir
-            };
-            if (fbd.ShowDialog() == winforms.DialogResult.OK)
+                types.Add((FileType)o);
+            }
+            foreach (FileType t in types)
             {
-                PathTB.Text = fbd.SelectedPath;
+                switch (t.Title)
+                {
+                    case "Graph":
+                        SaveGraph(t.Extension);
+                        break;
+                    case "ASCII":
+                        SaveASCII(t.Extension);
+                        break;
+                    case "Macrocycle":
+                        SaveMolecule(t.Extension, true);
+                        break;
+                    case "Molecule":
+                        SaveMolecule(t.Extension);
+                        break;
+                    case "Report":
+                        SaveReport(t.Extension);
+                        break;
+                }
             }
         }
 
         /// <summary>
-        /// Handle Save Button Click
+        /// Handles Saving Graphs
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Save_Click(object sender, RoutedEventArgs e)
+        /// <param name="Extension"></param>
+        private void SaveGraph(string Extension)
         {
-            this.filename = PathTB.Text + @"\" + Title_TB.Text + cycle.Title + "_PorphyStruct_";
-            HandleSave((Format)SaveFormat_CB.SelectedIndex);
-            if (CloseCB.IsChecked == true) this.Close();
-        }
+            //exports png
+            if (Extension == "png")
+                PngExporter.Export(model, this.filename + "Analysis.png", Properties.Settings.Default.pngWidth, Properties.Settings.Default.pngHeight, OxyColors.Transparent, Properties.Settings.Default.pngRes);
 
-        /// <summary>
-        /// Handle Save -> Format Switch
-        /// </summary>
-        /// <param name="f"></param>
-        private void HandleSave(Format f)
-        {
-            switch (f)
+            //exports svg
+            if (Extension == "svg")
             {
-                case Format.png:
-                    HandleSavePNG();
-                    break;
-                case Format.dat:
-                    HandleSaveDat();
-                    break;
-                case Format.iXYZ:
-                    HandleSaveXYZ(false);
-                    break;
-                case Format.MiXYZ:
-                    HandleSaveXYZ(true);
-                    break;
-                case Format.svg:
-                    HandleSaveSVG();
-                    break;
-                case Format.pdf:
-                    HandleSavePDF();
-                    break;
-                case Format.docx:
-                    HandleSaveDocx();
-                    break;
+                var svg = new OxyPlot.Wpf.SvgExporter()
+                {
+                    Width = Properties.Settings.Default.pngWidth,
+                    Height = Properties.Settings.Default.pngHeight
+                };
+                svg.ExportToFile(model, this.filename + "Analysis.svg");
             }
         }
 
         /// <summary>
-        /// Export PNG
+        /// Saves ascii file
         /// </summary>
-        private void HandleSavePNG()
+        /// <param name="Extension"></param>
+        private void SaveASCII(string Extension)
         {
-            PngExporter.Export(model, this.filename + "Analysis.png", Properties.Settings.Default.pngWidth, Properties.Settings.Default.pngHeight, OxyColors.Transparent, Properties.Settings.Default.pngRes);
-        }
-
-        /// <summary>
-        /// Export SVG
-        /// </summary>
-        private void HandleSaveSVG()
-        {
-            var svg = new OxyPlot.Wpf.SvgExporter()
+            using (StreamWriter sw = new StreamWriter(this.filename + "Data." + Extension))
             {
-                Width = Properties.Settings.Default.pngWidth,
-                Height = Properties.Settings.Default.pngHeight
-            };
-            svg.ExportToFile(model, this.filename + "Analysis.svg");
-
+                sw.WriteLine("X;Y");
+                List<AtomDataPoint> data = new List<AtomDataPoint>();
+                OxyPlot.Series.ScatterSeries series = (OxyPlot.Series.ScatterSeries)model.Series.Where(t => t.Title == "Exp.").FirstOrDefault();
+                data.AddRange((List<AtomDataPoint>)series.ItemsSource);
+                for (int i = 0; i < data.Count; i++)
+                {
+                    sw.WriteLine(data[i].X.ToString() + ";" + data[i].Y.ToString());
+                }
+            }
         }
 
         /// <summary>
-        /// Export PDF
+        /// saves Molecule/Macrocycle
         /// </summary>
-        private void HandleSavePDF()
+        /// <param name="Extension"></param>
+        /// <param name="CycleOnly"></param>
+        private void SaveMolecule(string Extension, bool CycleOnly = false)
         {
-            string filename = this.filename + "Analysis.pdf";
+            string filename = this.filename + (CycleOnly ? "Macrocycle" : "Molecule");
+            if (Extension == "ixyz")
+            {
+                filename += ".ixyz";
+
+                using (StreamWriter sw = new StreamWriter(filename))
+                {
+                    if (!CycleOnly) sw.WriteLine(cycle.Atoms.Count);
+                    else
+                        sw.WriteLine(cycle.Atoms.Where(s => s.isMacrocycle).ToList().Count);
+
+                    sw.WriteLine(filename);
+
+                    foreach (Atom a in cycle.Atoms)
+                    {
+                        if (CycleOnly && a.isMacrocycle)
+                        {
+                            sw.WriteLine(a.Identifier + "/" + a.Type + "\t" + a.X.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + a.Y.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + a.Z.ToString("N8", System.Globalization.CultureInfo.InvariantCulture));
+                        }
+                        else if (!CycleOnly)
+                        {
+                            sw.WriteLine(a.Identifier + "/" + a.Type + "\t" + a.X.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + a.Y.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + a.Z.ToString("N8", System.Globalization.CultureInfo.InvariantCulture));
+                        }
+                    }
+                }
+            }
+        }
+
+        private void SaveReport(string Extension)
+        {
+            string filename = this.filename + "Report." + Extension;
             Report r = SaveReport();
-            using (var w = new PdfReportWriter(filename))
+            if (Extension == "docx")
             {
-                w.WriteReport(r, GetReportStyle());
+                using (var w = new WordDocumentReportWriter(filename))
+                {
+                    w.WriteReport(r, GetReportStyle());
+                    w.Save();
+                }
+            }
+            if (Extension == "pdf")
+            {
+                using (var w = new PdfReportWriter(filename))
+                {
+                    w.WriteReport(r, GetReportStyle());
+                }
+
             }
         }
 
-        /// <summary>
-        /// Export Docx
-        /// </summary>
-        private void HandleSaveDocx()
-        {
-            string filename = this.filename + "Analysis.docx";
-            Report r = SaveReport();
-            using (var w = new WordDocumentReportWriter(filename))
-            {
-                w.WriteReport(r, GetReportStyle());
-                w.Save();
-            }
-        }
-
-        /// <summary>
+        ///<summary>
         /// gets Reportstyle
         /// </summary>
         /// <param name="lang"></param>
@@ -174,7 +191,7 @@ namespace PorphyStruct
                 Title = (lang == "de" ? "Analyse " : "Analysis "),
             };
             ReportSection main = new ReportSection();
-            report.AddHeader(1, (lang == "de" ? "Konformationsanalyse " : "Conformational analysis ") + Title_TB.Text + " - " + cycle.Title);
+            report.AddHeader(1, (lang == "de" ? "Konformationsanalyse " : "Conformational analysis ") +"TEXT" + " - " + cycle.Title);
             report.Add(main);
             string type = "";
             if (cycle.type == Macrocycle.Type.Corrole)
@@ -190,16 +207,16 @@ namespace PorphyStruct
 
             main.AddHeader(2, (lang == "de" ? "Makrozyklische Konformation" : "Macrocyclic Conformation"));
             main.AddParagraph((lang == "de" ? "In nachfolgender Abbildung ist die Konformationsanalyse von "
-                                            + Title_TB.Text +
+                                            + "TEXT" +
                                             " als Auslenkungsdiagramm dargestellt. Durch die Ringatome des " + type + "s wurde eine mittlere"
                                             + "Ebene gelegt. Der Abstand der Ringatome zur Ebene wird gegen berechnete Kreiskoordinaten aufgetragen."
                                         : "The following figure shows the conformational analysis of "
-                                            + Title_TB.Text +
+                                            + "TEXT" +
                                             " displayed as a displacement diagram. A middle plane was placed through the ring atoms of  " + type.ToLower() + "." +
                                             " The distance of the ring atoms to the plane is plotted against calculated circle coordinates."));
             //export as image first
             PngExporter.Export(model, this.filename + "Analysis.png", Properties.Settings.Default.pngWidth, Properties.Settings.Default.pngHeight, OxyColors.Transparent, Properties.Settings.Default.pngRes);
-            main.AddImage(this.filename + "Analysis.png", (lang == "de" ? "Auslenkungsdiagramm der Konformationsanalyse von " + Title_TB.Text : "Displacement diagram of " + Title_TB.Text));
+            main.AddImage(this.filename + "Analysis.png", (lang == "de" ? "Auslenkungsdiagramm der Konformationsanalyse von " + "TEXT" : "Displacement diagram of " + "TEXT"));
             if (this.sim != null)
             {
                 ReportSection simu = new ReportSection();
@@ -215,75 +232,35 @@ namespace PorphyStruct
                         : "The sums of squared displacement errors for data, derivative and integral are: ")
                         + sim.errors[0] + ", " + sim.errors[1] + ", " + sim.errors[2] + ".");
             }
-            //// get 3d image //
-            ////get mainwindow instance
-            //MainWindow mw = Application.Current.Windows.OfType<MainWindow>().First();
-            ////center molecule
-            //mw.Center();
-            //BitmapSource bitmap = Helix.Override.Viewport3DHelper.RenderBitmap(mw.MolViewer.Viewport, Properties.Settings.Default.pngWidth, Properties.Settings.Default.pngWidth, Brushes.Transparent);
-
-            //using (var s = new FileStream(this.filename + "Viewport.png", FileMode.Create))
-            //{
-            //	BitmapEncoder encode = new PngBitmapEncoder();
-            //	encode.Frames.Add(BitmapFrame.Create(bitmap));
-            //	encode.Save(s);
-            //}
-            //ReportSection r3D = new ReportSection();
-            //report.Add(r3D);
-            //r3D.AddHeader(2, "Bond Pathway");
-            //r3D.AddParagraph((lang == "de" ? "In nachfolgender Abbildung ist die 3D Repräsentation des Moleküls mit Hervorhebung der für die Analyse verwendeten Atome und Bindungen zu sehen."
-            //		: "The following figure shows the 3D representation of the molecule with emphasis on the atoms and bonds used for the analysis."));
-            //r3D.AddImage(this.filename + "Viewport.png", (lang == "de" ? "Für die Analyse herangezogene Bindungen." : "Bonds used in present analysis."));
-
             return report;
         }
 
-        /// <summary>
-        /// Export DAT
-        /// </summary>
-        private void HandleSaveDat()
+    }
+
+    public struct FileType
+    {
+        public string Title { get; set; }
+        public PackIcon Icon { get; set; }
+        public PackIcon secondary { get; set; }
+        public string Extension { get; set; }
+
+        public override string ToString()
         {
-            using (StreamWriter sw = new StreamWriter(this.filename + "Analysis.dat"))
-            {
-                sw.WriteLine("X;Y");
-                //combine series
-                List<AtomDataPoint> data = new List<AtomDataPoint>();
-                OxyPlot.Series.ScatterSeries series = (OxyPlot.Series.ScatterSeries)model.Series[0];
-                data.AddRange((List<AtomDataPoint>)series.ItemsSource);
-
-                for (int i = 0; i < data.Count; i++)
-                {
-                    sw.WriteLine(data[i].X.ToString() + ";" + data[i].Y.ToString());
-                }
-            }
-        }
-
-        /// <summary>
-        /// Export XYZ
-        /// </summary>
-        /// <param name="cycleOnly">Only Macrocyclic Atoms</param>
-        private void HandleSaveXYZ(bool cycleOnly = false)
-        {
-            using (StreamWriter sw = new StreamWriter(this.filename + "_Analysis.ixyz"))
-            {
-                if (!cycleOnly) sw.WriteLine(cycle.Atoms.Count);
-                else
-                    sw.WriteLine(cycle.Atoms.Where(s => s.isMacrocycle).ToList().Count);
-
-                sw.WriteLine(Title_TB.Text + cycle.Title + "_PorphyStruct_Analysis");
-
-                foreach (Atom a in cycle.Atoms)
-                {
-                    if (cycleOnly && a.isMacrocycle)
-                    {
-                        sw.WriteLine(a.Identifier + "/" + a.Type + "\t" + a.X.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + a.Y.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + a.Z.ToString("N8", System.Globalization.CultureInfo.InvariantCulture));
-                    }
-                    else if (!cycleOnly)
-                    {
-                        sw.WriteLine(a.Identifier + "/" + a.Type + "\t" + a.X.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + a.Y.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + a.Z.ToString("N8", System.Globalization.CultureInfo.InvariantCulture));
-                    }
-                }
-            }
+            return Title + "." + Extension;
         }
     }
+    //    private void Search_Click(object sender, RoutedEventArgs e)
+    //    {
+    //        //string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+    //        //if (Properties.Settings.Default.savePath != "")
+    //        //    initialDir = Properties.Settings.Default.savePath;
+    //        //winforms.FolderBrowserDialog fbd = new winforms.FolderBrowserDialog
+    //        //{
+    //        //    SelectedPath = initialDir
+    //        //};
+    //        //if (fbd.ShowDialog() == winforms.DialogResult.OK)
+    //        //{
+    //        //    PathTB.Text = fbd.SelectedPath;
+    //        //}
+    //    }
 }
