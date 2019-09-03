@@ -7,10 +7,12 @@ using OxyPlot.Wpf;
 using PorphyStruct.Chemistry;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.IO;
 using System.Linq;
-using winforms = System.Windows.Forms;
 using System.Windows;
+using winforms = System.Windows.Forms;
 
 namespace PorphyStruct
 {
@@ -34,8 +36,15 @@ namespace PorphyStruct
             NameTB.Text = cycle.Title;
         }
 
+        /// <summary>
+        /// Handles file saving
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            if (PathTB.Text == "") return;
+            this.filename = PathTB.Text + "/" + NameTB.Text + "_";
             List<FileType> types = new List<FileType>();
             foreach (object o in TypeList.SelectedItems)
             {
@@ -62,7 +71,7 @@ namespace PorphyStruct
                         break;
                 }
             }
-            this.Close();
+            Close();
         }
 
         /// <summary>
@@ -236,6 +245,11 @@ namespace PorphyStruct
             return report;
         }
 
+        /// <summary>
+        /// handles search button click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -250,14 +264,29 @@ namespace PorphyStruct
                 PathTB.Text = fbd.SelectedPath;
             }
         }
-    }
 
+        public bool HasData(string data)
+        {
+            if ((data == "Graph" || data == "ASCII" || data == "Report") && (model == null || model.Series.Count == 0)) return false;
+            if (data == "SimResult" && sim == null) return false;
+            return true;
+        }
+    }
     public struct FileType
     {
         public string Title { get; set; }
         public PackIcon Icon { get; set; }
         public PackIcon secondary { get; set; }
         public string Extension { get; set; }
+
+        public bool IsEnabled
+        {
+            get
+            {
+                SaveWindow sw = Application.Current.Windows.OfType<SaveWindow>().First();
+                return sw.HasData(Title);
+            }
+        }
 
         public override string ToString()
         {
