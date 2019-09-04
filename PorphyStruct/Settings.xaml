@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:PorphyStruct"
         xmlns:properties="clr-namespace:PorphyStruct.Properties"
         mc:Ignorable="d"
-         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -85,11 +85,7 @@
                 </StackPanel>
             </materialDesign:HintAssist.Hint>
         </TextBox>
-        <Label Content="Export Language" Grid.Column="0" Grid.Row="8"/>
-        <ComboBox Grid.Column="1" Grid.Row="8" x:Name="exportLang" SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=exportLang, Mode=TwoWay}" SelectedValuePath="Tag">
-            <ComboBoxItem Content="English" Tag="en"/>
-            <ComboBoxItem Content="German" Tag="de"/>
-        </ComboBox>
+        
         <!--Color Settings-->
         <Label Content="Color Settings" FontWeight="Bold" Grid.Column="0" Grid.Row="10" />
         <Label Content="Color 1"  Grid.Column="0" Grid.Row="11" />
