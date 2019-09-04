@@ -28,7 +28,7 @@ namespace PorphyStruct
         public double normFac = 0;
         private int oldIndex = -1;
 
-        private bool normalize = false;
+        public bool normalize = false;
         private bool hasDifference = false;
         public bool invert = false;
 
@@ -712,7 +712,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void NormalizeButton_Click(object sender, RoutedEventArgs e)
+        public void NormalizeButton_Click(object sender, RoutedEventArgs e)
         {
             //set false
             if (this.normalize)

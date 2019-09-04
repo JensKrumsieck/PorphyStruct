@@ -42,6 +42,10 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            //reanalyze
+            if (Application.Current.Windows.OfType<MainWindow>().First().normalize) Application.Current.Windows.OfType<MainWindow>().First().NormalizeButton_Click(null, null);
+            Application.Current.Windows.OfType<MainWindow>().First().Analyze();
+
             //validate form
             if (PathTB.Text == "" || !Directory.Exists(PathTB.Text))
             {
@@ -56,10 +60,24 @@ namespace PorphyStruct
             }
             this.filename = PathTB.Text + "/" + NameTB.Text + "_";
             List<FileType> types = new List<FileType>();
+
+            //check if graph is present when report is present, otherwise add! (rip = report is present, gip = graph ...)
+            bool rip = false;
+            bool gip = false;
+            foreach (object o in TypeList.SelectedItems)
+            {
+                if (((FileType)o).Title == "Report")
+                {
+                    types.Add(new FileType() { Title = "Graph", Extension = "png" });
+                    if(sim != null) types.Add(new FileType() { Title = "SimResult", Extension = "png" });
+                }
+            }
+
             foreach (object o in TypeList.SelectedItems)
             {
                 types.Add((FileType)o);
             }
+
             foreach (FileType t in types)
             {
                 switch (t.Title)
@@ -69,6 +87,9 @@ namespace PorphyStruct
                         break;
                     case "ASCII":
                         SaveASCII(t.Extension);
+                        break;
+                    case "SimResult":
+                        SaveSimResult(t.Extension);
                         break;
                     case "Macrocycle":
                         SaveMolecule(t.Extension, true);
@@ -163,7 +184,7 @@ namespace PorphyStruct
         private void SaveASCII(string Extension)
         {
             List<OxyPlot.Series.ScatterSeries> export = new List<OxyPlot.Series.ScatterSeries>();
-            foreach(OxyPlot.Series.ScatterSeries s in model.Series)
+            foreach (OxyPlot.Series.ScatterSeries s in model.Series)
             {
                 export.Add(s);
             }
@@ -187,7 +208,7 @@ namespace PorphyStruct
                 for (int i = 0; i < export[0].ItemsSource.OfType<AtomDataPoint>().Count(); i++)
                 {
                     string line = export[0].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).X + ";";
-                    for(int j = 0; j < export.Count; j++)
+                    for (int j = 0; j < export.Count; j++)
                     {
                         line += export[j].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).Y + ";";
                     }
@@ -266,11 +287,10 @@ namespace PorphyStruct
         /// <returns></returns>
         private ReportStyle GetReportStyle()
         {
-            string lang = Properties.Settings.Default.exportLang;
             ReportStyle reportStyle = new ReportStyle(Properties.Settings.Default.defaultFont, Properties.Settings.Default.defaultFont, Properties.Settings.Default.defaultFont)
             {
-                FigureTextFormatString = (lang == "de" ? "Abbildung " : "Figure ") + "{0}. {1}",
-                TableCaptionFormatString = (lang == "de" ? "Tabelle " : "Table ") + "{0}. {1}"
+                FigureTextFormatString = "Figure {0}: {1}.",
+                TableCaptionFormatString = "Table {0}: {1}."
             };
             return reportStyle;
         }
@@ -285,46 +305,154 @@ namespace PorphyStruct
             string lang = Properties.Settings.Default.exportLang;
             Report report = new Report()
             {
-                Title = (lang == "de" ? "Analyse " : "Analysis "),
+                Title = "Analysis"
             };
             ReportSection main = new ReportSection();
             report.AddHeader(1, "Conformational analysis " + NameTB.Text + cycle.Title);
             report.Add(main);
             string type = cycle.type.ToString();
 
+            //basic information
             main.AddHeader(2, "Macrocyclic Conformation");
-            //save graph. overwrittes if already done.
-            this.SaveGraph(".png");
-            
+            main.AddParagraph("The following figure shows the conformational analysis of " + (cycle.Title != "" ? cycle.Title : "the input macrocycle ")
+                    + "displayed as displacement diagram. A middle plane was places through the " + type.ToLower() + "'s ring atoms. "
+                    + "The distance of the ring atoms to the mean plane is plotted against calculated circle coordinates.");
 
-            main.AddHeader(2, (lang == "de" ? "Makrozyklische Konformation" : "Macrocyclic Conformation"));
-            main.AddParagraph((lang == "de" ? "In nachfolgender Abbildung ist die Konformationsanalyse von "
-                                            + "TEXT" +
-                                            " als Auslenkungsdiagramm dargestellt. Durch die Ringatome des " + type + "s wurde eine mittlere"
-                                            + "Ebene gelegt. Der Abstand der Ringatome zur Ebene wird gegen berechnete Kreiskoordinaten aufgetragen."
-                                        : "The following figure shows the conformational analysis of "
-                                            + "TEXT" +
-                                            " displayed as a displacement diagram. A middle plane was placed through the ring atoms of  " + type.ToLower() + "." +
-                                            " The distance of the ring atoms to the plane is plotted against calculated circle coordinates."));
-            //export as image first
-            PngExporter.Export(model, this.filename + "Analysis.png", Properties.Settings.Default.pngWidth, Properties.Settings.Default.pngHeight, OxyColors.Transparent, Properties.Settings.Default.pngRes);
-            main.AddImage(this.filename + "Analysis.png", (lang == "de" ? "Auslenkungsdiagramm der Konformationsanalyse von " + "TEXT" : "Displacement diagram of " + "TEXT"));
+
+            main.AddImage(this.filename + "Analysis.png", "Displacement Diagram of the " + type.ToLower());
+
+            //get exp series
+            OxyPlot.Series.ScatterSeries exp = (OxyPlot.Series.ScatterSeries)model.Series.FirstOrDefault(s => s.Title == "Exp.");
+            main.AddItemsTable("Experimental Data",
+                exp.ItemsSource.OfType<AtomDataPoint>(),
+                new List<ItemsTableField> { new ItemsTableField("X", "X") { Width = 1000 }, new ItemsTableField("Y", "Y") { Width = 1000 }
+                });
+
             if (this.sim != null)
             {
                 ReportSection simu = new ReportSection();
                 report.Add(simu);
-                simu.AddHeader(2, "Simulation");
-                simu.AddParagraph((lang == "de" ? "Mittels der Methode kleinster Quadrate wurde die Konforamtion des " + type + "s auf die Schwingungsnormalmoden " +
-                    "von Metallo" + type.ToLower() + "en zurückgeführt. Die simulierte Zusammensetzung ist nachfolgender Tabelle zu entnehmen."
-                    : "Using the least squares method, the conformation of the" + type.ToLower() + "was traced back to the vibration normal modes of " +
-                    "metallo" + type.ToLower() + "s. The simulated composition is shown in the following table."));
-                simu.AddPropertyTable((lang == "de" ? "Simulationsparameter mit einem mittleren Auslenkungsparameter von " : "Simulationparameters with a mean displacement parameter of") + sim.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture), sim.par);
-                simu.AddParagraph((lang == "de"
-                        ? "Die Summen der Auslenkungsfehlerquadrate ergibt für die Daten, deren Ableitung und Integral die folgenden Werte: "
-                        : "The sums of squared displacement errors for data, derivative and integral are: ")
-                        + sim.errors[0] + ", " + sim.errors[1] + ", " + sim.errors[2] + ".");
+                simu.AddHeader(2, "Simulation Details");
+                simu.AddParagraph("A simulation has been done using the least squares methode. The conformation of the "
+                    + type.ToLower() + " was traced back to the vibration normal modes of metallo" + type.ToLower() + "s. "
+                    + "The standard vibration modes were obtained by DFT analysis of a metallo" + type.ToLower() + " at "
+                    + "B3LYP/Def2-SVP level of theory. The simulated conformation was calculated with an error of " + sim.errors[0]
+                    + " as root of the sum of the squared errors per atom. For the derivates the error is " + sim.errors[1]
+                    + " and for the integrals the following error was measured " + sim.errors[2]);
+
+                string composition = "";
+                string absComposition = "";
+                foreach (KeyValuePair<string, double> i in sim.par)
+                {
+                    composition += i.Value.ToString("N2", System.Globalization.CultureInfo.InvariantCulture) + "% of " + i.Key + ",";
+                    absComposition += (i.Value / 100 * sim.MeanDisplacement()).ToString("N4", System.Globalization.CultureInfo.InvariantCulture) + " of " + i.Key + ",";
+                }
+                composition.Remove(composition.LastIndexOf(','));
+                simu.AddParagraph("The final composition of normal modes is " + composition + " as also listed in the table below. "
+                    + "The mean displacement parameter is " + sim.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture)
+                    + " The absolute composition therefore is " + absComposition + ".");
+
+                simu.AddImage(this.filename + "SimResult.png", "Visualization of Simulationparameters");
+                simu.AddPropertyTable("Simulationparameters with a mean displacement parameter of " + sim.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture), sim.par);
             }
             return report;
+        }
+
+        /// <summary>
+        /// Saves the sim result as plot
+        /// </summary>
+        /// <param name="extension"></param>
+        private void SaveSimResult(string Extension)
+        {
+            if (sim == null)
+            {
+                MessageBox.Show("No Simulation present!", "Data Empty", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            //copied from 
+            PlotModel pm = new PlotModel()
+            {
+                IsLegendVisible = false,
+                LegendPosition = LegendPosition.RightTop,
+                DefaultFontSize = Properties.Settings.Default.defaultFontSize,
+                LegendFontSize = Properties.Settings.Default.defaultFontSize,
+                DefaultFont = Properties.Settings.Default.defaultFont,
+                PlotAreaBorderThickness = new OxyThickness(Properties.Settings.Default.lineThickness)
+            };
+
+            OxyPlot.Axes.LinearAxis x = new OxyPlot.Axes.LinearAxis
+            {
+                Title = "",
+                Unit = "%",
+                Position = OxyPlot.Axes.AxisPosition.Bottom,
+                Key = "X",
+                IsAxisVisible = true,
+                MajorGridlineThickness = Properties.Settings.Default.lineThickness,
+                TitleFormatString = "{1}"
+            };
+
+            OxyPlot.Axes.CategoryAxis y = new OxyPlot.Axes.CategoryAxis
+            {
+                IsAxisVisible = false,
+                Position = OxyPlot.Axes.AxisPosition.Left
+            };
+
+            if (!Properties.Settings.Default.showBox)
+            {
+                pm.PlotAreaBorderThickness = new OxyThickness(0);
+
+                x.AxislineStyle = LineStyle.Solid;
+                x.AxislineThickness = Properties.Settings.Default.lineThickness;
+            }
+
+            pm.Axes.Add(x);
+            pm.Axes.Add(y);
+
+            //add data;
+            OxyPlot.Series.IntervalBarSeries s = new OxyPlot.Series.IntervalBarSeries();
+            int a = 0;
+            foreach (KeyValuePair<string, double> i in sim.par.Reverse())
+            {
+                OxyPlot.Series.IntervalBarItem item = new OxyPlot.Series.IntervalBarItem
+                {
+                    Start = (i.Value < 0? i.Value : 0),
+                    End = (i.Value < 0 ? 0 : i.Value),
+                    Title = i.Key,
+                    CategoryIndex = a,
+                    Color = OxyColor.Parse(Properties.Settings.Default.color2)
+                    
+                };
+                s.Items.Add(item);
+                a++;
+            }
+            pm.Series.Add(s);
+
+            pm.Annotations.Add(new OxyPlot.Annotations.LineAnnotation()
+            {
+                Color = OxyColors.Black,
+                StrokeThickness = Properties.Settings.Default.lineThickness,
+                Type = OxyPlot.Annotations.LineAnnotationType.Vertical,
+                X = 0.0
+            });
+
+            pm.InvalidatePlot(true);
+
+            //save image
+            if (Extension == "png")
+                PngExporter.Export(pm, this.filename + "SimResult.png", Properties.Settings.Default.pngWidth, Properties.Settings.Default.pngHeight, OxyColors.Transparent, Properties.Settings.Default.pngRes);
+
+            //exports svg
+            if (Extension == "svg")
+            {
+                var svg = new OxyPlot.Wpf.SvgExporter()
+                {
+                    Width = Properties.Settings.Default.pngWidth,
+                    Height = Properties.Settings.Default.pngHeight
+                };
+                svg.ExportToFile(pm, this.filename + "SimResult.svg");
+            }
+
         }
 
         /// <summary>
