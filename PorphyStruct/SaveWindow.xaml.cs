@@ -7,7 +7,6 @@ using OxyPlot.Wpf;
 using PorphyStruct.Chemistry;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -21,7 +20,7 @@ namespace PorphyStruct
     /// </summary>
     public partial class SaveWindow : Window
     {
-        public PlotModel model;
+        public PlotModel model { get; set; }
         public Macrocycle cycle;
         public Simulation sim;
         public string filename = "";
@@ -43,7 +42,18 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (PathTB.Text == "") return;
+            //validate form
+            if (PathTB.Text == "" || !Directory.Exists(PathTB.Text))
+            {
+                MessageBox.Show("The specified directory does not exist!", "I/O Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (TypeList.SelectedItems.Count == 0)
+            {
+
+                MessageBox.Show("No Datatype has been selected!", "Datatype Empty", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             this.filename = PathTB.Text + "/" + NameTB.Text + "_";
             List<FileType> types = new List<FileType>();
             foreach (object o in TypeList.SelectedItems)
@@ -80,6 +90,53 @@ namespace PorphyStruct
         /// <param name="Extension"></param>
         private void SaveGraph(string Extension)
         {
+            //check if data is present
+            if (model.Series.Where(s => s.IsVisible = true).Count() == 0)
+            {
+                MessageBox.Show("No Data present!", "Data Empty", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            //get number of bonds.
+            int bonds = 0;
+            switch (cycle.type)
+            {
+                case Macrocycle.Type.Corrole:
+                    bonds = Macrocycle.CorroleBonds.Count;
+                    break;
+                case Macrocycle.Type.Corrphycene:
+                    bonds = Macrocycle.CorrphyceneBonds.Count;
+                    break;
+                case Macrocycle.Type.Norcorrole:
+                    bonds = Macrocycle.NorcorroleBonds.Count;
+                    break;
+                case Macrocycle.Type.Porphycene:
+                    bonds = Macrocycle.PorphyceneBonds.Count;
+                    break;
+                case Macrocycle.Type.Porphyrin:
+                    bonds = Macrocycle.PorphyrinBonds.Count;
+                    break;
+            }
+
+            //remove bonds
+            List<OxyPlot.Annotations.Annotation> annotations = new List<OxyPlot.Annotations.Annotation>();
+            foreach (OxyPlot.Series.ScatterSeries s in model.Series)
+            {
+                if (!s.IsVisible)
+                {
+                    int index = model.Series.IndexOf(s);
+                    for(int i = index * bonds; i < (index * bonds) + bonds; i++)
+                    {
+                        annotations.Add(model.Annotations[i]);
+                    }
+                }
+            }
+            foreach (OxyPlot.Annotations.Annotation a in annotations)
+            {
+                model.Annotations.Remove(a);
+            }
+
+
             //exports png
             if (Extension == "png")
                 PngExporter.Export(model, this.filename + "Analysis.png", Properties.Settings.Default.pngWidth, Properties.Settings.Default.pngHeight, OxyColors.Transparent, Properties.Settings.Default.pngRes);
@@ -102,6 +159,7 @@ namespace PorphyStruct
         /// <param name="Extension"></param>
         private void SaveASCII(string Extension)
         {
+            
             using (StreamWriter sw = new StreamWriter(this.filename + "Data." + Extension))
             {
                 sw.WriteLine("X;Y");
