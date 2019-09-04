@@ -25,14 +25,24 @@ namespace PorphyStruct
         public Simulation sim;
         public string filename = "";
 
-        public SaveWindow(PlotModel model, Macrocycle cycle, Simulation sim = null)
+        public SaveWindow(Macrocycle cycle, Simulation sim = null)
         {
             InitializeComponent();
-            this.model = model;
             this.cycle = cycle;
             this.sim = sim;
             DataContext = this;
             NameTB.Text = cycle.Title;
+
+            this.model = Application.Current.Windows.OfType<MainWindow>().First().displaceView.Model;
+            //reanalyze
+            if (Application.Current.Windows.OfType<MainWindow>().First().normalize && !(model == null || model.Series.Count == 0))
+            {
+                Application.Current.Windows.OfType<MainWindow>().First().NormalizeButton_Click(null, null);
+                Application.Current.Windows.OfType<MainWindow>().First().Analyze();
+                //as its beeing recreated
+                this.model = Application.Current.Windows.OfType<MainWindow>().First().displaceView.Model;
+            }
+
         }
 
         /// <summary>
@@ -42,10 +52,6 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            //reanalyze
-            if (Application.Current.Windows.OfType<MainWindow>().First().normalize) Application.Current.Windows.OfType<MainWindow>().First().NormalizeButton_Click(null, null);
-            Application.Current.Windows.OfType<MainWindow>().First().Analyze();
-
             //validate form
             if (PathTB.Text == "" || !Directory.Exists(PathTB.Text))
             {

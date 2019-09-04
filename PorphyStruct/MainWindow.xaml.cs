@@ -744,7 +744,7 @@ namespace PorphyStruct
                 type = this.type
             };
             //open save dialog
-            SaveWindow svW = new SaveWindow(displaceView.Model, cycle, this.simulation);
+            SaveWindow svW = new SaveWindow(cycle, this.simulation);
             svW.ShowDialog();
         }
 
