@@ -35,10 +35,11 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" TextWrapping="Wrap">
-            Comparison of your current loaded Data with some already processed data is possible. Please load
-            up to <Bold>two</Bold> .DAT/.dat files from a past analysis. The macrocyclic type must be the same and will be choosen 
-            automatically based on your current loaded data.
-        </TextBlock>
+            <Run Text="Comparison of your current loaded Data with some already processed data is possible. Please load up to "/>
+            <Bold><Run Text="two"/></Bold>
+            <Run Text=" .DAT/.dat files from a past analysis. The macrocyclic type must be the same and will be choosen automatically based on your current loaded data."/>
+            <Bold>Note:</Bold> Only the first y data in a DAT file can be extracted!.
+            </TextBlock>
         <Label Grid.Row="1" Grid.Column="0" Content="Comparison 1" FontWeight="Bold" FontSize="16"/>
         <Label Grid.Row="2" Grid.Column="0" Content="Path"/>
         <TextBox IsReadOnly="True" TextChanged="ComparisonPath_TextChanged" x:Name="comparison1Path" Grid.Row="2" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Top">
