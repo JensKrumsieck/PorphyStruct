@@ -90,6 +90,9 @@ namespace PorphyStruct
         /// <param name="Extension"></param>
         private void SaveGraph(string Extension)
         {
+            //reanalyze
+            Application.Current.Windows.OfType<MainWindow>().First().Analyze();
+
             //check if data is present
             if (model.Series.Where(s => s.IsVisible = true).Count() == 0)
             {
@@ -200,6 +203,8 @@ namespace PorphyStruct
         /// <param name="CycleOnly"></param>
         private void SaveMolecule(string Extension, bool CycleOnly = false)
         {
+            //no validation since a molecule is ALWAYS present!.
+
             string filename = this.filename + (CycleOnly ? "Macrocycle" : "Molecule");
             if (Extension == "ixyz")
             {
@@ -228,6 +233,10 @@ namespace PorphyStruct
             }
         }
 
+        /// <summary>
+        /// Saves Report
+        /// </summary>
+        /// <param name="Extension"></param>
         private void SaveReport(string Extension)
         {
             string filename = this.filename + "Report." + Extension;
@@ -279,19 +288,14 @@ namespace PorphyStruct
                 Title = (lang == "de" ? "Analyse " : "Analysis "),
             };
             ReportSection main = new ReportSection();
-            report.AddHeader(1, (lang == "de" ? "Konformationsanalyse " : "Conformational analysis ") + "TEXT" + " - " + cycle.Title);
+            report.AddHeader(1, "Conformational analysis " + NameTB.Text + cycle.Title);
             report.Add(main);
-            string type = "";
-            if (cycle.type == Macrocycle.Type.Corrole)
-                type = (lang == "de" ? "Corrol" : "Corrole");
-            if (cycle.type == Macrocycle.Type.Porphyrin)
-                type = (lang == "de" ? "Porphyrin" : "Porhyrin");
-            if (cycle.type == Macrocycle.Type.Norcorrole)
-                type = (lang == "de" ? "Norcorrol" : "Norcorrole");
-            if (cycle.type == Macrocycle.Type.Corrphycene)
-                type = (lang == "de" ? "Corrphycen" : "Corrphycene");
-            if (cycle.type == Macrocycle.Type.Norcorrole)
-                type = (lang == "de" ? "Porphycen" : "Porphycene");
+            string type = cycle.type.ToString();
+
+            main.AddHeader(2, "Macrocyclic Conformation");
+            //save graph. overwrittes if already done.
+            this.SaveGraph(".png");
+            
 
             main.AddHeader(2, (lang == "de" ? "Makrozyklische Konformation" : "Macrocyclic Conformation"));
             main.AddParagraph((lang == "de" ? "In nachfolgender Abbildung ist die Konformationsanalyse von "

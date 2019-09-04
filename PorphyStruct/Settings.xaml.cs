@@ -12,7 +12,6 @@ namespace PorphyStruct
     /// </summary>
     public partial class Settings : Window
     {
-        string[] languages = new string[] { "en", "de" };
         public Settings()
         {
             InitializeComponent();
@@ -78,7 +77,6 @@ namespace PorphyStruct
             Properties.Settings.Default.singleColor = singleColor.IsChecked.Value;
             Properties.Settings.Default.titleFormat = titleFormat.Text;
             Properties.Settings.Default.dontMark = dontMark.Text.Replace(" ", "");
-            Properties.Settings.Default.exportLang = languages[exportLang.SelectedIndex];
             Properties.Settings.Default.color1 = CheckColor(color1.Text) ? color1.Text : "#000000";
             Properties.Settings.Default.color2 = CheckColor(color2.Text) ? color2.Text : "#ff0000";
             Properties.Settings.Default.color3 = CheckColor(color3.Text) ? color3.Text : "#00ff40";
