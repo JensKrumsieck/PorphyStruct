@@ -125,7 +125,7 @@ namespace PorphyStruct
                 if (!s.IsVisible)
                 {
                     int index = model.Series.IndexOf(s);
-                    for(int i = index * bonds; i < (index * bonds) + bonds; i++)
+                    for (int i = index * bonds; i < (index * bonds) + bonds; i++)
                     {
                         annotations.Add(model.Annotations[i]);
                     }
@@ -159,16 +159,36 @@ namespace PorphyStruct
         /// <param name="Extension"></param>
         private void SaveASCII(string Extension)
         {
-            
+            List<OxyPlot.Series.ScatterSeries> export = new List<OxyPlot.Series.ScatterSeries>();
+            foreach(OxyPlot.Series.ScatterSeries s in model.Series)
+            {
+                export.Add(s);
+            }
+
+            if (export.Count == 0)
+            {
+                MessageBox.Show("No ASCII Data present!", "Data Empty", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            //make title string
+            string title = "X;";
+            foreach (OxyPlot.Series.Series s in export) title += s.Title + ";";
+
+            //write data
             using (StreamWriter sw = new StreamWriter(this.filename + "Data." + Extension))
             {
-                sw.WriteLine("X;Y");
-                List<AtomDataPoint> data = new List<AtomDataPoint>();
-                OxyPlot.Series.ScatterSeries series = (OxyPlot.Series.ScatterSeries)model.Series.Where(t => t.Title == "Exp.").FirstOrDefault();
-                data.AddRange((List<AtomDataPoint>)series.ItemsSource);
-                for (int i = 0; i < data.Count; i++)
+                sw.WriteLine(title);
+
+                //write data
+                for (int i = 0; i < export[0].ItemsSource.OfType<AtomDataPoint>().Count(); i++)
                 {
-                    sw.WriteLine(data[i].X.ToString() + ";" + data[i].Y.ToString());
+                    string line = export[0].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).X + ";";
+                    for(int j = 0; j < export.Count; j++)
+                    {
+                        line += export[j].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).Y + ";";
+                    }
+                    sw.WriteLine(line);
                 }
             }
         }
