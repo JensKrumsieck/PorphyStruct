@@ -1,6 +1,7 @@
 ﻿using PorphyStruct.Chemistry;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PorphyStruct.Simulations
 {
@@ -17,6 +18,9 @@ namespace PorphyStruct.Simulations
         protected double[][] simplex = null;
         protected double[] lastCurrent;
         int[] indices = null;
+        int count = 0;
+        int x = 0;
+        int y = 0;
         double[] error = null;
 
         public Simplex(Func<Macrocycle, double[], Result> function, double[] param, Macrocycle cycle)
@@ -85,7 +89,7 @@ namespace PorphyStruct.Simulations
         /// </summary>
         /// <returns></returns>
         public Result Next()
-        {
+        {            
             //set probe points
             double[] centroid;
             double[] contraction;
@@ -110,13 +114,23 @@ namespace PorphyStruct.Simulations
             //sort list by error
             Array.Sort(error, simplex);
             //convergence! stop algorithm
-            if (error[Parameters.Length] - error[0] < 1e-7)
+            if (error[Parameters.Length] - error[0] < 1e-8|| count == 25)
             {
+                count = 0;
                 //all values are to equal, start new simplex becaus this is endless simplex
                 Parameters = simplex[1];
                 simplex = null;
                 return Evaluate();
             }
+
+            if (lastCurrent != null && Math.Abs(lastCurrent.Sum() - error.Sum()) < 5e-8)
+            {
+                double p = Math.Abs(lastCurrent.Sum() - error.Sum());
+                count++;
+            }
+            else count = 0;
+            lastCurrent = (double[])error.Clone();
+
             //step 3:
             //make centroid (leave out last element!) c = 1/N sum_(i=0 to N-1) xi
             centroid = Centroid(Parameters.Length);
@@ -193,10 +207,6 @@ namespace PorphyStruct.Simulations
             mc.Indices = Indices;
             //step 1:
             //build initial simplex with N+1 points
-            if (lastCurrent == null)
-            {
-                lastCurrent = Parameters;
-            }
 
             indices = new int[N + 1];
             simplex = new double[N + 1][];
@@ -206,15 +216,6 @@ namespace PorphyStruct.Simulations
                 Result result = mc.Next();
                 Parameters = (double[])result.Coefficients.Clone();
             }
-
-            if (Parameters == lastCurrent)
-            {
-                Result result = mc.Next();
-                Parameters = (double[])result.Coefficients.Clone();
-            }
-
-            lastCurrent = Parameters;
-
             simplex[0] = Parameters;
             for (int il = 1; il <= N; il++)
             {
