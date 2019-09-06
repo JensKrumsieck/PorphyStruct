@@ -126,16 +126,26 @@ namespace PorphyStruct.Chemistry
         /// Gets the centroid of this Macrocycle
         /// </summary>
         /// <returns>Centroid as Vector3D</returns>
-        public Vector3D getCentroid()
+        public Vector3D GetCentroid()
+        {            
+            //get the centroid
+            return Point3D.Centroid(GetPoints()).ToVector3D();
+        }
+
+        /// <summary>
+        /// Converts the xyz into Point3D because some methods need math net spatial...
+        /// </summary>
+        /// <returns></returns>
+        private List<Point3D> GetPoints()
         {
             List<Point3D> points = new List<Point3D>();
             foreach (Atom atom in Atoms)
             {
-                if (atom.isMacrocycle) points.Add(new Point3D(atom.X, atom.Y, atom.Z));
+                if (atom.IsMacrocycle) points.Add(new Point3D(atom.X, atom.Y, atom.Z));
             }
-            //get the centroid
-            return Point3D.Centroid(points).ToVector3D();
+            return points;
         }
+
 
         /// <summary>
         /// Gets the mean plane of this Macrocycle
@@ -143,15 +153,15 @@ namespace PorphyStruct.Chemistry
         /// <returns>The Plane Object (Math.Net)</returns>
         public Plane GetMeanPlane()
         {
-            //calculate Centroid first
             //convert coordinates into Point3D because centroid method is only available in math net spatial
-            List<Point3D> points = new List<Point3D>();
+            List<Point3D> points = GetPoints();
             foreach (Atom atom in Atoms)
             {
-                if (atom.isMacrocycle) points.Add(new Point3D(atom.X, atom.Y, atom.Z));
+                if (atom.IsMacrocycle) points.Add(new Point3D(atom.X, atom.Y, atom.Z));
             }
+            //calculate Centroid first
             //get the centroid
-            Vector3D centroid = Point3D.Centroid(points).ToVector3D();
+            Vector3D centroid = GetCentroid();
 
             //subtract centroid from each point... & build matrix of that
             Matrix<double> A = Matrix<double>.Build.Dense(3, points.Count);
@@ -181,9 +191,9 @@ namespace PorphyStruct.Chemistry
         /// <param name="id1">Identifier 1</param>
         /// <param name="id2">Identifier 2</param>
         /// <returns>The Vectordistance</returns>
-        public double calculateDistance(string id1, string id2)
+        public double CalculateDistance(string id1, string id2)
         {
-            return Distance.Euclidean(this.Atoms.Where(s => s.Identifier == id1 && s.isMacrocycle).First().getXYZ(), this.Atoms.Where(s => s.Identifier == id2 && s.isMacrocycle).First().getXYZ());
+            return Distance.Euclidean(this.Atoms.Where(s => s.Identifier == id1 && s.IsMacrocycle).First().XYZ(), this.Atoms.Where(s => s.Identifier == id2 && s.IsMacrocycle).First().XYZ());
         }
 
         /// <summary>
@@ -206,18 +216,18 @@ namespace PorphyStruct.Chemistry
             Atoms = Atoms.OrderBy(s => CorroleAtoms.IndexOf(s.Identifier)).ToList();
 
             //get the 7 distances for corrole
-            double d1 = calculateDistance("C1", "C4");
-            double d2 = calculateDistance("C4", "C6");
-            double d3 = calculateDistance("C6", "C9");
-            double d4 = calculateDistance("C9", "C11");
-            double d5 = calculateDistance("C11", "C14");
-            double d6 = calculateDistance("C14", "C16");
-            double d7 = calculateDistance("C16", "C19");
+            double d1 = CalculateDistance("C1", "C4");
+            double d2 = CalculateDistance("C4", "C6");
+            double d3 = CalculateDistance("C6", "C9");
+            double d4 = CalculateDistance("C9", "C11");
+            double d5 = CalculateDistance("C11", "C14");
+            double d6 = CalculateDistance("C14", "C16");
+            double d7 = CalculateDistance("C16", "C19");
 
             double[] fixPoints = new double[6];
             foreach (Atom a in Atoms)
             {
-                if (a.isMacrocycle)
+                if (a.IsMacrocycle)
                 {
                     //defaulting to 1
                     double xCoord = 1;
@@ -271,7 +281,7 @@ namespace PorphyStruct.Chemistry
                         xCoord = d7 + fixPoints[5];
 
                     //add data
-                    dataPoints.Add(new AtomDataPoint(xCoord, a.getDistanceToPlane(GetMeanPlane()), a));
+                    dataPoints.Add(new AtomDataPoint(xCoord, a.DistanceToPlane(GetMeanPlane()), a));
                 }
             }
             return dataPoints;
@@ -297,18 +307,18 @@ namespace PorphyStruct.Chemistry
             Atoms = Atoms.OrderBy(s => NorcorroleAtoms.IndexOf(s.Identifier)).ToList();
 
             //get the 7 distances for corrole
-            double d1 = calculateDistance("C1", "C4");
-            double d2 = calculateDistance("C4", "C6");
-            double d3 = calculateDistance("C6", "C9");
-            double d4 = calculateDistance("C9", "C11");
-            double d5 = calculateDistance("C11", "C14");
-            double d6 = calculateDistance("C14", "C16");
-            double d7 = calculateDistance("C16", "C19");
+            double d1 = CalculateDistance("C1", "C4");
+            double d2 = CalculateDistance("C4", "C6");
+            double d3 = CalculateDistance("C6", "C9");
+            double d4 = CalculateDistance("C9", "C11");
+            double d5 = CalculateDistance("C11", "C14");
+            double d6 = CalculateDistance("C14", "C16");
+            double d7 = CalculateDistance("C16", "C19");
 
             double[] fixPoints = new double[6];
             foreach (Atom a in Atoms)
             {
-                if (a.isMacrocycle)
+                if (a.IsMacrocycle)
                 {
                     //defaulting to 1
                     double xCoord = 1;
@@ -360,7 +370,7 @@ namespace PorphyStruct.Chemistry
                         xCoord = d7 + fixPoints[5];
 
                     //add data
-                    dataPoints.Add(new AtomDataPoint(xCoord, a.getDistanceToPlane(GetMeanPlane()), a));
+                    dataPoints.Add(new AtomDataPoint(xCoord, a.DistanceToPlane(GetMeanPlane()), a));
                 }
             }
             return dataPoints;
@@ -386,19 +396,19 @@ namespace PorphyStruct.Chemistry
             Atoms = Atoms.OrderBy(s => PorphyrinAtoms.IndexOf(s.Identifier)).ToList();
 
             //get the x distances for porphyrin
-            double d1 = calculateDistance("C1", "C4");
-            double d2 = calculateDistance("C4", "C6");
-            double d3 = calculateDistance("C6", "C9");
-            double d4 = calculateDistance("C9", "C11");
-            double d5 = calculateDistance("C11", "C14");
-            double d6 = calculateDistance("C14", "C16");
-            double d7 = calculateDistance("C16", "C19");
-            double d8 = calculateDistance("C19", "C1");
+            double d1 = CalculateDistance("C1", "C4");
+            double d2 = CalculateDistance("C4", "C6");
+            double d3 = CalculateDistance("C6", "C9");
+            double d4 = CalculateDistance("C9", "C11");
+            double d5 = CalculateDistance("C11", "C14");
+            double d6 = CalculateDistance("C14", "C16");
+            double d7 = CalculateDistance("C16", "C19");
+            double d8 = CalculateDistance("C19", "C1");
 
             double[] fixPoints = new double[7];
             foreach (Atom a in Atoms)
             {
-                if (a.isMacrocycle)
+                if (a.IsMacrocycle)
                 {
                     //defaulting to 1
                     double xCoord = 1;
@@ -409,7 +419,7 @@ namespace PorphyStruct.Chemistry
                     {
                         xCoord = 1;
                         //add c20 twice
-                        dataPoints.Add(new AtomDataPoint((d7 + fixPoints[6] + (d8 / 2)), a.getDistanceToPlane(GetMeanPlane()), a));
+                        dataPoints.Add(new AtomDataPoint((d7 + fixPoints[6] + (d8 / 2)), a.DistanceToPlane(GetMeanPlane()), a));
                     }
                     if (a.Identifier == "C1")
                     {
@@ -482,7 +492,7 @@ namespace PorphyStruct.Chemistry
 
 
                     //add data
-                    dataPoints.Add(new AtomDataPoint(xCoord, a.getDistanceToPlane(GetMeanPlane()), a));
+                    dataPoints.Add(new AtomDataPoint(xCoord, a.DistanceToPlane(GetMeanPlane()), a));
                 }
             }
             return dataPoints;
@@ -510,18 +520,18 @@ namespace PorphyStruct.Chemistry
             Atoms = Atoms.OrderBy(s => PorphyrinAtoms.IndexOf(s.Identifier)).ToList();
 
             //get the 7 distances for corrphycene
-            double d1 = calculateDistance("C1", "C4");
-            double d2 = calculateDistance("C4", "C6");
-            double d3 = calculateDistance("C6", "C9");
-            double d4 = calculateDistance("C9", "C12");
-            double d5 = calculateDistance("C12", "C15");
-            double d6 = calculateDistance("C15", "C17");
-            double d7 = calculateDistance("C17", "C20");
+            double d1 = CalculateDistance("C1", "C4");
+            double d2 = CalculateDistance("C4", "C6");
+            double d3 = CalculateDistance("C6", "C9");
+            double d4 = CalculateDistance("C9", "C12");
+            double d5 = CalculateDistance("C12", "C15");
+            double d6 = CalculateDistance("C15", "C17");
+            double d7 = CalculateDistance("C17", "C20");
 
             double[] fixPoints = new double[7];
             foreach (Atom a in Atoms)
             {
-                if (a.isMacrocycle)
+                if (a.IsMacrocycle)
                 {
                     //defaulting to 1
                     double xCoord = 1;
@@ -599,7 +609,7 @@ namespace PorphyStruct.Chemistry
                         xCoord = d7 + fixPoints[6];
 
                     //add data
-                    dataPoints.Add(new AtomDataPoint(xCoord, a.getDistanceToPlane(GetMeanPlane()), a));
+                    dataPoints.Add(new AtomDataPoint(xCoord, a.DistanceToPlane(GetMeanPlane()), a));
                 }
             }
             return dataPoints;
@@ -626,18 +636,18 @@ namespace PorphyStruct.Chemistry
             Atoms = Atoms.OrderBy(s => PorphyrinAtoms.IndexOf(s.Identifier)).ToList();
 
             //get the x distances for porphyrin
-            double d1 = calculateDistance("C1", "C4");
-            double d2 = calculateDistance("C4", "C7");
-            double d3 = calculateDistance("C7", "C10");
-            double d4 = calculateDistance("C10", "C11");
-            double d5 = calculateDistance("C11", "C14");
-            double d6 = calculateDistance("C14", "C17");
-            double d7 = calculateDistance("C17", "C20");
+            double d1 = CalculateDistance("C1", "C4");
+            double d2 = CalculateDistance("C4", "C7");
+            double d3 = CalculateDistance("C7", "C10");
+            double d4 = CalculateDistance("C10", "C11");
+            double d5 = CalculateDistance("C11", "C14");
+            double d6 = CalculateDistance("C14", "C17");
+            double d7 = CalculateDistance("C17", "C20");
 
             double[] fixPoints = new double[7];
             foreach (Atom a in Atoms)
             {
-                if (a.isMacrocycle)
+                if (a.IsMacrocycle)
                 {
                     //defaulting to 1
                     double xCoord = 1;
@@ -716,7 +726,7 @@ namespace PorphyStruct.Chemistry
 
 
                     //add data
-                    dataPoints.Add(new AtomDataPoint(xCoord, a.getDistanceToPlane(GetMeanPlane()), a));
+                    dataPoints.Add(new AtomDataPoint(xCoord, a.DistanceToPlane(GetMeanPlane()), a));
                 }
             }
             return dataPoints;
@@ -820,17 +830,17 @@ namespace PorphyStruct.Chemistry
                     if (t.Item1 == "C20" && t.Item2 == "C1" && type == Type.Porphyrin)
                     {
                         a1 = dataPoints.OrderBy(s => s.X).First();
-                        a2 = dataPoints.Where(s => s.atom.Identifier == t.Item2 && s.atom.isMacrocycle).First();
+                        a2 = dataPoints.Where(s => s.atom.Identifier == t.Item2 && s.atom.IsMacrocycle).First();
                     }
                     else if (t.Item1 == "C19" && t.Item2 == "C20" && type == Type.Porphyrin)
                     {
-                        a1 = dataPoints.Where(s => s.atom.Identifier == t.Item1 && s.atom.isMacrocycle).First();
+                        a1 = dataPoints.Where(s => s.atom.Identifier == t.Item1 && s.atom.IsMacrocycle).First();
                         a2 = dataPoints.OrderBy(s => s.X).Last();
                     }
                     else
                     {
-                        a1 = dataPoints.Where(s => s.atom.Identifier == t.Item1 && s.atom.isMacrocycle).First();
-                        a2 = dataPoints.Where(s => s.atom.Identifier == t.Item2 && s.atom.isMacrocycle).First();
+                        a1 = dataPoints.Where(s => s.atom.Identifier == t.Item1 && s.atom.IsMacrocycle).First();
+                        a2 = dataPoints.Where(s => s.atom.Identifier == t.Item2 && s.atom.IsMacrocycle).First();
                     }
                     bonds.Add(Macrocycle.DrawBond(a1, a2, mode));
                 }
@@ -846,16 +856,16 @@ namespace PorphyStruct.Chemistry
         /// <param name="id"></param>
         /// <param name="forceMacroCycle"></param>
         /// <returns>Atom</returns>
-        public Atom byIdentifier(string id, bool forceMacroCycle = false)
+        public Atom ByIdentifier(string id, bool forceMacroCycle = false)
         {
-            return Atoms.Where(s => s.Identifier == id && s.isMacrocycle == forceMacroCycle).First();
+            return Atoms.Where(s => s.Identifier == id && s.IsMacrocycle == forceMacroCycle).First();
         }
 
         /// <summary>
         /// Builds RangeColorAxis
         /// </summary>
         /// <returns></returns>
-        public RangeColorAxis buildColorAxis()
+        public RangeColorAxis BuildColorAxis()
         {
             RangeColorAxis xR = new RangeColorAxis()
             {
@@ -878,7 +888,7 @@ namespace PorphyStruct.Chemistry
             {
                 if (dp.atom.Type != "C")
                 {
-                    OxyColor color = dp.atom.getOxyColor();
+                    OxyColor color = dp.atom.OxyColor;
                     double min = dp.X - 0.25;
                     double max = dp.X + 0.25;
                     xR.AddRange(min, max, color);

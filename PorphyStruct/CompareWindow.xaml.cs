@@ -30,7 +30,7 @@ namespace PorphyStruct
         private void Open1Btn_Click(object sender, RoutedEventArgs e)
         {
             string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            if (Properties.Settings.Default.savePath != "")
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.savePath))
                 initialDir = Properties.Settings.Default.savePath;
             OpenFileDialog ofd = new OpenFileDialog
             {
@@ -54,7 +54,7 @@ namespace PorphyStruct
         private void Open2Btn_Click(object sender, RoutedEventArgs e)
         {
             string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            if (Properties.Settings.Default.savePath != "")
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.savePath))
                 initialDir = Properties.Settings.Default.savePath;
             OpenFileDialog ofd = new OpenFileDialog
             {
@@ -79,7 +79,7 @@ namespace PorphyStruct
         public static Simulation GetData(string path)
         {
             MainWindow mw = Application.Current.Windows.OfType<MainWindow>().First();
-            Macrocycle cycle = mw.getCycle();
+            Macrocycle cycle = mw.GetCycle();
             List<AtomDataPoint> mol = new List<AtomDataPoint>();
             string file = File.ReadAllText(path);
             string[] lines = file.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None);
@@ -127,9 +127,9 @@ namespace PorphyStruct
             {
                 TextBox tb = (TextBox)sender;
                 if (tb.Name.Contains("1"))
-                    comp1Plot.Model.Axes.Add(GetData(tb.Text).buildColorAxis());
+                    comp1Plot.Model.Axes.Add(GetData(tb.Text).BuildColorAxis());
                 else
-                    comp2Plot.Model.Axes.Add(GetData(tb.Text).buildColorAxis());
+                    comp2Plot.Model.Axes.Add(GetData(tb.Text).BuildColorAxis());
 
                 GetData(tb.Text).Paint(tb.Name.Contains("1") ? comp1Plot.Model : comp2Plot.Model, tb.Name.Contains("1") ? "Com.1" : "Com.2");
 
@@ -186,15 +186,15 @@ namespace PorphyStruct
             comp1Plot.Model = pm1;
             comp2Plot.Model = pm2;
 
-            pm1.Axes.Add(x_());
-            pm1.Axes.Add(y_());
-            pm2.Axes.Add(x_());
-            pm2.Axes.Add(y_());
+            pm1.Axes.Add(X_());
+            pm1.Axes.Add(Y_());
+            pm2.Axes.Add(X_());
+            pm2.Axes.Add(Y_());
 
             loaded = true;
-            if (comparison1Path.Text != "")
+            if (!String.IsNullOrEmpty(comparison1Path.Text))
                 ComparisonPath_TextChanged(comparison1Path, null);
-            if (comparison2Path.Text != "")
+            if (!String.IsNullOrEmpty(comparison2Path.Text))
                 ComparisonPath_TextChanged(comparison2Path, null);
         }
 
@@ -202,7 +202,7 @@ namespace PorphyStruct
         /// y axis
         /// </summary>
         /// <returns></returns>
-        private PorphyStruct.Oxy.Override.LinearAxis y_()
+        private PorphyStruct.Oxy.Override.LinearAxis Y_()
         {
             PorphyStruct.Oxy.Override.LinearAxis y = new PorphyStruct.Oxy.Override.LinearAxis
             {
@@ -222,7 +222,7 @@ namespace PorphyStruct
         /// x axis
         /// </summary>
         /// <returns></returns>
-        private LinearAxis x_()
+        private LinearAxis X_()
         {
             LinearAxis x = new LinearAxis
             {

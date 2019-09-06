@@ -17,11 +17,9 @@ namespace PorphyStruct.Simulations
 
         protected double[][] simplex = null;
         protected double[] lastCurrent;
-        int[] indices = null;
-        int count = 0;
-        int x = 0;
-        int y = 0;
-        double[] error = null;
+        protected int[] indices = null;
+        protected int count = 0;
+        protected double[] error = null;
 
         public Simplex(Func<Macrocycle, double[], Result> function, double[] param, Macrocycle cycle)
         {
@@ -124,10 +122,7 @@ namespace PorphyStruct.Simulations
             }
 
             if (lastCurrent != null && Math.Abs(lastCurrent.Sum() - error.Sum()) < 5e-8)
-            {
-                double p = Math.Abs(lastCurrent.Sum() - error.Sum());
                 count++;
-            }
             else count = 0;
             lastCurrent = (double[])error.Clone();
 
@@ -203,8 +198,10 @@ namespace PorphyStruct.Simulations
         private void Build(int N)
         {
             //build montecarlo instance
-            MonteCarlo mc = new MonteCarlo(Conformation.Calculate, Parameters, cycle);
-            mc.Indices = Indices;
+            MonteCarlo mc = new MonteCarlo(Conformation.Calculate, Parameters, cycle)
+            {
+                Indices = Indices
+            };
             //step 1:
             //build initial simplex with N+1 points
 

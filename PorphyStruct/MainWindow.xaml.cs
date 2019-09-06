@@ -56,7 +56,7 @@ namespace PorphyStruct
             Oxy.Override.LinearAxis y = pm.yAxis;
 
             //generate cycle
-            Macrocycle cycle = new Macrocycle(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.isMacrocycle).ToList())
+            Macrocycle cycle = new Macrocycle(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList())
             {
                 type = this.type
             };
@@ -130,7 +130,7 @@ namespace PorphyStruct
                     Simulation tmpDiff = new Simulation(cycle.Atoms)
                     {
                         type = this.type,
-                        dataPoints = getDifference(data, simulation.dataPoints)
+                        dataPoints = GetDifference(data, simulation.dataPoints)
                     };
                     //dont mark (diff)
                     for (int i = 0; i < tmpDiff.dataPoints.Count; i++)
@@ -146,7 +146,7 @@ namespace PorphyStruct
             if (!Properties.Settings.Default.singleColor)
             {
                 //build atom coloring axis
-                OxyPlot.Axes.RangeColorAxis xR = cycle.buildColorAxis();
+                OxyPlot.Axes.RangeColorAxis xR = cycle.BuildColorAxis();
                 pm.Axes.Add(xR);
             }
 
@@ -200,7 +200,7 @@ namespace PorphyStruct
             pm.ScaleX(data);
 
             //comparison
-            if (comp1Path != "")
+            if (!String.IsNullOrEmpty(comp1Path))
             {
                 Simulation com = CompareWindow.GetData(comp1Path);
                 // dont mark(comp1)
@@ -211,7 +211,7 @@ namespace PorphyStruct
                 }
                 com.Paint(pm, "Com.1");
             }
-            if (comp2Path != "")
+            if (!String.IsNullOrEmpty(comp2Path))
             {
                 Simulation com = CompareWindow.GetData(comp2Path);
                 // dont mark(comp1)
@@ -245,9 +245,11 @@ namespace PorphyStruct
             {
                 foreach (string key in simulation.par.Keys)
                 {
-                    Chip c = new Chip();
-                    c.Content = key + ": " + simulation.par[key].ToString(System.Globalization.CultureInfo.InvariantCulture) + "%";
-                    c.Margin = new Thickness(0, 0, 4, 4);
+                    Chip c = new Chip
+                    {
+                        Content = key + ": " + simulation.par[key].ToString(System.Globalization.CultureInfo.InvariantCulture) + "%",
+                        Margin = new Thickness(0, 0, 4, 4)
+                    };
                     if (type == Macrocycle.Type.Porphyrin) c.FontSize = 8;
                     simStack.Children.Add(c);
                 }
@@ -264,7 +266,7 @@ namespace PorphyStruct
             //find min & max
             double min = 0;
             double max = 0;
-            double fac = 0;
+            double fac;
             foreach (AtomDataPoint dp in data)
             {
                 if (dp.Y < min)
@@ -329,7 +331,7 @@ namespace PorphyStruct
             CifFile file = new CifFile(path);
             Crystal mol = file.GetMolecule();
             mol.SetIsMacrocycle(this.type);
-            coordGrid.ItemsSource = mol.Atoms.OrderByDescending(s => s.isMacrocycle).ToList();
+            coordGrid.ItemsSource = mol.Atoms.OrderByDescending(s => s.IsMacrocycle).ToList();
 
             //show message
             MessageQueue.Enqueue("CIF-File opened!");
@@ -344,7 +346,7 @@ namespace PorphyStruct
             Mol2File file = new Mol2File(path);
             Molecule mol = file.GetMolecule();
             mol.SetIsMacrocycle(this.type);
-            coordGrid.ItemsSource = mol.Atoms.OrderByDescending(s => s.isMacrocycle).ToList();
+            coordGrid.ItemsSource = mol.Atoms.OrderByDescending(s => s.IsMacrocycle).ToList();
 
             //show message
             MessageQueue.Enqueue("Mol2-File opened!");
@@ -364,7 +366,7 @@ namespace PorphyStruct
             else mol = file.GetMolecule();
             //here the guess is used, be careful!!
             mol.SetIsMacrocycle(this.type);
-            coordGrid.ItemsSource = mol.Atoms.OrderByDescending(s => s.isMacrocycle).ToList();
+            coordGrid.ItemsSource = mol.Atoms.OrderByDescending(s => s.IsMacrocycle).ToList();
 
             //show message
             MessageQueue.Enqueue("XYZ-File opened!");
@@ -377,7 +379,7 @@ namespace PorphyStruct
         /// <param name="force"></param>
         private void UpdateMolView(bool markSelection = false, bool force = false)
         {
-            Macrocycle cycle = new Macrocycle(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.isMacrocycle).ToList());
+            Macrocycle cycle = new Macrocycle(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList());
             if (!CompareAtoms(cycle.Atoms, old.Atoms) || (markSelection && oldIndex != coordGrid.SelectedIndex) || force)
             {
                 old = cycle;
@@ -445,13 +447,13 @@ namespace PorphyStruct
                     MeshBuilder b = new MeshBuilder(true, true);
                     try
                     {
-                        Atom a1 = cycle.byIdentifier(t.Item1, true);
-                        Atom a2 = cycle.byIdentifier(t.Item2, true);
+                        Atom a1 = cycle.ByIdentifier(t.Item1, true);
+                        Atom a2 = cycle.ByIdentifier(t.Item2, true);
                         var p1 = new System.Windows.Media.Media3D.Point3D(a1.X, a1.Y, a1.Z);
                         var p2 = new System.Windows.Media.Media3D.Point3D(a2.X, a2.Y, a2.Z);
                         b.AddCylinder(p1, p2, 0.2, 10);
                         //add only to selection if both are macrocycle marked
-                        if (a1.isMacrocycle && a2.isMacrocycle)
+                        if (a1.IsMacrocycle && a2.IsMacrocycle)
                             group.Children.Add(new System.Windows.Media.Media3D.GeometryModel3D(b.ToMesh(), Materials.Blue));
                     }
                     catch {/**does nothing**/ }
@@ -478,7 +480,7 @@ namespace PorphyStruct
         /// returns the plot data of exp.
         /// </summary>
         /// <returns></returns>
-        public List<AtomDataPoint> getData()
+        public List<AtomDataPoint> GetData()
         {
             List<AtomDataPoint> data = new List<AtomDataPoint>();
             ScatterSeries series = (ScatterSeries)displaceView.Model.Series.FirstOrDefault(s => s.Title == "Exp.");
@@ -490,12 +492,12 @@ namespace PorphyStruct
         /// returns current macrocycle
         /// </summary>
         /// <returns></returns>
-        public Macrocycle getCycle()
+        public Macrocycle GetCycle()
         {
-            Macrocycle cycle = new Macrocycle(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.isMacrocycle).ToList())
+            Macrocycle cycle = new Macrocycle(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList())
             {
                 type = this.type,
-                dataPoints = getData(),
+                dataPoints = GetData(),
             };
             return cycle;
         }
@@ -504,7 +506,7 @@ namespace PorphyStruct
         /// returns difference between exp and sim
         /// </summary>
         /// <returns></returns>
-        public List<AtomDataPoint> getDifference(List<AtomDataPoint> data, List<AtomDataPoint> simData)
+        public List<AtomDataPoint> GetDifference(List<AtomDataPoint> data, List<AtomDataPoint> simData)
         {
             List<AtomDataPoint> diff = new List<AtomDataPoint>();
             //Shows the difference between sim and exp.
@@ -524,8 +526,8 @@ namespace PorphyStruct
         /// </summary>
         public void Center()
         {
-            Macrocycle cycle = new Macrocycle(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.isMacrocycle).ToList());
-            Vector3D centroid = cycle.getCentroid();
+            Macrocycle cycle = new Macrocycle(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList());
+            Vector3D centroid = cycle.GetCentroid();
 
             foreach (Atom a in cycle.Atoms)
             {
@@ -537,7 +539,7 @@ namespace PorphyStruct
                 a.Z = newCoord.Z;
             }
 
-            coordGrid.ItemsSource = cycle.Atoms.OrderByDescending(s => s.isMacrocycle).ToList();
+            coordGrid.ItemsSource = cycle.Atoms.OrderByDescending(s => s.IsMacrocycle).ToList();
             coordGrid.Items.Refresh();
             this.UpdateMolView(false, true);
             try
@@ -739,7 +741,7 @@ namespace PorphyStruct
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             //get current data
-            Macrocycle cycle = new Macrocycle(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.isMacrocycle).ToList())
+            Macrocycle cycle = new Macrocycle(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList())
             {
                 type = this.type
             };
@@ -785,7 +787,7 @@ namespace PorphyStruct
                 NormalizeButton_Click(sender, e);
 
             //open sim window
-            SimWindow sw = new SimWindow(getCycle(), displaceView);
+            SimWindow sw = new SimWindow(GetCycle(), displaceView);
             sw.Show();
         }
 

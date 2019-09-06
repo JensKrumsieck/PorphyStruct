@@ -10,7 +10,7 @@ namespace PorphyStruct.Chemistry
     {
 
         public string Identifier { get; set; }
-        public bool isMacrocycle { get; set; }
+        public bool IsMacrocycle { get; set; }
         public double X { get; set; }
         public double Y { get; set; }
         public double Z { get; set; }
@@ -29,14 +29,14 @@ namespace PorphyStruct.Chemistry
             this.X = x;
             this.Y = y;
             this.Z = z;
-            this.Type = getType();
+            this.Type = SetType();
         }
 
         /// <summary>
         /// XYZ Coordinates as array
         /// </summary>
         /// <returns>double[]</returns>
-        public double[] getXYZ()
+        public double[] XYZ()
         {
             return new double[] { X, Y, Z };
         }
@@ -46,7 +46,7 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         /// <param name="plane">Plane Object (MathNet.Spatial.Euclidean)</param>
         /// <returns>double</returns>
-        public double getDistanceToPlane(Plane plane)
+        public double DistanceToPlane(Plane plane)
         {
             return plane.SignedDistanceTo(new Point3D(X, Y, Z));
         }
@@ -55,7 +55,7 @@ namespace PorphyStruct.Chemistry
         /// get Atom Type by Identifier (C19 -> C)
         /// </summary>
         /// <returns>string</returns>
-        public string getType()
+        public string SetType()
         {
             return Regex.Match(Identifier, @"([A-Z][a-z]*)").Value;
         }
@@ -64,9 +64,9 @@ namespace PorphyStruct.Chemistry
         /// get Color from  OxyAtomColor-Dictionary
         /// </summary>
         /// <returns>OxyPlot.OxyColor</returns>
-        public OxyColor getOxyColor()
+        public OxyColor OxyColor
         {
-            return (OxyAtomColor.ContainsKey(Type) ? OxyAtomColor[Type] : OxyAtomColor["C"]);
+            get => (OxyAtomColor.ContainsKey(Type) ? OxyAtomColor[Type] : OxyAtomColor["C"]);
         }
 
         /// <summary>

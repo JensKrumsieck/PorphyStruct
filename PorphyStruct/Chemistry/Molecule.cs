@@ -54,26 +54,26 @@ namespace PorphyStruct.Chemistry
             foreach (Atom atom in this.Atoms)
             {
                 //set everythin to true first and then turn off if not meeting preferences
-                atom.isMacrocycle = true;
+                atom.IsMacrocycle = true;
 
 
                 //automatic detection sets all non C,N Atoms to false! Note that! -> Contains(H) -> H20C and ...
                 if (!atom.Identifier.Contains("C") && !atom.Identifier.Contains("N") || atom.Identifier.Contains("H"))
                 {
                     //this detection fails for any heteroatoms in the core!
-                    atom.isMacrocycle = false;
+                    atom.IsMacrocycle = false;
 
                 }
                 //fails for chlorine, nickel, niobium, ... so sort them out if string contains lowercase
                 else if (Regex.Matches(atom.Identifier, @"[a-z]", RegexOptions.Multiline).Count > 0)
                 {
-                    atom.isMacrocycle = false;
+                    atom.IsMacrocycle = false;
                 }
 
                 //remove secondary structure (prime or A/B)
                 if (atom.Identifier.Contains("'") || atom.Identifier.Contains("b") || atom.Identifier.Contains("B"))
                 {
-                    atom.isMacrocycle = false;
+                    atom.IsMacrocycle = false;
                 }
                 else if (atom.Identifier.EndsWith("A"))
                 {
@@ -98,24 +98,24 @@ namespace PorphyStruct.Chemistry
                 }
 
                 //most cif files either number by IUPAC or ascending for C and 1,2,3,4 for N, so remove all other atoms
-                if (atom.Identifier.Contains("C") && atom.isMacrocycle)
+                if (atom.Identifier.Contains("C") && atom.IsMacrocycle)
                 {
                     //carbon atoms from 1-19 for corroles & norcorroles and 20 for porphyrins, corrphycenes & porphycenes... 
                     if (type == Macrocycle.Type.Corrole || type == Macrocycle.Type.Norcorrole)
                     {
                         //greater than 19 == no corrole
-                        if (id > 19) atom.isMacrocycle = false;
+                        if (id > 19) atom.IsMacrocycle = false;
                     }
                     else
                     {
                         //greater than 20 == no porphyrin
-                        if (id > 20) atom.isMacrocycle = false;
+                        if (id > 20) atom.IsMacrocycle = false;
                     }
                 }
                 //as cavity is always N4 (or detection fails by design!) not type specific matching is needed.
-                if (atom.Identifier.Contains("N") && atom.isMacrocycle)
+                if (atom.Identifier.Contains("N") && atom.IsMacrocycle)
                 {
-                    if (id > 24) atom.isMacrocycle = false; //definitivly no macrocycle (or some kind of azarocorrole maybe?)
+                    if (id > 24) atom.IsMacrocycle = false; //definitivly no macrocycle (or some kind of azarocorrole maybe?)
                     else
                     {
                         //id <= 24
@@ -126,7 +126,7 @@ namespace PorphyStruct.Chemistry
                             //new identifier so everything is fine
                             atom.Identifier = "N" + id;
                         }
-                        if (id > 4) atom.isMacrocycle = false; //set everything to false if greater than N4!
+                        if (id > 4) atom.IsMacrocycle = false; //set everything to false if greater than N4!
                     }
                 }
             }

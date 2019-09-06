@@ -32,22 +32,22 @@
         <Grid.Resources>
             <sys:ArrayList x:Key="SaveTypes">
                 <local:FileType Title="Graph" Icon="{materialDesign:PackIcon Kind=ChartScatterplotHexbin, Size=50}"
-                                secondary ="{materialDesign:PackIcon Kind=Image, Size=17}" Extension="png"/>
+                                Secondary ="{materialDesign:PackIcon Kind=Image, Size=17}" Extension="png"/>
                 <local:FileType Title="Graph" Icon="{materialDesign:PackIcon Kind=ChartScatterplotHexbin, Size=50}"
-                                secondary ="{materialDesign:PackIcon Kind=VectorPolygon, Size=17}" Extension="svg"/>
+                                Secondary ="{materialDesign:PackIcon Kind=VectorPolygon, Size=17}" Extension="svg"/>
                 <local:FileType Title="SimResult" Icon="{materialDesign:PackIcon Kind=ChartGantt, Size=50}"
-                                secondary ="{materialDesign:PackIcon Kind=Image, Size=17}" Extension="png"/>
+                                Secondary ="{materialDesign:PackIcon Kind=Image, Size=17}" Extension="png"/>
                 <local:FileType Title="SimResult" Icon="{materialDesign:PackIcon Kind=ChartGantt, Size=50}"
-                                secondary ="{materialDesign:PackIcon Kind=VectorPolygon, Size=17}" Extension="svg"/>
+                                Secondary ="{materialDesign:PackIcon Kind=VectorPolygon, Size=17}" Extension="svg"/>
                 <local:FileType Title="ASCII" Icon="{materialDesign:PackIcon Kind=TableLarge, Size=50}" Extension="dat" />
                 <local:FileType Title="Report" Icon="{materialDesign:PackIcon Kind=FileDocumentBoxOutline, Size=50}" 
-                                secondary="{materialDesign:PackIcon Kind=FileWordBox, Size=17}" Extension="docx" />
+                                Secondary="{materialDesign:PackIcon Kind=FileWordBox, Size=17}" Extension="docx" />
                 <local:FileType Title="Report" Icon="{materialDesign:PackIcon Kind=FileDocumentBoxOutline, Size=50}" 
-                                secondary="{materialDesign:PackIcon Kind=FilePdfBox, Size=17}" Extension="pdf" />
+                                Secondary="{materialDesign:PackIcon Kind=FilePdfBox, Size=17}" Extension="pdf" />
                 <local:FileType Title="Molecule" Icon="{materialDesign:PackIcon Kind=Molecule, Size=50}" 
                                 Extension="ixyz" />
                 <local:FileType Title="Macrocycle" Icon="{materialDesign:PackIcon Kind=Molecule, Size=50}" 
-                                secondary="{materialDesign:PackIcon Kind=Ring, Size=17}" Extension="ixyz" />
+                                Secondary="{materialDesign:PackIcon Kind=Ring, Size=17}" Extension="ixyz" />
             </sys:ArrayList>
         </Grid.Resources>
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0">
@@ -65,7 +65,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border Padding="11" Width="125">
-                        <materialDesign:Badged Badge="{Binding secondary}" BadgeBackground="Red" BadgeForeground="White" HorizontalAlignment="Center">
+                        <materialDesign:Badged Badge="{Binding Secondary}" BadgeBackground="Red" BadgeForeground="White" HorizontalAlignment="Center">
                             <StackPanel Orientation="Vertical">
                                 <ContentControl Content="{Binding Icon}" HorizontalAlignment="Center"/>
                                 <TextBlock HorizontalAlignment="Center" Text="{Binding Title}"><Run FontWeight="Bold" Text="(."/><Run FontWeight="Bold" Text="{Binding Extension}" /><Run FontWeight="Bold" Text=")"/></TextBlock>

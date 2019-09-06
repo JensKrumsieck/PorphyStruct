@@ -120,7 +120,7 @@ FontFamily="{DynamicResource MaterialDesignFont}"
         <DataGrid Grid.Column="0" Grid.Row="1" TargetUpdated="CoordGrid_TargetUpdated" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="coordGrid" CanUserSortColumns="True" CanUserAddRows="False" ItemsSource="{Binding}" AutoGenerateColumns="False" SelectionChanged="CoordGrid_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Identifier,NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Identifier"/>
-                <DataGridCheckBoxColumn Binding="{Binding isMacrocycle, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Is Macrocycle" SortDirection="Descending"/>
+                <DataGridCheckBoxColumn Binding="{Binding IsMacrocycle, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Is Macrocycle" SortDirection="Descending"/>
                 <DataGridTextColumn Binding="{Binding X, StringFormat=N4}" Header="X" IsReadOnly="True"/>
                 <DataGridTextColumn Binding="{Binding Y, StringFormat=N4}" Header="Y" IsReadOnly="True"/>
                 <DataGridTextColumn Binding="{Binding Z, StringFormat=N4}" Header="Z" IsReadOnly="True"/>

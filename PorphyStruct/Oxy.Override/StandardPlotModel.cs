@@ -92,8 +92,8 @@ namespace PorphyStruct.Oxy.Override
                     if (dp.X > max)
                         max = dp.X;
                 }
-                min = min - 1;
-                max = max + 1;
+                min -=1;
+                max +=1;
             }
             else
             {
@@ -125,8 +125,8 @@ namespace PorphyStruct.Oxy.Override
                     if (dp.Y > max)
                         max = dp.Y;
                 }
-                min = min - 0.05;
-                max = max + 0.05;
+                min -= 0.05;
+                max += 0.05;
             }
             else
             {

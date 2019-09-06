@@ -108,7 +108,7 @@ namespace PorphyStruct
             pm.ScaleX(cycle.dataPoints);
 
             //add de color axis
-            RangeColorAxis xR = cycle.buildColorAxis();
+            RangeColorAxis xR = cycle.BuildColorAxis();
             pm.Axes.Add(xR);
             pm.Series.Add(series);
 
@@ -160,8 +160,10 @@ namespace PorphyStruct
                 {
                     if (type == SimulationMode.MonteCarlo)
                     {
-                        MonteCarlo mc = new MonteCarlo(Conformation.Calculate, coeff, cycle);
-                        mc.Indices = indices;
+                        MonteCarlo mc = new MonteCarlo(Conformation.Calculate, coeff, cycle)
+                        {
+                            Indices = indices
+                        };
                         result = mc.Next();
                     }
                     else //simplex
