@@ -75,8 +75,9 @@ namespace PorphyStruct.Chemistry
         public static Dictionary<string, OxyColor> OxyAtomColor = new Dictionary<string, OxyColor>() {
                 { "C", OxyColors.Black },
                 { "N", OxyColors.Blue },
-                { "S", OxyColors.LightGoldenrodYellow },
-                { "O", OxyColors.Red }
+                { "S", OxyColors.Gold },
+                { "O", OxyColors.Red },
+                { "Se", OxyColors.Orange}
         };
 
         /// <summary>
@@ -137,7 +138,7 @@ namespace PorphyStruct.Chemistry
             { "Mg", Brushes.LightSeaGreen },
             { "Si", Brushes.Beige },
             { "P", Brushes.Orange },
-            { "S", Brushes.OrangeRed },
+            { "S", Brushes.Yellow},
             { "Cl", Brushes.LightGreen },
             { "Mn", Brushes.MediumPurple },
             { "Cr", Brushes.BlueViolet },

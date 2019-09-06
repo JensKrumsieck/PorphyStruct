@@ -87,7 +87,7 @@ namespace PorphyStruct
             int index = 0;
             for (int i = 0; i < lines.Length; i++)
             {
-                if (!String.IsNullOrEmpty(lines[i]) && lines[i] != "X;Y")
+                if (!String.IsNullOrEmpty(lines[i]) && lines[i] != "X;Exp.;")
                 {
                     double dataX = Convert.ToDouble(lines[i].Split(';')[0]);
                     double dataY = Convert.ToDouble(lines[i].Split(';')[1]);
