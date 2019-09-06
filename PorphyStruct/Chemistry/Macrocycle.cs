@@ -794,11 +794,13 @@ namespace PorphyStruct.Chemistry
             return bond;
         }
 
+
         /// <summary>
         /// Generates all Bonds as Annotations
         /// </summary>
         /// <param name="sim">is Simulation</param>
         /// <returns>Annotation aka Bonds</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Ausstehend>")]
         public List<ArrowAnnotation> DrawBonds(int mode = 0)
         {
             dataPoints = dataPoints.OrderBy(s => s.X).ToList();

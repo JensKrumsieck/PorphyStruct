@@ -136,9 +136,11 @@ namespace PorphyStruct
             pm.InvalidatePlot(true);
         }
 
+
         /// <summary>
         /// Do the Simulation
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Ausstehend>")]
         private void Simulate()
         {
             this.param = (List<SimParam>)simGrid.ItemsSource;

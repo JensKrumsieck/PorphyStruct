@@ -372,11 +372,13 @@ namespace PorphyStruct
             MessageQueue.Enqueue("XYZ-File opened!");
         }
 
+
         /// <summary>
         /// Update 3D Model
         /// </summary>
         /// <param name="markSelection"></param>
         /// <param name="force"></param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Don't need to catch sth.")]
         private void UpdateMolView(bool markSelection = false, bool force = false)
         {
             Macrocycle cycle = new Macrocycle(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList());
@@ -521,9 +523,11 @@ namespace PorphyStruct
             return diff;
         }
 
+
         /// <summary>
         /// Centers Molecule into origin and updates camera to bestview
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Ausstehend>")]
         public void Center()
         {
             Macrocycle cycle = new Macrocycle(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList());
