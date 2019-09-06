@@ -20,7 +20,7 @@ namespace PorphyStruct
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IDisposable
     {
         private Macrocycle old = new Macrocycle(new List<Atom>());
 
@@ -876,5 +876,25 @@ namespace PorphyStruct
             this.Analyze();
         }
         #endregion
+        
+        /// <summary>
+        /// Implement IDisposable
+        /// </summary>
+        /// <param name="disposing"></param>
+        /// <see cref="IDisposable.Dispose"/>
+        protected virtual void Dispose(bool disposing)
+        {
+            //dispose managed resources
+            if (disposing) MessageQueue.Dispose(); 
+        }
+
+        /// <summary>
+        /// Wrapper for Dispose(true)
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }
