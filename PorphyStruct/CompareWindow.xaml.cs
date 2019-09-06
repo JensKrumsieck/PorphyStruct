@@ -84,16 +84,29 @@ namespace PorphyStruct
             string file = File.ReadAllText(path);
             string[] lines = file.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None);
 
+            double[] dataX = new double[lines.Length - 1]; // first line is bs
+            double[] dataY = new double[lines.Length - 1]; // first line is bs
             int index = 0;
-            for (int i = 0; i < lines.Length; i++)
+            foreach (string line in lines)
             {
-                if (!String.IsNullOrEmpty(lines[i]) && lines[i] != "X;Exp.;")
+                if (!String.IsNullOrEmpty(line) && !line.StartsWith("X;"))
                 {
-                    double dataX = Convert.ToDouble(lines[i].Split(';')[0]);
-                    double dataY = Convert.ToDouble(lines[i].Split(';')[1]);
-                    mol.Add(new AtomDataPoint(dataX, dataY, cycle.dataPoints.OrderBy(s => s.X).ToList()[index].atom));
+                    dataX[index] = Convert.ToDouble(line.Split(';')[0]);
+                    dataY[index] = Convert.ToDouble(line.Split(';')[1]);
                     index++;
                 }
+            }
+            //remove 0;
+            dataX = dataX.Where(s => s != 0).ToArray();
+            //protect against y = 0
+            if (dataY.Where(s => s != 0).ToArray().Length == dataX.Length)
+                dataY = dataY.Where(s => s != 0).ToArray();
+            else dataY = dataY.Where(s => s != dataY.Last()).ToArray(); //remove last because it's may a newline at the end
+
+            Array.Sort(dataX, dataY);
+            for(int i = 0; i < dataX.Length; i++)
+            {
+                mol.Add(new AtomDataPoint(dataX[i], dataY[i], cycle.dataPoints.OrderBy(s => s.X).ToList()[i].atom));
             }
             Simulation tmpCycle = new Simulation(cycle.Atoms)
             {
