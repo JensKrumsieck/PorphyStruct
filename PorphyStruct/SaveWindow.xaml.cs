@@ -106,7 +106,7 @@ namespace PorphyStruct
                         break;
                 }
             }
-            Close();
+            //Close();
         }
 
         /// <summary>
@@ -116,10 +116,10 @@ namespace PorphyStruct
         private void SaveGraph(string Extension)
         {
             //reanalyze
-            Application.Current.Windows.OfType<MainWindow>().First().Analyze();
+            //Application.Current.Windows.OfType<MainWindow>().First().Analyze();
 
             //check if data is present
-            if (Model.Series.Where(s => s.IsVisible = true).Count() == 0)
+            if (Model.Series.Where(s => s.IsVisible == true).Count() == 0)
             {
                 MessageBox.Show("No Data present!", "Data Empty", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;

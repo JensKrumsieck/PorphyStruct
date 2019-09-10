@@ -107,7 +107,7 @@
             <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}">Available Data</TextBlock>
             <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}"></TextBlock>
         </StackPanel>
-        <ItemsControl Grid.Column="1" Grid.Row="1" Grid.IsSharedSizeScope="True" Margin="12 0 12 0" ItemsSource="{Binding model.Series}" x:Name="SeriesList">
+        <ItemsControl Grid.Column="1" Grid.Row="1" Grid.IsSharedSizeScope="True" Margin="12 0 12 0" ItemsSource="{Binding Model.Series}" x:Name="SeriesList">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Border x:Name="Border" Padding="8">
