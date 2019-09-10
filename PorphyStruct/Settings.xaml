@@ -232,6 +232,16 @@
          </Label>
         <ToggleButton x:Name="singleColor" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=singleColor, Mode=TwoWay}" Grid.Column="5" Grid.Row="13"/>
 
+        <Label Grid.Row="14" Grid.Column="4">
+            <TextBlock>
+                Use Metal
+                <LineBreak />
+                <Run FontSize="9">Includes the metal atom in Sim. &amp; Exp.</Run>
+            </TextBlock>
+        </Label>
+        <ToggleButton x:Name="useMetal" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=useMetal, Mode=TwoWay}" Grid.Column="5" Grid.Row="14"/>
+
+
         <!--Axis Settings-->
         <Label Content="Axis Settings" Grid.Column="7" Grid.Row="1" FontWeight="Bold"/>
         <Label Content="Show X Axis"  Grid.Column="7" Grid.Row="2"/>

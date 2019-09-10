@@ -127,7 +127,7 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         /// <returns>Centroid as Vector3D</returns>
         public Vector3D GetCentroid()
-        {            
+        {
             //get the centroid
             return Point3D.Centroid(GetPoints()).ToVector3D();
         }
@@ -759,8 +759,51 @@ namespace PorphyStruct.Chemistry
             {
                 dataPoints = GetPorphyceneDataPoints();
             }
+
+            if (Properties.Settings.Default.useMetal && HasMetal)
+            {
+                Atom M = GetMetal();
+                dataPoints.Add(new AtomDataPoint(
+                    (dataPoints.First().X + dataPoints.Last().X) / 2,
+                    M.DistanceToPlane(GetMeanPlane()),
+                    M));
+            }
+
             return dataPoints;
         }
+
+
+        /// <summary>
+        /// Indicates if a Metal Atom is present
+        /// </summary>
+        public bool HasMetal
+        {
+            get
+            {
+                bool check = false;
+                foreach (Atom a in Atoms)
+                {
+                    if (a.IsMetal) check = true;
+                }
+                return check;
+            }
+        }
+
+        /// <summary>
+        /// Gets the first detected metal atom
+        /// </summary>
+        /// <returns></returns>
+        public Atom GetMetal()
+        {
+            Atom m = null;
+            foreach (Atom a in Atoms)
+            {
+                if (a.IsMetal) m = a;
+                if (a.Identifier == "M") return a; //if identifier is set return!
+            }
+            return m;
+        }
+
 
         /// <summary>
         /// Draws a line between two points
@@ -793,7 +836,6 @@ namespace PorphyStruct.Chemistry
             };
             return bond;
         }
-
 
         /// <summary>
         /// Generates all Bonds as Annotations
@@ -847,6 +889,21 @@ namespace PorphyStruct.Chemistry
                     bonds.Add(Macrocycle.DrawBond(a1, a2, mode));
                 }
                 catch { }
+            }
+
+            //add metal atoms
+            if(Properties.Settings.Default.useMetal && HasMetal)
+            {
+                var N = new List<string>() { "N1", "N2", "N3", "N4" };
+                List<AtomDataPoint> Nitrogen = dataPoints.Where(s => N.Contains(s.atom.Identifier)).ToList();
+                AtomDataPoint m = dataPoints.Where(s => s.atom == GetMetal()).FirstOrDefault();
+                foreach(AtomDataPoint n in Nitrogen)
+                {
+                    ArrowAnnotation b = DrawBond(m, n);
+                    b.LineStyle = LineStyle.Dash;
+                    b.Color = OxyColor.FromAColor(75, b.Color);
+                    bonds.Add(b);
+                }
             }
 
             return bonds;
@@ -917,7 +974,7 @@ namespace PorphyStruct.Chemistry
             double sum = 0;
             foreach (AtomDataPoint dp in dataPoints)
             {
-                sum += Math.Pow(dp.Y,2);
+                sum += Math.Pow(dp.Y, 2);
             }
             return Math.Sqrt(sum);
         }

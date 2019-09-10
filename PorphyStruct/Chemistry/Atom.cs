@@ -61,12 +61,40 @@ namespace PorphyStruct.Chemistry
         }
 
         /// <summary>
+        /// Indicates if this is a metal atom.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsMetal
+        {
+            get => Metals.Contains(Type) || Identifier == "M";
+        }
+
+        /// <summary>
+        /// some common metals in coord. chem.
+        /// may be completed soon
+        /// </summary>
+        public static List<string> Metals = new List<string>()
+        {
+            "Li",
+            "Mg",
+            "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn",
+            "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd",
+            "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg",
+            "La", "U",
+            "Ga", "Sn", "Sb"
+        };
+
+        /// <summary>
         /// get Color from  OxyAtomColor-Dictionary
         /// </summary>
         /// <returns>OxyPlot.OxyColor</returns>
         public OxyColor OxyColor
         {
-            get => (OxyAtomColor.ContainsKey(Type) ? OxyAtomColor[Type] : OxyAtomColor["C"]);
+            get
+            {
+                if (IsMetal) return OxyColors.Silver;
+                return (OxyAtomColor.ContainsKey(Type) ? OxyAtomColor[Type] : OxyAtomColor["C"]);
+            }
         }
 
         /// <summary>
@@ -77,7 +105,8 @@ namespace PorphyStruct.Chemistry
                 { "N", OxyColors.Blue },
                 { "S", OxyColors.Gold },
                 { "O", OxyColors.Red },
-                { "Se", OxyColors.Orange}
+                { "Se", OxyColors.Orange },
+                {"P", OxyColors.Orange },
         };
 
         /// <summary>

@@ -92,5 +92,8 @@
     <Setting Name="color5" Type="System.String" Scope="User">
       <Value Profile="(Default)">#FF8000</Value>
     </Setting>
+    <Setting Name="useMetal" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
