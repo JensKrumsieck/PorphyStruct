@@ -59,6 +59,10 @@ namespace PorphyStruct
             InitializeComponent();
             synchronizationContext = SynchronizationContext.Current;
             this.cycle = cycle;
+
+            //drop metal data
+            if(Properties.Settings.Default.useMetal && cycle.HasMetal) this.cycle.dataPoints = this.cycle.dataPoints.Where(s => !s.atom.IsMetal).ToList();
+
             this.parentView = pv;
             param = new List<SimParam>
             {

@@ -86,13 +86,15 @@ namespace PorphyStruct
 
             double[] dataX = new double[lines.Length - 1]; // first line is bs
             double[] dataY = new double[lines.Length - 1]; // first line is bs
+            string[] dataA = new string[lines.Length - 1]; // first line is bs
             int index = 0;
             foreach (string line in lines)
             {
-                if (!String.IsNullOrEmpty(line) && !line.StartsWith("X;"))
+                if (!String.IsNullOrEmpty(line) && !line.StartsWith("A;"))
                 {
-                    dataX[index] = Convert.ToDouble(line.Split(';')[0]);
-                    dataY[index] = Convert.ToDouble(line.Split(';')[1]);
+                    dataA[index] = line.Split(';')[0]; //atom identifier
+                    dataX[index] = Convert.ToDouble(line.Split(';')[1]);
+                    dataY[index] = Convert.ToDouble(line.Split(';')[2]);
                     index++;
                 }
             }
@@ -103,10 +105,12 @@ namespace PorphyStruct
                 dataY = dataY.Where(s => s != 0).ToArray();
             else dataY = dataY.Where(s => s != dataY.Last()).ToArray(); //remove last because it's may a newline at the end
 
-            Array.Sort(dataX, dataY);
+            Array.Sort(dataX.ToArray(), dataY);
+            Array.Sort(dataX, dataA);
             for(int i = 0; i < dataX.Length; i++)
             {
-                mol.Add(new AtomDataPoint(dataX[i], dataY[i], cycle.dataPoints.OrderBy(s => s.X).ToList()[i].atom));
+                //add datapoint with dummy atom only having identifier
+                mol.Add(new AtomDataPoint(dataX[i], dataY[i], new Atom(dataA[i], 0, 0, 0)));
             }
             Simulation tmpCycle = new Simulation(cycle.Atoms)
             {

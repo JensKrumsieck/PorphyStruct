@@ -30,7 +30,6 @@ namespace PorphyStruct.Simulations
                 D = M.DenseOfColumnVectors(DomingCorrphycene, RufflingCorrphycene, SaddlingCorrphycene, Waving2aCorrphycene, Waving2bCorrphycene, PropelleringCorrphycene);
             else if (type == Macrocycle.Type.Porphycene)
                 D = M.DenseOfColumnVectors(DomingPorphycene, RufflingPorphycene, SaddlingPorphycene, Waving2aPorphycene, Waving2bPorphycene, PropelleringPorphycene);
-
             return D;
         }
 

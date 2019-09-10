@@ -106,7 +106,7 @@ namespace PorphyStruct
                         break;
                 }
             }
-            //Close();
+            Close();
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace PorphyStruct
             }
 
             //make title string
-            string title = "X;";
+            string title = "A;X;";
             foreach (OxyPlot.Series.Series s in export) title += s.Title + ";";
 
             //write data
@@ -211,7 +211,8 @@ namespace PorphyStruct
                 //write data
                 for (int i = 0; i < export[0].ItemsSource.OfType<AtomDataPoint>().Count(); i++)
                 {
-                    string line = export[0].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).X + ";";
+                    string line = export[0].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).atom.Identifier + ";";
+                    line += export[0].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).X + ";";
                     for (int j = 0; j < export.Count; j++)
                     {
                         line += export[j].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).Y + ";";

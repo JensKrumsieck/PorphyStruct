@@ -269,10 +269,14 @@ namespace PorphyStruct
             double fac;
             foreach (AtomDataPoint dp in data)
             {
-                if (dp.Y < min)
-                    min = dp.Y;
-                if (dp.Y > max)
-                    max = dp.Y;
+                //exclude metal from normalization
+                if (Properties.Settings.Default.useMetal && !dp.atom.IsMetal)
+                {
+                    if (dp.Y < min)
+                        min = dp.Y;
+                    if (dp.Y > max)
+                        max = dp.Y;
+                }
             }
 
             if (Math.Abs(max) > Math.Abs(min))
@@ -311,7 +315,6 @@ namespace PorphyStruct
         /// <returns></returns>
         private List<AtomDataPoint> Factor(List<AtomDataPoint> data, double fac)
         {
-
             List<AtomDataPoint> normData = new List<AtomDataPoint>();
             foreach (AtomDataPoint dp in data)
             {

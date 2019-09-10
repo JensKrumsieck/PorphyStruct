@@ -7,6 +7,7 @@ using OxyPlot.Axes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace PorphyStruct.Chemistry
 {
@@ -892,17 +893,22 @@ namespace PorphyStruct.Chemistry
             }
 
             //add metal atoms
-            if(Properties.Settings.Default.useMetal && HasMetal)
+            if (Properties.Settings.Default.useMetal && HasMetal)
             {
-                var N = new List<string>() { "N1", "N2", "N3", "N4" };
-                List<AtomDataPoint> Nitrogen = dataPoints.Where(s => N.Contains(s.atom.Identifier)).ToList();
+                List<AtomDataPoint> Nitrogen = dataPoints.Where(s => Regex.IsMatch(s.atom.Identifier, "N[1-4]")).ToList();
                 AtomDataPoint m = dataPoints.Where(s => s.atom == GetMetal()).FirstOrDefault();
-                foreach(AtomDataPoint n in Nitrogen)
+                foreach (AtomDataPoint n in Nitrogen)
                 {
-                    ArrowAnnotation b = DrawBond(m, n);
-                    b.LineStyle = LineStyle.Dash;
-                    b.Color = OxyColor.FromAColor(75, b.Color);
-                    bonds.Add(b);
+                    try
+                    {
+                        ArrowAnnotation b;
+                        b = DrawBond(m, n);
+                        b.LineStyle = LineStyle.Dash;
+                        b.Color = OxyColor.FromAColor(75, b.Color);
+                        b.Tag = "Metal";
+                        bonds.Add(b);
+                    }
+                    catch { /*don't throw if metal is omitted */}
                 }
             }
 
