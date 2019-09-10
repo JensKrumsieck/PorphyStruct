@@ -57,7 +57,6 @@ namespace PorphyStruct.Simulations
             //find min & max
             double min = 0;
             double max = 0;
-            double fac = 0;
             foreach (double d in v)
             {
                 if (d < min)
@@ -65,6 +64,7 @@ namespace PorphyStruct.Simulations
                 if (d > max)
                     max = d;
             }
+            double fac;
             if (Math.Abs(max) > Math.Abs(min))
                 fac = Math.Abs(max);
             else

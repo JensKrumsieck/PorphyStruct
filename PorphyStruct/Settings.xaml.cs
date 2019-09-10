@@ -36,15 +36,17 @@ namespace PorphyStruct
         private void FolderBtn_Click(object sender, RoutedEventArgs e)
         {
             string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            if (Properties.Settings.Default.savePath != "")
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.savePath))
                 initialDir = Properties.Settings.Default.savePath;
-            winforms.FolderBrowserDialog fbd = new winforms.FolderBrowserDialog
+            using (winforms.FolderBrowserDialog fbd = new winforms.FolderBrowserDialog
             {
                 SelectedPath = initialDir
-            };
-            if (fbd.ShowDialog() == winforms.DialogResult.OK)
+            })
             {
-                savePath.Text = fbd.SelectedPath;
+                if (fbd.ShowDialog() == winforms.DialogResult.OK)
+                {
+                    savePath.Text = fbd.SelectedPath;
+                }
             }
         }
 
