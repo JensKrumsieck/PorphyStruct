@@ -142,7 +142,7 @@ namespace PorphyStruct.Chemistry
             List<Point3D> points = new List<Point3D>();
             foreach (Atom atom in Atoms)
             {
-                if (atom.IsMacrocycle) points.Add(new Point3D(atom.X, atom.Y, atom.Z));
+                if (atom.IsMacrocycle && !atom.IsMetal) points.Add(new Point3D(atom.X, atom.Y, atom.Z));
             }
             return points;
         }
@@ -158,7 +158,7 @@ namespace PorphyStruct.Chemistry
             List<Point3D> points = GetPoints();
             foreach (Atom atom in Atoms)
             {
-                if (atom.IsMacrocycle) points.Add(new Point3D(atom.X, atom.Y, atom.Z));
+                if (atom.IsMacrocycle && !atom.IsMetal) points.Add(new Point3D(atom.X, atom.Y, atom.Z));
             }
             //calculate Centroid first
             //get the centroid
@@ -228,7 +228,7 @@ namespace PorphyStruct.Chemistry
             double[] fixPoints = new double[6];
             foreach (Atom a in Atoms)
             {
-                if (a.IsMacrocycle)
+                if (a.IsMacrocycle && !a.IsMetal)
                 {
                     //defaulting to 1
                     double xCoord = 1;
@@ -319,7 +319,7 @@ namespace PorphyStruct.Chemistry
             double[] fixPoints = new double[6];
             foreach (Atom a in Atoms)
             {
-                if (a.IsMacrocycle)
+                if (a.IsMacrocycle && !a.IsMetal)
                 {
                     //defaulting to 1
                     double xCoord = 1;
@@ -409,7 +409,7 @@ namespace PorphyStruct.Chemistry
             double[] fixPoints = new double[7];
             foreach (Atom a in Atoms)
             {
-                if (a.IsMacrocycle)
+                if (a.IsMacrocycle && !a.IsMetal)
                 {
                     //defaulting to 1
                     double xCoord = 1;
@@ -532,7 +532,7 @@ namespace PorphyStruct.Chemistry
             double[] fixPoints = new double[7];
             foreach (Atom a in Atoms)
             {
-                if (a.IsMacrocycle)
+                if (a.IsMacrocycle && !a.IsMetal)
                 {
                     //defaulting to 1
                     double xCoord = 1;
@@ -648,7 +648,7 @@ namespace PorphyStruct.Chemistry
             double[] fixPoints = new double[7];
             foreach (Atom a in Atoms)
             {
-                if (a.IsMacrocycle)
+                if (a.IsMacrocycle && !a.IsMetal)
                 {
                     //defaulting to 1
                     double xCoord = 1;
@@ -784,7 +784,8 @@ namespace PorphyStruct.Chemistry
                 bool check = false;
                 foreach (Atom a in Atoms)
                 {
-                    if (a.IsMetal) check = true;
+                    //only return metal if it's marked as macrocycle even if the option is set to on!
+                    if (a.IsMetal && a.IsMacrocycle) check = true;
                 }
                 return check;
             }

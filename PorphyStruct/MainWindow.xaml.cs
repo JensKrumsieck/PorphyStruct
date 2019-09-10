@@ -514,6 +514,9 @@ namespace PorphyStruct
         public List<AtomDataPoint> GetDifference(List<AtomDataPoint> data, List<AtomDataPoint> simData)
         {
             List<AtomDataPoint> diff = new List<AtomDataPoint>();
+
+            //strip metal
+            data = data.Where(s => !s.atom.IsMetal).ToList();
             //Shows the difference between sim and exp.
             if (this.simulation != null)
             {
