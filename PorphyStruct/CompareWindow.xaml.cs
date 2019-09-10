@@ -107,12 +107,18 @@ namespace PorphyStruct
 
             Array.Sort(dataX.ToArray(), dataY);
             Array.Sort(dataX, dataA);
+            List<Atom> atoms = new List<Atom>();
             for(int i = 0; i < dataX.Length; i++)
             {
                 //add datapoint with dummy atom only having identifier
-                mol.Add(new AtomDataPoint(dataX[i], dataY[i], new Atom(dataA[i], 0, 0, 0)));
+                Atom A = new Atom(dataA[i], 0, 0, 0)
+                {
+                    IsMacrocycle = true
+                };
+                atoms.Add(A);
+                mol.Add(new AtomDataPoint(dataX[i], dataY[i], A));
             }
-            Simulation tmpCycle = new Simulation(cycle.Atoms)
+            Simulation tmpCycle = new Simulation(atoms)
             {
                 dataPoints = mol,
                 type = cycle.type
