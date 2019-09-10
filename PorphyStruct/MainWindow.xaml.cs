@@ -886,7 +886,7 @@ namespace PorphyStruct
             this.Analyze();
         }
         #endregion
-        
+
         /// <summary>
         /// Implement IDisposable
         /// </summary>
@@ -895,7 +895,7 @@ namespace PorphyStruct
         protected virtual void Dispose(bool disposing)
         {
             //dispose managed resources
-            if (disposing) MessageQueue.Dispose(); 
+            if (disposing) MessageQueue.Dispose();
         }
 
         /// <summary>
