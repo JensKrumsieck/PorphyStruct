@@ -7,7 +7,7 @@ using System.Windows;
 // die einer Assembly zugeordnet sind.
 [assembly: AssemblyTitle("PorphyStruct")]
 [assembly: AssemblyDescription("Analysis of Macrocyclic Conformation")]
-[assembly: AssemblyConfiguration("Beta 4")]
+[assembly: AssemblyConfiguration("Beta 5")]
 [assembly: AssemblyCompany("Jens Krumsieck")]
 [assembly: AssemblyProduct("PorphyStruct")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
@@ -50,5 +50,5 @@ using System.Windows;
 // übernehmen, indem Sie "*" eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0")]
-[assembly: AssemblyInformationalVersion("1.0.0 Beta 4")]
-[assembly: AssemblyFileVersion("1.0.0.1")]
+[assembly: AssemblyInformationalVersion("1.0.0 Beta 5")]
+[assembly: AssemblyFileVersion("1.0.0.5")]
