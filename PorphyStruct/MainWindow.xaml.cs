@@ -270,7 +270,7 @@ namespace PorphyStruct
             foreach (AtomDataPoint dp in data)
             {
                 //exclude metal from normalization
-                if (Properties.Settings.Default.useMetal && !dp.atom.IsMetal)
+                if (!dp.atom.IsMetal)
                 {
                     if (dp.Y < min)
                         min = dp.Y;

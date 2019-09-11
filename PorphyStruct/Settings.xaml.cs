@@ -84,8 +84,6 @@ namespace PorphyStruct
             Properties.Settings.Default.color3 = CheckColor(color3.Text) ? color3.Text : "#00ff40";
             Properties.Settings.Default.color4 = CheckColor(color4.Text) ? color4.Text : "#0101DF";
             Properties.Settings.Default.color5 = CheckColor(color5.Text) ? color5.Text : "#FF8000";
-            Properties.Settings.Default.useMetal = useMetal.IsChecked.Value;
-
             Properties.Settings.Default.Save();
             this.Close();
         }

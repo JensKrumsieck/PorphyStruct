@@ -382,17 +382,5 @@ namespace PorphyStruct.Properties {
                 this["color5"] = value;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool useMetal {
-            get {
-                return ((bool)(this["useMetal"]));
-            }
-            set {
-                this["useMetal"] = value;
-            }
-        }
     }
 }

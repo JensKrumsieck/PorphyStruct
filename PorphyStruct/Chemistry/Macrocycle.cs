@@ -761,7 +761,7 @@ namespace PorphyStruct.Chemistry
                 dataPoints = GetPorphyceneDataPoints();
             }
 
-            if (Properties.Settings.Default.useMetal && HasMetal)
+            if (HasMetal)
             {
                 Atom M = GetMetal();
                 dataPoints.Add(new AtomDataPoint(
@@ -894,7 +894,7 @@ namespace PorphyStruct.Chemistry
             }
 
             //add metal atoms
-            if (Properties.Settings.Default.useMetal && HasMetal)
+            if (HasMetal)
             {
                 List<AtomDataPoint> Nitrogen = dataPoints.Where(s => Regex.IsMatch(s.atom.Identifier, "N[1-4]")).ToList();
                 AtomDataPoint m = dataPoints.Where(s => s.atom == GetMetal()).FirstOrDefault();
