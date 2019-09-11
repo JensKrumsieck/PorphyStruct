@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -462,6 +463,26 @@ namespace PorphyStruct
                             group.Children.Add(new System.Windows.Media.Media3D.GeometryModel3D(b.ToMesh(), Materials.Blue));
                     }
                     catch {/**does nothing**/ }
+                }
+                //add metal bonds
+                if (cycle.HasMetal)
+                {
+                    List<Atom> Nitrogen = cycle.Atoms.Where(s => Regex.IsMatch(s.Identifier, "N[1-4]")).ToList();
+                    Atom m = cycle.GetMetal();
+                    foreach (Atom n in Nitrogen)
+                    {
+                        MeshBuilder b = new MeshBuilder(true, true);
+                        try
+                        {
+                            var p1 = new System.Windows.Media.Media3D.Point3D(n.X, n.Y, n.Z);
+                            var p2 = new System.Windows.Media.Media3D.Point3D(m.X, m.Y, m.Z);
+                            b.AddCylinder(p1, p2, 0.2, 10);
+                            //add only to selection if both are macrocycle marked
+                            if (n.IsMacrocycle && m.IsMacrocycle)
+                                group.Children.Add(new System.Windows.Media.Media3D.GeometryModel3D(b.ToMesh(), Materials.Blue));
+                        }
+                        catch {/**does nothing**/ }
+                    }
                 }
 
                 model.Content = group;
