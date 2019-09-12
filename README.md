@@ -1,4 +1,4 @@
-<img src="https://github.com/JensKrumsieck/PorphyStruct/blob/master/PorphyStruct/Resources/porphystructlogo.png" alt="logo" width="128"/>
+<img src="https://github.com/JensKrumsieck/PorphyStruct/blob/master/Resources/porphystructlogo.png" alt="logo" width="128"/>
 
 
 # PorphyStruct
