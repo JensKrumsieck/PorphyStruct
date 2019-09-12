@@ -194,7 +194,7 @@ namespace PorphyStruct.Chemistry
         /// <returns>The Vectordistance</returns>
         public double CalculateDistance(string id1, string id2)
         {
-            return Distance.Euclidean(this.Atoms.Where(s => s.Identifier == id1 && s.IsMacrocycle).First().XYZ(), this.Atoms.Where(s => s.Identifier == id2 && s.IsMacrocycle).First().XYZ());
+            return Atom.Distance(this.Atoms.Where(s => s.Identifier == id1 && s.IsMacrocycle).First(), this.Atoms.Where(s => s.Identifier == id2 && s.IsMacrocycle).First());
         }
 
         /// <summary>
@@ -940,15 +940,15 @@ namespace PorphyStruct.Chemistry
                 IsAxisVisible = false
             };
 
-            xR.AddRange(0, 0.1, Atom.OxyAtomColor["C"]);
+            xR.AddRange(0, 0.1, Element.Create("C").OxyColor);
             //sim
-            xR.AddRange(1000, 1000.1, OxyColor.FromAColor(75, Atom.OxyAtomColor["C"]));
+            xR.AddRange(1000, 1000.1, OxyColor.FromAColor(75, Element.Create("C").OxyColor));
             //diff
-            xR.AddRange(2000, 2000.1, OxyColor.FromAColor(50, Atom.OxyAtomColor["C"]));
+            xR.AddRange(2000, 2000.1, OxyColor.FromAColor(50, Element.Create("C").OxyColor));
 
             //comparisons
-            xR.AddRange(3000, 3000.1, OxyColor.FromAColor(75, Atom.OxyAtomColor["C"]));
-            xR.AddRange(4000, 4000.1, OxyColor.FromAColor(75, Atom.OxyAtomColor["C"]));
+            xR.AddRange(3000, 3000.1, OxyColor.FromAColor(75, Element.Create("C").OxyColor));
+            xR.AddRange(4000, 4000.1, OxyColor.FromAColor(75, Element.Create("C").OxyColor));
 
             foreach (AtomDataPoint dp in dataPoints)
             {

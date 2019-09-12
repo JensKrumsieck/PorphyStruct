@@ -407,17 +407,8 @@ namespace PorphyStruct
                     //atom vars
                     string identifier = a.Type;
                     var pos = new System.Windows.Media.Media3D.Point3D(a.X, a.Y, a.Z);
-                    var radius = 1.0;
-                    if (Atom.AtomRadius.ContainsKey(identifier))
-                    {
-                        radius = Atom.AtomRadius[identifier];
-                    }
-                    radius /= 2;
-                    Brush brush = Brushes.RosyBrown;
-                    if (Atom.AtomColor.ContainsKey(identifier))
-                    {
-                        brush = Atom.AtomColor[identifier];
-                    }
+                    var radius = a.AtomRadius /2;
+                    Brush brush = a.Brush;
                     if (markSelection)
                     {
                         if (a == (Atom)coordGrid.SelectedItem)
@@ -482,6 +473,24 @@ namespace PorphyStruct
                                 group.Children.Add(new System.Windows.Media.Media3D.GeometryModel3D(b.ToMesh(), Materials.Blue));
                         }
                         catch {/**does nothing**/ }
+                    }
+                }
+
+                for(int i = 0; i < cycle.Atoms.Count; i++)
+                {
+                    for(int j = 0; j < cycle.Atoms.Count; j++)
+                    {
+                        Atom a1 = cycle.Atoms[i];
+                        Atom a2 = cycle.Atoms[j];
+                        if (Atom.Distance(a1, a2) < (a1.Element.Radius + a2.Element.Radius) + 0.25)
+                        {
+                            MeshBuilder b = new MeshBuilder(true, true);
+                            //draw bond
+                            var p1 = new System.Windows.Media.Media3D.Point3D(a1.X, a1.Y, a1.Z);
+                            var p2 = new System.Windows.Media.Media3D.Point3D(a2.X, a2.Y, a2.Z);
+                            b.AddCylinder(p1, p2, 0.075, 10);
+                            group.Children.Add(new System.Windows.Media.Media3D.GeometryModel3D(b.ToMesh(), Materials.Gray));
+                        }
                     }
                 }
 

@@ -91,6 +91,29 @@ namespace PorphyStruct.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die atomicNumber;symbol;name;atomicMass; color;covalentRadius;
+        ///1;H;Hydrogen;1,01;FFFFFF;0,32;
+        ///2;He;Helium;4,00;D9FFFF;0,28;
+        ///3;Li;Lithium;6,94;CC80FF;1,28;
+        ///4;Be;Beryllium;9,01;C2FF00;0,96;
+        ///5;B;Bor;10,81;FFB5B5;0,84;
+        ///6;C;Carbon;12,01;909090;0,76;
+        ///7;N;Nitrogen;14,01;3050F8;0,71;
+        ///8;O;Oxygen;16,00;FF0D0D;0,66;
+        ///9;F;Fluorine;19,00;90E050;0,57;
+        ///10;Ne;Neon;20,18;B3E3F5;0,58;
+        ///11;Na;Sodium;22,99;AB5CF2;1,66;
+        ///12;Mg;Magnesium;24,31;8AFF00;1,41;
+        ///13;Al;Aluminium;26,98;BFA6A6;1,21;
+        ///14;Si;Silicon;28,09;F0C8A0;1,11 [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        /// </summary>
+        public static string Elements {
+            get {
+                return ResourceManager.GetString("Elements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
         /// </summary>
         public static System.Drawing.Icon favicon_7_ {

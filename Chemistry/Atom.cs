@@ -14,7 +14,9 @@ namespace PorphyStruct.Chemistry
         public double X { get; set; }
         public double Y { get; set; }
         public double Z { get; set; }
-        public string Type { get; set; }
+        public Element Element { get; set; }
+
+        public string Type { get => Element.Symbol; }
 
         /// <summary>
         /// Constructs a new Atom object
@@ -29,7 +31,7 @@ namespace PorphyStruct.Chemistry
             this.X = x;
             this.Y = y;
             this.Z = z;
-            this.Type = SetType();
+            this.Element = SetElement();
         }
 
         /// <summary>
@@ -51,13 +53,19 @@ namespace PorphyStruct.Chemistry
             return plane.SignedDistanceTo(new Point3D(X, Y, Z));
         }
 
+        public static double Distance(Atom a1, Atom a2)
+        {
+            return MathNet.Numerics.Distance.Euclidean(a1.XYZ(), a2.XYZ());
+
+        }
+
         /// <summary>
-        /// get Atom Type by Identifier (C19 -> C)
+        /// get element by Identifier (C19 -> C)
         /// </summary>
         /// <returns>string</returns>
-        public string SetType()
+        public Element SetElement()
         {
-            return Regex.Match(Identifier, @"([A-Z][a-z]*)").Value;
+            return Element.Create(Regex.Match(Identifier, @"([A-Z][a-z]*)").Value);
         }
 
         /// <summary>
@@ -90,98 +98,22 @@ namespace PorphyStruct.Chemistry
         /// <returns>OxyPlot.OxyColor</returns>
         public OxyColor OxyColor
         {
-            get
-            {
-                if (IsMetal) return OxyColors.Silver;
-                return (OxyAtomColor.ContainsKey(Type) ? OxyAtomColor[Type] : OxyAtomColor["C"]);
-            }
+            get => this.Element.OxyColor;
         }
 
-        /// <summary>
-        /// Colors for Atoms in Displacement View
-        /// </summary>
-        public static Dictionary<string, OxyColor> OxyAtomColor = new Dictionary<string, OxyColor>() {
-                { "C", OxyColors.Black },
-                { "N", OxyColors.Blue },
-                { "S", OxyColors.Gold },
-                { "O", OxyColors.Red },
-                { "Se", OxyColors.Orange },
-                {"P", OxyColors.Orange },
-        };
 
         /// <summary>
         /// Radii of Atoms for 3D Visualisation
         /// </summary>
-        public static Dictionary<string, double> AtomRadius = new Dictionary<string, double>()
-        {
-            { "Al", 1.43 },
-            { "Be", 1.12 },
-            { "B", .88 },
-            { "Br", 1.14 },
-            { "Cs", 2.62 },
-            { "Ca", 1.97 },
-            { "Cl", .99 },
-            { "F", .64 },
-            { "Ga", 1.22 },
-            { "Ge", 1.22 },
-            { "I", 1.33 },
-            { "K", 2.02 },
-            { "C", 0.77 },
-            { "Cu", 1.28 },
-            { "Li", 1.52 },
-            { "Mg", 1.6 },
-            { "Mn", 1.24 },
-            { "Na", 1.86 },
-            { "P", 1.1 },
-            { "Rb", 2.44 },
-            { "O", 0.66 },
-            { "S", 1.04 },
-            { "Se", 1.17 },
-            { "Si", 1.17 },
-            { "N", 0.7 },
-            { "Ag", 1.44 },
-            { "H", 0.38 },
-            { "Cr", 1.28 },
-            { "Co", 1.25 },
-            { "Fe", 1.24 },
-            { "Ni", 1.25 },
-            { "Sc", 1.62 },
-            { "Ti", 1.46 },
-            { "V", 1.34 },
-            { "Zn", 1.33 },
-            { "Cd", 1.48 }
-        };
+        public double AtomRadius { get => Element.Radius; }
 
         /// <summary>
         /// Colors of Atoms for 3D Visualisation
         /// </summary>
-        public static Dictionary<string, Brush> AtomColor = new Dictionary<string, Brush>()
+        public Brush Brush
         {
-            { "H", Brushes.WhiteSmoke },
-            { "C", Brushes.Black},
-            { "N", Brushes.Blue },
-            { "B", Brushes.LightCoral },
-            { "O", Brushes.Red },
-            { "F", Brushes.YellowGreen },
-            { "Li", Brushes.LightSalmon },
-            { "Mg", Brushes.LightSeaGreen },
-            { "Si", Brushes.Beige },
-            { "P", Brushes.Orange },
-            { "S", Brushes.Yellow},
-            { "Cl", Brushes.LightGreen },
-            { "Mn", Brushes.MediumPurple },
-            { "Cr", Brushes.BlueViolet },
-            { "Fe", Brushes.DarkOrange },
-            { "Co", Brushes.CornflowerBlue },
-            { "Ni", Brushes.Green },
-            { "Cu", Brushes.RosyBrown },
-            { "Zn", Brushes.DarkSlateBlue },
-            { "Se", Brushes.Orange },
-            { "Br", Brushes.SandyBrown },
-            { "I", Brushes.DarkViolet },
-            { "Mo", Brushes.MediumTurquoise },
-            { "Cd", Brushes.Gold }
-        };
+            get => this.Element.Brush;
+        }
 
         //colors for bonds
         public static OxyColor[] modesMultiColor = new OxyColor[]

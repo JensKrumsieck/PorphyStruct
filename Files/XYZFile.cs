@@ -49,7 +49,7 @@ namespace PorphyStruct.Files
                     if (isIXYZ)
                     {
                         try
-                        { a.Type = xyzLine[0].Split('/')[1]; }
+                        { a.Element = Element.Create(xyzLine[0].Split('/')[1]); }
                         catch { }
                     }
                     molecule.Atoms.Add(a);
