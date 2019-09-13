@@ -53,10 +53,15 @@ namespace PorphyStruct.Chemistry
             return plane.SignedDistanceTo(new Point3D(X, Y, Z));
         }
 
+        /// <summary>
+        /// Calculates Distance between to atoms
+        /// </summary>
+        /// <param name="a1"></param>
+        /// <param name="a2"></param>
+        /// <returns></returns>
         public static double Distance(Atom a1, Atom a2)
         {
             return MathNet.Numerics.Distance.Euclidean(a1.XYZ(), a2.XYZ());
-
         }
 
         /// <summary>

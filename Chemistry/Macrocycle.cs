@@ -113,7 +113,6 @@ namespace PorphyStruct.Chemistry
         //list of norcorrole atoms = Corrole Atoms without C10
         public static List<string> NorcorroleAtoms = CorroleAtoms.Except(new List<string>() { "C10" }).ToList();
 
-
         /// <summary>
         /// Converts Crystal to Macrocycle
         /// </summary>
