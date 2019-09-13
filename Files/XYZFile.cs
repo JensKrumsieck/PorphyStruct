@@ -28,7 +28,7 @@ namespace PorphyStruct.Files
             //PLEASE DO NOT USE XYZ Files with non cartesian coordinates
 
             string title = System.IO.Path.GetFileNameWithoutExtension(this.Path);
-            Molecule molecule = new Molecule(title)
+            Molecule molecule = new Molecule(title);
 
             //works fine...but where to get Atom Numbering??
             for (int i = 0; i <= lines.Count() - 1; i++)

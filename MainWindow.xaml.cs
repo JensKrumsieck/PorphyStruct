@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -24,7 +25,6 @@ namespace PorphyStruct
     public partial class MainWindow : Window, IDisposable
     {
         private Macrocycle old = new Macrocycle(new List<Atom>());
-
         public string path = "";
         public double normFac = 0;
         private int oldIndex = -1;
@@ -336,7 +336,6 @@ namespace PorphyStruct
             Crystal mol = file.GetMolecule();
             mol.SetIsMacrocycle(this.type);
             coordGrid.ItemsSource = mol.Atoms.OrderByDescending(s => s.IsMacrocycle).ToList();
-
             //show message
             MessageQueue.Enqueue("CIF-File opened!");
         }
@@ -529,10 +528,20 @@ namespace PorphyStruct
         /// <returns></returns>
         public Macrocycle GetCycle()
         {
+            List<AtomDataPoint> data = new List<AtomDataPoint>();
+            try
+            {
+                data = GetData();
+            }
+            catch
+            {
+                System.Diagnostics.Debug.WriteLine("Failed to MainWindow.GetData() because no Data is present");
+            }
             Macrocycle cycle = new Macrocycle(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList())
             {
+                Title = Path.GetFileNameWithoutExtension(this.path),
                 type = this.type,
-                dataPoints = GetData(),
+                dataPoints = data,
             };
             return cycle;
         }
@@ -780,13 +789,8 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            //get current data
-            Macrocycle cycle = new Macrocycle(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList())
-            {
-                type = this.type
-            };
             //open save dialog
-            SaveWindow svW = new SaveWindow(cycle, this.simulation);
+            SaveWindow svW = new SaveWindow(GetCycle(), this.simulation);
             svW.ShowDialog();
         }
 

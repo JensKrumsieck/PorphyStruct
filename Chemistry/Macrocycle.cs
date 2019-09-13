@@ -119,7 +119,7 @@ namespace PorphyStruct.Chemistry
         /// <param name="v"></param>
         public static explicit operator Macrocycle(Crystal v)
         {
-            return new Macrocycle(v.Atoms);
+            return new Macrocycle(v.Atoms) { Title = v.Title };
         }
 
         /// <summary>

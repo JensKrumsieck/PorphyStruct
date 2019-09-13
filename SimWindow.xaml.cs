@@ -439,7 +439,7 @@ namespace PorphyStruct
                 //export param
                 foreach (SimParam p in param)
                 {
-                    simObj.par.Add(p.title, Math.Round(p.best * 100, 1));
+                    simObj.par.Add(p.title, Math.Round(p.best * 100, 2));
                 }
                 //export errors
                 simObj.errors = new double[]
