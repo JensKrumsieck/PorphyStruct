@@ -108,16 +108,12 @@ namespace PorphyStruct
                 MarkerType = Properties.Settings.Default.markerType,
                 ItemsSource = cycle.dataPoints
             };
-
-            pm.ScaleX(cycle.dataPoints);
-
             //add de color axis
             RangeColorAxis xR = cycle.BuildColorAxis();
             pm.Axes.Add(xR);
             pm.Series.Add(series);
 
             simView.Model = pm;
-            pm.InvalidatePlot(true);
 
             foreach (OxyPlot.Annotations.ArrowAnnotation a in cycle.DrawBonds())
             {
@@ -137,6 +133,8 @@ namespace PorphyStruct
                 };
                 pm.Annotations.Add(zero);
             }
+
+            pm.ScaleX();
             pm.InvalidatePlot(true);
         }
 

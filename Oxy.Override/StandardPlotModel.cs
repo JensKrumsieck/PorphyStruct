@@ -1,5 +1,6 @@
 ﻿using OxyPlot;
 using OxyPlot.Axes;
+using OxyPlot.Series;
 using System.Collections.Generic;
 
 namespace PorphyStruct.Oxy.Override
@@ -77,23 +78,27 @@ namespace PorphyStruct.Oxy.Override
         /// Scale X Axis
         /// </summary>
         /// <param name="data"></param>
-        public void ScaleX(List<AtomDataPoint> data)
+        public void ScaleX()
         {
             //scale X
-            double min = 0;
-            double max = 0;
+            double min = double.PositiveInfinity;
+            double max = double.NegativeInfinity;
             if (Properties.Settings.Default.autoscaleX)
             {
                 //find min & max automatically
-                foreach (AtomDataPoint dp in data)
+                //scale x
+                foreach (ScatterSeries s in this.Series)
                 {
-                    if (dp.X < min)
-                        min = dp.X;
-                    if (dp.X > max)
-                        max = dp.X;
+                    foreach (AtomDataPoint dp in s.ItemsSource)
+                    {
+                        if (dp.X < min)
+                            min = dp.X;
+                        if (dp.X > max)
+                            max = dp.X;
+                    }
                 }
-                min -=1;
-                max +=1;
+                min -= 1;
+                max += 1    ;
             }
             else
             {
@@ -110,26 +115,30 @@ namespace PorphyStruct.Oxy.Override
         /// Scale Y Axis
         /// </summary>
         /// <param name="data"></param>
-        public void ScaleY(List<AtomDataPoint> data)
+        public void ScaleY()
         {
-            //scale y
-            double min = 0;
-            double max = 0;
+            double min = double.PositiveInfinity;
+            double max = double.NegativeInfinity;
+
             if (Properties.Settings.Default.autoscaleY)
             {
-                //find min & max automatically
-                foreach (AtomDataPoint dp in data)
+                //scale y
+                foreach (ScatterSeries s in this.Series)
                 {
-                    if (dp.Y < min)
-                        min = dp.Y;
-                    if (dp.Y > max)
-                        max = dp.Y;
+                    foreach (AtomDataPoint dp in s.ItemsSource)
+                    {
+                        if (dp.Y < min)
+                            min = dp.Y;
+                        if (dp.Y > max)
+                            max = dp.Y;
+                    }
                 }
                 min -= 0.05;
                 max += 0.05;
             }
             else
             {
+
                 //set min & max manually
                 min = Properties.Settings.Default.minY;
                 max = Properties.Settings.Default.maxY;

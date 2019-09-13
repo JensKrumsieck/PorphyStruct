@@ -183,23 +183,7 @@ namespace PorphyStruct
                 };
                 pm.Annotations.Add(zero);
             }
-
-            //scale if neccessary
-            if (!normalize)
-            {
-                pm.ScaleY(data);
-            }
-            else
-            {
-                double min = -1.1;
-                double max = 1.1;
-                y.Zoom(min, max);
-                y.AbsoluteMinimum = min;
-                y.AbsoluteMaximum = max;
-            }
-
-            pm.ScaleX(data);
-
+            
             //comparison
             if (!String.IsNullOrEmpty(comp1Path))
             {
@@ -227,6 +211,22 @@ namespace PorphyStruct
 
             pm.InvalidatePlot(true);
 
+
+            //scale if neccessary
+            if (!normalize)
+            {
+                pm.ScaleY();
+            }
+            else
+            {
+                double min = -1.1;
+                double max = 1.1;
+                y.Zoom(min, max);
+                y.AbsoluteMinimum = min;
+                y.AbsoluteMaximum = max;
+            }
+
+            pm.ScaleX();
 
             //update simstack
             UpdateStack();
