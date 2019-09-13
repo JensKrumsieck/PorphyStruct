@@ -23,7 +23,8 @@ namespace PorphyStruct.Files
         {
             // read mol2 - File and get parameters & coordinate
             string text = System.IO.File.ReadAllText(this.Path);
-            Molecule molecule = new Molecule();
+            string title = System.IO.Path.GetFileNameWithoutExtension(this.Path);
+            Molecule molecule = new Molecule(title);
             //get loop with coordinates
             string[] tripos = text.Split(new[] { "@<TRIPOS>" }, StringSplitOptions.None);
             string atomTripos = tripos.FirstOrDefault(s => s.StartsWith("ATOM"));

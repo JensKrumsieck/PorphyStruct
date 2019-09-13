@@ -805,7 +805,6 @@ namespace PorphyStruct.Chemistry
             return m;
         }
 
-
         /// <summary>
         /// Draws a line between two points
         /// </summary>

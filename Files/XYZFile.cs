@@ -26,10 +26,10 @@ namespace PorphyStruct.Files
             string[] lines = text.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None);
             //atom count is first line, second line is title
             //PLEASE DO NOT USE XYZ Files with non cartesian coordinates
-            Molecule molecule = new Molecule()
-            {
-                Title = lines[1]
-            };
+
+            string title = System.IO.Path.GetFileNameWithoutExtension(this.Path);
+            Molecule molecule = new Molecule(title)
+
             //works fine...but where to get Atom Numbering??
             for (int i = 0; i <= lines.Count() - 1; i++)
             {

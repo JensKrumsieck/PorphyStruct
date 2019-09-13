@@ -51,8 +51,9 @@ namespace PorphyStruct.Files
                 }
             }
 
+            string title = System.IO.Path.GetFileNameWithoutExtension(this.Path);
             //build returning object
-            Crystal molecule = new Crystal(cellLenghts[0], cellLenghts[1], cellLenghts[2], cellAngles[0], cellAngles[1], cellAngles[2]);
+            Crystal molecule = new Crystal(title, cellLenghts[0], cellLenghts[1], cellLenghts[2], cellAngles[0], cellAngles[1], cellAngles[2]);
 
 
             //get loop with coordinates
