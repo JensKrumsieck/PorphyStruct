@@ -317,7 +317,7 @@ namespace PorphyStruct
                 Title = "Analysis"
             };
             ReportSection main = new ReportSection();
-            report.AddHeader(1, "Conformational analysis " + NameTB.Text + Cycle.Title);
+            report.AddHeader(1, "Conformational analysis " + NameTB.Text);
             report.Add(main);
             string type = Cycle.type.ToString();
 
@@ -478,7 +478,7 @@ namespace PorphyStruct
                 new XElement("integral", Sim.errors[2])));
 
             XElement Molecule = new XElement("molecule",
-                new XAttribute("name", Cycle.Title),
+                new XAttribute("name", NameTB.Text),
                 new XElement("type", Cycle.type.ToString()),
                 new XElement("simulation", simRes)
                 );
