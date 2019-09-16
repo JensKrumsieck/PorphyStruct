@@ -11,6 +11,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Xml.Linq;
 using winforms = System.Windows.Forms;
 
 namespace PorphyStruct
@@ -104,6 +105,9 @@ namespace PorphyStruct
                     case "Report":
                         SaveReport(t.Extension);
                         break;
+                    case "Result":
+                        SaveResult(t.Extension);
+                        break;                    
                 }
             }
             Close();
@@ -460,6 +464,27 @@ namespace PorphyStruct
 
         }
 
+        private void SaveResult(string Extension)
+        {
+            List<XElement> simRes = new List<XElement>();
+            foreach (KeyValuePair<string, double> i in Sim.par)
+            {
+                simRes.Add(new XElement("parameter", new XAttribute("name", i.Key), i.Value));
+            }
+            simRes.Add(new XElement("doop", Sim.MeanDisplacement()));
+            simRes.Add(new XElement("errors",
+                new XElement("data", Sim.errors[0]),
+                new XElement("derivative", Sim.errors[1]),
+                new XElement("integral", Sim.errors[2])));
+
+            XElement Molecule = new XElement("molecule",
+                new XAttribute("name", Cycle.Title),
+                new XElement("type", Cycle.type.ToString()),
+                new XElement("simulation", simRes)
+                );
+            Molecule.Save(File.Create(Filename + "Result.xml"));
+        }
+
         /// <summary>
         /// handles search button click
         /// </summary>
@@ -485,7 +510,7 @@ namespace PorphyStruct
         public bool HasData(string data)
         {
             if ((data == "Graph" || data == "ASCII" || data == "Report") && (Model == null || Model.Series.Count == 0)) return false;
-            if (data == "SimResult" && Sim == null) return false;
+            if ((data == "SimResult" || data == "Result") && Sim == null) return false;
             return true;
         }
     }
