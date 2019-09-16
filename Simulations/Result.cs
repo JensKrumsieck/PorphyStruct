@@ -1,4 +1,6 @@
-﻿namespace PorphyStruct.Simulations
+﻿using System;
+
+namespace PorphyStruct.Simulations
 {
     public class Result
     {
@@ -16,6 +18,16 @@
             this.Conformation = Conformation;
             this.Coefficients = Coefficients;
             this.Error = Error;
+        }
+
+        internal double MeanDisplacement()
+        {
+            double sum = 0;
+            foreach (double d in Conformation)
+            {
+                sum += Math.Pow(d, 2);
+            }
+            return Math.Sqrt(sum);
         }
     }
 }

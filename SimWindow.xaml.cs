@@ -308,6 +308,8 @@ namespace PorphyStruct
             if (targetInt)
                 errorTargets.Add(new Tuple<double, double>(intErr, currentErr[2]));
 
+            
+
             double targetSum = 0;
             double lsSum = 0;
             bool[] isBest = new bool[errorTargets.Count];
@@ -320,6 +322,7 @@ namespace PorphyStruct
                 else
                     isBest[i] = false;
             }
+
             if (isBest.All(x => x))
                 return true;
             //now check the sum! if sum of targets is smaller -> return true
