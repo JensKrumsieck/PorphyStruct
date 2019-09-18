@@ -100,6 +100,12 @@ FontFamily="{DynamicResource MaterialDesignFont}"
                         <TextBlock HorizontalAlignment="Center" FontSize="9">Refresh</TextBlock>
                     </StackPanel>
                 </Button>
+                <Button ToolTip="Detect Macrocycle (experimental)" Click="Detect_Click" x:Name="DetectMolButton" IsEnabled="False">
+                    <StackPanel>
+                        <materialDesign:PackIcon Kind="TableSearch"  HorizontalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9">Detect</TextBlock>
+                    </StackPanel>
+                </Button>
 
                 <Separator />
                 <Button ToolTip="Settings" Click="SettingsButton_Click" x:Name="SettingsButton">

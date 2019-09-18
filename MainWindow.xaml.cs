@@ -183,7 +183,7 @@ namespace PorphyStruct
                 };
                 pm.Annotations.Add(zero);
             }
-            
+
             //comparison
             if (!String.IsNullOrEmpty(comp1Path))
             {
@@ -382,16 +382,19 @@ namespace PorphyStruct
         /// <param name="markSelection"></param>
         /// <param name="force"></param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Don't need to catch sth.")]
-        private void UpdateMolView(bool markSelection = false, bool force = false)
+        private void UpdateMolView(bool markSelection = false, bool force = false, bool detect = false)
         {
             Macrocycle cycle = new Macrocycle(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList());
+
+            cycle.type = this.type;
+            if (detect)
+                cycle.Detect();
+
             if (!CompareAtoms(cycle.Atoms, old.Atoms) || (markSelection && oldIndex != coordGrid.SelectedIndex) || force)
             {
                 old = cycle;
                 oldIndex = coordGrid.SelectedIndex;
                 MolViewer.Children.Clear();
-                cycle.type = this.type;
-
 
                 MolViewer.Children.Add(new DefaultLights());
 
@@ -406,7 +409,7 @@ namespace PorphyStruct
                     //atom vars
                     string identifier = a.Type;
                     var pos = new System.Windows.Media.Media3D.Point3D(a.X, a.Y, a.Z);
-                    var radius = a.AtomRadius /2;
+                    var radius = a.AtomRadius / 2;
                     Brush brush = a.Brush;
                     if (markSelection)
                     {
@@ -475,9 +478,9 @@ namespace PorphyStruct
                     }
                 }
 
-                for(int i = 0; i < cycle.Atoms.Count; i++)
+                for (int i = 0; i < cycle.Atoms.Count; i++)
                 {
-                    for(int j = 0; j < cycle.Atoms.Count; j++)
+                    for (int j = 0; j < cycle.Atoms.Count; j++)
                     {
                         Atom a1 = cycle.Atoms[i];
                         Atom a2 = cycle.Atoms[j];
@@ -492,7 +495,6 @@ namespace PorphyStruct
                         }
                     }
                 }
-
                 model.Content = group;
                 MolViewer.Children.Add(model);
             }
@@ -686,6 +688,7 @@ namespace PorphyStruct
                 AnalButton.IsEnabled = true;
                 RefMolButton.IsEnabled = true;
                 CenterMolButton.IsEnabled = true;
+                DetectMolButton.IsEnabled = true;
                 NormalizeButton.IsEnabled = true;
                 InvertButton.IsEnabled = true;
                 SaveButton.IsEnabled = true;
@@ -919,6 +922,18 @@ namespace PorphyStruct
             }
             this.Analyze();
         }
+
+        /// <summary>
+        /// Detect Macrocycle
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Detect_Click(object sender, RoutedEventArgs e)
+        {
+            this.UpdateMolView(false, false, true);
+            coordGrid.Items.Refresh();
+        }
+
         #endregion
 
         /// <summary>
@@ -940,5 +955,6 @@ namespace PorphyStruct
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
     }
 }

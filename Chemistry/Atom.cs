@@ -1,12 +1,13 @@
 ﻿using MathNet.Spatial.Euclidean;
 using OxyPlot;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
 
 namespace PorphyStruct.Chemistry
 {
-    public class Atom
+    public class Atom : ICloneable
     {
 
         public string Identifier { get; set; }
@@ -83,6 +84,18 @@ namespace PorphyStruct.Chemistry
         }
 
         /// <summary>
+        /// Indicates a bond
+        /// </summary>
+        /// <param name="test"></param>
+        /// <returns></returns>
+        public bool BondTo(Atom test)
+        {
+            if (Atom.Distance(this, test) < (Element.Radius + test.Element.Radius) + 0.25)
+                return true;
+            return false;
+        }
+
+        /// <summary>
         /// some common metals in coord. chem.
         /// may be completed soon
         /// </summary>
@@ -137,5 +150,15 @@ namespace PorphyStruct.Chemistry
                 OxyColor.Parse(Properties.Settings.Default.color4),
                 OxyColor.Parse(Properties.Settings.Default.color5),
         };
+
+        /// <summary>
+        /// clones an atom
+        /// </summary>
+        /// <returns></returns>
+        public object Clone()
+        {
+            return new Atom(Identifier, X, Y, Z);
+
+        }
     }
 }

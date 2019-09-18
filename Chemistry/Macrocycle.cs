@@ -1,5 +1,4 @@
-﻿using MathNet.Numerics;
-using MathNet.Numerics.LinearAlgebra;
+﻿using MathNet.Numerics.LinearAlgebra;
 using MathNet.Spatial.Euclidean;
 using OxyPlot;
 using OxyPlot.Annotations;
@@ -982,6 +981,176 @@ namespace PorphyStruct.Chemistry
                 sum += Math.Pow(dp.Y, 2);
             }
             return Math.Sqrt(sum);
+        }
+
+        public List<Atom> Neighbors(Atom A)
+        {
+            List<Atom> result = new List<Atom>();
+            foreach (Atom B in Atoms)
+            {
+                if (A.BondTo(B) && A != B)
+                {
+                    result.Add(B);
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Detect the macrocyclic structure
+        /// </summary>
+        /// <returns></returns>
+        public List<Atom> Detect()
+        {
+            List<List<Atom>> Pyrroles = new List<List<Atom>>();
+            for (int i = 0; i < Atoms.Count; i++)
+            {
+                if (Atoms[i].Type == "N")
+                {
+                    //is n atom
+                    List<Atom> _n = Neighbors(Atoms[i]).Where(s => s.Type == "C").ToList();
+                    //n mostly be pyrrolic, so all neighbors be pyrrolic due to beeing alpha carbons
+                    List<Atom> Pyrrole = _n.Where(s => s.Type == "C").ToList();
+                    Pyrrole.Add(Atoms[i]);
+                    foreach (Atom __n in _n)
+                    {
+                        List<Atom> _nn = Neighbors(__n).Where(s => s.Type == "C").ToList();
+                        foreach (Atom __nn in _nn)
+                        {
+                            //get new neighbors (for c2 its c3 and c19/20
+                            List<Atom> _nnn = Neighbors(__nn).Where(s => !Pyrrole.Contains(s)).ToList();
+                            //find the beta atoms in _nn
+                            foreach (Atom __nnn in _nnn)
+                            {
+                                if (Neighbors(__nnn).Where(s => Pyrrole.Contains(s)).Count() != 0)
+                                {
+                                    //found a atom thats in the list so __nnn and __nn are beta
+                                    if (Pyrrole.Distinct().Count() != 5)
+                                    {
+                                        Pyrrole.Add(__nnn);
+                                        Pyrrole.Add(__nn);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (Pyrrole.Distinct().Count() == 5)
+                        Pyrroles.Add(Pyrrole.Distinct().ToList());
+                }
+            }
+            List<Atom> meso = new List<Atom>();
+            //find atoms connection pyrroles
+            for (int i = 0; i < Pyrroles.Count; i++)
+            {
+                for (int j = i + 1; j < Pyrroles.Count; j++)
+                {
+                    foreach (Atom a in Atoms)
+                    {
+                        //if atom has neighbors in both lists, it's meso (unless its a porphycene/corrphycene)
+                        if (Pyrroles[i].Intersect(Neighbors(a)).Count() != 0
+                            && Pyrroles[j].Intersect(Neighbors(a)).Count() != 0
+                            && i != j
+                            && !a.IsMetal)
+                        {
+                            meso.Add(a);
+                        }
+                    }
+                }
+            }
+
+            //merge
+            List<Atom> macrocycle = new List<Atom>();
+            foreach (List<Atom> py in Pyrroles)
+            {
+                macrocycle.AddRange(py);
+            }
+            macrocycle.AddRange(meso);
+            macrocycle = macrocycle.Distinct().ToList();
+
+
+            foreach (Atom a in Atoms)
+            {
+                if (macrocycle.Contains(a))
+                {
+                    a.IsMacrocycle = true;
+                    a.Identifier = a.Type + "M";
+                }
+                else
+                {
+                    a.IsMacrocycle = false;
+                    a.Identifier = "X" + a.Type;
+                }
+            }
+
+            Atom start = null;
+            if (type != Type.Corrole)
+            {
+                start = Atoms.Where(s => s.IsMacrocycle && Neighbors(s).Where(l => l.Element.Symbol == "N").Count() != 0).FirstOrDefault();
+            }
+            else
+            {
+                List<Atom> alpha = Atoms.Where(s => s.IsMacrocycle && Neighbors(s).Where(l => l.Element.Symbol == "N").Count() != 0).ToList();
+                foreach(Atom a in alpha)
+                {
+                    if (Neighbors(a).Where(l => alpha.Contains(l)).Count() != 0) start = a;
+                }
+            }
+
+            //loop over C atoms
+            int indexC = 1;
+            Atom current = start;
+            start.Identifier = "C" + indexC; //this is c1
+            indexC++;
+            bool cycling = true;
+            //loop over cycle...
+            while (cycling)
+            {
+                List<Atom> X = Neighbors(current).Where(s => s.Type != "N" && s.IsMacrocycle && s.Identifier != "C" + (indexC - 2)).ToList();
+                if(indexC == 2)
+                {
+                    //go to beta!
+                    //currently current is alpha c1, so it will have a beta as neighbor which is not bond to nitrogen
+                    //but meso also is not bond to nitrogen and is neighbor
+                    foreach(Atom t in X)
+                    {
+                        var neighT = Neighbors(t).Where(s => s.IsMacrocycle);
+                        if (neighT.Where(s => s.Type == "N").Count() == 0)
+                        {
+                            int count = 0;
+                            //either is meso or beta...
+                            //beta has another beta and alpha as neighbor, meso has two alpha as neighbors.
+                            //so if neighbors of neighbors of beta has a single Count(N) = 1
+                            //this is start
+                            foreach(Atom u in neighT)
+                            {
+                                if (Neighbors(u).Where(s => s.Type == "N").Count() != 0) count++;
+                            }
+                            if (count == 1) current = t;
+                        }
+                    }
+                }
+                else
+                    current = X.FirstOrDefault();
+
+                if (current == null) cycling = false; //cancel hard
+                if (current == start)
+                {
+                    cycling = false;
+                    break;
+                }
+                current.Identifier = "C" + indexC;
+                indexC++;
+            }
+
+            //assign N
+            foreach(Atom n in Atoms.Where(s => s.Type == "N" && s.IsMacrocycle))
+            {
+                if (Neighbors(n).Where(l => l.Identifier == "C1").Count() == 1) n.Identifier = "N1";
+                if (Neighbors(n).Where(l => l.Identifier == "C6").Count() == 1) n.Identifier = "N2";
+                if (Neighbors(n).Where(l => l.Identifier == "C11").Count() == 1) n.Identifier = "N3";
+                if (Neighbors(n).Where(l => l.Identifier == "C16").Count() == 1) n.Identifier = "N4";
+            }
+            return Atoms;
         }
     }
 }
