@@ -1133,12 +1133,12 @@ namespace PorphyStruct.Chemistry
                     current = X.FirstOrDefault();
 
                 if (current == null) cycling = false; //cancel hard
-                if (current == start)
+                else if (current == start)
                 {
                     cycling = false;
                     break;
                 }
-                current.Identifier = "C" + indexC;
+                else current.Identifier = "C" + indexC;
                 indexC++;
             }
 

@@ -32,8 +32,8 @@ namespace PorphyStruct
         public bool running = false; //simulation is running
         private bool firstOnly = false; //calculate only with start values
         private bool targetData = true; //error target is data
-        private bool targetInt = true; //error target is integral
-        private bool targetDeriv = true; //error target is derivative
+        private bool targetInt = false; //error target is integral
+        private bool targetDeriv = false; //error target is derivative
 
         /// <summary>
         /// Simulation Parameters

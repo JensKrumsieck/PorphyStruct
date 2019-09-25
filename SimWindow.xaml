@@ -47,8 +47,8 @@ FontFamily="{DynamicResource MaterialDesignFont}"
         <Label Grid.Row="1" Grid.Column="1"  Grid.ColumnSpan="2" Content="Min RMSD (Y, Deriv., Int.):"/>
         <Label Grid.Row="3" Grid.Column="1" Content="Fit Target: " VerticalAlignment="Top"/>
         <CheckBox Content="Data" Grid.Column="2" Grid.Row="3"  x:Name="fitDataCB" IsChecked="True" Checked="FitDataCB_Checked" Unchecked="FitDataCB_Checked" />
-        <CheckBox Content="Deriv." Grid.Column="3" Grid.Row="3" x:Name="fitDerivCB" IsChecked="True"  Checked="FitDerivCB_Checked" Unchecked="FitDerivCB_Checked"/>
-        <CheckBox Content="Int." Grid.Column="4" Grid.Row="3" x:Name="fitIntCB" IsChecked="True" Checked="FitIntCB_Checked" Unchecked="FitIntCB_Checked" />
+        <CheckBox Content="Deriv." Grid.Column="3" Grid.Row="3" x:Name="fitDerivCB" IsChecked="False"  Checked="FitDerivCB_Checked" Unchecked="FitDerivCB_Checked"/>
+        <CheckBox Content="Int." Grid.Column="4" Grid.Row="3" x:Name="fitIntCB" IsChecked="False" Checked="FitIntCB_Checked" Unchecked="FitIntCB_Checked" />
 
         <TextBox  Grid.Row="1" Grid.Column="3" Text="NaN" x:Name="ErrTB" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
         <Button Content="Start" Grid.Column="1" Grid.Row="4" VerticalAlignment="Top" Width="75" x:Name="startBtn" Click="StartBtn_Click"/>

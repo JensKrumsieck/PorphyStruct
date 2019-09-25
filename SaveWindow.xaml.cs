@@ -430,7 +430,6 @@ namespace PorphyStruct
                     Title = i.Key,
                     CategoryIndex = a,
                     Color = OxyColor.Parse(Properties.Settings.Default.color2)
-                    
                 };
                 s.Items.Add(item);
                 a++;
