@@ -74,7 +74,7 @@ namespace PorphyStruct
                 if (((FileType)o).Title == "Report")
                 {
                     types.Add(new FileType() { Title = "Graph", Extension = "png" });
-                    if(Sim != null) types.Add(new FileType() { Title = "SimResult", Extension = "png" });
+                    if (Sim != null) types.Add(new FileType() { Title = "SimResult", Extension = "png" });
                 }
             }
 
@@ -107,7 +107,7 @@ namespace PorphyStruct
                         break;
                     case "Result":
                         SaveResult(t.Extension);
-                        break;                    
+                        break;
                 }
             }
             Close();
@@ -425,7 +425,7 @@ namespace PorphyStruct
             {
                 OxyPlot.Series.IntervalBarItem item = new OxyPlot.Series.IntervalBarItem
                 {
-                    Start = (i.Value < 0? i.Value : 0),
+                    Start = (i.Value < 0 ? i.Value : 0),
                     End = (i.Value < 0 ? 0 : i.Value),
                     Title = i.Key,
                     CategoryIndex = a,
@@ -481,7 +481,7 @@ namespace PorphyStruct
                 new XElement("type", Cycle.type.ToString()),
                 new XElement("simulation", simRes)
                 );
-            Molecule.Save(File.Create(Filename + "Result."+Extension));
+            Molecule.Save(File.Create(Filename + "Result." + Extension));
         }
 
         /// <summary>
