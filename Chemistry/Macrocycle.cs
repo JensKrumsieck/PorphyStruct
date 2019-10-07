@@ -1090,7 +1090,7 @@ namespace PorphyStruct.Chemistry
             else
             {
                 List<Atom> alpha = Atoms.Where(s => s.IsMacrocycle && Neighbors(s).Where(l => l.Element.Symbol == "N").Count() != 0).ToList();
-                foreach(Atom a in alpha)
+                foreach (Atom a in alpha)
                 {
                     if (Neighbors(a).Where(l => alpha.Contains(l)).Count() != 0) start = a;
                 }
@@ -1106,12 +1106,12 @@ namespace PorphyStruct.Chemistry
             while (cycling)
             {
                 List<Atom> X = Neighbors(current).Where(s => s.Type != "N" && s.IsMacrocycle && s.Identifier != "C" + (indexC - 2)).ToList();
-                if(indexC == 2)
+                if (indexC == 2)
                 {
                     //go to beta!
                     //currently current is alpha c1, so it will have a beta as neighbor which is not bond to nitrogen
                     //but meso also is not bond to nitrogen and is neighbor
-                    foreach(Atom t in X)
+                    foreach (Atom t in X)
                     {
                         var neighT = Neighbors(t).Where(s => s.IsMacrocycle);
                         if (neighT.Where(s => s.Type == "N").Count() == 0)
@@ -1121,7 +1121,7 @@ namespace PorphyStruct.Chemistry
                             //beta has another beta and alpha as neighbor, meso has two alpha as neighbors.
                             //so if neighbors of neighbors of beta has a single Count(N) = 1
                             //this is start
-                            foreach(Atom u in neighT)
+                            foreach (Atom u in neighT)
                             {
                                 if (Neighbors(u).Where(s => s.Type == "N").Count() != 0) count++;
                             }
@@ -1143,7 +1143,7 @@ namespace PorphyStruct.Chemistry
             }
 
             //assign N
-            foreach(Atom n in Atoms.Where(s => s.Type == "N" && s.IsMacrocycle))
+            foreach (Atom n in Atoms.Where(s => s.Type == "N" && s.IsMacrocycle))
             {
                 if (Neighbors(n).Where(l => l.Identifier == "C1").Count() == 1) n.Identifier = "N1";
                 if (Neighbors(n).Where(l => l.Identifier == "C6").Count() == 1) n.Identifier = "N2";

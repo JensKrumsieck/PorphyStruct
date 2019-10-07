@@ -1,7 +1,6 @@
 ﻿using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using System.Collections.Generic;
 
 namespace PorphyStruct.Oxy.Override
 {
@@ -98,7 +97,7 @@ namespace PorphyStruct.Oxy.Override
                     }
                 }
                 min -= 1;
-                max += 1    ;
+                max += 1;
             }
             else
             {

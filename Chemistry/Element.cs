@@ -1,10 +1,6 @@
 ﻿using OxyPlot;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 
 namespace PorphyStruct.Chemistry
@@ -63,7 +59,7 @@ namespace PorphyStruct.Chemistry
         {
             string[] element = null;
             string[] lines = Properties.Resources.Elements.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.RemoveEmptyEntries);
-            foreach(string line in lines)
+            foreach (string line in lines)
             {
                 if (line.Split(';').Contains(Symbol))
                 {

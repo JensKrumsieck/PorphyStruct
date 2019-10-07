@@ -108,7 +108,7 @@ namespace PorphyStruct
             Array.Sort(dataX.ToArray(), dataY);
             Array.Sort(dataX, dataA);
             List<Atom> atoms = new List<Atom>();
-            for(int i = 0; i < dataX.Length; i++)
+            for (int i = 0; i < dataX.Length; i++)
             {
                 //add datapoint with dummy atom only having identifier
                 Atom A = new Atom(dataA[i], 0, 0, 0)

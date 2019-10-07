@@ -106,7 +106,7 @@ namespace PorphyStruct.Chemistry
             "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn",
             "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd",
             "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg",
-            "La", "U", 
+            "La", "U",
             "Ga", "Sn", "Sb","Tl", "Pb"
         };
 

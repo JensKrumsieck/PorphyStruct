@@ -87,7 +87,7 @@ namespace PorphyStruct.Simulations
         /// </summary>
         /// <returns></returns>
         public Result Next()
-        {            
+        {
             //set probe points
             double[] centroid;
             double[] contraction;
@@ -112,7 +112,7 @@ namespace PorphyStruct.Simulations
             //sort list by error
             Array.Sort(error, simplex);
             //convergence! stop algorithm
-            if (error[Parameters.Length] - error[0] < 1e-8|| count == 25)
+            if (error[Parameters.Length] - error[0] < 1e-8 || count == 25)
             {
                 count = 0;
                 //all values are to equal, start new simplex becaus this is endless simplex

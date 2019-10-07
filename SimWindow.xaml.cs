@@ -64,7 +64,7 @@ namespace PorphyStruct
             this.cycle = cycle;
 
             //drop metal data
-            if(cycle.HasMetal) this.cycle.dataPoints = this.cycle.dataPoints.Where(s => !s.atom.IsMetal).ToList();
+            if (cycle.HasMetal) this.cycle.dataPoints = this.cycle.dataPoints.Where(s => !s.atom.IsMetal).ToList();
 
             this.parentView = pv;
             param = new List<SimParam>
@@ -95,9 +95,9 @@ namespace PorphyStruct
             simGrid.ItemsSource = this.param;
             PlotExp();
         }
-        
+
         //if call comes with sim, use this param
-        public SimWindow(Macrocycle cycle, OxyPlot.Wpf.PlotView pv, Simulation sim) 
+        public SimWindow(Macrocycle cycle, OxyPlot.Wpf.PlotView pv, Simulation sim)
             : this(cycle, pv)
         {
             param = sim.simParam;
@@ -320,7 +320,7 @@ namespace PorphyStruct
             if (targetInt)
                 errorTargets.Add(new Tuple<double, double>(intErr, currentErr[2]));
 
-            
+
 
             double targetSum = 0;
             double lsSum = 0;
