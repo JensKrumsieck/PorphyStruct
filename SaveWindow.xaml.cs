@@ -481,7 +481,7 @@ namespace PorphyStruct
                 new XElement("type", Cycle.type.ToString()),
                 new XElement("simulation", simRes)
                 );
-            Molecule.Save(File.Create(Filename + "Result.xml"));
+            Molecule.Save(File.Create(Filename + "Result."+Extension));
         }
 
         /// <summary>
