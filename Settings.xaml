@@ -18,280 +18,397 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Settings" Height="650" Width="1000" ResizeMode="NoResize" Closing="Window_Closing">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="4*" />
-            <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="15" />
-            <ColumnDefinition Width="4*" />
-            <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="15" />
-            <ColumnDefinition Width="4*" />
-            <ColumnDefinition Width="3*" />
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
+            <RowDefinition Height="50" />            
         </Grid.RowDefinitions>
-        <!--General Settings-->
-        <Label Content="General Settings" FontWeight="Bold" FontSize="16" Grid.Column="0" Grid.Row="0"/>
-        <!--File Settings-->
-        <Label Content="File Settings" FontWeight="Bold"  Grid.Column="0" Grid.Row="1"/>
-        <Label Content="Standard File Directory" Grid.Column="0" Grid.Row="2"/>
-        <TextBox x:Name="savePath" Grid.Row="2" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=savePath, Mode=TwoWay}">
-            <materialDesign:HintAssist.Hint>
-                <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
-                    <TextBlock>Folder Path</TextBlock>
-                </StackPanel>
-            </materialDesign:HintAssist.Hint>
-        </TextBox>
-        <Button x:Name="folderBtn" Grid.Column="2" Grid.Row="2" Content="Search" Click="FolderBtn_Click"/>
-        <Label Content="Export Settings" FontWeight="Bold" Grid.Column="0" Grid.Row="4"/>
-        <Label Content="Image Size"  Grid.Column="0" Grid.Row="5"/>
-        <TextBox x:Name="pngWidth" Grid.Row="5" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=pngWidth, Mode=TwoWay}">
-            <materialDesign:HintAssist.Hint>
-                <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
-                    <TextBlock>Width (px)</TextBlock>
-                </StackPanel>
-            </materialDesign:HintAssist.Hint>
-        </TextBox>
-        <TextBox x:Name="pngHeight" Grid.Row="6" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=pngHeight, Mode=TwoWay}" Margin="0,0.5">
-            <materialDesign:HintAssist.Hint>
-                <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
-                    <TextBlock>Height (px)</TextBlock>
-                </StackPanel>
-            </materialDesign:HintAssist.Hint>
-        </TextBox>
-        <Label Content="Resolution"  Grid.Column="0" Grid.Row="7"/>
-        <TextBox x:Name="pngRes" Grid.Row="7" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=pngRes, Mode=TwoWay}">
-            <materialDesign:HintAssist.Hint>
-                <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
-                    <TextBlock>Resolution</TextBlock>
-                </StackPanel>
-            </materialDesign:HintAssist.Hint>
-        </TextBox>
+        <TabControl TabStripPlacement="Left" Padding="10">
+            <TabControl.Resources><Style TargetType="{x:Type TabItem}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TabItem}">
+                                <Border>
+                                    <ContentPresenter>
+                                        <ContentPresenter.Content>
+                                            <Border Margin="15">
+                                                <ContentPresenter ContentSource="Header"/>
+                                            </Border>
+                                        </ContentPresenter.Content>
+                                    </ContentPresenter>
+                                </Border>
+                            </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                </Style>
+            </TabControl.Resources>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" local:MarginSetter.Margin="5,0,0,0">
+                        <materialDesign:PackIcon Kind="ChartScatterPlotHexbin" Width="24" Height="24"/>
+                        <TextBlock Text="Graph &amp; Axis" Style="{StaticResource MaterialDesignSubtitle1TextBlock}"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Vertical" local:MarginSetter.Margin="0,10,0,0">
+                        <!--Graph Settings-->
+                        <TextBlock Text="Graph Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Bold"/>
+                        <!--Appearance-->
+                        <TextBlock Text="Appearance" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
+                        <TextBox  x:Name="defaultFont" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=defaultFont, Mode=TwoWay}" >
+                            <materialDesign:HintAssist.Hint>Default Font</materialDesign:HintAssist.Hint>
+                        </TextBox>
+                        <TextBox x:Name="lineThickness" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=lineThickness, Mode=TwoWay}">
+                            <materialDesign:HintAssist.Hint>Line Thickness</materialDesign:HintAssist.Hint>
+                        </TextBox>
+                        <TextBox x:Name="fontSize" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=defaultFontSize, Mode=TwoWay}" >
+                            <materialDesign:HintAssist.Hint>Font Size</materialDesign:HintAssist.Hint>
+                        </TextBox>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Show Plot Area Border" />
+                            <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" x:Name="showBox" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=showBox, Mode=TwoWay}"/>
+                        </Grid>                        
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Vertical">
+                        <!--Axis Settings-->
+                        <TextBlock Text="Axis Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Bold"/>
+                        <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text=""></TextBlock>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Show X Axis"  Grid.Column="0"/>
+                            
+                            <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" x:Name="xAxis" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=xAxis, Mode=TwoWay}" Grid.Column="1"/>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Autoscale X"/>
+                                <TextBlock FontSize="10">(ignores min/max)</TextBlock>
+                            </StackPanel>
+                            <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" x:Name="autoscaleX" 
+                                  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=autoscaleX, Mode=TwoWay}" 
+                                  Grid.Column="1"/>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Autoscale Y"/>
+                                <TextBlock FontSize="10">(ignores min/max)</TextBlock>
+                            </StackPanel>
+                            <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"  
+                                          x:Name="autoscaleY" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=autoscaleY, Mode=TwoWay}" 
+                                          Grid.Column="1"/>
+                        </Grid>
+
+                        <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="X-Axis Scale" Margin="0 15 0 0"  />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" x:Name="minX" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=minX, Mode=TwoWay}">
+                                <materialDesign:HintAssist.Hint>X-Axis Minimum</materialDesign:HintAssist.Hint>
+                            </TextBox>
+                            <TextBox Grid.Column="1" x:Name="maxX" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=maxX, Mode=TwoWay}">
+                                <materialDesign:HintAssist.Hint>X-Axis Maximum</materialDesign:HintAssist.Hint>
+                            </TextBox>
+                        </Grid>
+                        <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Y-Axis Scale" Margin="0 15 0 0" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="minY" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=minY, Mode=TwoWay}" >
+                                <materialDesign:HintAssist.Hint>Y-Axis Minimum</materialDesign:HintAssist.Hint>
+                            </TextBox>
+                            <TextBox x:Name="maxY" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=maxY, Mode=TwoWay}">
+                                <materialDesign:HintAssist.Hint>Y-Axis Maximum</materialDesign:HintAssist.Hint>
+                            </TextBox>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Y-Axis Title is Horizontal"/>
+                            <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"  x:Name="rotateTitle" 
+                                          IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=rotateTitle, Mode=TwoWay}" 
+                                          Grid.Column="1"/>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Show Zero"/>
+                            <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"  x:Name="zero" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=zero, Mode=TwoWay}" Grid.Column="1"/>
+                        </Grid>
+                        <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Set Axis Title" />
+                        <TextBox x:Name="titleFormat" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=titleFormat, Mode=TwoWay}">
+                            <materialDesign:HintAssist.Hint>Axis Title Format ({0} = Title, {1} = Unit)</materialDesign:HintAssist.Hint>
+                        </TextBox>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" local:MarginSetter.Margin="5,0,0,0">
+                        <materialDesign:PackIcon Kind="ImportExport" Width="24" Height="24"/>
+                        <TextBlock Text="Import &amp; Export" Style="{StaticResource MaterialDesignSubtitle1TextBlock}"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Vertical" local:MarginSetter.Margin="0,10,0,0">
+                        <TextBlock Text="Import Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Bold"/>
+                        <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text=""></TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Vertical" local:MarginSetter.Margin="0,10,0,0">
+                        <TextBlock Text="Export Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Bold"/>
+                        <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text=""></TextBlock>
+                        <!--Export Settings-->
+                        <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Default Export Directory"/>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="savePath" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                 Text="{Binding Source={x:Static properties:Settings.Default}, Path=savePath, Mode=TwoWay}"
+                                 Width="250">
+                                <materialDesign:HintAssist.Hint>Folder Path</materialDesign:HintAssist.Hint>
+                            </TextBox>
+                            <Button x:Name="folderBtn" Content="Search" Click="FolderBtn_Click" Margin="10 0"/>
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Image Size" Margin="0 25 0 0"/>
+                        <TextBox x:Name="pngWidth" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=pngWidth, Mode=TwoWay}">
+                            <materialDesign:HintAssist.Hint>Width (px)</materialDesign:HintAssist.Hint>
+                        </TextBox>
+                        <TextBox x:Name="pngHeight" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=pngHeight, Mode=TwoWay}" Margin="0,0.5">
+                            <materialDesign:HintAssist.Hint>Height (px)</materialDesign:HintAssist.Hint>
+                        </TextBox>
+                        <TextBox x:Name="pngRes" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=pngRes, Mode=TwoWay}">
+                            <materialDesign:HintAssist.Hint>Resolution</materialDesign:HintAssist.Hint>
+                        </TextBox>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" local:MarginSetter.Margin="5,0,0,0">
+                        <materialDesign:PackIcon Kind="FileTableOutline" Width="24" Height="24"/>
+                        <TextBlock Text="Data" Style="{StaticResource MaterialDesignSubtitle1TextBlock}"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel local:MarginSetter.Margin="0,10,0,0">
+
+                        <!--Data Settings-->
+                        <TextBlock Text="Data Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Bold"/>
+                        <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text="Marker Settings" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}"  Text="Exp. Marker-Type"/>
+                            <ComboBox x:Name="markerType" Grid.Column="2" Height="30" SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=markerType, Mode=TwoWay}" SelectedValuePath="Content">
+                                <ComboBoxItem>None</ComboBoxItem>
+                                <ComboBoxItem>Circle</ComboBoxItem>
+                                <ComboBoxItem>Square</ComboBoxItem>
+                                <ComboBoxItem>Diamond</ComboBoxItem>
+                                <ComboBoxItem>Triangle</ComboBoxItem>
+                                <ComboBoxItem>Cross</ComboBoxItem>
+                                <ComboBoxItem>Plus</ComboBoxItem>
+                                <ComboBoxItem>Star</ComboBoxItem>
+                            </ComboBox>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}"  Text="Sim. Marker-Type" />
+                            <ComboBox x:Name="simMarkerType" Grid.Column="1" Height="30" SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=simMarkerType, Mode=TwoWay}" SelectedValuePath="Content">
+                                <ComboBoxItem>None</ComboBoxItem>
+                                <ComboBoxItem>Circle</ComboBoxItem>
+                                <ComboBoxItem>Square</ComboBoxItem>
+                                <ComboBoxItem>Diamond</ComboBoxItem>
+                                <ComboBoxItem>Triangle</ComboBoxItem>
+                                <ComboBoxItem>Cross</ComboBoxItem>
+                                <ComboBoxItem>Plus</ComboBoxItem>
+                                <ComboBoxItem>Star</ComboBoxItem>
+                            </ComboBox>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}"  Text="Comparison Marker 1" />
+                            <ComboBox x:Name="com1MarkerType" Grid.Column="1" Height="30" SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=com1MarkerType, Mode=TwoWay}" SelectedValuePath="Content">
+                                <ComboBoxItem>None</ComboBoxItem>
+                                <ComboBoxItem>Circle</ComboBoxItem>
+                                <ComboBoxItem>Square</ComboBoxItem>
+                                <ComboBoxItem>Diamond</ComboBoxItem>
+                                <ComboBoxItem>Triangle</ComboBoxItem>
+                                <ComboBoxItem>Cross</ComboBoxItem>
+                                <ComboBoxItem>Plus</ComboBoxItem>
+                                <ComboBoxItem>Star</ComboBoxItem>
+                            </ComboBox>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}"  Text="Comparison Marker 2" />
+                            <ComboBox x:Name="com2MarkerType" Grid.Column="1" Height="30" SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=com2MarkerType, Mode=TwoWay}" SelectedValuePath="Content">
+                                <ComboBoxItem>None</ComboBoxItem>
+                                <ComboBoxItem>Circle</ComboBoxItem>
+                                <ComboBoxItem>Square</ComboBoxItem>
+                                <ComboBoxItem>Diamond</ComboBoxItem>
+                                <ComboBoxItem>Triangle</ComboBoxItem>
+                                <ComboBoxItem>Cross</ComboBoxItem>
+                                <ComboBoxItem>Plus</ComboBoxItem>
+                                <ComboBoxItem>Star</ComboBoxItem>
+                            </ComboBox>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}">
+                                Do not show Marker
+                                <LineBreak/>
+                                 <Run FontSize="10">
+                                     e.g. C,O,N1,N2
+                                 </Run>
+                            </TextBlock>
+                            <TextBox x:Name="dontMark" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=dontMark, Mode=TwoWay}">
+                                <materialDesign:HintAssist.Hint>Separate /w comma
+                                </materialDesign:HintAssist.Hint>
+                            </TextBox>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" local:MarginSetter.Margin="5,0,0,0">
+                        <materialDesign:PackIcon Kind="ColorLens" Width="24" Height="24"/>
+                        <TextBlock Text="Color" Style="{StaticResource MaterialDesignSubtitle1TextBlock}"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel local:MarginSetter.Margin="0,10,0,0">
+                        <!--Color Settings-->
+                        <TextBlock Text="Color Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Bold"/>
+                        <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text=""></TextBlock>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Color 1"/>
+                            <TextBox TextChanged="Color_TextChanged" x:Name="color1" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                     Text="{Binding Source={x:Static properties:Settings.Default}, Path=color1, Mode=TwoWay}" >
+                                <materialDesign:HintAssist.Hint>Color 1</materialDesign:HintAssist.Hint>
+                            </TextBox>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Color 2"/>
+                            <TextBox TextChanged="Color_TextChanged" x:Name="color2" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                     Text="{Binding Source={x:Static properties:Settings.Default}, Path=color2, Mode=TwoWay}" >
+                                <materialDesign:HintAssist.Hint>Color 2</materialDesign:HintAssist.Hint>
+                            </TextBox>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Color 3"/>
+                            <TextBox TextChanged="Color_TextChanged" x:Name="color3" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                     Text="{Binding Source={x:Static properties:Settings.Default}, Path=color3, Mode=TwoWay}" >
+                                <materialDesign:HintAssist.Hint>Color 3</materialDesign:HintAssist.Hint>
+                            </TextBox>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Color 4"/>
+                            <TextBox TextChanged="Color_TextChanged" x:Name="color4" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                     Text="{Binding Source={x:Static properties:Settings.Default}, Path=color4, Mode=TwoWay}" >
+                                <materialDesign:HintAssist.Hint>Color 4</materialDesign:HintAssist.Hint>
+                            </TextBox>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Color 5"/>
+                            <TextBox TextChanged="Color_TextChanged" x:Name="color5" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                     Text="{Binding Source={x:Static properties:Settings.Default}, Path=color5, Mode=TwoWay}" >
+                                <materialDesign:HintAssist.Hint>Color 5</materialDesign:HintAssist.Hint>
+                            </TextBox>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}">
+                                Use single color
+                                <LineBreak />
+                                <Run FontSize="9">Uses single color for each series.</Run>
+                            </TextBlock>
+                            <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" x:Name="singleColor" 
+                                          IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=singleColor, Mode=TwoWay}" 
+                                          Grid.Column="1"/>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" x:Name="saveBtn" Content="Save" Click="SaveBtn_Click" Grid.Row="1"/>     
         
-        <!--Color Settings-->
-        <Label Content="Color Settings" FontWeight="Bold" Grid.Column="0" Grid.Row="10" />
-        <Label Content="Color 1"  Grid.Column="0" Grid.Row="11" />
-        <TextBox TextChanged="Color_TextChanged" x:Name="color1" Grid.Row="11" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=color1, Mode=TwoWay}" >
-            <materialDesign:HintAssist.Hint>
-                <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
-                    <TextBlock>Color 1</TextBlock>
-                </StackPanel>
-            </materialDesign:HintAssist.Hint>
-        </TextBox>
-
-        <Label Content="Color 2"  Grid.Column="0" Grid.Row="12" />
-        <TextBox TextChanged="Color_TextChanged" x:Name="color2" Grid.Row="12" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=color2, Mode=TwoWay}" >
-            <materialDesign:HintAssist.Hint>
-                <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
-                    <TextBlock>Color 2</TextBlock>
-                </StackPanel>
-            </materialDesign:HintAssist.Hint>
-        </TextBox>
-        <Label Content="Color 3"  Grid.Column="0" Grid.Row="13" />
-        <TextBox TextChanged="Color_TextChanged" x:Name="color3" Grid.Row="13" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=color3, Mode=TwoWay}" >
-            <materialDesign:HintAssist.Hint>
-                <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
-                    <TextBlock>Color 3</TextBlock>
-                </StackPanel>
-            </materialDesign:HintAssist.Hint>
-        </TextBox>
-        <Label Content="Color 4"  Grid.Column="0" Grid.Row="14" />
-        <TextBox TextChanged="Color_TextChanged" x:Name="color4" Grid.Row="14" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=color4, Mode=TwoWay}" >
-            <materialDesign:HintAssist.Hint>
-                <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
-                    <TextBlock>Color 4</TextBlock>
-                </StackPanel>
-            </materialDesign:HintAssist.Hint>
-        </TextBox>
-        <Label Content="Color 5"  Grid.Column="0" Grid.Row="15" />
-        <TextBox TextChanged="Color_TextChanged" x:Name="color5" Grid.Row="15" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=color5, Mode=TwoWay}" >
-            <materialDesign:HintAssist.Hint>
-                <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
-                    <TextBlock>Color 5</TextBlock>
-                </StackPanel>
-            </materialDesign:HintAssist.Hint>
-        </TextBox>
-        <!--Graph Settings-->
-        <Label Content="Graph Settings" FontWeight="Bold" FontSize="16" Grid.Column="4" Grid.Row="0" />
-        <!--Appearance-->
-        <Label Content="Appearance" FontWeight="Bold" Grid.Column="4" Grid.Row="1" />
-
-        <Label Content="Default Font"  Grid.Column="4" Grid.Row="2" />
-        <TextBox x:Name="defaultFont" Grid.Row="2" Grid.Column="5" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=defaultFont, Mode=TwoWay}" >
-            <materialDesign:HintAssist.Hint>
-                <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
-                    <TextBlock>Default Font</TextBlock>
-                </StackPanel>
-            </materialDesign:HintAssist.Hint>
-        </TextBox>
-        <Label Content="Line Thickness"  Grid.Column="4" Grid.Row="3"/>
-        <TextBox x:Name="lineThickness" Grid.Row="3" Grid.Column="5" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=lineThickness, Mode=TwoWay}">
-            <materialDesign:HintAssist.Hint>
-                <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
-                    <TextBlock>Line Thickness</TextBlock>
-                </StackPanel>
-            </materialDesign:HintAssist.Hint>
-        </TextBox>
-        <Label Content="Default Fontsize"  Grid.Column="4" Grid.Row="4"/>
-        <TextBox x:Name="fontSize" Grid.Row="4" Grid.Column="5" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=defaultFontSize, Mode=TwoWay}" >
-            <materialDesign:HintAssist.Hint>
-                <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
-                    <TextBlock>Fontsize</TextBlock>
-                </StackPanel>
-            </materialDesign:HintAssist.Hint>
-        </TextBox>
-        <Label Grid.Column="4" Grid.Row="5" Content="Show Plot Area Border" />
-        <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"  x:Name="showBox" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=showBox, Mode=TwoWay}" Grid.Column="5" Grid.Row="5"/>
-
-        <!--Data Settings-->
-        <Label Content="Data Settings" FontWeight="Bold" Grid.Column="4" Grid.Row="7"/>
-        <Label Content="Exp. Marker-Type" Grid.Column="4" Grid.Row="8"  />
-        <ComboBox x:Name="markerType" Grid.Column="5" Grid.Row="8" Height="30" SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=markerType, Mode=TwoWay}" SelectedValuePath="Content">
-            <ComboBoxItem>None</ComboBoxItem>
-            <ComboBoxItem>Circle</ComboBoxItem>
-            <ComboBoxItem>Square</ComboBoxItem>
-            <ComboBoxItem>Diamond</ComboBoxItem>
-            <ComboBoxItem>Triangle</ComboBoxItem>
-            <ComboBoxItem>Cross</ComboBoxItem>
-            <ComboBoxItem>Plus</ComboBoxItem>
-            <ComboBoxItem>Star</ComboBoxItem>
-        </ComboBox>
-
-        <Label Content="Sim. Marker-Type" Grid.Column="4" Grid.Row="9" />
-        <ComboBox x:Name="simMarkerType" Grid.Column="5" Grid.Row="9" Height="30" SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=simMarkerType, Mode=TwoWay}" SelectedValuePath="Content">
-            <ComboBoxItem>None</ComboBoxItem>
-            <ComboBoxItem>Circle</ComboBoxItem>
-            <ComboBoxItem>Square</ComboBoxItem>
-            <ComboBoxItem>Diamond</ComboBoxItem>
-            <ComboBoxItem>Triangle</ComboBoxItem>
-            <ComboBoxItem>Cross</ComboBoxItem>
-            <ComboBoxItem>Plus</ComboBoxItem>
-            <ComboBoxItem>Star</ComboBoxItem>
-        </ComboBox>
-        <Label Grid.Column="4" Grid.Row="10" Content="Comparison Marker 1" />
-        <ComboBox x:Name="com1MarkerType" Grid.Column="5" Grid.Row="10" Height="30" SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=com1MarkerType, Mode=TwoWay}" SelectedValuePath="Content">
-            <ComboBoxItem>None</ComboBoxItem>
-            <ComboBoxItem>Circle</ComboBoxItem>
-            <ComboBoxItem>Square</ComboBoxItem>
-            <ComboBoxItem>Diamond</ComboBoxItem>
-            <ComboBoxItem>Triangle</ComboBoxItem>
-            <ComboBoxItem>Cross</ComboBoxItem>
-            <ComboBoxItem>Plus</ComboBoxItem>
-            <ComboBoxItem>Star</ComboBoxItem>
-        </ComboBox>
-        <Label Grid.Column="4" Grid.Row="11" Content="Comparison Marker 2" />
-        <ComboBox x:Name="com2MarkerType" Grid.Column="5" Grid.Row="11" Height="30" SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=com2MarkerType, Mode=TwoWay}" SelectedValuePath="Content">
-            <ComboBoxItem>None</ComboBoxItem>
-            <ComboBoxItem>Circle</ComboBoxItem>
-            <ComboBoxItem>Square</ComboBoxItem>
-            <ComboBoxItem>Diamond</ComboBoxItem>
-            <ComboBoxItem>Triangle</ComboBoxItem>
-            <ComboBoxItem>Cross</ComboBoxItem>
-            <ComboBoxItem>Plus</ComboBoxItem>
-            <ComboBoxItem>Star</ComboBoxItem>
-        </ComboBox>
-        <Label Grid.Column="4" Grid.Row="12">
-            <TextBlock>Do not show Marker
-            <LineBreak/>
-             <Run FontSize="10">
-                 e.g. C,O,N1,N2
-             </Run>
-            </TextBlock>
-        </Label>
-        <TextBox x:Name="dontMark" Grid.Row="12" Grid.Column="5" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=dontMark, Mode=TwoWay}">
-            <materialDesign:HintAssist.Hint>
-                <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
-                    <TextBlock>Separate /w comma</TextBlock>
-                </StackPanel>
-            </materialDesign:HintAssist.Hint>
-        </TextBox>
-        <Label Grid.Row="13" Grid.Column="4">
-            <TextBlock>
-                Use single color
-                <LineBreak />
-                <Run FontSize="9">Uses single color for each series.</Run>
-            </TextBlock>
-         </Label>
-        <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" x:Name="singleColor" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=singleColor, Mode=TwoWay}" Grid.Column="5" Grid.Row="13"/>
-        <!--Axis Settings-->
-        <Label Content="Axis Settings" Grid.Column="7" Grid.Row="1" FontWeight="Bold"/>
-        <Label Content="Show X Axis"  Grid.Column="7" Grid.Row="2"/>
-        <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" x:Name="xAxis" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=xAxis, Mode=TwoWay}" Grid.Column="8" Grid.Row="2"/>
-        <Label Content="X Axis Scale" Grid.Column="7" Grid.Row="3" />
-        <TextBox x:Name="minX" Grid.Row="3" Grid.Column="8" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=minX, Mode=TwoWay}">
-            <materialDesign:HintAssist.Hint>
-                <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
-                    <TextBlock>Minimum</TextBlock>
-                </StackPanel>
-            </materialDesign:HintAssist.Hint>
-        </TextBox>
-        <TextBox x:Name="maxX" Grid.Row="4" Grid.Column="8" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=maxX, Mode=TwoWay}">
-            <materialDesign:HintAssist.Hint>
-                <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
-                    <TextBlock>Maximum</TextBlock>
-                </StackPanel>
-            </materialDesign:HintAssist.Hint>
-        </TextBox>
-        <Label Content="Y Axis Scale" Grid.Column="7" Grid.Row="5" />
-        <TextBox x:Name="minY" Grid.Row="5" Grid.Column="8" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=minY, Mode=TwoWay}" >
-            <materialDesign:HintAssist.Hint>
-                <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
-                    <TextBlock>Minimum</TextBlock>
-                </StackPanel>
-            </materialDesign:HintAssist.Hint>
-        </TextBox>
-        <TextBox x:Name="maxY" Grid.Row="6" Grid.Column="8" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=maxY, Mode=TwoWay}">
-            <materialDesign:HintAssist.Hint>
-                <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
-                    <TextBlock>Maximum</TextBlock>
-                </StackPanel>
-            </materialDesign:HintAssist.Hint>
-        </TextBox>
-        <Label Grid.Column="7" Grid.Row="7">
-            <TextBlock>Autoscale X <LineBreak/>
-                <TextBlock FontSize="10">(ignores min/max)</TextBlock>
-            </TextBlock>
-        </Label>
-        <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" x:Name="autoscaleX" 
-                      IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=autoscaleX, Mode=TwoWay}" 
-                      Grid.Column="8" Grid.Row="7" />
-        <Label Grid.Column="7" Grid.Row="8">
-            <TextBlock>Autoscale Y <LineBreak/>
-                <TextBlock FontSize="10">(ignores min/max)</TextBlock>
-            </TextBlock>
-        </Label>
-        <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"  x:Name="autoscaleY" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=autoscaleY, Mode=TwoWay}" Grid.Column="8" Grid.Row="8"/>
-        <Label Grid.Column="7" Grid.Row="9" Content="y-Axis Title is Horizontal"/>
-        <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"  x:Name="rotateTitle" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=rotateTitle, Mode=TwoWay}" Grid.Column="8" Grid.Row="9"/>
-        <Label Grid.Column="7" Grid.Row="10" Content="Axis Title Format"/>
-        <TextBox x:Name="titleFormat" Grid.Row="10" Grid.Column="8" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=titleFormat, Mode=TwoWay}">
-            <materialDesign:HintAssist.Hint>
-                <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
-                    <TextBlock>Format ({0} = Title, {1} = Unit)</TextBlock>
-                </StackPanel>
-            </materialDesign:HintAssist.Hint>
-        </TextBox>
-        <Label Content="Show Zero"  Grid.Column="7" Grid.Row="11"/>
-        <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"  x:Name="zero" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=zero, Mode=TwoWay}" Grid.Column="8" Grid.Row="11"/>
-
-        <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" x:Name="saveBtn" Grid.Column="3" Grid.Row="99" Content="Save" Click="SaveBtn_Click" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>
