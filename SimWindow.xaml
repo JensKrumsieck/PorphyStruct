@@ -40,7 +40,7 @@ FontFamily="{DynamicResource MaterialDesignFont}"
                 <DataGridTextColumn Binding="{Binding best, StringFormat=N6}" Header="Best" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
+        <StackPanel Grid.Row="2" Orientation="Horizontal" >
             <Label Content="Out-of-Plane-Distortion parameter:" />
             <Label x:Name="meanDisPar" Content="0" />
         </StackPanel>
@@ -60,7 +60,12 @@ FontFamily="{DynamicResource MaterialDesignFont}"
                 <ComboBoxItem Content="Monte Carlo + Simplex" IsSelected="True" />
             </ComboBox.Items>
         </ComboBox>
-        <Button x:Name="finishSimBtn" Grid.Column="0" Grid.Row="4" Width="200" Content="Finalize Simulation" IsEnabled="False" VerticalAlignment="Top" Click="FinishSimBtn_Click"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Center">
+            <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" x:Name="finishSimBtn" Width="200" Content="Finalize Simulation" 
+                    IsEnabled="False" VerticalAlignment="Top" Margin="0,0,5,0" Click="FinishSimBtn_Click"
+                    materialDesign:RippleAssist.Feedback="White"/>
+            <Button x:Name="reloadSimBtn" Width="150" Content="Reload Simulation" IsEnabled="True" VerticalAlignment="Top" Margin="5,0,0,0" Click="ReloadSimBtn_Click"/>
+        </StackPanel>
         <CheckBox Content="Calc. /w startparam. only" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Top" x:Name="firstOnlyCB" Checked="FirstOnlyCB_Checked" Unchecked="FirstOnlyCB_Checked"/>
         <CheckBox Content="Set best as start values" Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Top" x:Name="keepBestCB" IsChecked="True"/>
     </Grid>

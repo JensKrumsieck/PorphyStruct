@@ -1,15 +1,18 @@
-﻿using OxyPlot;
+﻿using Microsoft.Win32;
+using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using PorphyStruct.Chemistry;
 using PorphyStruct.Simulations;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Xml;
 
 namespace PorphyStruct
 {
@@ -504,5 +507,38 @@ namespace PorphyStruct
             running = false;
         }
         #endregion
+
+        /// <summary>
+        /// Reloads Sim File
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ReloadSimBtn_Click(object sender, RoutedEventArgs e)
+        {
+            string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            if (Properties.Settings.Default.savePath != "")
+                initialDir = Properties.Settings.Default.savePath;
+            OpenFileDialog ofd = new OpenFileDialog
+            {
+                InitialDirectory = initialDir,
+                Filter = "Simulation File (*.xml)|*.xml",
+                RestoreDirectory = true
+            };
+            bool? DialogResult = ofd.ShowDialog();
+
+            if (DialogResult.HasValue && DialogResult.Value)
+            {
+                string file = File.ReadAllText(ofd.FileName);
+                XmlDocument xmld = new XmlDocument();
+                xmld.Load(new StringReader(file));
+                var simul = xmld.SelectSingleNode("descendant::simulation");
+                param = new List<SimParam>();
+                foreach (XmlNode node in simul.SelectNodes("descendant::parameter"))
+                {
+                    param.Add(new SimParam(node.Attributes.GetNamedItem("name").InnerText, double.Parse(node.InnerText, System.Globalization.CultureInfo.InvariantCulture) / 100));
+                }
+                simGrid.ItemsSource = this.param;
+            }
+        }
     }
 }

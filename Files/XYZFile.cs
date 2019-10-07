@@ -22,7 +22,7 @@ namespace PorphyStruct.Files
         public Molecule GetMolecule(bool isIXYZ = false)
         {
             //read cif-File and get parameters & coordinates
-            string text = System.IO.File.ReadAllText(this.Path);
+            string text = System.IO.File.ReadAllText(Path);
             string[] lines = text.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None);
             //atom count is first line, second line is title
             //PLEASE DO NOT USE XYZ Files with non cartesian coordinates
