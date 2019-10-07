@@ -102,9 +102,6 @@
             </TextBox>
             <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" Content="Save" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="75" Height="25"  Click="SaveButton_Click"/>
         </StackPanel>
-
-
-
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1">
             <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}">Available Data</TextBlock>
             <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}"></TextBlock>

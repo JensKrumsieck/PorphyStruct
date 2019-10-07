@@ -35,7 +35,9 @@
             <TextBlock FontWeight="ExtraLight" FontSize="10" Text="{Binding AssemblyVersion}" />
         </TextBlock>
         <Label Content="Developed by:" Grid.Row="2" Grid.Column="0"/>
-        <Label Content="Jens Krumsieck" Grid.Row="2" Grid.Column="1"/>
+        <TextBlock Grid.Row="2" Grid.Column="1">
+            <Hyperlink NavigateUri="https://jenskrumsieck.github.io" RequestNavigate="Hyperlink_RequestNavigate" >Jens Krumsieck</Hyperlink>
+        </TextBlock>
         <TextBlock Grid.Column="1" Grid.Row="3">
             Institut für Anorganische und Analytische Chemie<LineBreak/>
             TU Braunschweig<LineBreak/>
