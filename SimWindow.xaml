@@ -14,7 +14,7 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
 FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="Simulation of Macrocyclic Conformation (Least Squares Fitting)" Height="450" Width="900" Closing="Window_Closing">
+        Title="Simulation of Macrocyclic Conformation (Least Squares Fitting)" Height="500" Width="1000" Closing="Window_Closing">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="12*" />

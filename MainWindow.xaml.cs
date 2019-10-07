@@ -839,8 +839,8 @@ namespace PorphyStruct
                 sw = new SimWindow(GetCycle(), displaceView, simulation);
             }
             else sw = new SimWindow(GetCycle(), displaceView);
-            //open sim window
 
+            //open sim window
             sw.Show();
         }
 
