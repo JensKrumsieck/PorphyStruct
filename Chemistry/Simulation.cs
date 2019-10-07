@@ -1,5 +1,6 @@
 ﻿using OxyPlot;
 using OxyPlot.Series;
+using PorphyStruct.Simulations;
 using System.Collections.Generic;
 
 namespace PorphyStruct.Chemistry
@@ -10,7 +11,7 @@ namespace PorphyStruct.Chemistry
         public bool isInverted = false;
         public Dictionary<string, double> par = new Dictionary<string, double>();
         public double[] errors;
-
+        public List<SimParam> simParam;
         public Simulation(List<Atom> atoms) : base(atoms)
         {
             //does nothing for now

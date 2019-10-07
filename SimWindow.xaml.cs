@@ -92,6 +92,15 @@ namespace PorphyStruct
             simGrid.ItemsSource = this.param;
             PlotExp();
         }
+        
+        //if call comes with sim, use this param
+        public SimWindow(Macrocycle cycle, OxyPlot.Wpf.PlotView pv, Simulation sim) 
+            : this(cycle, pv)
+        {
+            param = sim.simParam;
+            simGrid.ItemsSource = this.param;
+        }
+
 
         /// <summary>
         /// Plots the experimental data
@@ -430,7 +439,8 @@ namespace PorphyStruct
                 Simulation simObj = new Simulation(cycle.Atoms)
                 {
                     type = cycle.type,
-                    dataPoints = (List<AtomDataPoint>)sim.ItemsSource
+                    dataPoints = (List<AtomDataPoint>)sim.ItemsSource,
+                    simParam = param
                 };
 
                 //dont mark (sim)

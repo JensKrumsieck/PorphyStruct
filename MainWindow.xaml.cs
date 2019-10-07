@@ -384,9 +384,10 @@ namespace PorphyStruct
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Don't need to catch sth.")]
         private void UpdateMolView(bool markSelection = false, bool force = false, bool detect = false)
         {
-            Macrocycle cycle = new Macrocycle(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList());
-
-            cycle.type = this.type;
+            Macrocycle cycle = new Macrocycle(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList())
+            {
+                type = this.type
+            };
             if (detect)
                 cycle.Detect();
 
@@ -832,9 +833,14 @@ namespace PorphyStruct
             //normalize if not done yet!
             if (!normalize)
                 NormalizeButton_Click(sender, e);
-
+            SimWindow sw;
+            if (simulation != null)
+            {
+                sw = new SimWindow(GetCycle(), displaceView, simulation);
+            }
+            else sw = new SimWindow(GetCycle(), displaceView);
             //open sim window
-            SimWindow sw = new SimWindow(GetCycle(), displaceView);
+
             sw.Show();
         }
 

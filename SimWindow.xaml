@@ -41,7 +41,7 @@ FontFamily="{DynamicResource MaterialDesignFont}"
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel Grid.Row="2" Orientation="Horizontal">
-            <Label Content="Mean displacement parameter:" />
+            <Label Content="Out-of-Plane-Distortion parameter:" />
             <Label x:Name="meanDisPar" Content="0" />
         </StackPanel>
         <Label Grid.Row="1" Grid.Column="1"  Grid.ColumnSpan="2" Content="Min RMSD (Y, Deriv., Int.):"/>
