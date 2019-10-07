@@ -70,12 +70,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="MaterialDesignColors, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\MaterialDesignColors.1.2.1-ci542\lib\net45\MaterialDesignColors.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>packages\MaterialDesignColors.1.2.1-ci632\lib\net45\MaterialDesignColors.dll</HintPath>
     </Reference>
     <Reference Include="MaterialDesignThemes.Wpf, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\MaterialDesignThemes.3.0.0-ci542\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>packages\MaterialDesignThemes.3.0.0-ci632\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="MathNet.Numerics, Version=4.8.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\MathNet.Numerics.4.8.1\lib\net461\MathNet.Numerics.dll</HintPath>

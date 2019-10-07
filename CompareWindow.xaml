@@ -64,7 +64,7 @@
         <oxy:PlotView Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="3" x:Name="comp2Plot"/>
 
         <!--ok/reset-->
-        <Button Grid.Row="99" Grid.Column="1" Content="Ok" x:Name="OK" Click="OK_Click"/>
-        <Button Grid.Row="99" Grid.Column="3" Content="Reset" x:Name="Cancel" Click="Cancel_Click"/>
+        <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" Grid.Row="99" Grid.Column="1" Content="Ok" x:Name="OK" Click="OK_Click"/>
+        <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Grid.Row="99" Grid.Column="3" Content="Reset" x:Name="Cancel" Click="Cancel_Click"/>
     </Grid>
 </Window>

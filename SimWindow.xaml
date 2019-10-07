@@ -7,15 +7,15 @@
         xmlns:local="clr-namespace:PorphyStruct"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
-FontFamily="{DynamicResource MaterialDesignFont}"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        FontFamily="{StaticResource MaterialDesignFont}"
         Title="Simulation of Macrocyclic Conformation (Least Squares Fitting)" Height="500" Width="1000" Closing="Window_Closing">
-    <Grid>
+   <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="12*" />
             <ColumnDefinition Width="100" />
@@ -51,8 +51,9 @@ FontFamily="{DynamicResource MaterialDesignFont}"
         <CheckBox Content="Int." Grid.Column="4" Grid.Row="3" x:Name="fitIntCB" IsChecked="False" Checked="FitIntCB_Checked" Unchecked="FitIntCB_Checked" />
 
         <TextBox  Grid.Row="1" Grid.Column="3" Text="NaN" x:Name="ErrTB" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-        <Button Content="Start" Grid.Column="1" Grid.Row="4" VerticalAlignment="Top" Width="75" x:Name="startBtn" Click="StartBtn_Click"/>
-        <Button Content="Stop" Grid.Column="3" Grid.Row="4" VerticalAlignment="Top" Width="75" x:Name="stopBtn" Click="StopBtn_Click" IsEnabled="False"/>
+        <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" Content="Start" Grid.Column="1" Grid.Row="4" VerticalAlignment="Top" 
+                Width="75" x:Name="startBtn" Click="StartBtn_Click"/>
+        <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Content="Stop" Grid.Column="3" Grid.Row="4" VerticalAlignment="Top" Width="75" x:Name="stopBtn" Click="StopBtn_Click" IsEnabled="False"/>
         <Label Content="Simulation Mode" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" />
         <ComboBox x:Name="modeCB" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Width="250" Margin="175,0,0,0" VerticalAlignment="Top" SelectionChanged="ModeCB_SelectionChanged">
             <ComboBox.Items>
@@ -64,7 +65,8 @@ FontFamily="{DynamicResource MaterialDesignFont}"
             <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" x:Name="finishSimBtn" Width="200" Content="Finalize Simulation" 
                     IsEnabled="False" VerticalAlignment="Top" Margin="0,0,5,0" Click="FinishSimBtn_Click"
                     materialDesign:RippleAssist.Feedback="White"/>
-            <Button x:Name="reloadSimBtn" Width="150" Content="Reload Simulation" IsEnabled="True" VerticalAlignment="Top" Margin="5,0,0,0" Click="ReloadSimBtn_Click"/>
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" x:Name="reloadSimBtn" Width="150" Content="Reload Simulation" 
+                    IsEnabled="True" VerticalAlignment="Top" Margin="5,0,0,0" Click="ReloadSimBtn_Click"/>
         </StackPanel>
         <CheckBox Content="Calc. /w startparam. only" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Top" x:Name="firstOnlyCB" Checked="FirstOnlyCB_Checked" Unchecked="FirstOnlyCB_Checked"/>
         <CheckBox Content="Set best as start values" Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Top" x:Name="keepBestCB" IsChecked="True"/>

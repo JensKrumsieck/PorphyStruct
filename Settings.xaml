@@ -159,7 +159,7 @@
             </materialDesign:HintAssist.Hint>
         </TextBox>
         <Label Grid.Column="4" Grid.Row="5" Content="Show Plot Area Border" />
-        <ToggleButton x:Name="showBox" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=showBox, Mode=TwoWay}" Grid.Column="5" Grid.Row="5"/>
+        <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"  x:Name="showBox" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=showBox, Mode=TwoWay}" Grid.Column="5" Grid.Row="5"/>
 
         <!--Data Settings-->
         <Label Content="Data Settings" FontWeight="Bold" Grid.Column="4" Grid.Row="7"/>
@@ -230,11 +230,11 @@
                 <Run FontSize="9">Uses single color for each series.</Run>
             </TextBlock>
          </Label>
-        <ToggleButton x:Name="singleColor" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=singleColor, Mode=TwoWay}" Grid.Column="5" Grid.Row="13"/>
+        <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" x:Name="singleColor" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=singleColor, Mode=TwoWay}" Grid.Column="5" Grid.Row="13"/>
         <!--Axis Settings-->
         <Label Content="Axis Settings" Grid.Column="7" Grid.Row="1" FontWeight="Bold"/>
         <Label Content="Show X Axis"  Grid.Column="7" Grid.Row="2"/>
-        <ToggleButton x:Name="xAxis" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=xAxis, Mode=TwoWay}" Grid.Column="8" Grid.Row="2"/>
+        <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" x:Name="xAxis" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=xAxis, Mode=TwoWay}" Grid.Column="8" Grid.Row="2"/>
         <Label Content="X Axis Scale" Grid.Column="7" Grid.Row="3" />
         <TextBox x:Name="minX" Grid.Row="3" Grid.Column="8" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=minX, Mode=TwoWay}">
             <materialDesign:HintAssist.Hint>
@@ -270,16 +270,17 @@
                 <TextBlock FontSize="10">(ignores min/max)</TextBlock>
             </TextBlock>
         </Label>
-        <ToggleButton x:Name="autoscaleX" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=autoscaleX, Mode=TwoWay}" Grid.Column="8" Grid.Row="7"/>
-
+        <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" x:Name="autoscaleX" 
+                      IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=autoscaleX, Mode=TwoWay}" 
+                      Grid.Column="8" Grid.Row="7" />
         <Label Grid.Column="7" Grid.Row="8">
             <TextBlock>Autoscale Y <LineBreak/>
                 <TextBlock FontSize="10">(ignores min/max)</TextBlock>
             </TextBlock>
         </Label>
-        <ToggleButton x:Name="autoscaleY" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=autoscaleY, Mode=TwoWay}" Grid.Column="8" Grid.Row="8"/>
+        <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"  x:Name="autoscaleY" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=autoscaleY, Mode=TwoWay}" Grid.Column="8" Grid.Row="8"/>
         <Label Grid.Column="7" Grid.Row="9" Content="y-Axis Title is Horizontal"/>
-        <ToggleButton x:Name="rotateTitle" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=rotateTitle, Mode=TwoWay}" Grid.Column="8" Grid.Row="9"/>
+        <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"  x:Name="rotateTitle" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=rotateTitle, Mode=TwoWay}" Grid.Column="8" Grid.Row="9"/>
         <Label Grid.Column="7" Grid.Row="10" Content="Axis Title Format"/>
         <TextBox x:Name="titleFormat" Grid.Row="10" Grid.Column="8" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=titleFormat, Mode=TwoWay}">
             <materialDesign:HintAssist.Hint>
@@ -289,8 +290,8 @@
             </materialDesign:HintAssist.Hint>
         </TextBox>
         <Label Content="Show Zero"  Grid.Column="7" Grid.Row="11"/>
-        <ToggleButton x:Name="zero" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=zero, Mode=TwoWay}" Grid.Column="8" Grid.Row="11"/>
+        <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"  x:Name="zero" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=zero, Mode=TwoWay}" Grid.Column="8" Grid.Row="11"/>
 
-        <Button x:Name="saveBtn" Grid.Column="3" Grid.Row="99" Content="Save" Click="SaveBtn_Click" Grid.ColumnSpan="2"/>
+        <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" x:Name="saveBtn" Grid.Column="3" Grid.Row="99" Content="Save" Click="SaveBtn_Click" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>

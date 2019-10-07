@@ -53,7 +53,7 @@
             </sys:ArrayList>
         </Grid.Resources>
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
-            <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}">Available FileTypes</TextBlock>
+            <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}">Available FileTypes</TextBlock>
             <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}">Based on present data!</TextBlock>
         </StackPanel>
 
@@ -67,7 +67,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border Padding="11" Width="125">
-                        <materialDesign:Badged Badge="{Binding Secondary}" BadgeBackground="Red" BadgeForeground="White" HorizontalAlignment="Center">
+                        <materialDesign:Badged Badge="{Binding Secondary}" BadgeBackground="{DynamicResource SecondaryHueMidBrush}" BadgeForeground="White" HorizontalAlignment="Center">
                             <StackPanel Orientation="Vertical">
                                 <ContentControl Content="{Binding Icon}" HorizontalAlignment="Center"/>
                                 <TextBlock HorizontalAlignment="Center" Text="{Binding Title}"><Run FontWeight="Bold" Text="(."/><Run FontWeight="Bold" Text="{Binding Extension}" /><Run FontWeight="Bold" Text=")"/></TextBlock>
@@ -100,13 +100,13 @@
                     </StackPanel>
                 </materialDesign:HintAssist.Hint>
             </TextBox>
-            <Button Content="Save" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="75" Height="25"  Click="SaveButton_Click"/>
+            <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" Content="Save" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="75" Height="25"  Click="SaveButton_Click"/>
         </StackPanel>
 
 
 
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1">
-            <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}">Available Data</TextBlock>
+            <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}">Available Data</TextBlock>
             <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}"></TextBlock>
         </StackPanel>
         <ItemsControl Grid.Column="1" Grid.Row="1" Grid.IsSharedSizeScope="True" Margin="12 0 12 0" ItemsSource="{Binding Model.Series}" x:Name="SeriesList">

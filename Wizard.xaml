@@ -13,7 +13,7 @@
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
-FontFamily="{DynamicResource MaterialDesignFont}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Open File" Height="550" Width="835" ResizeMode="NoResize">
     <Grid Margin="10,0,10,0">
         <Grid.RowDefinitions>
@@ -74,7 +74,7 @@ FontFamily="{DynamicResource MaterialDesignFont}"
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="true">
-                                        <Setter Property="BorderBrush" Value="IndianRed" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource SecondaryHueMidBrush}" />
                                         <Setter Property="BorderThickness" Value="3" />
                                         <Setter Property="Background" Value="WhiteSmoke" />
                                     </Trigger>
@@ -141,7 +141,7 @@ FontFamily="{DynamicResource MaterialDesignFont}"
             <ComboBoxItem Content="Porphycene" />
         </ComboBox>
         -->
-        <Button Content="Ok" Grid.Row="5" Grid.Column="0" Width="100" Click="Ok_Click" IsDefault="True"/>
-        <Button Content="Cancel" Grid.Row="5" Grid.Column="1"  Width="100" Click="Cancel_Click" IsCancel="True"/>
+        <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" Content="Ok" Grid.Row="5" Grid.Column="0" Width="100" Click="Ok_Click" IsDefault="True"/>
+        <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Content="Cancel" Grid.Row="5" Grid.Column="1"  Width="100" Click="Cancel_Click" IsCancel="True"/>
     </Grid>
 </Window>
