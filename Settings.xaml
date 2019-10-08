@@ -23,24 +23,27 @@
             <RowDefinition Height="50" />            
         </Grid.RowDefinitions>
         <TabControl TabStripPlacement="Left" Padding="10">
-            <TabControl.Resources><Style TargetType="{x:Type TabItem}">
+            <TabControl.ItemContainerStyle>
+                <Style TargetType="{x:Type TabItem}">
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type TabItem}">
-                                <Border>
-                                    <ContentPresenter>
-                                        <ContentPresenter.Content>
-                                            <Border Margin="15">
-                                                <ContentPresenter ContentSource="Header"/>
-                                            </Border>
-                                        </ContentPresenter.Content>
-                                    </ContentPresenter>
+                                <Border Margin="15" x:Name="Border" Padding="5">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Polygon x:Name="Trian" Points="0,0 8,5, 0,10" Stroke="{DynamicResource SecondaryHueMidBrush}" Fill="{DynamicResource SecondaryHueMidBrush}" Margin="-20,6,0,0" Visibility="Hidden"/>
+                                        <ContentPresenter ContentSource="Header" x:Name="Content"/>
+                                    </StackPanel>
                                 </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Trian" Property="Visibility" Value="Visible"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
                             </ControlTemplate>
                     </Setter.Value>
                 </Setter>
                 </Style>
-            </TabControl.Resources>
+            </TabControl.ItemContainerStyle>
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal" local:MarginSetter.Margin="5,0,0,0">
