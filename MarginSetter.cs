@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace PorphyStruct
 {
-    public class MarginSetter
+    public static class MarginSetter
     {
         public static Thickness GetMargin(DependencyObject obj) => (Thickness)obj.GetValue(MarginProperty);
         public static void SetMargin(DependencyObject obj, Thickness value) => obj.SetValue(MarginProperty, value);
