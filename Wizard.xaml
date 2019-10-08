@@ -49,13 +49,6 @@
              Mol2-files may contain crystallographic identifiers. If that is the case, then these are handled analogously to CIF files, otherwise analogously to XYZ files.
 
         </TextBlock>
-        <!--obsolete
-        <Image  Grid.Row="3"  Grid.Column="0" Grid.ColumnSpan="2">
-            <Image.Source>
-                <BitmapImage DecodePixelWidth="1500" UriSource="/PorphyStruct;component/Resources/corr.png"/>
-            </Image.Source>
-        </Image>
-        -->
         <ListBox Style="{StaticResource MaterialDesignToolToggleListBox}"
                  HorizontalAlignment="Center"
                  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" x:Name="TypeListBox"
@@ -130,17 +123,6 @@
             </TextBox>
             <Button  Content="Select File" Width="100" Click="FileOpen_Click" Margin="20,0,0,0"/>
         </StackPanel>
-        <!--obsolete
-        <Label Grid.Row="4" Grid.Column="1"  Content="Macrocycle Type" Margin="5,0,0,0" FontWeight="Bold"/>
-
-        <ComboBox Grid.Row="4" Grid.Column="1"  x:Name="CycleTypeCB" Margin="10,0,0,0">
-            <ComboBoxItem Content="Corrole" IsSelected="True"/>
-            <ComboBoxItem Content="Porphyrin"/>
-            <ComboBoxItem Content="Norcorrole"/>
-            <ComboBoxItem Content="Corrphycene" />
-            <ComboBoxItem Content="Porphycene" />
-        </ComboBox>
-        -->
         <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" Content="Ok" Grid.Row="5" Grid.Column="0" Width="100" Click="Ok_Click" IsDefault="True"/>
         <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Content="Cancel" Grid.Row="5" Grid.Column="1"  Width="100" Click="Cancel_Click" IsCancel="True"/>
     </Grid>

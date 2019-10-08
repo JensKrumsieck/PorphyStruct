@@ -12,11 +12,10 @@ namespace PorphyStruct
         public static readonly DependencyProperty MarginProperty = DependencyProperty.RegisterAttached("Margin", typeof(Thickness), typeof(MarginSetter), new UIPropertyMetadata(new Thickness(), MarginChangedCallback));
         public static void MarginChangedCallback(object sender, DependencyPropertyChangedEventArgs e)
         {
-            var panel = sender as Panel;
-            if (panel == null) return;
-            panel.Loaded += new RoutedEventHandler(panel_Loaded);
+            if (!(sender is Panel panel)) return;
+            panel.Loaded += new RoutedEventHandler(Panel_Loaded);
         }
-        static void panel_Loaded(object sender, RoutedEventArgs e)
+        static void Panel_Loaded(object sender, RoutedEventArgs e)
         {
             var panel = sender as Panel;
             // Go over the children and set margin for them:

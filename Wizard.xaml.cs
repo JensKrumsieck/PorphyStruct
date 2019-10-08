@@ -43,7 +43,7 @@ namespace PorphyStruct
         private void FileOpen_Click(object sender, RoutedEventArgs e)
         {
             string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            if (Properties.Settings.Default.importPath != "")
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.importPath))
                 initialDir = Properties.Settings.Default.importPath;
             OpenFileDialog ofd = new OpenFileDialog
             {
@@ -62,7 +62,7 @@ namespace PorphyStruct
         /// <summary>
         /// Returns the filename
         /// </summary>
-        public string getFileName
+        public string FileName
         {
             get { return pathTextBox.Text; }
         }
@@ -70,7 +70,7 @@ namespace PorphyStruct
         /// <summary>
         /// Return Macrocycle Type from ComboBox
         /// </summary>
-        public int getType
+        public int Type
         {
             //0 = corrole, 1 = porphyrin, 2 = norcorrole, 3 = corrphycene, 4 = porphycene
             get { return TypeListBox.SelectedIndex; }

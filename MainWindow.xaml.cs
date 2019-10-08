@@ -683,8 +683,8 @@ namespace PorphyStruct
             {
                 displaceView.Background = Brushes.White;
 
-                path = wi.getFileName;
-                type = (Macrocycle.Type)wi.getType;
+                path = wi.FileName;
+                type = (Macrocycle.Type)wi.Type;
                 this.Title = "Structural Analysis of Porphyrinoids (PorphyStruct) - " + type.ToString() + " Mode";
                 AnalButton.IsEnabled = true;
                 RefMolButton.IsEnabled = true;

@@ -25,8 +25,7 @@ namespace PorphyStruct
         /// Form Parameters
         /// </summary>
         private readonly SynchronizationContext synchronizationContext;
-        OxyPlot.Wpf.PlotView parentView;
-        private Random rnd = new Random();
+        private OxyPlot.Wpf.PlotView parentView;
         private DateTime previousTime = DateTime.Now;
 
         /// <summary>
