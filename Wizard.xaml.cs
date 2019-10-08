@@ -43,8 +43,8 @@ namespace PorphyStruct
         private void FileOpen_Click(object sender, RoutedEventArgs e)
         {
             string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            if (Properties.Settings.Default.savePath != "")
-                initialDir = Properties.Settings.Default.savePath;
+            if (Properties.Settings.Default.importPath != "")
+                initialDir = Properties.Settings.Default.importPath;
             OpenFileDialog ofd = new OpenFileDialog
             {
                 InitialDirectory = initialDir,

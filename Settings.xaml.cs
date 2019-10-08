@@ -16,6 +16,7 @@ namespace PorphyStruct
         {
             InitializeComponent();
             savePath.Text = Properties.Settings.Default.savePath;
+            importPath.Text = Properties.Settings.Default.importPath;
         }
 
         /// <summary>
@@ -51,6 +52,28 @@ namespace PorphyStruct
         }
 
         /// <summary>
+        /// Handle Folder Button Click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FolderImportBtn_Click(object sender, RoutedEventArgs e)
+        {
+            string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.importPath))
+                initialDir = Properties.Settings.Default.savePath;
+            using (winforms.FolderBrowserDialog fbd = new winforms.FolderBrowserDialog
+            {
+                SelectedPath = initialDir
+            })
+            {
+                if (fbd.ShowDialog() == winforms.DialogResult.OK)
+                {
+                    importPath.Text = fbd.SelectedPath;
+                }
+            }
+        }
+
+        /// <summary>
         /// Handle Save Button Click
         /// </summary>
         /// <param name="sender"></param>
@@ -58,6 +81,7 @@ namespace PorphyStruct
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.savePath = savePath.Text;
+            Properties.Settings.Default.importPath = importPath.Text;
             Properties.Settings.Default.lineThickness = Convert.ToDouble(lineThickness.Text, System.Globalization.CultureInfo.InvariantCulture);
             Properties.Settings.Default.minY = Convert.ToDouble(minY.Text, System.Globalization.CultureInfo.InvariantCulture);
             Properties.Settings.Default.maxY = Convert.ToDouble(maxY.Text, System.Globalization.CultureInfo.InvariantCulture);
@@ -77,6 +101,7 @@ namespace PorphyStruct
             Properties.Settings.Default.rotateTitle = rotateTitle.IsChecked.Value;
             Properties.Settings.Default.showBox = showBox.IsChecked.Value;
             Properties.Settings.Default.singleColor = singleColor.IsChecked.Value;
+            Properties.Settings.Default.useImportExportPath = useImportExportPath.IsChecked.Value;
             Properties.Settings.Default.titleFormat = titleFormat.Text;
             Properties.Settings.Default.dontMark = dontMark.Text.Replace(" ", "");
             Properties.Settings.Default.color1 = CheckColor(color1.Text) ? color1.Text : "#000000";

@@ -26,6 +26,18 @@ namespace PorphyStruct
         public Simulation Sim;
         public string Filename = "";
 
+        /// <summary>
+        /// returns the default save directory
+        /// </summary>
+        public string DefaultPath
+        {
+            get
+            {
+                if (Properties.Settings.Default.useImportExportPath) return Properties.Settings.Default.importPath;
+                else return Properties.Settings.Default.savePath;
+            }
+        }
+
         public SaveWindow(Macrocycle cycle, Simulation Sim = null)
         {
             InitializeComponent();
@@ -492,8 +504,10 @@ namespace PorphyStruct
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.savePath))
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.savePath) && !Properties.Settings.Default.useImportExportPath)
                 initialDir = Properties.Settings.Default.savePath;
+            else if (!String.IsNullOrEmpty(Properties.Settings.Default.importPath))
+                initialDir = Properties.Settings.Default.importPath;
             using (winforms.FolderBrowserDialog fbd = new winforms.FolderBrowserDialog
             {
                 SelectedPath = initialDir

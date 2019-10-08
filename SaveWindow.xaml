@@ -83,7 +83,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.ColumnSpan="3" Margin="166,0" >
-            <TextBox Width="200" Margin="0,0,10,0" x:Name="PathTB" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=savePath}">
+            <TextBox Width="200" Margin="0,0,10,0" x:Name="PathTB" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding DefaultPath, Mode=OneTime}">
                 <materialDesign:HintAssist.Hint>
                     <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
                         <TextBlock>Folder Path</TextBlock>

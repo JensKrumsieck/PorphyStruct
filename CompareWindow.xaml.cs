@@ -29,9 +29,12 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void Open1Btn_Click(object sender, RoutedEventArgs e)
         {
+            //use save dir as default because there should be the results
             string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.savePath))
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.savePath) && !Properties.Settings.Default.useImportExportPath)
                 initialDir = Properties.Settings.Default.savePath;
+            else if (!String.IsNullOrEmpty(Properties.Settings.Default.importPath))
+                initialDir = Properties.Settings.Default.importPath;
             OpenFileDialog ofd = new OpenFileDialog
             {
                 InitialDirectory = initialDir,
@@ -53,9 +56,12 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void Open2Btn_Click(object sender, RoutedEventArgs e)
         {
+            //use save dir as default because there should be the results
             string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.savePath))
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.savePath) && !Properties.Settings.Default.useImportExportPath)
                 initialDir = Properties.Settings.Default.savePath;
+            else if (!String.IsNullOrEmpty(Properties.Settings.Default.importPath))
+                initialDir = Properties.Settings.Default.importPath;
             OpenFileDialog ofd = new OpenFileDialog
             {
                 InitialDirectory = initialDir,
