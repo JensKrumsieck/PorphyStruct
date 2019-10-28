@@ -249,9 +249,9 @@ namespace PorphyStruct
                     Chip c = new Chip
                     {
                         Content = key + ": " + simulation.par[key].ToString(System.Globalization.CultureInfo.InvariantCulture) + "%",
-                        Margin = new Thickness(0, 0, 4, 4)
+                        Margin = new Thickness(0, 0, 4, 4),
+                        FontSize = 8
                     };
-                    if (type == Macrocycle.Type.Porphyrin) c.FontSize = 8;
                     simStack.Children.Add(c);
                 }
             }
