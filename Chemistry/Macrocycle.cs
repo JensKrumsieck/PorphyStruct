@@ -1,4 +1,5 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 using MathNet.Spatial.Euclidean;
 using OxyPlot;
 using OxyPlot.Annotations;
@@ -815,12 +816,95 @@ namespace PorphyStruct.Chemistry
             //N4 Lenghts
             if (HasMetal)
             {
-                for (int i = 1; i <= 4; i++) MetricDict.Add($"D(N{i},M)", CalculateDistance($"N{i}", GetMetal().Identifier));
-                MetricDict.Add("D(M,msp", GetMetal().DistanceToPlane(GetMeanPlane()));
+                for (int i = 1; i <= 4; i++) MetricDict.Add($"Bond_N{i},M", CalculateDistance($"N{i}", GetMetal().Identifier));
+                MetricDict.Add("Bond_M,msp", GetMetal().DistanceToPlane(GetMeanPlane()));
             }
+            //GetDihedrals build list line wise
+            var dihedrals = new List<string[]>();
+            //1
+            if (type == Type.Corrphycene || type == Type.Porphycene)
+                dihedrals.Add(new string[]{"C2", "C1", "C20", "C19" });
+            else
+                dihedrals.Add(new string[] { "C2", "C1", "C19", "C18" });
+            //2
+            if(type == Type.Porphycene)
+                dihedrals.Add(new string[] { "C3", "C4", "C7", "C8" });
+            else
+                dihedrals.Add(new string[] { "C3", "C4", "C6", "C7" });
+            //3
+            if (type == Type.Corrphycene)
+                dihedrals.Add(new string[] { "C8", "C9", "C12", "C13" });
+            else if (type == Type.Porphycene)
+                dihedrals.Add(new string[] { "C9", "C10", "C11", "C12" });
+            else
+                dihedrals.Add(new string[] { "C8", "C9", "C11", "C12" });
+            //4
+            if (type == Type.Corrphycene)
+                dihedrals.Add(new string[] { "C14", "C15", "C17", "C18" });
+            else if (type == Type.Porphycene)
+                dihedrals.Add(new string[] { "C13", "C14", "C17", "C18" });
+            else
+                dihedrals.Add(new string[] { "C13", "C14", "C16", "C17" });
 
+            //5 the n2-n4 torsion
+            if (type == Type.Corrphycene)
+                dihedrals.Add(new string[] { "C9", "N2", "N4", "C17" });
+            else if (type == Type.Porphycene)
+                dihedrals.Add(new string[] { "C10", "N2", "N4", "C17" });
+            else
+                dihedrals.Add(new string[] { "C9", "N2", "N4", "C16" });
+
+            //6 the n1-n3 torsion
+            if (type == Type.Corrphycene)
+                dihedrals.Add(new string[] { "C4", "N1", "N3", "C12" });
+            else
+                dihedrals.Add(new string[] { "C4", "N1", "N3", "C11" });
+
+            dihedrals.ForEach(d => MetricDict.Add("Dihedral_" + string.Join(",", d), Dihedral(d)));
+            
             return MetricDict;
         }
+
+        public double Dihedral(string[] Atoms)
+        {
+            if (Atoms.Length != 4) return 0;
+            //build vectors
+            Vector<double> b1 = -(DenseVector.OfArray(ByIdentifier(Atoms[0],true).XYZ()) - DenseVector.OfArray(ByIdentifier(Atoms[1], true).XYZ()));
+            Vector<double> b2 = (DenseVector.OfArray(ByIdentifier(Atoms[1], true).XYZ()) - DenseVector.OfArray(ByIdentifier(Atoms[2], true).XYZ()));
+            Vector<double> b3 = (DenseVector.OfArray(ByIdentifier(Atoms[3], true).XYZ()) - DenseVector.OfArray(ByIdentifier(Atoms[2], true).XYZ()));
+
+            //Normalize
+            b1 = b1.Normalize(2); 
+            b2 = b2.Normalize(2); 
+            b3 = b3.Normalize(2);
+
+            //calculate crossproducts
+            var c1 = CrossProduct(b1, b2);
+            var c2 = CrossProduct(b2, b3);
+            var c3 = CrossProduct(c1, b2);
+
+            //get x&y as dotproducts 
+            var x = c1.DotProduct(c2);
+            var y = c3.DotProduct(c2);
+
+            return 180.0 / Math.PI * Math.Atan2(y, x);
+        }
+
+        /// <summary>
+        /// Vector Crossproduct for MathNet Numerics
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static Vector<double> CrossProduct(Vector<double> left, Vector<double> right)
+        {
+            Vector<double> result = DenseVector.Create(3, 0);
+            result[0] = left[1] * right[2] - left[2] * right[1];
+            result[1] = -left[0] * right[2] + left[2] * right[0];
+            result[2] = left[0] * right[1] - left[1] * right[0];
+            return result;
+        }
+
 
         /// <summary>
         /// Draws a line between two points

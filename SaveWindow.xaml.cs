@@ -482,7 +482,7 @@ namespace PorphyStruct
         private void SaveResult(string Extension)
         {
             List<XElement> simRes = Sim.par.Select(par => new XElement("parameter", new XAttribute("name", par.Key), par.Value)).ToList();
-            List<XElement> metrix = Cycle.Metrics().Select(met => new XElement("metric", new XAttribute("name", met.Key), met.Value)).ToList();
+            List<XElement> metrix = Cycle.Metrics().Select(met => new XElement(met.Key.Split('_')[0], new XAttribute("atoms", met.Key.Split('_')[1]), met.Value)).ToList();
 
             simRes.Add(new XElement("doop", Sim.MeanDisplacement()));
             simRes.Add(new XElement("errors",
