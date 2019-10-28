@@ -482,17 +482,20 @@ namespace PorphyStruct
         private void SaveResult(string Extension)
         {
             List<XElement> simRes = Sim.par.Select(par => new XElement("parameter", new XAttribute("name", par.Key), par.Value)).ToList();
-            
+            List<XElement> metrix = Cycle.Metrics().Select(met => new XElement("metric", new XAttribute("name", met.Key), met.Value)).ToList();
+
             simRes.Add(new XElement("doop", Sim.MeanDisplacement()));
             simRes.Add(new XElement("errors",
                 new XElement("data", Sim.errors[0]),
                 new XElement("derivative", Sim.errors[1]),
-                new XElement("integral", Sim.errors[2])));
+                new XElement("integral", Sim.errors[2])
+                ));
 
             XElement Molecule = new XElement("molecule",
                 new XAttribute("name", NameTB.Text),
                 new XElement("type", Cycle.type.ToString()),
-                new XElement("simulation", simRes)
+                new XElement("simulation", simRes),
+                new XElement("metrics", metrix)
                 );
             Molecule.Save(File.Create(Filename + "Result." + Extension));
         }
