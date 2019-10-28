@@ -938,6 +938,8 @@ namespace PorphyStruct
         {
             this.UpdateMolView(false, false, true);
             coordGrid.Items.Refresh();
+            //show message
+            MessageQueue.Enqueue("Detection Algorithmus finished!");
         }
 
         #endregion
