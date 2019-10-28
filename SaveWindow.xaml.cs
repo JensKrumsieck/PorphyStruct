@@ -475,13 +475,14 @@ namespace PorphyStruct
 
         }
 
+        /// <summary>
+        /// Save XML Result
+        /// </summary>
+        /// <param name="Extension"></param>
         private void SaveResult(string Extension)
         {
-            List<XElement> simRes = new List<XElement>();
-            foreach (KeyValuePair<string, double> i in Sim.par)
-            {
-                simRes.Add(new XElement("parameter", new XAttribute("name", i.Key), i.Value));
-            }
+            List<XElement> simRes = Sim.par.Select(par => new XElement("parameter", new XAttribute("name", par.Key), par.Value)).ToList();
+            
             simRes.Add(new XElement("doop", Sim.MeanDisplacement()));
             simRes.Add(new XElement("errors",
                 new XElement("data", Sim.errors[0]),

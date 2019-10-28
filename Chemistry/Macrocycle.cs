@@ -804,6 +804,24 @@ namespace PorphyStruct.Chemistry
             return m;
         }
 
+
+        /// <summary>
+        /// Returns Bondlenghts, etc. for the cycles
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, double> Metrics()
+        {
+            Dictionary<string, double> MetricDict = new Dictionary<string, double>();
+            //N4 Lenghts
+            if (HasMetal)
+            {
+                for (int i = 1; i <= 4; i++) MetricDict.Add($"D(N{i},M)", CalculateDistance($"N{i}", GetMetal().Identifier));
+                MetricDict.Add("D(M,msp", GetMetal().DistanceToPlane(GetMeanPlane()));
+            }
+
+            return MetricDict;
+        }
+
         /// <summary>
         /// Draws a line between two points
         /// </summary>
