@@ -865,6 +865,11 @@ namespace PorphyStruct.Chemistry
             return MetricDict;
         }
 
+        /// <summary>
+        /// calculates a dihedral
+        /// </summary>
+        /// <param name="Atoms"></param>
+        /// <returns></returns>
         public double Dihedral(string[] Atoms)
         {
             if (Atoms.Length != 4) return 0;
@@ -1185,7 +1190,7 @@ namespace PorphyStruct.Chemistry
             }
 
             Atom start = null;
-            if (type != Type.Corrole)
+            if (type != Type.Corrole && type != Type.Norcorrole)
             {
                 start = Atoms.Where(s => s.IsMacrocycle && Neighbors(s).Where(l => l.Element.Symbol == "N").Count() != 0).FirstOrDefault();
             }
@@ -1242,6 +1247,21 @@ namespace PorphyStruct.Chemistry
                 }
                 else current.Identifier = "C" + indexC;
                 indexC++;
+            }            
+            //correct counting, as norcorrole does not have c10 in my convention!
+            if(type == Type.Norcorrole)
+            {
+                foreach(Atom c in Atoms.Where(s => s.Type == "C" && s.IsMacrocycle))
+                {
+                    string pattern = "[0-9]+";
+                    var reg = Regex.Match(c.Identifier, pattern);
+                    int.TryParse(reg.Value, out int integer);
+                    if(integer >= 10)
+                    {
+                        integer++;
+                        c.Identifier = "C" + integer;
+                    }
+                }
             }
 
             //assign N
@@ -1252,6 +1272,8 @@ namespace PorphyStruct.Chemistry
                 if (Neighbors(n).Where(l => l.Identifier == "C11").Count() == 1) n.Identifier = "N3";
                 if (Neighbors(n).Where(l => l.Identifier == "C16").Count() == 1) n.Identifier = "N4";
             }
+
+
             return Atoms;
         }
     }
