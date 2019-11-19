@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PorphyStruct.Simulations
 {
-    static class Error
+    public static class Error
     {
 
         /// <summary>

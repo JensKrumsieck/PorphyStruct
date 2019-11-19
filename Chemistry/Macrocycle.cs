@@ -19,7 +19,6 @@ namespace PorphyStruct.Chemistry
         {
             //does nothing for now
         }
-
         public enum Type { Corrole, Porphyrin, Norcorrole, Corrphycene, Porphycene };
         public Macrocycle.Type type;
 
@@ -129,23 +128,8 @@ namespace PorphyStruct.Chemistry
         public Vector3D GetCentroid()
         {
             //get the centroid
-            return Point3D.Centroid(GetPoints()).ToVector3D();
+            return Point3D.Centroid(Atoms.Where(s => s.IsMacrocycle && !s.IsMetal).ToPoint3D()).ToVector3D();
         }
-
-        /// <summary>
-        /// Converts the xyz into Point3D because some methods need math net spatial...
-        /// </summary>
-        /// <returns></returns>
-        private List<Point3D> GetPoints()
-        {
-            List<Point3D> points = new List<Point3D>();
-            foreach (Atom atom in Atoms)
-            {
-                if (atom.IsMacrocycle && !atom.IsMetal) points.Add(new Point3D(atom.X, atom.Y, atom.Z));
-            }
-            return points;
-        }
-
 
         /// <summary>
         /// Gets the mean plane of this Macrocycle
@@ -154,11 +138,7 @@ namespace PorphyStruct.Chemistry
         public Plane GetMeanPlane()
         {
             //convert coordinates into Point3D because centroid method is only available in math net spatial
-            List<Point3D> points = GetPoints();
-            foreach (Atom atom in Atoms)
-            {
-                if (atom.IsMacrocycle && !atom.IsMetal) points.Add(new Point3D(atom.X, atom.Y, atom.Z));
-            }
+            List<Point3D> points = Atoms.Where(s => s.IsMacrocycle && !s.IsMetal).ToPoint3D().ToList();
             //calculate Centroid first
             //get the centroid
             Vector3D centroid = GetCentroid();
@@ -1090,17 +1070,15 @@ namespace PorphyStruct.Chemistry
             return Math.Sqrt(sum);
         }
 
-        public List<Atom> Neighbors(Atom A)
+        public IEnumerable<Atom> Neighbors(Atom A)
         {
-            List<Atom> result = new List<Atom>();
             foreach (Atom B in Atoms)
             {
                 if (A.BondTo(B) && A != B)
                 {
-                    result.Add(B);
+                    yield return B;
                 }
             }
-            return result;
         }
 
         /// <summary>
