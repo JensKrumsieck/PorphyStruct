@@ -21,7 +21,7 @@ namespace PorphyStruct.Chemistry
         }
         public enum Type { Corrole, Porphyrin, Norcorrole, Corrphycene, Porphycene };
         public Macrocycle.Type type;
-
+        #region Cycle Properties
         //all bonds of a porphyrin
         public static List<Tuple<string, string>> PorphyrinBonds = new List<Tuple<string, string>>() {
             new Tuple<string, string>("C1", "C2"),
@@ -111,6 +111,7 @@ namespace PorphyStruct.Chemistry
 
         //list of norcorrole atoms = Corrole Atoms without C10
         public static List<string> NorcorroleAtoms = CorroleAtoms.Except(new List<string>() { "C10" }).ToList();
+        #endregion
 
         /// <summary>
         /// Converts Crystal to Macrocycle
@@ -173,9 +174,96 @@ namespace PorphyStruct.Chemistry
         /// <returns>The Vectordistance</returns>
         public double CalculateDistance(string id1, string id2)
         {
-            return Atom.Distance(this.Atoms.Where(s => s.Identifier == id1 && s.IsMacrocycle).First(), this.Atoms.Where(s => s.Identifier == id2 && s.IsMacrocycle).First());
+            return Atom.Distance(ByIdentifier(id1, true), ByIdentifier(id2, true));
         }
 
+        /// <summary>
+        /// Business Logic for Datapoint calculation
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<AtomDataPoint> CalculateDataPoints(Func<Atom, double> XAxisFunction)
+        {
+            //get Atoms based on the Macrocyclic Type from Field {type}Atoms 
+            List<string> _Atoms = this.GetType().GetField($"{type.ToString()}Atoms").GetValue(this) as List<string>;
+
+            //check if every atom is present in configuration
+            foreach (string id in _Atoms)
+            {
+                if (Atoms.FindAll(s => s.Identifier == id && s.IsMacrocycle).Count != 1)
+                {
+                    System.Windows.Forms.MessageBox.Show($"Found Issues with Atom {id}! Please check your configuration.");
+                    yield break;              
+                }
+            }
+
+            //reorder Atoms
+            Atoms = Atoms.OrderBy(s => _Atoms.IndexOf(s.Identifier)).ToList();
+
+            //loop through every non Metal Atom of Macrocycle and return datapoint
+            foreach(Atom a in Atoms.Where(s => s.IsMacrocycle && !s.IsMetal))
+            {
+                yield return new AtomDataPoint(XAxisFunction(a), a.DistanceToPlane(GetMeanPlane()), a);
+            }
+        }
+
+        /// <summary>
+        /// Returns the specific distances for every cycle type.
+        /// may be improved in future
+        /// </summary>
+        /// <returns>double[]</returns>
+        internal double[] SpecificDistances()
+        {
+            switch (type)
+            {
+                case Type.Corrole:
+                case Type.Norcorrole:
+                    return new double[] {
+                        CalculateDistance("C1", "C4"),
+                        CalculateDistance("C4", "C6"),
+                        CalculateDistance("C6", "C9"),
+                        CalculateDistance("C9", "C11"),
+                        CalculateDistance("C11", "C14"),
+                        CalculateDistance("C14", "C16"),
+                        CalculateDistance("C16", "C19")
+                    };
+                case Type.Porphyrin:
+                    return new double[] {
+                        CalculateDistance("C1", "C4"),
+                        CalculateDistance("C4", "C6"),
+                        CalculateDistance("C6", "C9"),
+                        CalculateDistance("C9", "C11"),
+                        CalculateDistance("C11", "C14"),
+                        CalculateDistance("C14", "C16"),
+                        CalculateDistance("C16", "C19"),
+                        CalculateDistance("C19", "C1")
+                    };
+                case Type.Corrphycene:
+                    return new double[]
+                    {
+                        CalculateDistance("C1", "C4"),
+                        CalculateDistance("C4", "C6"),
+                        CalculateDistance("C6", "C9"),
+                        CalculateDistance("C9", "C12"),
+                        CalculateDistance("C12", "C15"),
+                        CalculateDistance("C15", "C17"),
+                        CalculateDistance("C17", "C20")
+                    };
+                case Type.Porphycene:
+                    return new double[]
+                    {
+                        CalculateDistance("C1", "C4"),
+                        CalculateDistance("C4", "C7"),
+                        CalculateDistance("C7", "C10"),
+                        CalculateDistance("C10", "C11"),
+                        CalculateDistance("C11", "C14"),
+                        CalculateDistance("C14", "C17"),
+                        CalculateDistance("C17", "C20")
+                    };
+                default: return new double[0];
+            }
+        }
+
+               
         /// <summary>
         /// Calculates the DataPoints for a corrole type cycle.
         /// </summary>
@@ -394,7 +482,6 @@ namespace PorphyStruct.Chemistry
                     double xCoord = 1;
 
                     //set x axis
-
                     if (a.Identifier == "C20")
                     {
                         xCoord = 1;
