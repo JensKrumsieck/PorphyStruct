@@ -207,60 +207,36 @@ namespace PorphyStruct.Chemistry
         }
 
         /// <summary>
-        /// Returns the specific distances for every cycle type.
-        /// may be improved in future
+        /// alpha atoms of the cycle type
         /// </summary>
-        /// <returns>double[]</returns>
-        internal double[] SpecificDistances()
+        private string[] AlphaAtoms
         {
-            switch (type)
-            {
-                case Type.Corrole:
-                case Type.Norcorrole:
-                    return new double[] {
-                        CalculateDistance("C1", "C4"),
-                        CalculateDistance("C4", "C6"),
-                        CalculateDistance("C6", "C9"),
-                        CalculateDistance("C9", "C11"),
-                        CalculateDistance("C11", "C14"),
-                        CalculateDistance("C14", "C16"),
-                        CalculateDistance("C16", "C19")
-                    };
-                case Type.Porphyrin:
-                    return new double[] {
-                        CalculateDistance("C1", "C4"),
-                        CalculateDistance("C4", "C6"),
-                        CalculateDistance("C6", "C9"),
-                        CalculateDistance("C9", "C11"),
-                        CalculateDistance("C11", "C14"),
-                        CalculateDistance("C14", "C16"),
-                        CalculateDistance("C16", "C19"),
-                        CalculateDistance("C19", "C1")
-                    };
-                case Type.Corrphycene:
-                    return new double[]
-                    {
-                        CalculateDistance("C1", "C4"),
-                        CalculateDistance("C4", "C6"),
-                        CalculateDistance("C6", "C9"),
-                        CalculateDistance("C9", "C12"),
-                        CalculateDistance("C12", "C15"),
-                        CalculateDistance("C15", "C17"),
-                        CalculateDistance("C17", "C20")
-                    };
-                case Type.Porphycene:
-                    return new double[]
-                    {
-                        CalculateDistance("C1", "C4"),
-                        CalculateDistance("C4", "C7"),
-                        CalculateDistance("C7", "C10"),
-                        CalculateDistance("C10", "C11"),
-                        CalculateDistance("C11", "C14"),
-                        CalculateDistance("C14", "C17"),
-                        CalculateDistance("C17", "C20")
-                    };
-                default: return new double[0];
+            get {
+                switch (type)
+                {
+                    case Type.Corrole:
+                    case Type.Norcorrole:
+                    default:
+                        return new string[] { "C1", "C4", "C6", "C9", "C11", "C14", "C16", "C19" };
+                    case Type.Porphyrin:
+                        return new string[] { "C1", "C4", "C6", "C9", "C11", "C14", "C16", "C19", "C1" };
+                    case Type.Corrphycene:
+                        return new string[] { "C1", "C4", "C6", "C9", "C12", "C15", "C17", "C20" };
+                    case Type.Porphycene:
+                        return new string[] { "C1", "C4", "C7", "C10", "C11", "C14", "C17", "C20" };                    
+                }
             }
+        }
+
+        /// <summary>
+        /// checks whether it's an alpha atom or not
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns>boolean</returns>
+        private bool isAlpha(Atom a)
+        {
+            if (AlphaAtoms.Contains(a.Identifier)) return true;
+            return false;
         }
 
                
