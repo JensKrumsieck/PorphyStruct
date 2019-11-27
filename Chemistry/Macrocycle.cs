@@ -178,13 +178,14 @@ namespace PorphyStruct.Chemistry
         }
 
         /// <summary>
-        /// Business Logic for Datapoint calculation
+        /// Method for Datapoint calculation //rewritten
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<AtomDataPoint> CalculateDataPoints(Func<Atom, double> XAxisFunction)
+        public IEnumerable<AtomDataPoint> CalculateDataPoints()
         {
             //get Atoms based on the Macrocyclic Type from Field {type}Atoms 
-            List<string> _Atoms = this.GetType().GetField($"{type.ToString()}Atoms").GetValue(this) as List<string>;
+            string atoms = type != Type.Corrphycene && type != Type.Porphycene ? type.ToString() : "Porphyrin";
+            List<string> _Atoms = this.GetType().GetField($"{atoms}Atoms").GetValue(this) as List<string>;
 
             //check if every atom is present in configuration
             foreach (string id in _Atoms)
@@ -198,11 +199,77 @@ namespace PorphyStruct.Chemistry
 
             //reorder Atoms
             Atoms = Atoms.OrderBy(s => _Atoms.IndexOf(s.Identifier)).ToList();
+            //current alpha-alpha distance
+            double distance = 0;
+
+            //current fixpoint
+            double fixPoint = 1;
+
+            //add c20 beforehand...
+            dataPoints.Clear();
+            if (type == Type.Porphyrin) dataPoints.Add(new AtomDataPoint(1, ByIdentifier("C20", true).DistanceToPlane(GetMeanPlane()), ByIdentifier("C20", true)));
 
             //loop through every non Metal Atom of Macrocycle and return datapoint
             foreach(Atom a in Atoms.Where(s => s.IsMacrocycle && !s.IsMetal))
             {
-                yield return new AtomDataPoint(XAxisFunction(a), a.DistanceToPlane(GetMeanPlane()), a);
+
+                double xCoord = 1;
+
+                if (a.Type == "C")
+                {
+                    //check if porphyrin for special c1 value
+                    if (a.Identifier == "C1" && type == Type.Porphyrin)
+                    {
+                        xCoord = 1 + CalculateDistance("C1", "C19") / 2;
+                    }
+                    //usual coordinate generation
+                    else xCoord = fixPoint + distance * Multiplier[a.Identifier];
+                }
+                if (a.Type == "N")
+                    xCoord = fixPoint + distance / 2;
+
+
+                //starts with C1 which is alpha per definition, so refresh distance every alpha atom.
+                if (isAlpha(a) && GetNextAlpha(a) != null)
+                    distance = Atom.Distance(a, GetNextAlpha(a));
+
+                //alpha atoms are fixpoints
+                if (isAlpha(a)) fixPoint = xCoord;
+
+                yield return new AtomDataPoint(xCoord, a.DistanceToPlane(GetMeanPlane()), a);
+            }
+        }
+
+        /// <summary>
+        /// Multipliers for C-Atom positioning
+        /// </summary>
+        private Dictionary<string, double> Multiplier
+        {
+            get
+            {
+                return new Dictionary<string, double>
+                {
+                    { "C1", 0d },
+                    { "C2", 1 / 3d },
+                    { "C3", 2 / 3d },
+                    { "C4", 1d },
+                    { "C5", type == Type.Porphycene ? 1 / 3d : 1 / 2d },
+                    { "C6", type == Type.Porphycene ? 2 / 3d : 1d },
+                    { "C7", type == Type.Porphycene ? 1d : 1 / 3d },
+                    { "C8", type == Type.Porphycene ? 1 / 3d : 2 / 3d },
+                    { "C9", type == Type.Porphycene ? 2 / 3d : 1d },
+                    { "C10", (type == Type.Porphycene ? 1d : (type == Type.Corrphycene ? 1 / 3d : 1 / 2d)) },
+                    { "C11", type == Type.Corrphycene ? 2 / 3d : 1d },
+                    { "C12", type == Type.Corrphycene ? 1d : 1 / 3d },
+                    { "C13", type == Type.Corrphycene ? 1 / 3d : 2 / 3d },
+                    { "C14", type == Type.Corrphycene ? 2 / 3d : 1d },
+                    { "C15", (type == Type.Corrphycene ? 1d : (type == Type.Porphycene ? 1 / 3d : 1 / 2d)) },
+                    { "C16", (type == Type.Corrphycene ? 1 / 2d : (type == Type.Porphycene ? 2 / 3d : 1d)) },
+                    { "C17", (type == Type.Corrphycene || type == Type.Porphycene ? 1d : 1 / 3d) },
+                    { "C18", (type == Type.Corrphycene || type == Type.Porphycene ? 1 / 3d : 2 / 3d) },
+                    { "C19", (type == Type.Corrphycene || type == Type.Porphycene ? 2 / 3d : 1d) },
+                    { "C20", (type == Type.Corrphycene || type == Type.Porphycene ? 1d : 1 / 2d) }
+                };
             }
         }
 
@@ -239,542 +306,17 @@ namespace PorphyStruct.Chemistry
             return false;
         }
 
-               
         /// <summary>
-        /// Calculates the DataPoints for a corrole type cycle.
+        /// gets next alpha position for distance measuring
         /// </summary>
-        /// <returns>AtomDataPoints</returns>
-        public List<AtomDataPoint> GetCorroleDataPoints()
+        /// <param name="a"></param>
+        /// <returns>Atom</returns>
+        private Atom GetNextAlpha(Atom a)
         {
-            //check if every atom is found:
-            foreach (string id in CorroleAtoms)
-            {
-                if (Atoms.Where(s => s.Identifier == id).Count() == 0)
-                {
-                    System.Windows.Forms.MessageBox.Show("Atom " + id + " could not be determined!");
-                    return null;
-                }
-            }
-
-            //order atoms
-            Atoms = Atoms.OrderBy(s => CorroleAtoms.IndexOf(s.Identifier)).ToList();
-
-            //get the 7 distances for corrole
-            double d1 = CalculateDistance("C1", "C4");
-            double d2 = CalculateDistance("C4", "C6");
-            double d3 = CalculateDistance("C6", "C9");
-            double d4 = CalculateDistance("C9", "C11");
-            double d5 = CalculateDistance("C11", "C14");
-            double d6 = CalculateDistance("C14", "C16");
-            double d7 = CalculateDistance("C16", "C19");
-
-            double[] fixPoints = new double[6];
-            foreach (Atom a in Atoms)
-            {
-                if (a.IsMacrocycle && !a.IsMetal)
-                {
-                    //defaulting to 1
-                    double xCoord = 1;
-
-                    //set x axis
-                    if (a.Identifier == "C1")
-                        xCoord = 1;
-                    if (a.Identifier == "C2")
-                        xCoord = 1 + d1 / 3;
-                    if (a.Identifier == "N1")
-                        xCoord = 1 + d1 / 2;
-                    if (a.Identifier == "C3")
-                        xCoord = 1 + (d1 / 3) * 2;
-                    if (a.Identifier == "C4")
-                    { xCoord = 1 + d1; fixPoints[0] = xCoord; }
-                    if (a.Identifier == "C5")
-                        xCoord = d2 / 2 + fixPoints[0];
-                    if (a.Identifier == "C6")
-                    { xCoord = d2 + fixPoints[0]; fixPoints[1] = xCoord; }
-                    if (a.Identifier == "C7")
-                        xCoord = d3 / 3 + fixPoints[1];
-                    if (a.Identifier == "N2")
-                        xCoord = d3 / 2 + fixPoints[1];
-                    if (a.Identifier == "C8")
-                        xCoord = (d3 / 3) * 2 + fixPoints[1];
-                    if (a.Identifier == "C9")
-                    { xCoord = d3 + fixPoints[1]; fixPoints[2] = xCoord; }
-                    if (a.Identifier == "C10")
-                        xCoord = d4 / 2 + fixPoints[2];
-                    if (a.Identifier == "C11")
-                    { xCoord = d4 + fixPoints[2]; fixPoints[3] = xCoord; }
-                    if (a.Identifier == "C12")
-                        xCoord = d5 / 3 + fixPoints[3];
-                    if (a.Identifier == "N3")
-                        xCoord = d5 / 2 + fixPoints[3];
-                    if (a.Identifier == "C13")
-                        xCoord = (d5 / 3) * 2 + fixPoints[3];
-                    if (a.Identifier == "C14")
-                    { xCoord = d5 + fixPoints[3]; fixPoints[4] = xCoord; };
-                    if (a.Identifier == "C15")
-                        xCoord = d6 / 2 + fixPoints[4];
-                    if (a.Identifier == "C16")
-                    { xCoord = d6 + fixPoints[4]; fixPoints[5] = xCoord; };
-                    if (a.Identifier == "C17")
-                        xCoord = d7 / 3 + fixPoints[5];
-                    if (a.Identifier == "N4")
-                        xCoord = d7 / 2 + fixPoints[5];
-                    if (a.Identifier == "C18")
-                        xCoord = (d7 / 3) * 2 + fixPoints[5];
-                    if (a.Identifier == "C19")
-                        xCoord = d7 + fixPoints[5];
-
-                    //add data
-                    dataPoints.Add(new AtomDataPoint(xCoord, a.DistanceToPlane(GetMeanPlane()), a));
-                }
-            }
-            return dataPoints;
+            int i = Array.IndexOf(AlphaAtoms, a.Identifier) + 1; 
+            if (AlphaAtoms.Length > i) return ByIdentifier(AlphaAtoms[i], true);
+            else return null;
         }
-
-        /// <summary>
-        /// Calculates the DataPoints for a corrole type cycle.
-        /// </summary>
-        /// <returns>AtomDataPoints</returns>
-        public List<AtomDataPoint> GetNorcorroleDataPoints()
-        {
-            //check if every atom is found:
-            foreach (string id in NorcorroleAtoms)
-            {
-                if (Atoms.Where(s => s.Identifier == id).Count() == 0)
-                {
-                    System.Windows.Forms.MessageBox.Show("Atom " + id + " could not be determined!");
-                    return null;
-                }
-            }
-
-            //order atoms
-            Atoms = Atoms.OrderBy(s => NorcorroleAtoms.IndexOf(s.Identifier)).ToList();
-
-            //get the 7 distances for corrole
-            double d1 = CalculateDistance("C1", "C4");
-            double d2 = CalculateDistance("C4", "C6");
-            double d3 = CalculateDistance("C6", "C9");
-            double d4 = CalculateDistance("C9", "C11");
-            double d5 = CalculateDistance("C11", "C14");
-            double d6 = CalculateDistance("C14", "C16");
-            double d7 = CalculateDistance("C16", "C19");
-
-            double[] fixPoints = new double[6];
-            foreach (Atom a in Atoms)
-            {
-                if (a.IsMacrocycle && !a.IsMetal)
-                {
-                    //defaulting to 1
-                    double xCoord = 1;
-
-                    //set x axis
-                    if (a.Identifier == "C1")
-                        xCoord = 1;
-                    if (a.Identifier == "C2")
-                        xCoord = 1 + d1 / 3;
-                    if (a.Identifier == "N1")
-                        xCoord = 1 + d1 / 2;
-                    if (a.Identifier == "C3")
-                        xCoord = 1 + (d1 / 3) * 2;
-                    if (a.Identifier == "C4")
-                    { xCoord = 1 + d1; fixPoints[0] = xCoord; }
-                    if (a.Identifier == "C5")
-                        xCoord = d2 / 2 + fixPoints[0];
-                    if (a.Identifier == "C6")
-                    { xCoord = d2 + fixPoints[0]; fixPoints[1] = xCoord; }
-                    if (a.Identifier == "C7")
-                        xCoord = d3 / 3 + fixPoints[1];
-                    if (a.Identifier == "N2")
-                        xCoord = d3 / 2 + fixPoints[1];
-                    if (a.Identifier == "C8")
-                        xCoord = (d3 / 3) * 2 + fixPoints[1];
-                    if (a.Identifier == "C9")
-                    { xCoord = d3 + fixPoints[1]; fixPoints[2] = xCoord; }
-                    if (a.Identifier == "C11")
-                    { xCoord = d4 + fixPoints[2]; fixPoints[3] = xCoord; }
-                    if (a.Identifier == "C12")
-                        xCoord = d5 / 3 + fixPoints[3];
-                    if (a.Identifier == "N3")
-                        xCoord = d5 / 2 + fixPoints[3];
-                    if (a.Identifier == "C13")
-                        xCoord = (d5 / 3) * 2 + fixPoints[3];
-                    if (a.Identifier == "C14")
-                    { xCoord = d5 + fixPoints[3]; fixPoints[4] = xCoord; };
-                    if (a.Identifier == "C15")
-                        xCoord = d6 / 2 + fixPoints[4];
-                    if (a.Identifier == "C16")
-                    { xCoord = d6 + fixPoints[4]; fixPoints[5] = xCoord; };
-                    if (a.Identifier == "C17")
-                        xCoord = d7 / 3 + fixPoints[5];
-                    if (a.Identifier == "N4")
-                        xCoord = d7 / 2 + fixPoints[5];
-                    if (a.Identifier == "C18")
-                        xCoord = (d7 / 3) * 2 + fixPoints[5];
-                    if (a.Identifier == "C19")
-                        xCoord = d7 + fixPoints[5];
-
-                    //add data
-                    dataPoints.Add(new AtomDataPoint(xCoord, a.DistanceToPlane(GetMeanPlane()), a));
-                }
-            }
-            return dataPoints;
-        }
-
-        /// <summary>
-        /// Calculates the DataPoints for a porphyrin type cycle.
-        /// </summary>
-        /// <returns>AtomDataPoints</returns>
-        public List<AtomDataPoint> GetPorphyrinDataPoints()
-        {
-            //check if every atom is found:
-            foreach (string id in PorphyrinAtoms)
-            {
-                if (Atoms.Where(s => s.Identifier == id).Count() == 0)
-                {
-                    System.Windows.Forms.MessageBox.Show("Atom " + id + " could not be determined!");
-                    return null;
-                }
-            }
-
-            //order atoms
-            Atoms = Atoms.OrderBy(s => PorphyrinAtoms.IndexOf(s.Identifier)).ToList();
-
-            //get the x distances for porphyrin
-            double d1 = CalculateDistance("C1", "C4");
-            double d2 = CalculateDistance("C4", "C6");
-            double d3 = CalculateDistance("C6", "C9");
-            double d4 = CalculateDistance("C9", "C11");
-            double d5 = CalculateDistance("C11", "C14");
-            double d6 = CalculateDistance("C14", "C16");
-            double d7 = CalculateDistance("C16", "C19");
-            double d8 = CalculateDistance("C19", "C1");
-
-            double[] fixPoints = new double[7];
-            foreach (Atom a in Atoms)
-            {
-                if (a.IsMacrocycle && !a.IsMetal)
-                {
-                    //defaulting to 1
-                    double xCoord = 1;
-
-                    //set x axis
-                    if (a.Identifier == "C20")
-                    {
-                        xCoord = 1;
-                        //add c20 twice
-                        dataPoints.Add(new AtomDataPoint((d7 + fixPoints[6] + (d8 / 2)), a.DistanceToPlane(GetMeanPlane()), a));
-                    }
-                    if (a.Identifier == "C1")
-                    {
-                        xCoord = 1 + (d8 / 2);
-                        fixPoints[0] = xCoord;
-                    }
-                    if (a.Identifier == "C2")
-                        xCoord = d1 / 3 + fixPoints[0];
-                    if (a.Identifier == "N1")
-                        xCoord = d1 / 2 + fixPoints[0];
-                    if (a.Identifier == "C3")
-                        xCoord = (d1 / 3) * 2 + fixPoints[0];
-                    if (a.Identifier == "C4")
-                    {
-                        xCoord = d1 + fixPoints[0];
-                        fixPoints[1] = xCoord;
-                    }
-                    if (a.Identifier == "C5")
-                        xCoord = d2 / 2 + fixPoints[1];
-                    if (a.Identifier == "C6")
-                    {
-                        xCoord = d2 + fixPoints[1];
-                        fixPoints[2] = xCoord;
-                    }
-                    if (a.Identifier == "C7")
-                        xCoord = d3 / 3 + fixPoints[2];
-                    if (a.Identifier == "N2")
-                        xCoord = d3 / 2 + fixPoints[2];
-                    if (a.Identifier == "C8")
-                        xCoord = (d3 / 3) * 2 + fixPoints[2];
-                    if (a.Identifier == "C9")
-                    {
-                        xCoord = d3 + fixPoints[2];
-                        fixPoints[3] = xCoord;
-                    }
-                    if (a.Identifier == "C10")
-                        xCoord = d4 / 2 + fixPoints[3];
-                    if (a.Identifier == "C11")
-                    {
-                        xCoord = d4 + fixPoints[3];
-                        fixPoints[4] = xCoord;
-                    }
-                    if (a.Identifier == "C12")
-                        xCoord = d5 / 3 + fixPoints[4];
-                    if (a.Identifier == "N3")
-                        xCoord = d5 / 2 + fixPoints[4];
-                    if (a.Identifier == "C13")
-                        xCoord = (d5 / 3) * 2 + fixPoints[4];
-                    if (a.Identifier == "C14")
-                    {
-                        xCoord = d5 + fixPoints[4];
-                        fixPoints[5] = xCoord;
-                    };
-                    if (a.Identifier == "C15")
-                        xCoord = d6 / 2 + fixPoints[5];
-                    if (a.Identifier == "C16")
-                    {
-                        xCoord = d6 + fixPoints[5];
-                        fixPoints[6] = xCoord;
-                    };
-                    if (a.Identifier == "C17")
-                        xCoord = d7 / 3 + fixPoints[6];
-                    if (a.Identifier == "N4")
-                        xCoord = d7 / 2 + fixPoints[6];
-                    if (a.Identifier == "C18")
-                        xCoord = (d7 / 3) * 2 + fixPoints[6];
-                    if (a.Identifier == "C19")
-                        xCoord = d7 + fixPoints[6];
-
-
-
-                    //add data
-                    dataPoints.Add(new AtomDataPoint(xCoord, a.DistanceToPlane(GetMeanPlane()), a));
-                }
-            }
-            return dataPoints;
-        }
-
-
-
-        /// <summary>
-        /// Calculates the DataPoints for a corrphycene type cycle.
-        /// </summary>
-        /// <returns>AtomDataPoints</returns>
-        public List<AtomDataPoint> GetCorrphyceneDataPoints()
-        {
-            //check if every atom is found: //Porphyrin Atoms used here is correct!
-            foreach (string id in PorphyrinAtoms)
-            {
-                if (Atoms.Where(s => s.Identifier == id).Count() == 0)
-                {
-                    System.Windows.Forms.MessageBox.Show("Atom " + id + " could not be determined!");
-                    return null;
-                }
-            }
-
-            //order atoms
-            Atoms = Atoms.OrderBy(s => PorphyrinAtoms.IndexOf(s.Identifier)).ToList();
-
-            //get the 7 distances for corrphycene
-            double d1 = CalculateDistance("C1", "C4");
-            double d2 = CalculateDistance("C4", "C6");
-            double d3 = CalculateDistance("C6", "C9");
-            double d4 = CalculateDistance("C9", "C12");
-            double d5 = CalculateDistance("C12", "C15");
-            double d6 = CalculateDistance("C15", "C17");
-            double d7 = CalculateDistance("C17", "C20");
-
-            double[] fixPoints = new double[7];
-            foreach (Atom a in Atoms)
-            {
-                if (a.IsMacrocycle && !a.IsMetal)
-                {
-                    //defaulting to 1
-                    double xCoord = 1;
-
-                    //set x axis
-                    if (a.Identifier == "C1")
-                    {
-                        xCoord = 1;
-                        fixPoints[0] = xCoord;
-                    }
-                    if (a.Identifier == "C2")
-                        xCoord = d1 / 3 + fixPoints[0];
-                    if (a.Identifier == "N1")
-                        xCoord = d1 / 2 + fixPoints[0];
-                    if (a.Identifier == "C3")
-                        xCoord = (d1 / 3) * 2 + fixPoints[0];
-                    if (a.Identifier == "C4")
-                    {
-                        xCoord = d1 + fixPoints[0];
-                        fixPoints[1] = xCoord;
-                    }
-                    if (a.Identifier == "C5")
-                        xCoord = d2 / 2 + fixPoints[1];
-                    if (a.Identifier == "C6")
-                    {
-                        xCoord = d2 + fixPoints[1];
-                        fixPoints[2] = xCoord;
-                    }
-                    if (a.Identifier == "C7")
-                        xCoord = d3 / 3 + fixPoints[2];
-                    if (a.Identifier == "N2")
-                        xCoord = d3 / 2 + fixPoints[2];
-                    if (a.Identifier == "C8")
-                        xCoord = (d3 / 3) * 2 + fixPoints[2];
-                    if (a.Identifier == "C9")
-                    {
-                        xCoord = d3 + fixPoints[2];
-                        fixPoints[3] = xCoord;
-                    }
-                    if (a.Identifier == "C10")
-                        xCoord = d4 / 3 + fixPoints[3];
-                    if (a.Identifier == "C11")
-                        xCoord = (d4 / 3) * 2 + fixPoints[3];
-                    if (a.Identifier == "C12")
-                    {
-                        xCoord = d4 + fixPoints[3];
-                        fixPoints[4] = xCoord;
-                    }
-                    if (a.Identifier == "C13")
-                        xCoord = (d5 / 3) + fixPoints[4];
-                    if (a.Identifier == "N3")
-                        xCoord = d5 / 2 + fixPoints[4];
-
-                    if (a.Identifier == "C14")
-                        xCoord = (d5 / 3) * 2 + fixPoints[4];
-                    if (a.Identifier == "C15")
-                    {
-                        xCoord = d5 + fixPoints[4];
-                        fixPoints[5] = xCoord;
-                    }
-                    if (a.Identifier == "C16")
-                        xCoord = d5 / 2 + fixPoints[5];
-                    if (a.Identifier == "C17")
-                    {
-                        xCoord = d5 + fixPoints[5];
-                        fixPoints[6] = xCoord;
-                    }
-                    if (a.Identifier == "C18")
-                        xCoord = d7 / 3 + fixPoints[6];
-                    if (a.Identifier == "N4")
-                        xCoord = d7 / 2 + fixPoints[6];
-                    if (a.Identifier == "C19")
-                        xCoord = (d7 / 3) * 2 + fixPoints[6];
-                    if (a.Identifier == "C20")
-                        xCoord = d7 + fixPoints[6];
-
-                    //add data
-                    dataPoints.Add(new AtomDataPoint(xCoord, a.DistanceToPlane(GetMeanPlane()), a));
-                }
-            }
-            return dataPoints;
-        }
-
-
-        /// <summary>
-        /// Calculates the DataPoints for a porphyrin type cycle.
-        /// </summary>
-        /// <returns>AtomDataPoints</returns>
-        public List<AtomDataPoint> GetPorphyceneDataPoints()
-        {
-            //check if every atom is found:
-            foreach (string id in PorphyrinAtoms)
-            {
-                if (Atoms.Where(s => s.Identifier == id).Count() == 0)
-                {
-                    System.Windows.Forms.MessageBox.Show("Atom " + id + " could not be determined!");
-                    return null;
-                }
-            }
-
-            //order atoms
-            Atoms = Atoms.OrderBy(s => PorphyrinAtoms.IndexOf(s.Identifier)).ToList();
-
-            //get the x distances for porphyrin
-            double d1 = CalculateDistance("C1", "C4");
-            double d2 = CalculateDistance("C4", "C7");
-            double d3 = CalculateDistance("C7", "C10");
-            double d4 = CalculateDistance("C10", "C11");
-            double d5 = CalculateDistance("C11", "C14");
-            double d6 = CalculateDistance("C14", "C17");
-            double d7 = CalculateDistance("C17", "C20");
-
-            double[] fixPoints = new double[7];
-            foreach (Atom a in Atoms)
-            {
-                if (a.IsMacrocycle && !a.IsMetal)
-                {
-                    //defaulting to 1
-                    double xCoord = 1;
-
-                    //set x axis
-                    if (a.Identifier == "C1")
-                    {
-                        xCoord = 1;
-                        fixPoints[0] = xCoord;
-                    }
-                    if (a.Identifier == "C2")
-                        xCoord = d1 / 3 + fixPoints[0];
-                    if (a.Identifier == "N1")
-                        xCoord = d1 / 2 + fixPoints[0];
-                    if (a.Identifier == "C3")
-                        xCoord = (d1 / 3) * 2 + fixPoints[0];
-                    if (a.Identifier == "C4")
-                    {
-                        xCoord = d1 + fixPoints[0];
-                        fixPoints[1] = xCoord;
-                    }
-                    if (a.Identifier == "C5")
-                        xCoord = d2 / 3 + fixPoints[1];
-                    if (a.Identifier == "C6")
-                        xCoord = (d2 / 3) * 2 + fixPoints[1];
-                    if (a.Identifier == "C7")
-                    {
-                        xCoord = d2 + fixPoints[1];
-                        fixPoints[2] = xCoord;
-                    }
-                    if (a.Identifier == "C8")
-                        xCoord = (d3 / 3) + fixPoints[2];
-                    if (a.Identifier == "N2")
-                        xCoord = d3 / 2 + fixPoints[2];
-                    if (a.Identifier == "C9")
-                        xCoord = (d3 / 3) * 2 + fixPoints[2];
-                    if (a.Identifier == "C10")
-                    {
-                        xCoord = d3 + fixPoints[2];
-                        fixPoints[3] = xCoord;
-                    }
-                    if (a.Identifier == "C11")
-                    {
-                        xCoord = d4 + fixPoints[3];
-                        fixPoints[4] = xCoord;
-                    }
-                    if (a.Identifier == "C12")
-                        xCoord = d5 / 3 + fixPoints[4];
-                    if (a.Identifier == "N3")
-                        xCoord = d5 / 2 + fixPoints[4];
-                    if (a.Identifier == "C13")
-                        xCoord = (d5 / 3) * 2 + fixPoints[4];
-                    if (a.Identifier == "C14")
-                    {
-                        xCoord = d5 + fixPoints[4];
-                        fixPoints[5] = xCoord;
-                    };
-                    if (a.Identifier == "C15")
-                        xCoord = d6 / 3 + fixPoints[5];
-                    if (a.Identifier == "C16")
-                        xCoord = (d6 / 3) * 2 + fixPoints[5];
-                    if (a.Identifier == "C17")
-                    {
-                        xCoord = d6 + fixPoints[5];
-                        fixPoints[6] = xCoord;
-                    }
-                    if (a.Identifier == "C18")
-                        xCoord = (d7 / 3) + fixPoints[6];
-                    if (a.Identifier == "N4")
-                        xCoord = d7 / 2 + fixPoints[6];
-                    if (a.Identifier == "C19")
-                        xCoord = (d7 / 3) * 2 + fixPoints[6];
-                    if (a.Identifier == "C20")
-                        xCoord = d7 + fixPoints[6];
-
-
-
-                    //add data
-                    dataPoints.Add(new AtomDataPoint(xCoord, a.DistanceToPlane(GetMeanPlane()), a));
-                }
-            }
-            return dataPoints;
-        }
-
 
         /// <summary>
         /// Return the cycle's datapoints
@@ -782,26 +324,7 @@ namespace PorphyStruct.Chemistry
         /// <returns>AtomDataPoints</returns>
         public List<AtomDataPoint> GetDataPoints()
         {
-            if (this.type == Macrocycle.Type.Corrole)
-            {
-                dataPoints = GetCorroleDataPoints();
-            }
-            else if (this.type == Macrocycle.Type.Porphyrin)
-            {
-                dataPoints = GetPorphyrinDataPoints();
-            }
-            else if (this.type == Macrocycle.Type.Norcorrole)
-            {
-                dataPoints = GetNorcorroleDataPoints();
-            }
-            else if (this.type == Macrocycle.Type.Corrphycene)
-            {
-                dataPoints = GetCorrphyceneDataPoints();
-            }
-            else if (this.type == Macrocycle.Type.Porphycene)
-            {
-                dataPoints = GetPorphyceneDataPoints();
-            }
+            dataPoints.AddRange(CalculateDataPoints());
 
             if (HasMetal)
             {
