@@ -193,7 +193,7 @@ namespace PorphyStruct.Chemistry
                 if (Atoms.FindAll(s => s.Identifier == id && s.IsMacrocycle).Count != 1)
                 {
                     System.Windows.Forms.MessageBox.Show($"Found Issues with Atom {id}! Please check your configuration.");
-                    yield break;              
+                    yield break;
                 }
             }
 
@@ -210,7 +210,7 @@ namespace PorphyStruct.Chemistry
             if (type == Type.Porphyrin) dataPoints.Add(new AtomDataPoint(1, ByIdentifier("C20", true).DistanceToPlane(GetMeanPlane()), ByIdentifier("C20", true)));
 
             //loop through every non Metal Atom of Macrocycle and return datapoint
-            foreach(Atom a in Atoms.Where(s => s.IsMacrocycle && !s.IsMetal))
+            foreach (Atom a in Atoms.Where(s => s.IsMacrocycle && !s.IsMetal))
             {
 
                 double xCoord = 1;
@@ -278,7 +278,8 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         private string[] AlphaAtoms
         {
-            get {
+            get
+            {
                 switch (type)
                 {
                     case Type.Corrole:
@@ -290,7 +291,7 @@ namespace PorphyStruct.Chemistry
                     case Type.Corrphycene:
                         return new string[] { "C1", "C4", "C6", "C9", "C12", "C15", "C17", "C20" };
                     case Type.Porphycene:
-                        return new string[] { "C1", "C4", "C7", "C10", "C11", "C14", "C17", "C20" };                    
+                        return new string[] { "C1", "C4", "C7", "C10", "C11", "C14", "C17", "C20" };
                 }
             }
         }
@@ -313,7 +314,7 @@ namespace PorphyStruct.Chemistry
         /// <returns>Atom</returns>
         private Atom GetNextAlpha(Atom a)
         {
-            int i = Array.IndexOf(AlphaAtoms, a.Identifier) + 1; 
+            int i = Array.IndexOf(AlphaAtoms, a.Identifier) + 1;
             if (AlphaAtoms.Length > i) return ByIdentifier(AlphaAtoms[i], true);
             else return null;
         }
@@ -389,11 +390,11 @@ namespace PorphyStruct.Chemistry
             var dihedrals = new List<string[]>();
             //1
             if (type == Type.Corrphycene || type == Type.Porphycene)
-                dihedrals.Add(new string[]{"C2", "C1", "C20", "C19" });
+                dihedrals.Add(new string[] { "C2", "C1", "C20", "C19" });
             else
                 dihedrals.Add(new string[] { "C2", "C1", "C19", "C18" });
             //2
-            if(type == Type.Porphycene)
+            if (type == Type.Porphycene)
                 dihedrals.Add(new string[] { "C3", "C4", "C7", "C8" });
             else
                 dihedrals.Add(new string[] { "C3", "C4", "C6", "C7" });
@@ -427,7 +428,7 @@ namespace PorphyStruct.Chemistry
                 dihedrals.Add(new string[] { "C4", "N1", "N3", "C11" });
 
             dihedrals.ForEach(d => MetricDict.Add("Dihedral_" + string.Join(",", d), Dihedral(d)));
-            
+
             return MetricDict;
         }
 
@@ -440,13 +441,13 @@ namespace PorphyStruct.Chemistry
         {
             if (Atoms.Length != 4) return 0;
             //build vectors
-            Vector<double> b1 = -(DenseVector.OfArray(ByIdentifier(Atoms[0],true).XYZ()) - DenseVector.OfArray(ByIdentifier(Atoms[1], true).XYZ()));
+            Vector<double> b1 = -(DenseVector.OfArray(ByIdentifier(Atoms[0], true).XYZ()) - DenseVector.OfArray(ByIdentifier(Atoms[1], true).XYZ()));
             Vector<double> b2 = (DenseVector.OfArray(ByIdentifier(Atoms[1], true).XYZ()) - DenseVector.OfArray(ByIdentifier(Atoms[2], true).XYZ()));
             Vector<double> b3 = (DenseVector.OfArray(ByIdentifier(Atoms[3], true).XYZ()) - DenseVector.OfArray(ByIdentifier(Atoms[2], true).XYZ()));
 
             //Normalize
-            b1 = b1.Normalize(2); 
-            b2 = b2.Normalize(2); 
+            b1 = b1.Normalize(2);
+            b2 = b2.Normalize(2);
             b3 = b3.Normalize(2);
 
             //calculate crossproducts
@@ -811,16 +812,16 @@ namespace PorphyStruct.Chemistry
                 }
                 else current.Identifier = "C" + indexC;
                 indexC++;
-            }            
+            }
             //correct counting, as norcorrole does not have c10 in my convention!
-            if(type == Type.Norcorrole)
+            if (type == Type.Norcorrole)
             {
-                foreach(Atom c in Atoms.Where(s => s.Type == "C" && s.IsMacrocycle))
+                foreach (Atom c in Atoms.Where(s => s.Type == "C" && s.IsMacrocycle))
                 {
                     string pattern = "[0-9]+";
                     var reg = Regex.Match(c.Identifier, pattern);
                     int.TryParse(reg.Value, out int integer);
-                    if(integer >= 10)
+                    if (integer >= 10)
                     {
                         integer++;
                         c.Identifier = "C" + integer;
