@@ -26,3 +26,5 @@ With **PorphyStruct{ }** displacement diagrams can be generated and simulated to
 * [Material Design in XAML Toolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit) (MIT License)
 * [Fody](https://github.com/Fody/Fody) (MIT License)
 * [Fody.Costura](https://github.com/Fody/Costura) (MIT License)
+
+[![Maintainability](https://api.codeclimate.com/v1/badges/cbc210753b3ef4d72b50/maintainability)](https://codeclimate.com/github/JensKrumsieck/PorphyStruct/maintainability)

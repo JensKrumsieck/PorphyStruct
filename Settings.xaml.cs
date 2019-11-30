@@ -36,6 +36,7 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void FolderBtn_Click(object sender, RoutedEventArgs e)
         {
+            string btn = (sender as Button).Tag.ToString();
             string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (!String.IsNullOrEmpty(Properties.Settings.Default.savePath))
                 initialDir = Properties.Settings.Default.savePath;
@@ -46,29 +47,7 @@ namespace PorphyStruct
             {
                 if (fbd.ShowDialog() == winforms.DialogResult.OK)
                 {
-                    savePath.Text = fbd.SelectedPath;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Handle Folder Button Click
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FolderImportBtn_Click(object sender, RoutedEventArgs e)
-        {
-            string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.importPath))
-                initialDir = Properties.Settings.Default.savePath;
-            using (winforms.FolderBrowserDialog fbd = new winforms.FolderBrowserDialog
-            {
-                SelectedPath = initialDir
-            })
-            {
-                if (fbd.ShowDialog() == winforms.DialogResult.OK)
-                {
-                    importPath.Text = fbd.SelectedPath;
+                    (FindName($"{btn}Path") as TextBox).Text = fbd.SelectedPath;
                 }
             }
         }

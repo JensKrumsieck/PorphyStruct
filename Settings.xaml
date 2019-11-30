@@ -193,7 +193,7 @@
                                  Width="250">
                                 <materialDesign:HintAssist.Hint>Folder Path</materialDesign:HintAssist.Hint>
                             </TextBox>
-                            <Button x:Name="folderImportBtn" Content="Search" Click="FolderImportBtn_Click" Margin="10 0"/>
+                            <Button x:Name="folderImportBtn" Content="Search" Click="FolderBtn_Click" Margin="10 0" Tag="import"/>
                         </StackPanel>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -219,7 +219,7 @@
                                  Width="250">
                                 <materialDesign:HintAssist.Hint>Folder Path</materialDesign:HintAssist.Hint>
                             </TextBox>
-                            <Button x:Name="folderBtn" Content="Search" Click="FolderBtn_Click" Margin="10 0"/>
+                            <Button x:Name="folderBtn" Content="Search" Click="FolderBtn_Click" Margin="10 0" Tag="save"/>
                         </StackPanel>
                         <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Image Size" Margin="0 25 0 0"/>
                         <TextBox x:Name="pngWidth" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=pngWidth, Mode=TwoWay}">
