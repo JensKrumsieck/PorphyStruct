@@ -53,17 +53,7 @@ namespace PorphyStruct.Simulations
         /// </summary>
         /// <see cref="IParameterProvider.Evaluate"/>
         /// <returns></returns>
-        public Result Evaluate()
-        {
-            if (SimParam.AbsSum(Parameters) != 1)
-            {
-                for (int i = 0; i < Parameters.Length; i++)
-                {
-                    Parameters[i] /= SimParam.AbsSum(Parameters);
-                }
-            }
-            return Function(cycle, Parameters);
-        }
+        public Result Evaluate() => Evaluate(Parameters);
 
         /// <summary>
         /// evaluate with other parameters
