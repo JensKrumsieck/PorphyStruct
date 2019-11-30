@@ -264,16 +264,23 @@ namespace PorphyStruct
                     {
                         if (CycleOnly && a.IsMacrocycle)
                         {
-                            sw.WriteLine(a.Identifier + "/" + a.Type + "\t" + a.X.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + a.Y.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + a.Z.ToString("N8", System.Globalization.CultureInfo.InvariantCulture));
+                            sw.WriteLine(Stringify(a));
                         }
                         else if (!CycleOnly)
                         {
-                            sw.WriteLine(a.Identifier + "/" + a.Type + "\t" + a.X.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + a.Y.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + a.Z.ToString("N8", System.Globalization.CultureInfo.InvariantCulture));
+                            sw.WriteLine(Stringify(a));
                         }
                     }
                 }
             }
         }
+
+        /// <summary>
+        /// converts atom into exportable string
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        internal string Stringify(Atom a) => a.Identifier + "/" + a.Type + "\t" + a.X.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + a.Y.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + a.Z.ToString("N8", System.Globalization.CultureInfo.InvariantCulture;
 
         /// <summary>
         /// Saves Report
