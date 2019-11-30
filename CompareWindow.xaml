@@ -49,7 +49,7 @@
                 </StackPanel>
             </materialDesign:HintAssist.Hint>
         </TextBox>
-        <Button Grid.Row="2" Grid.Column="2" Content="Search" x:Name="open1Btn" Click="Open1Btn_Click"/>
+        <Button Grid.Row="2" Grid.Column="2" Content="Search" x:Name="open1Btn" Click="Open_Click" Tag="1"/>
         <oxy:PlotView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" x:Name="comp1Plot"/>
         <Label Grid.Row="1" Grid.Column="3" Content="Comparison 2" FontWeight="Bold" FontSize="16"/>
         <Label Grid.Row="2" Grid.Column="3" Content="Path"/>
@@ -60,7 +60,7 @@
                 </StackPanel>
             </materialDesign:HintAssist.Hint>
         </TextBox>
-        <Button Grid.Row="2" Grid.Column="5" Content="Search" x:Name="open2Btn" Click="Open2Btn_Click"/>
+        <Button Grid.Row="2" Grid.Column="5" Content="Search" x:Name="open2Btn" Click="Open_Click" Tag="2"/>
         <oxy:PlotView Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="3" x:Name="comp2Plot"/>
 
         <!--ok/reset-->

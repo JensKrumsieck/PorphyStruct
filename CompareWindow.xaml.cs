@@ -23,12 +23,15 @@ namespace PorphyStruct
         }
 
         /// <summary>
-        /// Handle Open1 Button Click
+        /// Handles Button click
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Open1Btn_Click(object sender, RoutedEventArgs e)
+        private void Open_Click(object sender, RoutedEventArgs e)
         {
+            //get clicked button number
+            int.TryParse((sender as Button).Tag.ToString(), out int comp);
+
             //use save dir as default because there should be the results
             string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (!String.IsNullOrEmpty(Properties.Settings.Default.savePath) && !Properties.Settings.Default.useImportExportPath)
@@ -45,37 +48,9 @@ namespace PorphyStruct
 
             if (DialogResult.HasValue && DialogResult.Value)
             {
-                comparison1Path.Text = ofd.FileName;
+                (FindName($"comparison{comp}Path") as TextBox).Text = ofd.FileName;
             }
         }
-
-        /// <summary>
-        /// Handle Open2 Button Click
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Open2Btn_Click(object sender, RoutedEventArgs e)
-        {
-            //use save dir as default because there should be the results
-            string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.savePath) && !Properties.Settings.Default.useImportExportPath)
-                initialDir = Properties.Settings.Default.savePath;
-            else if (!String.IsNullOrEmpty(Properties.Settings.Default.importPath))
-                initialDir = Properties.Settings.Default.importPath;
-            OpenFileDialog ofd = new OpenFileDialog
-            {
-                InitialDirectory = initialDir,
-                Filter = "ASCII Files (DAT) (*.dat)|*.dat",
-                RestoreDirectory = true
-            };
-            var DialogResult = ofd.ShowDialog();
-
-            if (DialogResult.HasValue && DialogResult.Value)
-            {
-                comparison2Path.Text = ofd.FileName;
-            }
-        }
-
 
         /// <summary>
         /// Gets Data from dat file
