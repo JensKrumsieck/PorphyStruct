@@ -48,27 +48,22 @@ namespace PorphyStruct.Chemistry
             bool idiot = false;
             if (this.Atoms.Where(s => s.Identifier.StartsWith("N0")).Count() != 0)
             {
-                idiot = true;
+                idiot = true; //haha
             }
 
             foreach (Atom atom in this.Atoms)
             {
-                //set everythin to true first and then turn off if not meeting preferences
+                //set everything to true first and then turn off if not meeting preferences
                 atom.IsMacrocycle = true;
 
 
-                //automatic detection sets all non C,N Atoms to false! Note that! -> Contains(H) -> H20C and ...
-                if (!atom.Identifier.Contains("C") && !atom.Identifier.Contains("N") || atom.Identifier.Contains("H"))
+                //automatic detection sets all non C,N Atoms to false! 
+                if (atom.Type != "C" && atom.Type != "N")
                 {
                     //this detection fails for any heteroatoms in the core!
                     atom.IsMacrocycle = false;
 
-                }
-                //fails for chlorine, nickel, niobium, ... so sort them out if string contains lowercase
-                else if (Regex.Matches(atom.Identifier, @"[a-z]", RegexOptions.Multiline).Count > 0)
-                {
-                    atom.IsMacrocycle = false;
-                }
+                }                
 
                 //remove secondary structure (prime or A/B)
                 if (atom.Identifier.Contains("'") || atom.Identifier.Contains("b") || atom.Identifier.Contains("B"))
