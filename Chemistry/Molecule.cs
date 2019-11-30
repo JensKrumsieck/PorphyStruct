@@ -73,21 +73,17 @@ namespace PorphyStruct.Chemistry
                 {
                     atom.Identifier = Regex.Match(atom.Identifier, @"([A-Z][a-z]*)(\d*\,{0,1}\d*)").Value;
                 }
-
-                //get atom ID
-                int id = 0;
-                int.TryParse(Regex.Match(atom.Identifier, @"\d+").Value, out id);
-
-                //workaround for idiots that start atom numbering with 0...
+                
+                //workaround for those who start counting at 0
                 if (idiot)
                 {
                     if (atom.Identifier.Contains("C"))
                     {
-                        atom.Identifier = "C" + (id + 1);
+                        atom.Identifier = "C" + (atom.ID + 1);
                     }
                     if (atom.Identifier.Contains("N"))
                     {
-                        atom.Identifier = "N" + (id + 1);
+                        atom.Identifier = "N" + (atom.ID + 1);
                     }
                 }
 
@@ -95,32 +91,23 @@ namespace PorphyStruct.Chemistry
                 if (atom.Type == "C" && atom.IsMacrocycle)
                 {
                     //carbon atoms from 1-19 for corroles & norcorroles and 20 for porphyrins, corrphycenes & porphycenes... 
-                    if (type == Macrocycle.Type.Corrole || type == Macrocycle.Type.Norcorrole)
-                    {
-                        //greater than 19 == no corrole
-                        if (id > 19) atom.IsMacrocycle = false;
-                    }
-                    else
-                    {
-                        //greater than 20 == no porphyrin
-                        if (id > 20) atom.IsMacrocycle = false;
-                    }
+                    if ((type == Macrocycle.Type.Corrole || type == Macrocycle.Type.Norcorrole) && atom.ID > 19)
+                        atom.IsMacrocycle = false;
+                    //greater than 20 -> no porphyrinoid
+                    else if (atom.ID > 20)
+                        atom.IsMacrocycle = false;
                 }
                 //as cavity is always N4 (or detection fails by design!) not type specific matching is needed.
                 if (atom.Type == "N" && atom.IsMacrocycle)
                 {
-                    if (id > 24) atom.IsMacrocycle = false; //definitivly no macrocycle (or some kind of azarocorrole maybe?)
+                    if (atom.ID > 24) atom.IsMacrocycle = false; //definitivly no macrocycle (or some kind of azarocorrole maybe?)
                     else
                     {
                         //id <= 24
-                        if (id >= 21 && id <= 24)
-                        {
-                            //alternative (IUPAC) numbering
-                            id = id - 20;
-                            //new identifier so everything is fine
-                            atom.Identifier = "N" + id;
-                        }
-                        if (id > 4) atom.IsMacrocycle = false; //set everything to false if greater than N4!
+                        if (atom.ID >= 21 && atom.ID <= 24)
+                            atom.Identifier = "N" + (atom.ID - 20);
+                       
+                        if (atom.ID > 4) atom.IsMacrocycle = false; //set everything to false if greater than N4!
                     }
                 }
             }

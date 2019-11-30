@@ -168,5 +168,17 @@ namespace PorphyStruct.Chemistry
         {
             get => Identifier + "/" +Type + "\t" + X.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + Y.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + Z.ToString("N8", System.Globalization.CultureInfo.InvariantCulture);
         }
+
+        /// <summary>
+        /// returns number of identifier
+        /// </summary>
+        public int ID
+        {
+            get
+            {
+                int.TryParse(Regex.Match(Identifier, @"\d+").Value, out int id);
+                return id;
+            }
+        }
     }
 }
