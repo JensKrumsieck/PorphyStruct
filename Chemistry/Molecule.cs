@@ -62,7 +62,6 @@ namespace PorphyStruct.Chemistry
                 {
                     //this detection fails for any heteroatoms in the core!
                     atom.IsMacrocycle = false;
-
                 }                
 
                 //remove secondary structure (prime or A/B)
@@ -93,7 +92,7 @@ namespace PorphyStruct.Chemistry
                 }
 
                 //most cif files either number by IUPAC or ascending for C and 1,2,3,4 for N, so remove all other atoms
-                if (atom.Identifier.Contains("C") && atom.IsMacrocycle)
+                if (atom.Type == "C" && atom.IsMacrocycle)
                 {
                     //carbon atoms from 1-19 for corroles & norcorroles and 20 for porphyrins, corrphycenes & porphycenes... 
                     if (type == Macrocycle.Type.Corrole || type == Macrocycle.Type.Norcorrole)
@@ -108,7 +107,7 @@ namespace PorphyStruct.Chemistry
                     }
                 }
                 //as cavity is always N4 (or detection fails by design!) not type specific matching is needed.
-                if (atom.Identifier.Contains("N") && atom.IsMacrocycle)
+                if (atom.Type == "N" && atom.IsMacrocycle)
                 {
                     if (id > 24) atom.IsMacrocycle = false; //definitivly no macrocycle (or some kind of azarocorrole maybe?)
                     else
