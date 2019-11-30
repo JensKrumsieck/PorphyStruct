@@ -262,25 +262,15 @@ namespace PorphyStruct
 
                     foreach (Atom a in Cycle.Atoms)
                     {
-                        if (CycleOnly && a.IsMacrocycle)
+                        if(CycleOnly && !a.IsMacrocycle) { /*do nothing*/}                        
+                        else
                         {
-                            sw.WriteLine(Stringify(a));
-                        }
-                        else if (!CycleOnly)
-                        {
-                            sw.WriteLine(Stringify(a));
+                            sw.WriteLine(a.ExportText);
                         }
                     }
                 }
             }
         }
-
-        /// <summary>
-        /// converts atom into exportable string
-        /// </summary>
-        /// <param name="a"></param>
-        /// <returns></returns>
-        internal string Stringify(Atom a) => a.Identifier + "/" + a.Type + "\t" + a.X.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + a.Y.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + a.Z.ToString("N8", System.Globalization.CultureInfo.InvariantCulture;
 
         /// <summary>
         /// Saves Report

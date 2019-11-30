@@ -160,5 +160,13 @@ namespace PorphyStruct.Chemistry
             return new Atom(Identifier, X, Y, Z);
 
         }
+
+        /// <summary>
+        /// creates export Text for Atom
+        /// </summary>
+        public string ExportText
+        {
+            get => Identifier + "/" +Type + "\t" + X.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + Y.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + Z.ToString("N8", System.Globalization.CultureInfo.InvariantCulture);
+        }
     }
 }
