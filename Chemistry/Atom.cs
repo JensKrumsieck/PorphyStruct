@@ -180,5 +180,13 @@ namespace PorphyStruct.Chemistry
                 return id;
             }
         }
+
+        /// <summary>
+        /// return Identifiers Suffix
+        /// </summary>
+        public string Suffix
+        {
+            get => Regex.Match(Identifier, @"\D$").Value;
+        }
     }
 }
