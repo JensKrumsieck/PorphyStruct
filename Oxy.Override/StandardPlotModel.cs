@@ -2,7 +2,6 @@
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using System;
-using System.Reflection;
 
 namespace PorphyStruct.Oxy.Override
 {

@@ -1,65 +1,76 @@
-﻿namespace PorphyStruct.Chemistry
+﻿using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
+using System;
+using System.Collections.Generic;
+
+namespace PorphyStruct.Chemistry
 {
     /// <summary>
     /// wrapper for molecule with crystal parameters
     /// </summary>
     public class Crystal : Molecule
     {
-        public double a;
-        public double b;
-        public double c;
-        public double alpha;
-        public double beta;
-        public double gamma;
-
+        public double[] cellLenghts;
+        public double[] cellAngles;
         /// <summary>
-        /// Constructs a Crytal-Obj. with title
+        /// Builds crystal object
         /// </summary>
-        /// <param name="title">Title of file</param>
-        /// <param name="a">Crystalparameter a</param>
-        /// <param name="b">Crystalparameter b</param>
-        /// <param name="c">Crystalparameter c</param>
-        /// <param name="alpha">Crystalparameter alpha</param>
-        /// <param name="beta">Crystalparameter beta</param>
-        /// <param name="gamma">Crystalparameter gamma</param>
-        public Crystal(string title, double a, double b, double c, double alpha, double beta, double gamma)
+        /// <param name="title"></param>
+        /// <param name="cellLenghts"></param>
+        /// <param name="cellAngles"></param>
+        public Crystal(string title, double[] cellLenghts, double[] cellAngles, List<string[]> raw_data, int count)
             : base(title)
         {
-            this.a = a;
-            this.b = b;
-            this.c = c;
-            this.alpha = alpha;
-            this.beta = beta;
-            this.gamma = gamma;
-        }
-        /// <summary>
-        /// Constructs a Crytal-Obj. without title
-        /// </summary>
-        /// <param name="a">Crystalparameter a</param>
-        /// <param name="b">Crystalparameter b</param>
-        /// <param name="c">Crystalparameter c</param>
-        /// <param name="alpha">Crystalparameter alpha</param>
-        /// <param name="beta">Crystalparameter beta</param>
-        /// <param name="gamma">Crystalparameter gamma</param>
-        public Crystal(double a, double b, double c, double alpha, double beta, double gamma)
-            : base()
-        {
-            this.a = a;
-            this.b = b;
-            this.c = c;
-            this.alpha = alpha;
-            this.beta = beta;
-            this.gamma = gamma;
+            this.cellAngles = cellAngles;
+            this.cellLenghts = cellLenghts;
+
+            //add atoms
+            CartesianCoordinates(raw_data, count);
         }
 
-        /// <summary>
-        /// Constructs a Crystal Obj.
-        /// </summary>
-        public Crystal()
-            : base()
-        {
-            //does nothing for now
-        }
+        //Short names for cellangles/lenghts stay valid
+        public double a => cellLenghts[0];
+        public double b => cellLenghts[1];
+        public double c => cellLenghts[2];
 
+        public double alpha => cellAngles[0];
+        public double beta => cellAngles[1];
+        public double gamma => cellAngles[2];
+
+        /// <summary>
+        /// builds the cartesian coordinates from fraction coordinates
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="count"></param>
+        public void CartesianCoordinates(IEnumerable<string[]> data, int count)
+        {
+            //loop through properties
+            foreach (string[] props in data)
+            {
+                if (props.Length == count)
+                {
+                    //get xyz in fractional coordinates
+                    //1 is label, 2 is x, 3 is y, 4 is z
+                    double xfrac = Convert.ToDouble(props[2].Split('(')[0], System.Globalization.CultureInfo.InvariantCulture);
+                    double yfrac = Convert.ToDouble(props[3].Split('(')[0], System.Globalization.CultureInfo.InvariantCulture);
+                    double zfrac = Convert.ToDouble(props[4].Split('(')[0], System.Globalization.CultureInfo.InvariantCulture);
+
+                    //build matrix for cartesian transformation //need Math.NET ... @see https://en.wikipedia.org/wiki/Fractional_coordinates#Conversion_to_Cartesian_coordinates
+                    Matrix<double> A = DenseMatrix.OfArray(new double[,] {
+                        { a, b * Math.Cos(gamma * Math.PI / 180), c * Math.Cos(beta * Math.PI / 180) },
+                        { 0, cellLenghts[1] * Math.Sin(gamma * Math.PI / 180), c*(Math.Cos(alpha * Math.PI / 180)-Math.Cos(beta * Math.PI / 180)*Math.Cos(gamma * Math.PI / 180))/Math.Sin(gamma * Math.PI / 180) },
+                        {0, 0, c*(Math.Sqrt(1-Math.Pow(Math.Cos(alpha * Math.PI / 180),2)-Math.Pow(Math.Cos(beta * Math.PI / 180),2)-Math.Pow(Math.Cos(gamma * Math.PI / 180),2)+2*Math.Cos(alpha * Math.PI / 180)*Math.Cos(beta * Math.PI / 180)*Math.Cos(gamma * Math.PI / 180)))/Math.Sin(gamma * Math.PI / 180)}
+                    });
+                    //coordinate vector
+                    Vector<double> frac = DenseVector.OfArray(new double[] { xfrac, yfrac, zfrac });
+
+                    //cartesian coordinates of current atom
+                    Vector<double> coord = A * frac;
+
+                    //add new atom to molecule with coordinates above
+                    Atoms.Add(new Atom(props[0], coord[0], coord[1], coord[2]));
+                }
+            }
+        }
     }
 }
