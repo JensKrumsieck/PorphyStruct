@@ -215,7 +215,7 @@ namespace PorphyStruct
             //scale if neccessary
             if (!normalize)
             {
-                pm.ScaleY();
+                pm.Scale(pm.yAxis, true);
             }
             else
             {
@@ -226,7 +226,7 @@ namespace PorphyStruct
                 y.AbsoluteMaximum = max;
             }
 
-            pm.ScaleX();
+            pm.Scale(pm.xAxis);
 
             //update simstack
             UpdateStack();

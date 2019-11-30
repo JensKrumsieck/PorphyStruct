@@ -1,6 +1,8 @@
 ﻿using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+using System;
+using System.Reflection;
 
 namespace PorphyStruct.Oxy.Override
 {
@@ -73,16 +75,16 @@ namespace PorphyStruct.Oxy.Override
 
         }
 
-        /// <summary>
-        /// Scale X Axis
-        /// </summary>
-        /// <param name="data"></param>
-        public void ScaleX()
+
+        public void Scale(Axis a, bool isY = false)
         {
-            //scale X
+            string val = "X";
+            //get property
+            if (isY) val = "Y";
+
             double min = double.PositiveInfinity;
             double max = double.NegativeInfinity;
-            if (Properties.Settings.Default.autoscaleX)
+            if ((!isY && Properties.Settings.Default.autoscaleX) || (isY && Properties.Settings.Default.autoscaleY))
             {
                 //find min & max automatically
                 //scale x
@@ -90,62 +92,26 @@ namespace PorphyStruct.Oxy.Override
                 {
                     foreach (AtomDataPoint dp in s.ItemsSource)
                     {
-                        if (dp.X < min)
-                            min = dp.X;
-                        if (dp.X > max)
-                            max = dp.X;
+
+                        double value = Convert.ToDouble(dp.GetType().GetProperty(val).GetValue(dp, null));
+                        if (value < min)
+                            min = value;
+                        if (value > max)
+                            max = value;
                     }
                 }
-                min -= 1;
-                max += 1;
+                min -= (isY ? 0.05 : 1);
+                max += (isY ? 0.05 : 1);
             }
             else
             {
                 //set min & max manually
-                min = Properties.Settings.Default.minX;
-                max = Properties.Settings.Default.maxX;
+                min = (isY ? Properties.Settings.Default.minY : Properties.Settings.Default.minX);
+                max = (isY ? Properties.Settings.Default.maxY : Properties.Settings.Default.maxX);
             }
-            xAxis.AbsoluteMinimum = min;
-            xAxis.AbsoluteMaximum = max;
-            xAxis.Zoom(min, max);
-        }
-
-        /// <summary>
-        /// Scale Y Axis
-        /// </summary>
-        /// <param name="data"></param>
-        public void ScaleY()
-        {
-            double min = double.PositiveInfinity;
-            double max = double.NegativeInfinity;
-
-            if (Properties.Settings.Default.autoscaleY)
-            {
-                //scale y
-                foreach (ScatterSeries s in this.Series)
-                {
-                    foreach (AtomDataPoint dp in s.ItemsSource)
-                    {
-                        if (dp.Y < min)
-                            min = dp.Y;
-                        if (dp.Y > max)
-                            max = dp.Y;
-                    }
-                }
-                min -= 0.05;
-                max += 0.05;
-            }
-            else
-            {
-
-                //set min & max manually
-                min = Properties.Settings.Default.minY;
-                max = Properties.Settings.Default.maxY;
-            }
-
-            yAxis.Zoom(min, max);
-            yAxis.AbsoluteMinimum = min;
-            yAxis.AbsoluteMaximum = max;
+            a.AbsoluteMinimum = min;
+            a.AbsoluteMaximum = max;
+            a.Zoom(min, max);
         }
     }
 }

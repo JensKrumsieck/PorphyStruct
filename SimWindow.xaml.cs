@@ -145,7 +145,7 @@ namespace PorphyStruct
                 pm.Annotations.Add(zero);
             }
 
-            pm.ScaleX();
+            pm.Scale(pm.xAxis);
             pm.InvalidatePlot(true);
         }
 
