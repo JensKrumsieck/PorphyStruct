@@ -157,30 +157,8 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            PlotModel pm1 = new PlotModel()
-            {
-                IsLegendVisible = false,
-                DefaultFontSize = Properties.Settings.Default.defaultFontSize,
-                LegendFontSize = Properties.Settings.Default.defaultFontSize,
-                DefaultFont = Properties.Settings.Default.defaultFont,
-                PlotAreaBorderThickness = new OxyThickness(Properties.Settings.Default.lineThickness)
-            };
-            PlotModel pm2 = new PlotModel()
-            {
-                IsLegendVisible = false,
-                DefaultFontSize = Properties.Settings.Default.defaultFontSize,
-                LegendFontSize = Properties.Settings.Default.defaultFontSize,
-                DefaultFont = Properties.Settings.Default.defaultFont,
-                PlotAreaBorderThickness = new OxyThickness(Properties.Settings.Default.lineThickness)
-            };
-
-            comp1Plot.Model = pm1;
-            comp2Plot.Model = pm2;
-
-            pm1.Axes.Add(X_());
-            pm1.Axes.Add(Y_());
-            pm2.Axes.Add(X_());
-            pm2.Axes.Add(Y_());
+            comp1Plot.Model = Pm;
+            comp2Plot.Model = Pm;
 
             loaded = true;
             if (!String.IsNullOrEmpty(comparison1Path.Text))
@@ -193,42 +171,68 @@ namespace PorphyStruct
         /// y axis
         /// </summary>
         /// <returns></returns>
-        private PorphyStruct.Oxy.Override.LinearAxis Y_()
+        private PorphyStruct.Oxy.Override.LinearAxis Y_
         {
-            PorphyStruct.Oxy.Override.LinearAxis y = new PorphyStruct.Oxy.Override.LinearAxis
-            {
-                Title = "Δ_{msp}",
-                Unit = "Å",
-                Position = AxisPosition.Left,
-                Key = "Y",
-                IsAxisVisible = true,
-                MajorGridlineThickness = Properties.Settings.Default.lineThickness,
-                TitleFormatString = Properties.Settings.Default.titleFormat,
-                LabelFormatter = Oxy.Override.OxyUtils._axisFormatter
-            };
-            return y;
+           get{ 
+               PorphyStruct.Oxy.Override.LinearAxis y = new PorphyStruct.Oxy.Override.LinearAxis
+               {
+                   Title = "Δ_{msp}",
+                   Unit = "Å",
+                   Position = AxisPosition.Left,
+                   Key = "Y",
+                   IsAxisVisible = true,
+                   MajorGridlineThickness = Properties.Settings.Default.lineThickness,
+                   TitleFormatString = Properties.Settings.Default.titleFormat,
+                   LabelFormatter = Oxy.Override.OxyUtils._axisFormatter
+               };
+                return y;
+             }
         }
 
         /// <summary>
         /// x axis
         /// </summary>
         /// <returns></returns>
-        private LinearAxis X_()
+        private LinearAxis X_
         {
-            LinearAxis x = new LinearAxis
+            get
             {
-                Title = "X",
-                Unit = "Å",
-                Position = AxisPosition.Bottom,
-                Key = "X",
-                IsAxisVisible = Properties.Settings.Default.xAxis,
-                MajorGridlineThickness = Properties.Settings.Default.lineThickness,
-                AbsoluteMinimum = Properties.Settings.Default.minX,
-                AbsoluteMaximum = Properties.Settings.Default.maxX,
-                TitleFormatString = Properties.Settings.Default.titleFormat,
-                LabelFormatter = Oxy.Override.OxyUtils._axisFormatter
-            };
-            return x;
+                LinearAxis x = new LinearAxis
+                {
+                    Title = "X",
+                    Unit = "Å",
+                    Position = AxisPosition.Bottom,
+                    Key = "X",
+                    IsAxisVisible = Properties.Settings.Default.xAxis,
+                    MajorGridlineThickness = Properties.Settings.Default.lineThickness,
+                    AbsoluteMinimum = Properties.Settings.Default.minX,
+                    AbsoluteMaximum = Properties.Settings.Default.maxX,
+                    TitleFormatString = Properties.Settings.Default.titleFormat,
+                    LabelFormatter = Oxy.Override.OxyUtils._axisFormatter
+                };
+                return x;
+            }
+        }
+
+        /// <summary>
+        /// gets PlotModel
+        /// </summary>
+        private PlotModel Pm
+        {
+            get
+            {
+                PlotModel pm = new PlotModel()
+                {
+                    IsLegendVisible = false,
+                    DefaultFontSize = Properties.Settings.Default.defaultFontSize,
+                    LegendFontSize = Properties.Settings.Default.defaultFontSize,
+                    DefaultFont = Properties.Settings.Default.defaultFont,
+                    PlotAreaBorderThickness = new OxyThickness(Properties.Settings.Default.lineThickness)
+                };
+                pm.Axes.Add(X_);
+                pm.Axes.Add(Y_);
+                return pm;
+            }
         }
     }
 }
