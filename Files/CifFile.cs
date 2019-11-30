@@ -7,18 +7,15 @@ using System.Linq;
 
 namespace PorphyStruct.Files
 {
-    class CifFile
+    class CifFile : TextFile
     {
-        public string Path = "";
 
         /// <summary>
         /// Constructs a CIF File Object from given File
         /// </summary>
         /// <param name="path">Filepath</param>
         public CifFile(string path)
-        {
-            this.Path = path;
-        }
+            : base(path) { }
 
         /// <summary>
         /// Builds a Molecule/Crystal Object out of raw data
@@ -26,16 +23,12 @@ namespace PorphyStruct.Files
         /// <returns>Crystal</returns>
         public Crystal GetMolecule()
         {
-            //read cif-File and get parameters & coordinates
-            string text = System.IO.File.ReadAllText(this.Path);
-
             //get cell parameters
             double[] cellLenghts = new double[3];
             double[] cellAngles = new double[3];
-            string[] lines = text.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None);
             int i = 0;
             int j = 0;
-            foreach (string l in lines)
+            foreach (string l in Lines)
             {
                 if (l.StartsWith("_cell_length"))
                 {
@@ -57,7 +50,7 @@ namespace PorphyStruct.Files
 
 
             //get loop with coordinates
-            string[] loops = text.Split(new[] { "loop_" }, StringSplitOptions.None);
+            string[] loops = Content.Split(new[] { "loop_" }, StringSplitOptions.None);
 
             //this loop contains molecule!
             string moleculeLoop = Array.Find(loops, s => s.Contains("_atom_site_label"));

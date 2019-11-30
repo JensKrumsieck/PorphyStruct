@@ -5,14 +5,10 @@ using System.Linq;
 
 namespace PorphyStruct.Files
 {
-    class XYZFile
+    class XYZFile : TextFile
     {
-        public string Path = "";
 
-        public XYZFile(string path)
-        {
-            this.Path = path;
-        }
+        public XYZFile(string path) : base(path) { }
 
         /// <summary>
         /// Gets Molecule from XYZ File
@@ -21,21 +17,17 @@ namespace PorphyStruct.Files
         /// <returns></returns>
         public Molecule GetMolecule(bool isIXYZ = false)
         {
-            //read cif-File and get parameters & coordinates
-            string text = System.IO.File.ReadAllText(Path);
-            string[] lines = text.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None);
             //atom count is first line, second line is title
             //PLEASE DO NOT USE XYZ Files with non cartesian coordinates
-
             string title = System.IO.Path.GetFileNameWithoutExtension(this.Path);
             Molecule molecule = new Molecule(title);
 
             //works fine...but where to get Atom Numbering??
-            for (int i = 0; i <= lines.Count() - 1; i++)
+            for (int i = 0; i <= Lines.Count() - 1; i++)
             {
-                if (i > 1 && lines[i] != "")
+                if (i > 1 && Lines[i] != "")
                 {
-                    string[] xyzLine = lines[i].Split(new[] { " ", "\t" }, StringSplitOptions.None);
+                    string[] xyzLine = Lines[i].Split(new[] { " ", "\t" }, StringSplitOptions.None);
                     xyzLine = xyzLine.Where(j => !string.IsNullOrEmpty(j)).ToArray();
 
                     string identifier = "";

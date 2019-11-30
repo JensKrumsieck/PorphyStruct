@@ -137,6 +137,7 @@
     <Compile Include="CompareWindow.xaml.cs">
       <DependentUpon>CompareWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Files\TextFile.cs" />
     <Compile Include="Files\Mol2File.cs" />
     <Compile Include="MarginSetter.cs" />
     <Compile Include="Oxy.Override\AlternativeAxis.cs" />

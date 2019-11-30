@@ -6,14 +6,10 @@ using System.Text.RegularExpressions;
 
 namespace PorphyStruct.Files
 {
-    class Mol2File
+    class Mol2File : TextFile
     {
-        public string Path = "";
 
-        public Mol2File(string path)
-        {
-            this.Path = path;
-        }
+        public Mol2File(string path) : base(path) { }
 
         /// <summary>
         /// Gets Molecule from Mol2 File
@@ -22,11 +18,10 @@ namespace PorphyStruct.Files
         public Molecule GetMolecule()
         {
             // read mol2 - File and get parameters & coordinate
-            string text = System.IO.File.ReadAllText(this.Path);
             string title = System.IO.Path.GetFileNameWithoutExtension(this.Path);
             Molecule molecule = new Molecule(title);
             //get loop with coordinates
-            string[] tripos = text.Split(new[] { "@<TRIPOS>" }, StringSplitOptions.None);
+            string[] tripos = Content.Split(new[] { "@<TRIPOS>" }, StringSplitOptions.None);
             string atomTripos = tripos.FirstOrDefault(s => s.StartsWith("ATOM"));
             string[] atoms = atomTripos.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None);
 
