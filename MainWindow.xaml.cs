@@ -67,16 +67,16 @@ namespace PorphyStruct
             //normalisation
             if (normalize)
             {
-                this.normFac = GetNormalizationFactor(data);
+                this.normFac = MathUtil.GetNormalizationFactor(data);
                 //save normalized data
-                data = Normalize(data);
+                data = MathUtil.Normalize(data);
                 cycle.dataPoints = data;
             }
 
             //invert
             if (invert)
             {
-                data = Invert(data);
+                data = MathUtil.Invert(data);
                 cycle.dataPoints = data;
             }
 
@@ -93,26 +93,26 @@ namespace PorphyStruct
                 //if normalize and simulation is'nt->normalize
                 if (normalize && !simulation.isNormalized)
                 {
-                    simulation.dataPoints = Normalize(simulation.dataPoints);
+                    simulation.dataPoints = MathUtil.Normalize(simulation.dataPoints);
                     simulation.isNormalized = true;
                 }
                 //if not normalzing but sim is normalized, denorm!
                 else if (!normalize && simulation.isNormalized)
                 {
-                    simulation.dataPoints = Factor(simulation.dataPoints, 1 / this.normFac);
+                    simulation.dataPoints = MathUtil.Factor(simulation.dataPoints, 1 / this.normFac);
                     simulation.isNormalized = false;
                 }
 
                 //if inverting but sim is not inverted yet, invert!
                 if (invert && !simulation.isInverted)
                 {
-                    simulation.dataPoints = Invert(simulation.dataPoints);
+                    simulation.dataPoints = MathUtil.Invert(simulation.dataPoints);
                     simulation.isInverted = true;
                 }
                 //if not inverting but simulation is Inverted-> invert!
                 else if (!invert && simulation.isInverted)
                 {
-                    simulation.dataPoints = Invert(simulation.dataPoints);
+                    simulation.dataPoints = MathUtil.Invert(simulation.dataPoints);
                     simulation.isInverted = false;
                 }
 
@@ -255,76 +255,7 @@ namespace PorphyStruct
                     simStack.Children.Add(c);
                 }
             }
-        }
-
-        /// <summary>
-        /// gets highest Y Value (or lowest)
-        /// </summary>
-        /// <param name="data">AtomDataPoints</param>
-        /// <returns>highest/lowest Y Value</returns>
-        private double GetNormalizationFactor(List<AtomDataPoint> data)
-        {
-            //find min & max
-            double min = 0;
-            double max = 0;
-            double fac;
-            foreach (AtomDataPoint dp in data)
-            {
-                //exclude metal from normalization
-                if (!dp.atom.IsMetal)
-                {
-                    if (dp.Y < min)
-                        min = dp.Y;
-                    if (dp.Y > max)
-                        max = dp.Y;
-                }
-            }
-
-            if (Math.Abs(max) > Math.Abs(min))
-                fac = Math.Abs(max);
-            else
-                fac = Math.Abs(min);
-            return fac;
-        }
-
-        /// <summary>
-        /// normalizes data with factor detection
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        private List<AtomDataPoint> Normalize(List<AtomDataPoint> data)
-        {
-            double fac = GetNormalizationFactor(data);
-            return Factor(data, fac);
-        }
-
-        /// <summary>
-        /// invert
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        private List<AtomDataPoint> Invert(List<AtomDataPoint> data)
-        {
-            return Factor(data, -1);
-        }
-
-        /// <summary>
-        /// multiply by given factor
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="fac"></param>
-        /// <returns></returns>
-        private List<AtomDataPoint> Factor(List<AtomDataPoint> data, double fac)
-        {
-            List<AtomDataPoint> normData = new List<AtomDataPoint>();
-            foreach (AtomDataPoint dp in data)
-            {
-                normData.Add(new AtomDataPoint(dp.X, dp.Y / fac, dp.atom));
-            }
-            return normData;
-        }
-
-
+        }     
 
         /// <summary>
         /// Handle CIF Files

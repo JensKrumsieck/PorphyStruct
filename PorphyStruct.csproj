@@ -133,7 +133,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Chemistry\Element.cs" />
-    <Compile Include="Chemistry\MathConverter.cs" />
+    <Compile Include="Chemistry\MathUtil.cs" />
     <Compile Include="CompareWindow.xaml.cs">
       <DependentUpon>CompareWindow.xaml</DependentUpon>
     </Compile>
