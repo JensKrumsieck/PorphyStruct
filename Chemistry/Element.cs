@@ -66,7 +66,10 @@ namespace PorphyStruct.Chemistry
                     element = line.Split(';');
                 }
             }
-            return new Element(Convert.ToInt32(element[0]), element[1], element[2], Convert.ToDouble(element[3]), "#" + element[4], Convert.ToDouble(element[5]));
+            if (element != null)
+                return new Element(Convert.ToInt32(element[0]), element[1], element[2], Convert.ToDouble(element[3]), "#" + element[4], Convert.ToDouble(element[5]));
+            //if not valid => return dummy atom
+            else return new Element(0, "D", "Dummy", 0, "#000000", 1);
 
         }
 
