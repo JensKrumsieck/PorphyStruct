@@ -142,25 +142,7 @@ namespace PorphyStruct
             }
 
             //get number of bonds.
-            int bonds = 0;
-            switch (Cycle.type)
-            {
-                case Macrocycle.Type.Corrole:
-                    bonds = Macrocycle.CorroleBonds.Count;
-                    break;
-                case Macrocycle.Type.Corrphycene:
-                    bonds = Macrocycle.CorrphyceneBonds.Count;
-                    break;
-                case Macrocycle.Type.Norcorrole:
-                    bonds = Macrocycle.NorcorroleBonds.Count;
-                    break;
-                case Macrocycle.Type.Porphycene:
-                    bonds = Macrocycle.PorphyceneBonds.Count;
-                    break;
-                case Macrocycle.Type.Porphyrin:
-                    bonds = Macrocycle.PorphyrinBonds.Count;
-                    break;
-            }
+            int bonds = Cycle.Bonds.Count;
 
             //remove bonds
             List<OxyPlot.Annotations.Annotation> annotations = new List<OxyPlot.Annotations.Annotation>();

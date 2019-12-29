@@ -1,6 +1,7 @@
 ﻿using OxyPlot;
 using OxyPlot.Series;
 using PorphyStruct.Simulations;
+using System;
 using System.Collections.Generic;
 
 namespace PorphyStruct.Chemistry
@@ -16,6 +17,10 @@ namespace PorphyStruct.Chemistry
         {
             //does nothing for now
         }
+
+        public override string[] AlphaAtoms => System.Type.GetType($"PorphyStruct.Chemistry.Macrocycles.{type.ToString()}").GetProperty("_AlphaAtoms").GetValue(this) as string[];
+        public override List<Tuple<string, string>> Bonds => System.Type.GetType($"PorphyStruct.Chemistry.Macrocycles.{type.ToString()}").GetProperty("_Bonds").GetValue(this) as List<Tuple<string, string>>;
+        public override List<string> RingAtoms => System.Type.GetType($"PorphyStruct.Chemistry.Macrocycles.{type.ToString()}").GetProperty("_RingAtoms").GetValue(this) as List<string>;
 
         /// <summary>
         /// Paints the Simulation to a PlotModel

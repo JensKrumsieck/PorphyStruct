@@ -11,113 +11,29 @@ using System.Text.RegularExpressions;
 
 namespace PorphyStruct.Chemistry
 {
-    public class Macrocycle : Molecule
+    public abstract class Macrocycle : Molecule
     {
-        public List<AtomDataPoint> dataPoints = new List<AtomDataPoint>();
-        //note! the Macrocycle NEEDS(!!!) the crystal identifiers. if data comes elsewhere you MUST type identifers by yourself
-        public Macrocycle(List<Atom> Atoms) : base(Atoms)
-        {
-            //does nothing for now
-        }
-        public enum Type { Corrole, Porphyrin, Norcorrole, Corrphycene, Porphycene };
-        public Macrocycle.Type type;
-        #region Cycle Properties
-        //all bonds of a porphyrin
-        public static List<Tuple<string, string>> PorphyrinBonds = new List<Tuple<string, string>>() {
-            new Tuple<string, string>("C1", "C2"),
-            new Tuple<string, string>("C1", "N1"),
-            new Tuple<string, string>("C2", "C3"),
-            new Tuple<string, string>("C3", "C4"),
-            new Tuple<string, string>("N1", "C4"),
-            new Tuple<string, string>("C5", "C4"),
-            new Tuple<string, string>("C5", "C6"),
-            new Tuple<string, string>("C6", "N2"),
-            new Tuple<string, string>("C6", "C7"),
-            new Tuple<string, string>("C8", "C7"),
-            new Tuple<string, string>("C8", "C9"),
-            new Tuple<string, string>("C9", "C10"),
-            new Tuple<string, string>("C9", "N2"),
-            new Tuple<string, string>("C11", "C10"),
-            new Tuple<string, string>("C11", "N3"),
-            new Tuple<string, string>("C11", "C12"),
-            new Tuple<string, string>("C12", "C13"),
-            new Tuple<string, string>("C13", "C14"),
-            new Tuple<string, string>("N3", "C14"),
-            new Tuple<string, string>("C14", "C15"),
-            new Tuple<string, string>("C15", "C16"),
-            new Tuple<string, string>("C16", "C17"),
-            new Tuple<string, string>("C17", "C18"),
-            new Tuple<string, string>("C18", "C19"),
-            new Tuple<string, string>("N4", "C19"),
-            new Tuple<string, string>("N4", "C16"),
-            new Tuple<string,string>("C19", "C20"),
-            new Tuple<string, string>("C20", "C1")
-        };
-
-        //all bonds of a corrole == Porphyrin Bonds without Bonding to C20
-        public static List<Tuple<string, string>> CorroleBonds = PorphyrinBonds.Except(new List<Tuple<string, string>>()
-        {
-            new Tuple<string, string>("C20", "C1"),
-            new Tuple<string, string>("C19", "C20")
-        }).ToList();
-
-        //all bonds of a norcorrole == Corrole Bonds without Bonding to C10, but add bond from c9 to c11
-        public static List<Tuple<string, string>> NorcorroleBonds = CorroleBonds.Except(new List<Tuple<string, string>>()
-        {
-            new Tuple<string, string>("C9", "C10"),
-            new Tuple<string, string>("C11", "C10")
-        }).Concat(new List<Tuple<string, string>>()
-        {
-            new Tuple<string, string>("C9", "C11")
-        }).ToList();
-
-        //all bonds of a corrphycene. == Porphyrin Bonds without C11 & C14 to N3, C16 & C19 to N4, C20 to C1,  but add C12 and C15 to N3, C17 and C20 to N4
-        public static List<Tuple<string, string>> CorrphyceneBonds = PorphyrinBonds.Except(new List<Tuple<string, string>>()
-        {
-            new Tuple<string, string>("C11", "N3"),
-            new Tuple<string, string>("N3", "C14"),
-            new Tuple<string, string>("N4", "C16"),
-            new Tuple<string, string>("N4", "C19"),
-            new Tuple<string, string>("C20", "C1")
-        }).Concat(new List<Tuple<string, string>>()
-        {
-            new Tuple<string, string>("C12", "N3"),
-            new Tuple<string, string>("C15", "N3"),
-            new Tuple<string, string>("C17", "N4"),
-            new Tuple<string, string>("C20", "N4")
-        }).ToList();
-
-        //all bonds of a Porphycene. == Porphyrin Bonds without C6&C9 to N2 && C16 & C19 to N4 but add C7&C10 to N2 && C17&C20 to N4, remove C20toC1
-        public static List<Tuple<string, string>> PorphyceneBonds = PorphyrinBonds.Except(new List<Tuple<string, string>>()
-        {
-            new Tuple<string, string>("C6", "N2"),
-            new Tuple<string, string>("C9", "N2"),
-            new Tuple<string, string>("N4", "C16"),
-            new Tuple<string, string>("N4", "C19"),
-            new Tuple<string, string>("C20", "C1")
-        }).Concat(new List<Tuple<string, string>>()
-        {
-            new Tuple<string, string>("C7", "N2"),
-            new Tuple<string, string>("C10", "N2"),
-            new Tuple<string, string>("C17", "N4"),
-            new Tuple<string, string>("C20", "N4"),
-        }).ToList();
-
-        //list of porphyrin atoms, used for porphycene and corrphycene, too
-        public static List<string> PorphyrinAtoms = new List<string>() { "C1", "C2", "N1", "C3", "C4", "C5", "C6", "C7", "N2", "C8", "C9", "C10", "C11", "C12", "N3", "C13", "C14", "C15", "C16", "C17", "N4", "C18", "C19", "C20" };
-
-        //list of corrole atoms = Porphyrin Atoms without C20
-        public static List<string> CorroleAtoms = PorphyrinAtoms.Except(new List<string>() { "C20" }).ToList();
-
-        //list of norcorrole atoms = Corrole Atoms without C10
-        public static List<string> NorcorroleAtoms = CorroleAtoms.Except(new List<string>() { "C10" }).ToList();
-        #endregion
+        public Macrocycle(List<Atom> Atoms) : base(Atoms) { }
 
         /// <summary>
-        /// Converts Crystal to Macrocycle
+        /// Current Data Points
         /// </summary>
-        /// <param name="v"></param>
-        public static explicit operator Macrocycle(Crystal v) => new Macrocycle(v.Atoms) { Title = v.Title };
+        public List<AtomDataPoint> dataPoints = new List<AtomDataPoint>();
+        /// <summary>
+        /// Bonds of Macrocycle by Identifiers
+        /// </summary>
+        public abstract List<Tuple<string, string>> Bonds { get; }
+        /// <summary>
+        /// Ringatoms of Macrocycle by Identifiers
+        /// </summary>
+        public abstract List<string> RingAtoms { get; }
+        /// <summary>
+        /// Alphaatoms of Macrocycle by Identifiers
+        /// </summary>
+        public abstract string[] AlphaAtoms { get; }
+
+        public enum Type { Corrole, Porphyrin, Norcorrole, Corrphycene, Porphycene };
+        public Macrocycle.Type type;
 
         /// <summary>
         /// Gets the centroid of this Macrocycle
@@ -173,12 +89,8 @@ namespace PorphyStruct.Chemistry
         /// <returns></returns>
         public IEnumerable<AtomDataPoint> CalculateDataPoints()
         {
-            //get Atoms based on the Macrocyclic Type from Field {type}Atoms 
-            string atoms = type != Type.Corrphycene && type != Type.Porphycene ? type.ToString() : "Porphyrin";
-            List<string> _Atoms = this.GetType().GetField($"{atoms}Atoms").GetValue(this) as List<string>;
-
             //check if every atom is present in configuration
-            foreach (string id in _Atoms)
+            foreach (string id in RingAtoms)
             {
                 if (Atoms.FindAll(s => s.Identifier == id && s.IsMacrocycle).Count != 1)
                 {
@@ -188,7 +100,7 @@ namespace PorphyStruct.Chemistry
             }
 
             //reorder Atoms
-            Atoms = Atoms.OrderBy(s => _Atoms.IndexOf(s.Identifier)).ToList();
+            Atoms = Atoms.OrderBy(s => RingAtoms.IndexOf(s.Identifier)).ToList();
             //current alpha-alpha distance
             double distance = 0;
 
@@ -260,29 +172,6 @@ namespace PorphyStruct.Chemistry
                     { "C19", (type == Type.Corrphycene || type == Type.Porphycene ? 2 / 3d : 1d) },
                     { "C20", (type == Type.Corrphycene || type == Type.Porphycene ? 1d : 1 / 2d) }
                 };
-            }
-        }
-
-        /// <summary>
-        /// alpha atoms of the cycle type
-        /// </summary>
-        private string[] AlphaAtoms
-        {
-            get
-            {
-                switch (type)
-                {
-                    case Type.Corrole:
-                    case Type.Norcorrole:
-                    default:
-                        return new string[] { "C1", "C4", "C6", "C9", "C11", "C14", "C16", "C19" };
-                    case Type.Porphyrin:
-                        return new string[] { "C1", "C4", "C6", "C9", "C11", "C14", "C16", "C19", "C1" };
-                    case Type.Corrphycene:
-                        return new string[] { "C1", "C4", "C6", "C9", "C12", "C15", "C17", "C20" };
-                    case Type.Porphycene:
-                        return new string[] { "C1", "C4", "C7", "C10", "C11", "C14", "C17", "C20" };
-                }
             }
         }
 
@@ -498,23 +387,6 @@ namespace PorphyStruct.Chemistry
             dataPoints = dataPoints.OrderBy(s => s.X).ToList();
 
             List<ArrowAnnotation> bonds = new List<ArrowAnnotation>();
-            List<Tuple<string, string>> Bonds = PorphyrinBonds;
-            if (type == Type.Corrole)
-            {
-                Bonds = CorroleBonds;
-            }
-            else if (type == Type.Norcorrole)
-            {
-                Bonds = NorcorroleBonds;
-            }
-            else if (type == Type.Corrphycene)
-            {
-                Bonds = CorrphyceneBonds;
-            }
-            else if (type == Type.Porphycene)
-            {
-                Bonds = PorphyceneBonds;
-            }
             foreach (Tuple<string, string> t in Bonds)
             {
                 try

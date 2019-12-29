@@ -24,7 +24,7 @@ namespace PorphyStruct
     /// </summary>
     public partial class MainWindow : Window, IDisposable
     {
-        private Macrocycle old = new Macrocycle(new List<Atom>());
+        private Macrocycle old;
         public string path = "";
         public double normFac = 0;
         private int oldIndex = -1;
@@ -57,10 +57,7 @@ namespace PorphyStruct
             Oxy.Override.LinearAxis y = pm.yAxis;
 
             //generate cycle
-            Macrocycle cycle = new Macrocycle(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList())
-            {
-                type = this.type
-            };
+            Macrocycle cycle = MacrocycleFactory.Build(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList(), type);
 
             List<AtomDataPoint> data = cycle.GetDataPoints();
 
@@ -315,14 +312,11 @@ namespace PorphyStruct
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Don't need to catch sth.")]
         private void UpdateMolView(bool markSelection = false, bool force = false, bool detect = false)
         {
-            Macrocycle cycle = new Macrocycle(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList())
-            {
-                type = this.type
-            };
+            Macrocycle cycle = MacrocycleFactory.Build(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList(), type);
             if (detect)
                 cycle.Detect();
 
-            if (!CompareAtoms(cycle.Atoms, old.Atoms) || (markSelection && oldIndex != coordGrid.SelectedIndex) || force)
+            if ((old != null && !CompareAtoms(cycle.Atoms, old.Atoms)) || (markSelection && oldIndex != coordGrid.SelectedIndex) || force)
             {
                 old = cycle;
                 oldIndex = coordGrid.SelectedIndex;
@@ -354,26 +348,7 @@ namespace PorphyStruct
                     b.AddSphere(pos, radius);
                     group.Children.Add(new System.Windows.Media.Media3D.GeometryModel3D(b.ToMesh(), fill));
                 }
-
-                List<Tuple<string, string>> BondType = Macrocycle.PorphyrinBonds;
-                //draw only current corrole bonds
-                if (type == Macrocycle.Type.Corrole)
-                {
-                    BondType = Macrocycle.CorroleBonds;
-                }
-                else if (type == Macrocycle.Type.Norcorrole)
-                {
-                    BondType = Macrocycle.NorcorroleBonds;
-                }
-                else if (type == Macrocycle.Type.Corrphycene)
-                {
-                    BondType = Macrocycle.CorrphyceneBonds;
-                }
-                else if (type == Macrocycle.Type.Porphycene)
-                {
-                    BondType = Macrocycle.PorphyceneBonds;
-                }
-                foreach (Tuple<string, string> t in BondType)
+                foreach (Tuple<string, string> t in cycle.Bonds)
                 {
                     MeshBuilder b = new MeshBuilder(true, true);
                     try
@@ -471,12 +446,10 @@ namespace PorphyStruct
             {
                 System.Diagnostics.Debug.WriteLine("Failed to MainWindow.GetData() because no Data is present");
             }
-            Macrocycle cycle = new Macrocycle(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList())
-            {
-                Title = Path.GetFileNameWithoutExtension(this.path),
-                type = this.type,
-                dataPoints = data,
-            };
+            var cycle = MacrocycleFactory.Build(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList(), type);
+            cycle.Title = Path.GetFileNameWithoutExtension(this.path);
+            cycle.dataPoints = data;
+
             return cycle;
         }
 
@@ -509,7 +482,7 @@ namespace PorphyStruct
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Ausstehend>")]
         public void Center()
         {
-            Macrocycle cycle = new Macrocycle(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList());
+            Macrocycle cycle = MacrocycleFactory.Build(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList(), type);
             Vector3D centroid = cycle.GetCentroid();
 
             foreach (Atom a in cycle.Atoms)

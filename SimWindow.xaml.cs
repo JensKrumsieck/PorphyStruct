@@ -199,10 +199,9 @@ namespace PorphyStruct
                 //plot current
                 if ((DateTime.Now - previousTime).Milliseconds >= 500)
                 {
-                    Macrocycle currentConf = new Macrocycle(cycle.Atoms)
-                    {
-                        dataPoints = cycle.dataPoints.OrderBy(s => s.X).ToList()
-                    };
+                    Macrocycle currentConf = MacrocycleFactory.Build(cycle.Atoms, cycle.type);
+                    currentConf.dataPoints = cycle.dataPoints.OrderBy(s => s.X).ToList();
+
                     for (int i = 0; i < currentConf.dataPoints.Count; i++)
                     {
                         //write new y data
@@ -243,10 +242,8 @@ namespace PorphyStruct
                         simGrid.Items.Refresh();
                     }), err);
 
-                    Macrocycle bestConf = new Macrocycle(cycle.Atoms)
-                    {
-                        dataPoints = cycle.dataPoints.OrderBy(s => s.X).ToList()
-                    };
+                    Macrocycle bestConf = MacrocycleFactory.Build(cycle.Atoms, cycle.type);
+                    bestConf.dataPoints = cycle.dataPoints.OrderBy(s => s.X).ToList();
 
                     for (int i = 0; i < bestConf.dataPoints.Count; i++)
                     {
@@ -268,10 +265,8 @@ namespace PorphyStruct
                         {
                             tmp.Add(new AtomDataPoint(dp.X, dp.Y * fac, dp.atom));
                         }
-                        Macrocycle tmpC = new Macrocycle(cycle.Atoms)
-                        {
-                            dataPoints = tmp
-                        };
+                        Macrocycle tmpC = MacrocycleFactory.Build(cycle.Atoms, cycle.type);
+                        tmpC.dataPoints = tmp;
                         meanDisPar.Content = tmpC.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture);
 
                     }), bestConf.dataPoints);
