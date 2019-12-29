@@ -19,7 +19,7 @@ namespace PorphyStruct.Simulations
         }
 
         /// <summary>
-        /// returns the error of two arrays
+        /// returns the error of two IEnumerable<double>s
         /// </summary>
         /// <param name="arr1"></param>
         /// <param name="arr2"></param>
