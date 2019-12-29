@@ -117,20 +117,13 @@ namespace PorphyStruct.Chemistry
         /// Converts Crystal to Macrocycle
         /// </summary>
         /// <param name="v"></param>
-        public static explicit operator Macrocycle(Crystal v)
-        {
-            return new Macrocycle(v.Atoms) { Title = v.Title };
-        }
+        public static explicit operator Macrocycle(Crystal v) => new Macrocycle(v.Atoms) { Title = v.Title };
 
         /// <summary>
         /// Gets the centroid of this Macrocycle
         /// </summary>
         /// <returns>Centroid as Vector3D</returns>
-        public Vector3D GetCentroid()
-        {
-            //get the centroid
-            return Point3D.Centroid(Atoms.Where(s => s.IsMacrocycle && !s.IsMetal).ToPoint3D()).ToVector3D();
-        }
+        public Vector3D GetCentroid() => Point3D.Centroid(Atoms.Where(s => s.IsMacrocycle && !s.IsMetal).ToPoint3D()).ToVector3D();
 
         /// <summary>
         /// Gets the mean plane of this Macrocycle
@@ -172,10 +165,7 @@ namespace PorphyStruct.Chemistry
         /// <param name="id1">Identifier 1</param>
         /// <param name="id2">Identifier 2</param>
         /// <returns>The Vectordistance</returns>
-        public double CalculateDistance(string id1, string id2)
-        {
-            return Atom.Distance(ByIdentifier(id1, true), ByIdentifier(id2, true));
-        }
+        public double CalculateDistance(string id1, string id2) => Atom.Distance(ByIdentifier(id1, true), ByIdentifier(id2, true));
 
         /// <summary>
         /// Method for Datapoint calculation //rewritten
@@ -301,11 +291,7 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         /// <param name="a"></param>
         /// <returns>boolean</returns>
-        private bool isAlpha(Atom a)
-        {
-            if (AlphaAtoms.Contains(a.Identifier)) return true;
-            return false;
-        }
+        private bool isAlpha(Atom a) => AlphaAtoms.Contains(a.Identifier) ? true : false;
 
         /// <summary>
         /// gets next alpha position for distance measuring
@@ -361,16 +347,7 @@ namespace PorphyStruct.Chemistry
         /// Gets the first detected metal atom
         /// </summary>
         /// <returns></returns>
-        public Atom GetMetal()
-        {
-            Atom m = null;
-            foreach (Atom a in Atoms)
-            {
-                if (a.IsMetal) m = a;
-                if (a.Identifier == "M") return a; //if identifier is set return!
-            }
-            return m;
-        }
+        public Atom GetMetal() => Atoms.Where(s => s.IsMetal).FirstOrDefault();
 
 
         /// <summary>
@@ -593,10 +570,7 @@ namespace PorphyStruct.Chemistry
         /// <param name="id"></param>
         /// <param name="forceMacroCycle"></param>
         /// <returns>Atom</returns>
-        public Atom ByIdentifier(string id, bool forceMacroCycle = false)
-        {
-            return Atoms.Where(s => s.Identifier == id && s.IsMacrocycle == forceMacroCycle).First();
-        }
+        public Atom ByIdentifier(string id, bool forceMacroCycle = false) => Atoms.Where(s => s.Identifier == id && s.IsMacrocycle == forceMacroCycle).FirstOrDefault();
 
         /// <summary>
         /// Builds RangeColorAxis
@@ -649,16 +623,12 @@ namespace PorphyStruct.Chemistry
         /// <returns></returns>
         public double MeanDisplacement() => Math.Sqrt(dataPoints.Sum(s => Math.Pow(s.Y, 2)));
 
-        public IEnumerable<Atom> Neighbors(Atom A)
-        {
-            foreach (Atom B in Atoms)
-            {
-                if (A.BondTo(B) && A != B)
-                {
-                    yield return B;
-                }
-            }
-        }
+        /// <summary>
+        /// Returns all Neighbors of an Atom
+        /// </summary>
+        /// <param name="A"></param>
+        /// <returns></returns>
+        public IEnumerable<Atom> Neighbors(Atom A) => Atoms.Where(B => A.BondTo(B) && A != B);
 
         /// <summary>
         /// Detect the macrocyclic structure
@@ -829,7 +799,6 @@ namespace PorphyStruct.Chemistry
                 if (Neighbors(n).Where(l => l.Identifier == "C11").Count() == 1) n.Identifier = "N3";
                 if (Neighbors(n).Where(l => l.Identifier == "C16").Count() == 1) n.Identifier = "N4";
             }
-
 
             return Atoms;
         }
