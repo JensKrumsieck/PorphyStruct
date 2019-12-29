@@ -133,8 +133,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Chemistry\Element.cs" />
-    <Compile Include="Chemistry\MacrocycleFactory.cs" />
-    <Compile Include="Chemistry\Macrocycles\Corrole.cs" />
     <Compile Include="Chemistry\MathUtil.cs" />
     <Compile Include="CompareWindow.xaml.cs">
       <DependentUpon>CompareWindow.xaml</DependentUpon>
