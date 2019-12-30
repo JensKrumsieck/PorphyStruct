@@ -37,6 +37,11 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         public abstract Dictionary<string, double> Multiplier { get; }
 
+        /// <summary>
+        /// Dihedrals of Macrocylce
+        /// </summary>
+        public abstract List<string[]> Dihedrals { get; }
+
         public enum Type { Corrole, Porphyrin, Norcorrole, Corrphycene, Porphycene };        
         public Macrocycle.Type type;
 
@@ -87,6 +92,25 @@ namespace PorphyStruct.Chemistry
         /// <param name="id2">Identifier 2</param>
         /// <returns>The Vectordistance</returns>
         public double CalculateDistance(string id1, string id2) => Atom.Distance(ByIdentifier(id1, true), ByIdentifier(id2, true));
+
+        /// <summary>
+        /// checks whether it's an alpha atom or not
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns>boolean</returns>
+        private bool isAlpha(Atom a) => AlphaAtoms.Contains(a.Identifier) ? true : false;
+
+        /// <summary>
+        /// gets next alpha position for distance measuring
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns>Atom</returns>
+        private Atom GetNextAlpha(Atom a)
+        {
+            int i = Array.IndexOf(AlphaAtoms, a.Identifier) + 1;
+            if (AlphaAtoms.Length > i) return ByIdentifier(AlphaAtoms[i], true);
+            else return null;
+        }
 
         /// <summary>
         /// Method for Datapoint calculation //rewritten
@@ -147,26 +171,6 @@ namespace PorphyStruct.Chemistry
                 yield return new AtomDataPoint(xCoord, a.DistanceToPlane(GetMeanPlane()), a);
             }
         }
-
-        /// <summary>
-        /// checks whether it's an alpha atom or not
-        /// </summary>
-        /// <param name="a"></param>
-        /// <returns>boolean</returns>
-        private bool isAlpha(Atom a) => AlphaAtoms.Contains(a.Identifier) ? true : false;
-
-        /// <summary>
-        /// gets next alpha position for distance measuring
-        /// </summary>
-        /// <param name="a"></param>
-        /// <returns>Atom</returns>
-        private Atom GetNextAlpha(Atom a)
-        {
-            int i = Array.IndexOf(AlphaAtoms, a.Identifier) + 1;
-            if (AlphaAtoms.Length > i) return ByIdentifier(AlphaAtoms[i], true);
-            else return null;
-        }
-
         /// <summary>
         /// Return the cycle's datapoints
         /// </summary>
@@ -225,48 +229,7 @@ namespace PorphyStruct.Chemistry
                 for (int i = 1; i <= 4; i++) MetricDict.Add($"Bond_N{i},M", CalculateDistance($"N{i}", GetMetal().Identifier));
                 MetricDict.Add("Bond_M,msp", GetMetal().DistanceToPlane(GetMeanPlane()));
             }
-            //GetDihedrals build list line wise
-            var dihedrals = new List<string[]>();
-            //1
-            if (type == Type.Corrphycene || type == Type.Porphycene)
-                dihedrals.Add(new string[] { "C2", "C1", "C20", "C19" });
-            else
-                dihedrals.Add(new string[] { "C2", "C1", "C19", "C18" });
-            //2
-            if (type == Type.Porphycene)
-                dihedrals.Add(new string[] { "C3", "C4", "C7", "C8" });
-            else
-                dihedrals.Add(new string[] { "C3", "C4", "C6", "C7" });
-            //3
-            if (type == Type.Corrphycene)
-                dihedrals.Add(new string[] { "C8", "C9", "C12", "C13" });
-            else if (type == Type.Porphycene)
-                dihedrals.Add(new string[] { "C9", "C10", "C11", "C12" });
-            else
-                dihedrals.Add(new string[] { "C8", "C9", "C11", "C12" });
-            //4
-            if (type == Type.Corrphycene)
-                dihedrals.Add(new string[] { "C14", "C15", "C17", "C18" });
-            else if (type == Type.Porphycene)
-                dihedrals.Add(new string[] { "C13", "C14", "C17", "C18" });
-            else
-                dihedrals.Add(new string[] { "C13", "C14", "C16", "C17" });
-
-            //5 the n2-n4 torsion
-            if (type == Type.Corrphycene)
-                dihedrals.Add(new string[] { "C9", "N2", "N4", "C17" });
-            else if (type == Type.Porphycene)
-                dihedrals.Add(new string[] { "C10", "N2", "N4", "C17" });
-            else
-                dihedrals.Add(new string[] { "C9", "N2", "N4", "C16" });
-
-            //6 the n1-n3 torsion
-            if (type == Type.Corrphycene)
-                dihedrals.Add(new string[] { "C4", "N1", "N3", "C12" });
-            else
-                dihedrals.Add(new string[] { "C4", "N1", "N3", "C11" });
-
-            dihedrals.ForEach(d => MetricDict.Add("Dihedral_" + string.Join(",", d), Dihedral(d)));
+            Dihedrals.ForEach(d => MetricDict.Add("Dihedral_" + string.Join(",", d), Dihedral(d)));
 
             return MetricDict;
         }
@@ -290,9 +253,9 @@ namespace PorphyStruct.Chemistry
             b3 = b3.Normalize(2);
 
             //calculate crossproducts
-            var c1 = CrossProduct(b1, b2);
-            var c2 = CrossProduct(b2, b3);
-            var c3 = CrossProduct(c1, b2);
+            var c1 = MathUtil.CrossProduct(b1, b2);
+            var c2 = MathUtil.CrossProduct(b2, b3);
+            var c3 = MathUtil.CrossProduct(c1, b2);
 
             //get x&y as dotproducts 
             var x = c1.DotProduct(c2);
@@ -300,22 +263,6 @@ namespace PorphyStruct.Chemistry
 
             return 180.0 / Math.PI * Math.Atan2(y, x);
         }
-
-        /// <summary>
-        /// Vector Crossproduct for MathNet Numerics
-        /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
-        public static Vector<double> CrossProduct(Vector<double> left, Vector<double> right)
-        {
-            Vector<double> result = DenseVector.Create(3, 0);
-            result[0] = left[1] * right[2] - left[2] * right[1];
-            result[1] = -left[0] * right[2] + left[2] * right[0];
-            result[2] = left[0] * right[1] - left[1] * right[0];
-            return result;
-        }
-
 
         /// <summary>
         /// Draws a line between two points

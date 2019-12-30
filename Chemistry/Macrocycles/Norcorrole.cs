@@ -37,5 +37,10 @@ namespace PorphyStruct.Chemistry.Macrocycles
         /// X-Coordinate Multiplier
         /// </summary>
         public override Dictionary<string, double> Multiplier => Porphyrin._Multiplier;
+        
+        /// <summary>
+        /// Norcorroles Dihedrals
+        /// </summary>
+        public override List<string[]> Dihedrals => Porphyrin._Dihedrals;
     }
 }

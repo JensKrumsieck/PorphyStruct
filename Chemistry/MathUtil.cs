@@ -1,4 +1,6 @@
-﻿using MathNet.Spatial.Euclidean;
+﻿using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
+using MathNet.Spatial.Euclidean;
 using System;
 using System.Collections.Generic;
 
@@ -84,6 +86,23 @@ namespace PorphyStruct.Chemistry
             }
             return normData;
         }
+
+
+        /// <summary>
+        /// Vector Crossproduct for MathNet Numerics
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static Vector<double> CrossProduct(Vector<double> left, Vector<double> right)
+        {
+            Vector<double> result = DenseVector.Create(3, 0);
+            result[0] = left[1] * right[2] - left[2] * right[1];
+            result[1] = -left[0] * right[2] + left[2] * right[0];
+            result[2] = left[0] * right[1] - left[1] * right[0];
+            return result;
+        }
+
 
     }
 }
