@@ -214,15 +214,10 @@ namespace PorphyStruct.Chemistry
         public double Dihedral(string[] Atoms)
         {
             if (Atoms.Length != 4) return 0;
-            //build vectors
-            Vector<double> b1 = -(DenseVector.OfArray(ByIdentifier(Atoms[0], true).XYZ()) - DenseVector.OfArray(ByIdentifier(Atoms[1], true).XYZ()));
-            Vector<double> b2 = (DenseVector.OfArray(ByIdentifier(Atoms[1], true).XYZ()) - DenseVector.OfArray(ByIdentifier(Atoms[2], true).XYZ()));
-            Vector<double> b3 = (DenseVector.OfArray(ByIdentifier(Atoms[3], true).XYZ()) - DenseVector.OfArray(ByIdentifier(Atoms[2], true).XYZ()));
-
-            //Normalize
-            b1 = b1.Normalize(2);
-            b2 = b2.Normalize(2);
-            b3 = b3.Normalize(2);
+            //build normalized vectors
+            Vector<double> b1 = (-(DenseVector.OfArray(ByIdentifier(Atoms[0], true).XYZ()) - DenseVector.OfArray(ByIdentifier(Atoms[1], true).XYZ()))).Normalize(2);
+            Vector<double> b2 = (DenseVector.OfArray(ByIdentifier(Atoms[1], true).XYZ()) - DenseVector.OfArray(ByIdentifier(Atoms[2], true).XYZ())).Normalize(2);
+            Vector<double> b3 = (DenseVector.OfArray(ByIdentifier(Atoms[3], true).XYZ()) - DenseVector.OfArray(ByIdentifier(Atoms[2], true).XYZ())).Normalize(2);
 
             //calculate crossproducts
             var c1 = MathUtil.CrossProduct(b1, b2);
@@ -272,11 +267,9 @@ namespace PorphyStruct.Chemistry
             //add metal atoms
             if (HasMetal)
             {
-                List<AtomDataPoint> Nitrogen = dataPoints.Where(s => s.atom.Type == "N").ToList();
-                AtomDataPoint m = dataPoints.Where(s => s.atom == GetMetal()).FirstOrDefault();
-                foreach (AtomDataPoint n in Nitrogen)
+                foreach (AtomDataPoint n in dataPoints.Where(s => s.atom.Type == "N").ToList())
                 {
-                    ArrowAnnotation b = DrawBond(m, n);
+                    ArrowAnnotation b = DrawBond(dataPoints.Where(s => s.atom == GetMetal()).FirstOrDefault(), n);
                     b.LineStyle = LineStyle.Dash;
                     b.Color = OxyColor.FromAColor(75, b.Color);
                     b.Tag = "Metal";
@@ -291,7 +284,7 @@ namespace PorphyStruct.Chemistry
         /// <param name="id"></param>
         /// <param name="forceMacroCycle"></param>
         /// <returns>Atom</returns>
-        public Atom ByIdentifier(string id, bool forceMacroCycle = false) => Atoms.Where(s => s.Identifier == id && s.IsMacrocycle == forceMacroCycle).FirstOrDefault();
+        public Atom ByIdentifier(string id, bool forceMacroCycle = false) => Atoms.Where(s => s.Identifier == id && (forceMacroCycle ? s.IsMacrocycle == forceMacroCycle : true)).FirstOrDefault();
 
         /// <summary>
         /// Builds RangeColorAxis
@@ -355,7 +348,7 @@ namespace PorphyStruct.Chemistry
         /// Detect the macrocyclic structure
         /// </summary>
         /// <returns></returns>
-        public List<Atom> Detect()
+        public virtual List<Atom> Detect()
         {
             List<List<Atom>> Pyrroles = new List<List<Atom>>();
             for (int i = 0; i < Atoms.Count; i++)
