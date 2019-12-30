@@ -38,5 +38,39 @@ namespace PorphyStruct.Chemistry.Macrocycles
         /// </summary>
         public static string[] _AlphaAtoms = new string[] { "C1", "C4", "C7", "C10", "C11", "C14", "C17", "C20" };
         public override string[] AlphaAtoms => _AlphaAtoms;
+
+        /// <summary>
+        /// Multiplier of X-Coordinate
+        /// </summary>
+        internal static Dictionary<string, double> _Multiplier
+        {
+            get
+            {
+                return new Dictionary<string, double>
+                {
+                    { "C1", 0d },
+                    { "C2", 1 / 3d },
+                    { "C3", 2 / 3d },
+                    { "C4", 1d },
+                    { "C5", 1 / 3d},
+                    { "C6", 2 / 3d},
+                    { "C7", 1d},
+                    { "C8", 1 / 3d },
+                    { "C9", 2 / 3d },
+                    { "C10", 1d  },
+                    { "C11", 1d },
+                    { "C12",  1 / 3d },
+                    { "C13",2 / 3d },
+                    { "C14",  1d },
+                    { "C15",1 / 3d },
+                    { "C16", 2 / 3d },
+                    { "C17", 1d  },
+                    { "C18", 1 / 3d  },
+                    { "C19",  2 / 3d },
+                    { "C20",  1d  }
+                };
+            }
+        }
+        public override Dictionary<string, double> Multiplier => _Multiplier;
     }
 }

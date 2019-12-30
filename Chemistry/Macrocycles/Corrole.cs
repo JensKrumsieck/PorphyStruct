@@ -29,5 +29,10 @@ namespace PorphyStruct.Chemistry.Macrocycles
         /// </summary>
         public static string[] _AlphaAtoms = new string[] { "C1", "C4", "C6", "C9", "C11", "C14", "C16", "C19" };
         public override string[] AlphaAtoms => _AlphaAtoms;
+
+        /// <summary>
+        /// X-Coordinate Multiplier
+        /// </summary>
+        public override Dictionary<string, double> Multiplier => Porphyrin._Multiplier;
     }
 }

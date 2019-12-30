@@ -32,7 +32,12 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         public abstract string[] AlphaAtoms { get; }
 
-        public enum Type { Corrole, Porphyrin, Norcorrole, Corrphycene, Porphycene };
+        /// <summary>
+        /// Multipliers for C-Atom positioning
+        /// </summary>
+        public abstract Dictionary<string, double> Multiplier { get; }
+
+        public enum Type { Corrole, Porphyrin, Norcorrole, Corrphycene, Porphycene };        
         public Macrocycle.Type type;
 
         /// <summary>
@@ -101,20 +106,21 @@ namespace PorphyStruct.Chemistry
 
             //reorder Atoms
             Atoms = Atoms.OrderBy(s => RingAtoms.IndexOf(s.Identifier)).ToList();
+
             //current alpha-alpha distance
             double distance = 0;
 
             //current fixpoint
             double fixPoint = 1;
 
-            //add c20 beforehand...
             dataPoints.Clear();
+
+            //add c20 beforehand...
             if (type == Type.Porphyrin) dataPoints.Add(new AtomDataPoint(1, ByIdentifier("C20", true).DistanceToPlane(GetMeanPlane()), ByIdentifier("C20", true)));
 
             //loop through every non Metal Atom of Macrocycle and return datapoint
             foreach (Atom a in Atoms.Where(s => s.IsMacrocycle && !s.IsMetal))
             {
-
                 double xCoord = 1;
 
                 if (a.Type == "C")
@@ -122,7 +128,7 @@ namespace PorphyStruct.Chemistry
                     //check if porphyrin for special c1 value
                     if (a.Identifier == "C1" && type == Type.Porphyrin)
                     {
-                        xCoord = 1 + CalculateDistance("C1", "C19") / 2;
+                        xCoord = 1 + (CalculateDistance("C1", "C19") / 2);
                     }
                     //usual coordinate generation
                     else xCoord = fixPoint + distance * Multiplier[a.Identifier];
@@ -139,39 +145,6 @@ namespace PorphyStruct.Chemistry
                 if (isAlpha(a)) fixPoint = xCoord;
 
                 yield return new AtomDataPoint(xCoord, a.DistanceToPlane(GetMeanPlane()), a);
-            }
-        }
-
-        /// <summary>
-        /// Multipliers for C-Atom positioning
-        /// </summary>
-        private Dictionary<string, double> Multiplier
-        {
-            get
-            {
-                return new Dictionary<string, double>
-                {
-                    { "C1", 0d },
-                    { "C2", 1 / 3d },
-                    { "C3", 2 / 3d },
-                    { "C4", 1d },
-                    { "C5", type == Type.Porphycene ? 1 / 3d : 1 / 2d },
-                    { "C6", type == Type.Porphycene ? 2 / 3d : 1d },
-                    { "C7", type == Type.Porphycene ? 1d : 1 / 3d },
-                    { "C8", type == Type.Porphycene ? 1 / 3d : 2 / 3d },
-                    { "C9", type == Type.Porphycene ? 2 / 3d : 1d },
-                    { "C10", (type == Type.Porphycene ? 1d : (type == Type.Corrphycene ? 1 / 3d : 1 / 2d)) },
-                    { "C11", type == Type.Corrphycene ? 2 / 3d : 1d },
-                    { "C12", type == Type.Corrphycene ? 1d : 1 / 3d },
-                    { "C13", type == Type.Corrphycene ? 1 / 3d : 2 / 3d },
-                    { "C14", type == Type.Corrphycene ? 2 / 3d : 1d },
-                    { "C15", (type == Type.Corrphycene ? 1d : (type == Type.Porphycene ? 1 / 3d : 1 / 2d)) },
-                    { "C16", (type == Type.Corrphycene ? 1 / 2d : (type == Type.Porphycene ? 2 / 3d : 1d)) },
-                    { "C17", (type == Type.Corrphycene || type == Type.Porphycene ? 1d : 1 / 3d) },
-                    { "C18", (type == Type.Corrphycene || type == Type.Porphycene ? 1 / 3d : 2 / 3d) },
-                    { "C19", (type == Type.Corrphycene || type == Type.Porphycene ? 2 / 3d : 1d) },
-                    { "C20", (type == Type.Corrphycene || type == Type.Porphycene ? 1d : 1 / 2d) }
-                };
             }
         }
 

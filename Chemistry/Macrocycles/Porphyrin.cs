@@ -54,5 +54,39 @@ namespace PorphyStruct.Chemistry.Macrocycles
         /// </summary>
         public static string[] _AlphaAtoms = new string[] { "C1", "C4", "C6", "C9", "C11", "C14", "C16", "C19", "C1" };
         public override string[] AlphaAtoms => _AlphaAtoms;
+
+        /// <summary>
+        /// Multipliers for C-Atom positioning
+        /// </summary>
+        internal static Dictionary<string, double> _Multiplier
+        {
+            get
+            {
+                return new Dictionary<string, double>
+                {
+                    { "C1", 0d },
+                    { "C2", 1 / 3d },
+                    { "C3", 2 / 3d },
+                    { "C4", 1d },
+                    { "C5",1 / 2d },
+                    { "C6", 1d },
+                    { "C7", 1 / 3d },
+                    { "C8", 2 / 3d },
+                    { "C9", 1d },
+                    { "C10", 1 / 2d },
+                    { "C11", 1d },
+                    { "C12", 1 / 3d },
+                    { "C13", 2 / 3d },
+                    { "C14", 1d },
+                    { "C15", 1 / 2d },
+                    { "C16", 1d },
+                    { "C17", 1 / 3d },
+                    { "C18", 2 / 3d },
+                    { "C19", 1d },
+                    { "C20", 1 / 2d }
+                };
+            }
+        }
+        public override Dictionary<string, double> Multiplier => _Multiplier;
     }
 }

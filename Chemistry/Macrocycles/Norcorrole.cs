@@ -32,5 +32,10 @@ namespace PorphyStruct.Chemistry.Macrocycles
         /// </summary>
         public static string[] _AlphaAtoms = Corrole._AlphaAtoms;
         public override string[] AlphaAtoms => _AlphaAtoms;
+
+        /// <summary>
+        /// X-Coordinate Multiplier
+        /// </summary>
+        public override Dictionary<string, double> Multiplier => Porphyrin._Multiplier;
     }
 }
