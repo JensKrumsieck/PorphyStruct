@@ -179,19 +179,7 @@ namespace PorphyStruct.Chemistry
         /// <summary>
         /// Indicates if a Metal Atom is present
         /// </summary>
-        public bool HasMetal
-        {
-            get
-            {
-                bool check = false;
-                foreach (Atom a in Atoms)
-                {
-                    //only return metal if it's marked as macrocycle even if the option is set to on!
-                    if (a.IsMetal && a.IsMacrocycle) check = true;
-                }
-                return check;
-            }
-        }
+        public bool HasMetal => Atoms.Where(s => s.IsMacrocycle && s.IsMetal).Count() > 0;
 
         /// <summary>
         /// Gets the first detected metal atom
