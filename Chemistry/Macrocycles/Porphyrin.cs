@@ -1,5 +1,7 @@
-﻿using System;
+﻿using OxyPlot.Annotations;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PorphyStruct.Chemistry.Macrocycles
 {
@@ -101,5 +103,41 @@ namespace PorphyStruct.Chemistry.Macrocycles
             new string[] { "C4", "N1", "N3", "C11" }
         };
         public override List<string[]> Dihedrals => _Dihedrals;
+
+
+        /// <summary>
+        /// Overrides Macrocycle.DrawBonds
+        /// because of special C1-C20 Bond.
+        /// </summary>
+        /// <returns>Annotation aka Bonds</returns>
+        public override IEnumerable<ArrowAnnotation> DrawBonds(int mode = 0) => base.DrawBonds().Where(s => !((string)s.Tag).Contains("C20")).Concat(DrawPorphyrinBonds());
+
+        /// <summary>
+        /// Draw Porphyrin specific Bonds
+        /// </summary>
+        /// <param name="mode"></param>
+        /// <returns></returns>
+        private IEnumerable<ArrowAnnotation> DrawPorphyrinBonds(int mode = 0)
+        {
+            yield return DrawBond(dataPoints.OrderBy(s => s.X).First(), dataPoints.Where(s => s.atom.Identifier == "C1" && s.atom.IsMacrocycle).First()); 
+            yield return DrawBond(dataPoints.OrderBy(s => s.X).Last(), dataPoints.Where(s => s.atom.Identifier == "C19" && s.atom.IsMacrocycle).First());
+        }
+
+        /// <summary>
+        /// Overrides Macrocycle.CalculateDataPoints
+        /// Add PorphyrinDataPoint and shift all Points because of C20 being first
+        /// </summary>
+        /// <returns></returns>
+        public override IEnumerable<AtomDataPoint> CalculateDataPoints() => base.CalculateDataPoints().Select(s => s = new AtomDataPoint(s.X + (CalculateDistance("C1", "C19") / 2), s.Y, s.atom)).Concat(CalculatePorphyrinDataPoints());
+
+        /// <summary>
+        /// Calculates PorphyrinDataPoints
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerable<AtomDataPoint> CalculatePorphyrinDataPoints()
+        {
+            //add c20
+            yield return new AtomDataPoint(1, ByIdentifier("C20", true).DistanceToPlane(GetMeanPlane()), ByIdentifier("C20", true));
+        }
     }
 }

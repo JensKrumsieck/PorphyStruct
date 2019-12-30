@@ -13,14 +13,23 @@ namespace PorphyStruct.Chemistry
         public Dictionary<string, double> par = new Dictionary<string, double>();
         public double[] errors;
         public List<SimParam> simParam;
-        public Simulation(List<Atom> atoms) : base(atoms)
-        {
-            //does nothing for now
-        }
+        public Simulation(List<Atom> atoms) : base(atoms) { }
 
-        public override string[] AlphaAtoms => System.Type.GetType($"PorphyStruct.Chemistry.Macrocycles.{type.ToString()}").GetProperty("_AlphaAtoms").GetValue(this) as string[];
-        public override List<Tuple<string, string>> Bonds => System.Type.GetType($"PorphyStruct.Chemistry.Macrocycles.{type.ToString()}").GetProperty("_Bonds").GetValue(this) as List<Tuple<string, string>>;
-        public override List<string> RingAtoms => System.Type.GetType($"PorphyStruct.Chemistry.Macrocycles.{type.ToString()}").GetProperty("_RingAtoms").GetValue(this) as List<string>;
+        /// <summary>
+        /// Get Properties from Cycle Class
+        /// </summary>
+        public override string[] AlphaAtoms => RingProperty("_AlphaAtoms") as string[];
+        public override List<Tuple<string, string>> Bonds => RingProperty("_Bonds") as List<Tuple<string, string>>;
+        public override List<string> RingAtoms => RingProperty("_RingAtoms") as List<string>;
+        public override List<string[]> Dihedrals => RingProperty("_Dihedrals") as List<string[]>;
+        public override Dictionary<string, double> Multiplier => RingProperty("_Multiplier") as Dictionary<string, double>;
+
+        /// <summary>
+        /// Gets static Ring Properties
+        /// </summary>
+        /// <param name="Property"></param>
+        /// <returns></returns>
+        internal object RingProperty(string Property) => System.Type.GetType($"PorphyStruct.Chemistry.Macrocycles.{type.ToString()}").GetProperty(Property).GetValue(this);
 
         /// <summary>
         /// Paints the Simulation to a PlotModel

@@ -42,7 +42,7 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         public abstract List<string[]> Dihedrals { get; }
 
-        public enum Type { Corrole, Porphyrin, Norcorrole, Corrphycene, Porphycene };        
+        public enum Type { Corrole, Porphyrin, Norcorrole, Corrphycene, Porphycene };
         public Macrocycle.Type type;
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace PorphyStruct.Chemistry
         /// Method for Datapoint calculation //rewritten
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<AtomDataPoint> CalculateDataPoints()
+        public virtual IEnumerable<AtomDataPoint> CalculateDataPoints()
         {
             //check if every atom is present in configuration
             foreach (string id in RingAtoms)
@@ -137,26 +137,13 @@ namespace PorphyStruct.Chemistry
             //current fixpoint
             double fixPoint = 1;
 
-            dataPoints.Clear();
-
-            //add c20 beforehand...
-            if (type == Type.Porphyrin) dataPoints.Add(new AtomDataPoint(1, ByIdentifier("C20", true).DistanceToPlane(GetMeanPlane()), ByIdentifier("C20", true)));
-
             //loop through every non Metal Atom of Macrocycle and return datapoint
             foreach (Atom a in Atoms.Where(s => s.IsMacrocycle && !s.IsMetal))
             {
                 double xCoord = 1;
 
                 if (a.Type == "C")
-                {
-                    //check if porphyrin for special c1 value
-                    if (a.Identifier == "C1" && type == Type.Porphyrin)
-                    {
-                        xCoord = 1 + (CalculateDistance("C1", "C19") / 2);
-                    }
-                    //usual coordinate generation
-                    else xCoord = fixPoint + distance * Multiplier[a.Identifier];
-                }
+                    xCoord = fixPoint + distance * Multiplier[a.Identifier];
                 if (a.Type == "N")
                     xCoord = fixPoint + distance / 2;
 
@@ -177,16 +164,13 @@ namespace PorphyStruct.Chemistry
         /// <returns>AtomDataPoints</returns>
         public List<AtomDataPoint> GetDataPoints()
         {
+            dataPoints.Clear();
             dataPoints.AddRange(CalculateDataPoints());
 
-            if (HasMetal)
-            {
-                Atom M = GetMetal();
-                dataPoints.Add(new AtomDataPoint(
+            if (HasMetal) dataPoints.Add(new AtomDataPoint(
                     (dataPoints.First().X + dataPoints.Last().X) / 2,
-                    M.DistanceToPlane(GetMeanPlane()),
-                    M));
-            }
+                    GetMetal().DistanceToPlane(GetMeanPlane()),
+                    GetMetal()));
 
             return dataPoints;
         }
@@ -271,89 +255,46 @@ namespace PorphyStruct.Chemistry
         /// <param name="a2"></param>
         /// <param name="sim">is Simulation</param>
         /// <returns>ArrowAnnotation aka Bond</returns>
-        public static ArrowAnnotation DrawBond(AtomDataPoint a1, AtomDataPoint a2, int mode = 0)
+        public static ArrowAnnotation DrawBond(AtomDataPoint a1, AtomDataPoint a2, int mode = 0) => new ArrowAnnotation
         {
-            OxyColor color;
-            if (Properties.Settings.Default.singleColor)
-            {
-                color = Atom.modesSingleColor[mode];
-            }
-            else
-            {
-                color = Atom.modesMultiColor[mode];
-            }
-
-            ArrowAnnotation bond = new ArrowAnnotation
-            {
-                StartPoint = a1.GetDataPoint(),
-                EndPoint = a2.GetDataPoint(),
-                HeadWidth = 0,
-                HeadLength = 0,
-                Color = color,
-                Layer = AnnotationLayer.BelowSeries,
-                StrokeThickness = Properties.Settings.Default.lineThickness
-            };
-            return bond;
-        }
+            StartPoint = a1.GetDataPoint(),
+            EndPoint = a2.GetDataPoint(),
+            HeadWidth = 0,
+            HeadLength = 0,
+            Color = Properties.Settings.Default.singleColor ? Atom.modesSingleColor[mode] : Atom.modesMultiColor[mode],
+            Layer = AnnotationLayer.BelowSeries,
+            StrokeThickness = Properties.Settings.Default.lineThickness,
+            Tag = a1.atom.Identifier + "," + a2.atom.Identifier
+        };
 
         /// <summary>
         /// Generates all Bonds as Annotations
-        /// </summary>
-        /// <param name="sim">is Simulation</param>
+        /// </summary
         /// <returns>Annotation aka Bonds</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Ausstehend>")]
-        public List<ArrowAnnotation> DrawBonds(int mode = 0)
+        public virtual IEnumerable<ArrowAnnotation> DrawBonds(int mode = 0)
         {
             dataPoints = dataPoints.OrderBy(s => s.X).ToList();
 
-            List<ArrowAnnotation> bonds = new List<ArrowAnnotation>();
             foreach (Tuple<string, string> t in Bonds)
-            {
-                try
-                {
-                    AtomDataPoint a1;
-                    AtomDataPoint a2;
-                    if (t.Item1 == "C20" && t.Item2 == "C1" && type == Type.Porphyrin)
-                    {
-                        a1 = dataPoints.OrderBy(s => s.X).First();
-                        a2 = dataPoints.Where(s => s.atom.Identifier == t.Item2 && s.atom.IsMacrocycle).First();
-                    }
-                    else if (t.Item1 == "C19" && t.Item2 == "C20" && type == Type.Porphyrin)
-                    {
-                        a1 = dataPoints.Where(s => s.atom.Identifier == t.Item1 && s.atom.IsMacrocycle).First();
-                        a2 = dataPoints.OrderBy(s => s.X).Last();
-                    }
-                    else
-                    {
-                        a1 = dataPoints.Where(s => s.atom.Identifier == t.Item1 && s.atom.IsMacrocycle).First();
-                        a2 = dataPoints.Where(s => s.atom.Identifier == t.Item2 && s.atom.IsMacrocycle).First();
-                    }
-                    bonds.Add(Macrocycle.DrawBond(a1, a2, mode));
-                }
-                catch { }
-            }
-
+                yield return Macrocycle.DrawBond(
+                    dataPoints.Where(s => s.atom.Identifier == t.Item1 && s.atom.IsMacrocycle).First(), 
+                    dataPoints.Where(s => s.atom.Identifier == t.Item2 && s.atom.IsMacrocycle).First(), 
+                    mode);
+                
             //add metal atoms
             if (HasMetal)
             {
-                List<AtomDataPoint> Nitrogen = dataPoints.Where(s => Regex.IsMatch(s.atom.Identifier, "N[1-4]")).ToList();
+                List<AtomDataPoint> Nitrogen = dataPoints.Where(s => s.atom.Type == "N").ToList();
                 AtomDataPoint m = dataPoints.Where(s => s.atom == GetMetal()).FirstOrDefault();
                 foreach (AtomDataPoint n in Nitrogen)
                 {
-                    try
-                    {
-                        ArrowAnnotation b;
-                        b = DrawBond(m, n);
-                        b.LineStyle = LineStyle.Dash;
-                        b.Color = OxyColor.FromAColor(75, b.Color);
-                        b.Tag = "Metal";
-                        bonds.Add(b);
-                    }
-                    catch { /*don't throw if metal is omitted */}
+                    ArrowAnnotation b = DrawBond(m, n);
+                    b.LineStyle = LineStyle.Dash;
+                    b.Color = OxyColor.FromAColor(75, b.Color);
+                    b.Tag = "Metal";
+                    yield return b;
                 }
             }
-
-            return bonds;
         }
 
         /// <summary>
