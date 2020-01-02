@@ -120,5 +120,29 @@ namespace PorphyStruct.Chemistry
         /// <param name="list"></param>
         /// <returns></returns>
         public IEnumerable<Atom> Neighbors(Atom A, IEnumerable<Atom> list) => list.Where(B => A.BondTo(B) && A != B);
+
+        /// <summary>
+        /// Returns non metla neighbors of atom
+        /// </summary>
+        /// <param name="A"></param>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public IEnumerable<Atom> NonMetalNeighbors(Atom A, IEnumerable<Atom> list) => Neighbors(A, list).Where(s => !s.IsMetal);
+
+
+        /// <summary>
+        /// Returns a collection of Atoms with VertexDegree of 3
+        /// NOTE: If this is used on al found cycle by Macrocyle.Detect() this will return alpha atoms
+        /// </summary>
+        /// <param name="mol"></param>
+        /// <returns></returns>
+        public IEnumerable<Atom> Vertex3Atoms(IEnumerable<Atom> mol) => mol.Where(s => DFSUtil.VertexDegree(mol, s, Neighbors) == 3);
+
+
+        /// <summary>
+        /// Gets the first detected metal atom in molecule
+        /// </summary>
+        /// <returns></returns>
+        public Atom GetMetal() => Atoms.Where(s => s.IsMetal).FirstOrDefault();
     }
 }

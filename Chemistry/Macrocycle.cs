@@ -8,7 +8,6 @@ using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace PorphyStruct.Chemistry
 {
@@ -50,7 +49,7 @@ namespace PorphyStruct.Chemistry
         /// Gets the centroid of this Macrocycle
         /// </summary>
         /// <returns>Centroid as Vector3D</returns>
-        public Vector3D GetCentroid() => GetCentroid(Atoms.Where(s => s.IsMacrocycle && !s.IsMetal));                
+        public Vector3D GetCentroid() => GetCentroid(Atoms.Where(s => s.IsMacrocycle && !s.IsMetal));
 
         /// <summary>
         /// Gets mean plane of the macrocyle
@@ -148,13 +147,6 @@ namespace PorphyStruct.Chemistry
         public bool HasMetal => Atoms.Where(s => s.IsMacrocycle && s.IsMetal).Count() > 0;
 
         /// <summary>
-        /// Gets the first detected metal atom
-        /// </summary>
-        /// <returns></returns>
-        public Atom GetMetal() => Atoms.Where(s => s.IsMetal).FirstOrDefault();
-
-
-        /// <summary>
         /// Returns Bondlenghts, etc. for the cycles
         /// </summary>
         /// <returns></returns>
@@ -226,12 +218,12 @@ namespace PorphyStruct.Chemistry
 
             foreach (Tuple<string, string> t in Bonds)
                 yield return Macrocycle.DrawBond(
-                    dataPoints.Where(s => s.atom.Identifier == t.Item1 && s.atom.IsMacrocycle).First(), 
-                    dataPoints.Where(s => s.atom.Identifier == t.Item2 && s.atom.IsMacrocycle).First(), 
+                    dataPoints.Where(s => s.atom.Identifier == t.Item1 && s.atom.IsMacrocycle).First(),
+                    dataPoints.Where(s => s.atom.Identifier == t.Item2 && s.atom.IsMacrocycle).First(),
                     mode);
-                
+
             //add metal atoms
-            if (HasMetal) 
+            if (HasMetal)
                 foreach (AtomDataPoint n in dataPoints.Where(s => s.atom.Type == "N").ToList())
                 {
                     ArrowAnnotation b = DrawBond(dataPoints.Where(s => s.atom == GetMetal()).FirstOrDefault(), n);
@@ -313,7 +305,7 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         /// <param name="A"></param>
         /// <returns></returns>
-        public IEnumerable<Atom> NonMetalNeighbors(Atom A) => Neighbors(A).Where(s => !s.IsMetal);
+        public IEnumerable<Atom> NonMetalNeighbors(Atom A) => NonMetalNeighbors(A, Atoms);
 
 
         /// <summary>
@@ -329,7 +321,7 @@ namespace PorphyStruct.Chemistry
             //basically need a sphere where to catch atoms in to get N4 Cavity
             Atoms.Add(new Atom("La Centroid", centroid.X, centroid.Y, centroid.Z));
             //find neighbors which have more neighbors that are non metal nor hydrogen (NH) and belong to current figure
-            var neighbors = NonMetalNeighbors(ByIdentifier("La Centroid")).Where(s => NonMetalNeighbors(s).Where(n => n.Type != "H").Count() == 2 && mol.Contains(s));
+            var neighbors = NonMetalNeighbors(ByIdentifier("La Centroid"), mol).Where(s => NonMetalNeighbors(s, mol).Where(n => n.Type != "H").Count() == 2 && mol.Contains(s));
 
             //use the nearest 4 neighbors by mean plane and centroid distance to get cavity atoms
             var cavity = neighbors.OrderBy(n => Atom.Distance(ByIdentifier("La Centroid"), n) + Math.Abs(n.DistanceToPlane(GetMeanPlane(mol)))).Take(4).ToList();
@@ -354,7 +346,7 @@ namespace PorphyStruct.Chemistry
             var corpus = RingPath(cavity.First(), RingAtoms.Count() - 8);
 
             //just need to find beta atoms now to complete the cycle, luckily we can use the cavity to find five membered rings and combine with corpus, and distinct.
-            foreach (Atom N in cavity) corpus.UnionWith(RingPath(N,5));
+            foreach (Atom N in cavity) corpus.UnionWith(RingPath(N, 5));
 
             return corpus;
         }
@@ -368,14 +360,7 @@ namespace PorphyStruct.Chemistry
         /// <param name="atom">An Atom</param>
         /// <returns></returns>
         internal HashSet<Atom> RingPath(Atom atom, int size) => DFSUtil.GetAllPaths(atom, NonMetalNeighbors(atom).Where(n => n.Type != "H").First(), NonMetalNeighbors, size).FirstOrDefault();
-        
-        /// <summary>
-        /// Returns a collection of Atoms with VertexDegree of 3
-        /// NOTE: If this is used on al found cycle by Detect() this will return alpha atoms
-        /// </summary>
-        /// <param name="mol"></param>
-        /// <returns></returns>
-        public IEnumerable<Atom> Vertex3Atoms(IEnumerable<Atom> corpus) => corpus.Where(s => DFSUtil.VertexDegree(corpus, s, Neighbors) == 3);
+
 
         /// <summary>
         /// An overrideable Method to get C1 Atom. 
@@ -385,13 +370,6 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         /// <returns></returns>
         public virtual Atom C1(IEnumerable<Atom> cycle) => Vertex3Atoms(cycle).First();
-
-        /// <summary>
-        /// Get the C2 Atom
-        /// </summary>
-        /// <param name="cycle"></param>
-        /// <returns></returns>
-        public Atom C2 (IEnumerable<Atom> cycle) => Neighbors(C1(cycle), cycle).Where(s => !N4Cavity(cycle).Contains(s) && !RingPath(N4Cavity(cycle).First(), RingAtoms.Count() - 8).Contains(s)).FirstOrDefault();
 
         /// <summary>
         /// Detect the macrocyclic structure
@@ -409,7 +387,7 @@ namespace PorphyStruct.Chemistry
 
             var cycle = new HashSet<Atom>();
             //loop through all remaining connected figures
-            foreach(var mol in distinct)
+            foreach (var mol in distinct)
             {
                 //get Corpus by Pathfinding Method
                 cycle = FindCorpus(mol);
@@ -422,20 +400,9 @@ namespace PorphyStruct.Chemistry
             //cycle found?
             if (cycle.Count() == RingAtoms.Count)
             {
-                //rename every non cycle atom to Type+X and set macrocycle flag
-                foreach (var a in Atoms)
-                {
-                    if (cycle.Contains(a))
-                    {
-                        a.IsMacrocycle = true;
-                        a.Identifier = a.Type + "M";
-                    }
-                    else
-                    {
-                        a.IsMacrocycle = false;
-                        a.Identifier = a.Type + "X";
-                    }
-                }
+                //set macrocycle flag
+                Atoms.Where(s => cycle.Contains(s)).ToList().ForEach(s => { s.IsMacrocycle = true; s.Identifier = s.Type + "M"; });
+                Atoms.Where(s => !cycle.Contains(s)).ToList().ForEach(s => { s.IsMacrocycle = false; s.Identifier = s.Type + "X"; });
 
                 //track visited atoms
                 HashSet<Atom> visited = new HashSet<Atom>();
@@ -445,14 +412,15 @@ namespace PorphyStruct.Chemistry
                 current.Identifier = "C1";
                 visited.Add(current);
                 //force c2 to be first step
-                current = C2(cycle);
+                current = Neighbors(C1(cycle), cycle).Where(s => !N4Cavity(cycle).Contains(s) && !RingPath(N4Cavity(cycle).First(), RingAtoms.Count() - 8).Contains(s)).FirstOrDefault();
                 current.Identifier = "C2";
                 visited.Add(current);
                 var carbons = RingAtoms.Where(s => s.Contains("C")).OrderBy(s => int.Parse(s.Replace("C", ""))).ToList();
                 int i = 2;
+                //loop through atoms and name them
                 while (visited.Count() != carbons.Count())
                 {
-                    foreach(var neighbor in Neighbors(current, cycle).Where(s => !visited.Contains(s)))
+                    foreach (var neighbor in Neighbors(current, cycle).Where(s => !visited.Contains(s)))
                     {
                         if (!N4Cavity(cycle).Contains(neighbor))
                         {
@@ -463,13 +431,8 @@ namespace PorphyStruct.Chemistry
                         }
                     }
                 }
-                foreach(var N in N4Cavity(cycle))
-                {
-                    if (Neighbors(N, cycle).Contains(ByIdentifier(AlphaAtoms[1]))) N.Identifier = "N1";
-                    if (Neighbors(N, cycle).Contains(ByIdentifier(AlphaAtoms[3]))) N.Identifier = "N2";
-                    if (Neighbors(N, cycle).Contains(ByIdentifier(AlphaAtoms[5]))) N.Identifier = "N3";
-                    if (Neighbors(N, cycle).Contains(ByIdentifier(AlphaAtoms[7]))) N.Identifier = "N4";
-                }
+                //set up identifiers for nitrogens
+                for (int j = 1; j <= 4; j++) N4Cavity(cycle).Where(s => Neighbors(s).Contains(ByIdentifier(AlphaAtoms[2 * j - 1]))).FirstOrDefault().Identifier = "N" + j;
             }
             return Atoms;
         }
