@@ -375,7 +375,7 @@ namespace PorphyStruct.Chemistry
         /// Detect the macrocyclic structure
         /// </summary>
         /// <returns></returns>
-        public List<Atom> Detect()
+        public void Detect()
         {
             //find all connected structures
             HashSet<HashSet<Atom>> connected = new HashSet<HashSet<Atom>>();
@@ -396,8 +396,12 @@ namespace PorphyStruct.Chemistry
                 if (cycle.Count == RingAtoms.Count)
                     break;
             }
+            NameAtoms(cycle);
+        }
 
-            //cycle found?
+        public void NameAtoms(IEnumerable<Atom> cycle)
+        {
+            //cycle valid?
             if (cycle.Count() == RingAtoms.Count)
             {
                 //set macrocycle flag
@@ -434,7 +438,6 @@ namespace PorphyStruct.Chemistry
                 //set up identifiers for nitrogens
                 for (int j = 1; j <= 4; j++) N4Cavity(cycle).Where(s => Neighbors(s).Contains(ByIdentifier(AlphaAtoms[2 * j - 1]))).FirstOrDefault().Identifier = "N" + j;
             }
-            return Atoms;
         }
     }
 }
