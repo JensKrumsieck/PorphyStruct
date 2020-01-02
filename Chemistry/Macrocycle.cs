@@ -306,7 +306,7 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         /// <param name="A"></param>
         /// <returns></returns>
-        public IEnumerable<Atom> Neighbors(Atom A) => Atoms.Where(B => A.BondTo(B) && A != B);
+        public IEnumerable<Atom> Neighbors(Atom A) => Neighbors(A, Atoms);
 
         /// <summary>
         /// Returns non Metal Neighbors of an atom
@@ -315,12 +315,13 @@ namespace PorphyStruct.Chemistry
         /// <returns></returns>
         public IEnumerable<Atom> NonMetalNeighbors(Atom A) => Neighbors(A).Where(s => !s.IsMetal);
 
+
         /// <summary>
         /// Gets the 4 atoms of cavity by centroid method
         /// </summary>
         /// <param name="mol"></param>
         /// <returns></returns>
-        public  List<Atom> N4Cavity(IEnumerable<Atom> mol)
+        internal List<Atom> N4Cavity(IEnumerable<Atom> mol)
         {
             //calculate centroid
             var centroid = Molecule.GetCentroid(mol);
@@ -340,10 +341,63 @@ namespace PorphyStruct.Chemistry
         }
 
         /// <summary>
+        /// Find Corpus of Macrocyle
+        /// </summary>
+        /// <param name="mol"></param>
+        /// <returns></returns>
+        internal HashSet<Atom> FindCorpus(IEnumerable<Atom> mol)
+        {
+            //get N4 Cavity
+            var cavity = N4Cavity(mol);
+
+            //get inner ring path
+            var corpus = RingPath(cavity.First(), RingAtoms.Count() - 8);
+
+            //just need to find beta atoms now to complete the cycle, luckily we can use the cavity to find five membered rings and combine with corpus, and distinct.
+            foreach (Atom N in cavity) corpus.UnionWith(RingPath(N,5));
+
+            return corpus;
+        }
+
+        /// <summary>
+        /// returns ring path with given size
+        /// in theory every cavity atom should have a path to it's alpha neighbor surrounding the whole cycle without beta!
+        /// So it is  RingAtoms.Count - 8 (8 beta positions) for the inner large ring and RingAtoms.Count - 4 for the outer large ring.
+        /// </summary>
+        /// <param name="mol"></param>
+        /// <param name="atom">An Atom</param>
+        /// <returns></returns>
+        internal HashSet<Atom> RingPath(Atom atom, int size) => DFSUtil.GetAllPaths(atom, NonMetalNeighbors(atom).Where(n => n.Type != "H").First(), NonMetalNeighbors, size).FirstOrDefault();
+        
+        /// <summary>
+        /// Returns a collection of Atoms with VertexDegree of 3
+        /// NOTE: If this is used on al found cycle by Detect() this will return alpha atoms
+        /// </summary>
+        /// <param name="mol"></param>
+        /// <returns></returns>
+        public IEnumerable<Atom> Vertex3Atoms(IEnumerable<Atom> corpus) => corpus.Where(s => DFSUtil.VertexDegree(corpus, s, Neighbors) == 3);
+
+        /// <summary>
+        /// An overrideable Method to get C1 Atom. 
+        /// In a Porphyrin it does not care which alpha atom is C1, so return any of them...
+        /// override this methode in any other class
+        /// TODO: Think of a switch for Isoporphyrins to return C10 as meso C.
+        /// </summary>
+        /// <returns></returns>
+        public virtual Atom C1(IEnumerable<Atom> cycle) => Vertex3Atoms(cycle).First();
+
+        /// <summary>
+        /// Get the C2 Atom
+        /// </summary>
+        /// <param name="cycle"></param>
+        /// <returns></returns>
+        public Atom C2 (IEnumerable<Atom> cycle) => Neighbors(C1(cycle), cycle).Where(s => !N4Cavity(cycle).Contains(s) && !RingPath(N4Cavity(cycle).First(), RingAtoms.Count() - 8).Contains(s)).FirstOrDefault();
+
+        /// <summary>
         /// Detect the macrocyclic structure
         /// </summary>
         /// <returns></returns>
-        public virtual List<Atom> Detect()
+        public List<Atom> Detect()
         {
             //find all connected structures
             HashSet<HashSet<Atom>> connected = new HashSet<HashSet<Atom>>();
@@ -357,29 +411,20 @@ namespace PorphyStruct.Chemistry
             //loop through all remaining connected figures
             foreach(var mol in distinct)
             {
-                //get N4 Cavity
-                var cavity = N4Cavity(mol);
-
-                //in theory every cavity atom should have a path to it's alpha neighbor surrounding the whole cycle without beta!
-                //So it is a RingAtoms.Count - 8 (8 beta positions) large ring
-                var corpus = DFSUtil.GetAllPaths(cavity.First(), Neighbors(cavity.First()).Where(n => !n.IsMetal && n.Type != "H").First(), NonMetalNeighbors, RingAtoms.Count() - 8).FirstOrDefault();
-
-                //just need to find beta atoms now to complete the cycle, luckily we can use the cavity to find five membered rings and combine with corpus, and distinct.
-                foreach (Atom N in cavity) corpus.UnionWith(DFSUtil.GetAllPaths(N, Neighbors(N).Where(n => !n.IsMetal && n.Type != "H").First(), NonMetalNeighbors, 5).FirstOrDefault());
+                //get Corpus by Pathfinding Method
+                cycle = FindCorpus(mol);
 
                 //default to first macrocycle found for now
-                if (corpus.Count == RingAtoms.Count)
-                {
-                    //cycle is corpus
-                    cycle = corpus; 
+                if (cycle.Count == RingAtoms.Count)
                     break;
-                }
             }
-            
+
             //cycle found?
-            if(cycle.Count() == RingAtoms.Count)
+            if (cycle.Count() == RingAtoms.Count)
             {
+                //rename every non cycle atom to Type+X and set macrocycle flag
                 foreach (var a in Atoms)
+                {
                     if (cycle.Contains(a))
                     {
                         a.IsMacrocycle = true;
@@ -390,92 +435,42 @@ namespace PorphyStruct.Chemistry
                         a.IsMacrocycle = false;
                         a.Identifier = a.Type + "X";
                     }
+                }
+
+                //track visited atoms
+                HashSet<Atom> visited = new HashSet<Atom>();
+
+                //get C1 Atom
+                Atom current = C1(cycle);
+                current.Identifier = "C1";
+                visited.Add(current);
+                //force c2 to be first step
+                current = C2(cycle);
+                current.Identifier = "C2";
+                visited.Add(current);
+                var carbons = RingAtoms.Where(s => s.Contains("C")).OrderBy(s => int.Parse(s.Replace("C", ""))).ToList();
+                int i = 2;
+                while (visited.Count() != carbons.Count())
+                {
+                    foreach(var neighbor in Neighbors(current, cycle).Where(s => !visited.Contains(s)))
+                    {
+                        if (!N4Cavity(cycle).Contains(neighbor))
+                        {
+                            neighbor.Identifier = carbons[i];
+                            visited.Add(neighbor);
+                            current = neighbor;
+                            i++;
+                        }
+                    }
+                }
+                foreach(var N in N4Cavity(cycle))
+                {
+                    if (Neighbors(N, cycle).Contains(ByIdentifier(AlphaAtoms[1]))) N.Identifier = "N1";
+                    if (Neighbors(N, cycle).Contains(ByIdentifier(AlphaAtoms[3]))) N.Identifier = "N2";
+                    if (Neighbors(N, cycle).Contains(ByIdentifier(AlphaAtoms[5]))) N.Identifier = "N3";
+                    if (Neighbors(N, cycle).Contains(ByIdentifier(AlphaAtoms[7]))) N.Identifier = "N4";
+                }
             }
-            
-            //Atom start = null;
-            //if (type != Type.Corrole && type != Type.Norcorrole)
-            //{
-            //    start = Atoms.Where(s => s.IsMacrocycle && Neighbors(s).Where(l => l.Element.Symbol == "N").Count() != 0).FirstOrDefault();
-            //}
-            //else
-            //{
-            //    List<Atom> alpha = Atoms.Where(s => s.IsMacrocycle && Neighbors(s).Where(l => l.Element.Symbol == "N").Count() != 0).ToList();
-            //    foreach (Atom a in alpha)
-            //    {
-            //        if (Neighbors(a).Where(l => alpha.Contains(l)).Count() != 0) start = a;
-            //    }
-            //}
-
-            ////loop over C atoms
-            //int indexC = 1;
-            //Atom current = start;
-            //start.Identifier = "C" + indexC; //this is c1
-            //indexC++;
-            //bool cycling = true;
-            ////loop over cycle...
-            //while (cycling)
-            //{
-            //    List<Atom> X = Neighbors(current).Where(s => s.Type != "N" && s.IsMacrocycle && s.Identifier != "C" + (indexC - 2)).ToList();
-            //    if (indexC == 2)
-            //    {
-            //        //go to beta!
-            //        //currently current is alpha c1, so it will have a beta as neighbor which is not bond to nitrogen
-            //        //but meso also is not bond to nitrogen and is neighbor
-            //        foreach (Atom t in X)
-            //        {
-            //            var neighT = Neighbors(t).Where(s => s.IsMacrocycle);
-            //            if (neighT.Where(s => s.Type == "N").Count() == 0)
-            //            {
-            //                int count = 0;
-            //                //either is meso or beta...
-            //                //beta has another beta and alpha as neighbor, meso has two alpha as neighbors.
-            //                //so if neighbors of neighbors of beta has a single Count(N) = 1
-            //                //this is start
-            //                foreach (Atom u in neighT)
-            //                {
-            //                    if (Neighbors(u).Where(s => s.Type == "N").Count() != 0) count++;
-            //                }
-            //                if (count == 1) current = t;
-            //            }
-            //        }
-            //    }
-            //    else
-            //        current = X.FirstOrDefault();
-
-            //    if (current == null) cycling = false; //cancel hard
-            //    else if (current == start)
-            //    {
-            //        cycling = false;
-            //        break;
-            //    }
-            //    else current.Identifier = "C" + indexC;
-            //    indexC++;
-            //}
-            ////correct counting, as norcorrole does not have c10 in my convention!
-            //if (type == Type.Norcorrole)
-            //{
-            //    foreach (Atom c in Atoms.Where(s => s.Type == "C" && s.IsMacrocycle))
-            //    {
-            //        string pattern = "[0-9]+";
-            //        var reg = Regex.Match(c.Identifier, pattern);
-            //        int.TryParse(reg.Value, out int integer);
-            //        if (integer >= 10)
-            //        {
-            //            integer++;
-            //            c.Identifier = "C" + integer;
-            //        }
-            //    }
-            //}
-
-            ////assign N
-            //foreach (Atom n in Atoms.Where(s => s.Type == "N" && s.IsMacrocycle))
-            //{
-            //    if (Neighbors(n).Where(l => l.Identifier == "C1").Count() == 1) n.Identifier = "N1";
-            //    if (Neighbors(n).Where(l => l.Identifier == "C6").Count() == 1) n.Identifier = "N2";
-            //    if (Neighbors(n).Where(l => l.Identifier == "C11").Count() == 1) n.Identifier = "N3";
-            //    if (Neighbors(n).Where(l => l.Identifier == "C16").Count() == 1) n.Identifier = "N4";
-            //}
-
             return Atoms;
         }
     }

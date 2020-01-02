@@ -112,5 +112,13 @@ namespace PorphyStruct.Chemistry
 
             return new Plane(a, b, c, d);
         }
+
+        /// <summary>
+        /// Return Neighbors of atom in list
+        /// </summary>
+        /// <param name="A"></param>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public IEnumerable<Atom> Neighbors(Atom A, IEnumerable<Atom> list) => list.Where(B => A.BondTo(B) && A != B);
     }
 }

@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace PorphyStruct.Util
 {
+    /// <summary>
+    /// A static class for operations on undirected graphs
+    /// </summary>
     public static class DFSUtil
     {
         /// <summary>
@@ -97,5 +100,15 @@ namespace PorphyStruct.Util
             foreach (var node in localPath) BuildPath.Add(node);
             output.Add(BuildPath);
         }
+
+        /// <summary>
+        /// Calculates the vertex degree (count) of vertex in collection by func(vertex,collection)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="vertex"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public static int VertexDegree<T>(IEnumerable<T> collection, T vertex, Func<T, IEnumerable<T>, IEnumerable<T>> func) => func(vertex, collection).Count();
     }
 }
