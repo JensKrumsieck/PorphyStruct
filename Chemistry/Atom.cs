@@ -188,5 +188,14 @@ namespace PorphyStruct.Chemistry
         {
             get => Regex.Match(Identifier, @"\D$").Value;
         }
+
+        /// <summary>
+        /// Prints Identifier
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return Identifier;
+        }
     }
 }

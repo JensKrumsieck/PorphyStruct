@@ -132,6 +132,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Util\DFSUtil.cs" />
     <Compile Include="Chemistry\Element.cs" />
     <Compile Include="Chemistry\MacrocycleFactory.cs" />
     <Compile Include="Chemistry\Macrocycles\Corrole.cs" />
@@ -139,7 +140,7 @@
     <Compile Include="Chemistry\Macrocycles\Norcorrole.cs" />
     <Compile Include="Chemistry\Macrocycles\Porphycene.cs" />
     <Compile Include="Chemistry\Macrocycles\Porphyrin.cs" />
-    <Compile Include="Chemistry\MathUtil.cs" />
+    <Compile Include="Util\MathUtil.cs" />
     <Compile Include="CompareWindow.xaml.cs">
       <DependentUpon>CompareWindow.xaml</DependentUpon>
     </Compile>

@@ -1,10 +1,11 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 using MathNet.Spatial.Euclidean;
+using PorphyStruct.Chemistry;
 using System;
 using System.Collections.Generic;
 
-namespace PorphyStruct.Chemistry
+namespace PorphyStruct.Util
 {
     public static class MathUtil
     {

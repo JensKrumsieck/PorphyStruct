@@ -1,7 +1,8 @@
-﻿using System;
+﻿using MathNet.Numerics.LinearAlgebra;
+using MathNet.Spatial.Euclidean;
+using PorphyStruct.Util;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace PorphyStruct.Chemistry
 {
@@ -69,6 +70,47 @@ namespace PorphyStruct.Chemistry
                 //corroles and norcorroles missing 1 atom
                 if ((type == Macrocycle.Type.Corrole || type == Macrocycle.Type.Norcorrole) && atom.ID >= 20) atom.IsMacrocycle = false;
             }
+        }
+
+        /// <summary>
+        /// Gets the centroid of a list of atoms
+        /// </summary>
+        /// <param name="atoms"></param>
+        /// <returns></returns>
+        public static Vector3D GetCentroid(IEnumerable<Atom> atoms) => Point3D.Centroid(atoms.ToPoint3D()).ToVector3D();
+
+        /// <summary>
+        /// Gets the mean plane of a list of atoms
+        /// </summary>
+        /// <returns>The Plane Object (Math.Net)</returns>
+        public Plane GetMeanPlane(IEnumerable<Atom> atoms)
+        {
+            //convert coordinates into Point3D because centroid method is only available in math net spatial
+            List<Point3D> points = atoms.ToPoint3D().ToList();
+            //calculate Centroid first
+            //get the centroid
+            Vector3D centroid = GetCentroid(atoms);
+
+            //subtract centroid from each point... & build matrix of that
+            Matrix<double> A = Matrix<double>.Build.Dense(3, points.Count);
+            for (int x = 0; x < points.Count; x++)
+            {
+                A[0, x] = (points[x] - centroid).X;
+                A[1, x] = (points[x] - centroid).Y;
+                A[2, x] = (points[x] - centroid).Z;
+            }
+
+            //get svd
+            var svd = A.Svd(true);
+
+            //get plane unit vector
+            double a = svd.U[0, 2];
+            double b = svd.U[1, 2];
+            double c = svd.U[2, 2];
+
+            double d = -(centroid.DotProduct(new Vector3D(a, b, c)));
+
+            return new Plane(a, b, c, d);
         }
     }
 }

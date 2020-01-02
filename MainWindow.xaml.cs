@@ -5,6 +5,7 @@ using OxyPlot;
 using OxyPlot.Series;
 using PorphyStruct.Chemistry;
 using PorphyStruct.Files;
+using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -314,7 +315,7 @@ namespace PorphyStruct
         {
             Macrocycle cycle = MacrocycleFactory.Build(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList(), type);
             if (detect)
-                cycle.Detect();
+                cycle.Atoms = cycle.Detect();
 
             if ((old != null && !CompareAtoms(cycle.Atoms, old.Atoms)) || (markSelection && oldIndex != coordGrid.SelectedIndex) || force)
             {
@@ -841,7 +842,7 @@ namespace PorphyStruct
         private void Detect_Click(object sender, RoutedEventArgs e)
         {
             this.UpdateMolView(false, false, true);
-            coordGrid.Items.Refresh();
+            //coordGrid.Items.Refresh();
             //show message
             MessageQueue.Enqueue("Detection Algorithmus finished!");
         }

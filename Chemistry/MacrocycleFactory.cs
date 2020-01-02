@@ -5,6 +5,12 @@ namespace PorphyStruct.Chemistry
 {
     public static class MacrocycleFactory
     {
+        /// <summary>
+        /// Builds a Macrocyle by given Type
+        /// </summary>
+        /// <param name="Atoms"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static Macrocycle Build(List<Atom> Atoms, Macrocycle.Type type)
         {
             switch (type)
