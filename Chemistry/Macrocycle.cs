@@ -411,14 +411,14 @@ namespace PorphyStruct.Chemistry
                 //track visited atoms
                 HashSet<Atom> visited = new HashSet<Atom>();
 
-                //get C1 Atom
-                Atom current = C1(cycle);
-                current.Identifier = "C1";
-                visited.Add(current);
+                //set Identifier for C1 Atom
+                C1(cycle).Identifier = "C1";
+
                 //force c2 to be first step
-                current = Neighbors(C1(cycle), cycle).Where(s => !N4Cavity(cycle).Contains(s) && !RingPath(N4Cavity(cycle).First(), RingAtoms.Count() - 8).Contains(s)).FirstOrDefault();
+                Atom current = Neighbors(C1(cycle), cycle).Where(s => !N4Cavity(cycle).Contains(s) && !RingPath(N4Cavity(cycle).First(), RingAtoms.Count() - 8).Contains(s)).FirstOrDefault();
                 current.Identifier = "C2";
-                visited.Add(current);
+                //add C1&C2 to visited
+                visited.UnionWith(new HashSet<Atom>() { current, C1(cycle) });
                 var carbons = RingAtoms.Where(s => s.Contains("C")).OrderBy(s => int.Parse(s.Replace("C", ""))).ToList();
                 int i = 2;
                 //loop through atoms and name them
@@ -428,9 +428,9 @@ namespace PorphyStruct.Chemistry
                     {
                         if (!N4Cavity(cycle).Contains(neighbor))
                         {
+                            //add to visited and assign Identifier
                             neighbor.Identifier = carbons[i];
-                            visited.Add(neighbor);
-                            current = neighbor;
+                            visited.Add(current = neighbor);
                             i++;
                         }
                     }
