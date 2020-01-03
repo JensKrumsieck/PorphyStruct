@@ -252,55 +252,6 @@ namespace PorphyStruct
             }
         }     
 
-        /// <summary>
-        /// Handle CIF Files
-        /// </summary>
-        private void OpenCif()
-        {
-            //open file and set itemssource
-            CifFile file = new CifFile(path);
-            Crystal mol = file.GetMolecule();
-            mol.SetIsMacrocycle(this.type);
-            coordGrid.ItemsSource = mol.Atoms.OrderByDescending(s => s.IsMacrocycle).ToList();
-            //show message
-            MessageQueue.Enqueue("CIF-File opened!");
-        }
-
-        /// <summary>
-        /// Handle CIF Files
-        /// </summary>
-        private void OpenMol2()
-        {
-            //open file and set itemssource
-            Mol2File file = new Mol2File(path);
-            Molecule mol = file.GetMolecule();
-            mol.SetIsMacrocycle(this.type);
-            coordGrid.ItemsSource = mol.Atoms.OrderByDescending(s => s.IsMacrocycle).ToList();
-
-            //show message
-            MessageQueue.Enqueue("Mol2-File opened!");
-        }
-
-
-        /// <summary>
-        /// Open XYZ File
-        /// </summary>
-        /// <param name="isIXYZ"></param>
-        private void OpenXYZ(bool isIXYZ = false)
-        {
-            //open file and set itemssource
-            XYZFile file = new XYZFile(path);
-            Molecule mol;
-            if (isIXYZ) mol = file.GetMolecule(true);
-            else mol = file.GetMolecule();
-            //here the guess is used, be careful!!
-            mol.SetIsMacrocycle(this.type);
-            coordGrid.ItemsSource = mol.Atoms.OrderByDescending(s => s.IsMacrocycle).ToList();
-
-            //show message
-            MessageQueue.Enqueue("XYZ-File opened!");
-        }
-
 
         /// <summary>
         /// Update 3D Model
@@ -314,7 +265,7 @@ namespace PorphyStruct
             if (detect)
                 cycle.Detect();
 
-            if ((old != null && !CompareAtoms(cycle.Atoms, old.Atoms)) || (markSelection && oldIndex != coordGrid.SelectedIndex) || force)
+            if ((old != null && !cycle.Atoms.SequenceEqual(old.Atoms)) || (markSelection && oldIndex != coordGrid.SelectedIndex) || force)
             {
                 old = cycle;
                 oldIndex = coordGrid.SelectedIndex;
@@ -403,19 +354,7 @@ namespace PorphyStruct
                 model.Content = group;
                 MolViewer.Children.Add(model);
             }
-        }
-
-        /// <summary>
-        /// Compare Two Atom Lists
-        /// </summary>
-        /// <param name="l1"></param>
-        /// <param name="l2"></param>
-        /// <returns></returns>
-        private bool CompareAtoms(List<Atom> l1, List<Atom> l2)
-        {
-            if (l1.SequenceEqual(l2)) return true;
-            else return false;
-        }
+        }        
 
         /// <summary>
         /// returns the plot data of exp.
@@ -518,10 +457,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CoordGrid_Updated(object sender, EventArgs e)
-        {
-            this.UpdateMolView();
-        }
+        private void CoordGrid_Updated(object sender, EventArgs e) => this.UpdateMolView();
 
 
         /// <summary>
@@ -533,10 +469,7 @@ namespace PorphyStruct
         {
             //subscribe to event
             var dpd = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(DataGrid));
-            if (dpd != null)
-            {
-                dpd.AddValueChanged(coordGrid, CoordGrid_Updated);
-            }
+            if (dpd != null) dpd.AddValueChanged(coordGrid, CoordGrid_Updated);
         }
 
         /// <summary>
@@ -544,32 +477,21 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Refresh_Click(object sender, RoutedEventArgs e)
-        {
-            this.UpdateMolView(false, true);
-        }
+        private void Refresh_Click(object sender, RoutedEventArgs e) => this.UpdateMolView(false, true);
 
         /// <summary>
         /// Handle Selection Changed 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CoordGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //update on cell edit if loading is finished
-            this.UpdateMolView(true);
-        }
+        private void CoordGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) => this.UpdateMolView(true);
 
         /// <summary>
         /// Handle Target Updated
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CoordGrid_TargetUpdated(object sender, DataTransferEventArgs e)
-        {
-            //update on cell edit if loading is finished
-            this.UpdateMolView(true);
-        }
+        private void CoordGrid_TargetUpdated(object sender, DataTransferEventArgs e) => this.UpdateMolView(true);
 
         /// <summary>
         /// Handle Open File Button Click
@@ -624,15 +546,11 @@ namespace PorphyStruct
                 DelSimButton.IsEnabled = false;
                 DiffSimButton.IsEnabled = false;
 
-                //handle file open
-                if (System.IO.Path.GetExtension(path) == ".cif")
-                    OpenCif();
-                else if (System.IO.Path.GetExtension(path) == ".mol" || System.IO.Path.GetExtension(path) == ".mol2")
-                    OpenMol2();
-                else if (System.IO.Path.GetExtension(path) == ".ixyz")
-                    OpenXYZ(true);
-                else
-                    OpenXYZ();
+                Macrocycle cycle = MacrocycleFactory.Load(path, type);
+                //add to grid
+                coordGrid.ItemsSource = cycle.Atoms.OrderByDescending(s => s.IsMacrocycle).ToList();
+                //show message
+                MessageQueue.Enqueue("File opened!");
             }
         }
 

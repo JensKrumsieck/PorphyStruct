@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace PorphyStruct.Files
 {
-    class CifFile : TextFile
+    public class CifFile : TextFile
     {
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace PorphyStruct.Files
         /// Builds a Molecule/Crystal Object out of raw data
         /// </summary>
         /// <returns>Crystal</returns>
-        public Crystal GetMolecule()
+        public override Molecule GetMolecule()
         {
             //get cell parameters
             double[] cellLenghts = GetCellParameters("cell_length").ToArray();
@@ -40,10 +40,10 @@ namespace PorphyStruct.Files
             }
 
             //build returning object
-            Crystal molecule = new Crystal(System.IO.Path.GetFileNameWithoutExtension(this.Path),
-                cellLenghts, cellAngles, data, headers);           
+            Crystal crystal = new Crystal(System.IO.Path.GetFileNameWithoutExtension(this.Path),
+                cellLenghts, cellAngles, data, headers);
 
-            return molecule;
+            return crystal.ToMolecule();
         }
 
         /// <summary>

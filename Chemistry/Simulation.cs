@@ -12,10 +12,12 @@ namespace PorphyStruct.Chemistry
         public double[] errors;
         public List<SimParam> simParam;
         public Macrocycle cycle;
-        public Simulation(Macrocycle cycle)
-        {
-            this.cycle = cycle;
-        }
+
+        /// <summary>
+        /// Constructor assigns cycle object
+        /// </summary>
+        /// <param name="cycle"></param>
+        public Simulation(Macrocycle cycle) => this.cycle = cycle;
 
         /// <summary>
         /// Paints the Simulation to a PlotModel

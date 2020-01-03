@@ -7,15 +7,20 @@ namespace PorphyStruct.Files
 {
     class XYZFile : TextFile
     {
-
+        /// <summary>
+        /// is ixyz format used?
+        /// </summary>
+        public bool IXYZ = false;
         public XYZFile(string path) : base(path) { }
+
+        public XYZFile(string path, bool isIXYZ) : base(path) => this.IXYZ = isIXYZ;
 
         /// <summary>
         /// Gets Molecule from XYZ File
         /// </summary>
         /// <param name="isIXYZ">Is PorphyStruct iXYZ File</param>
         /// <returns></returns>
-        public Molecule GetMolecule(bool isIXYZ = false)
+        public override Molecule GetMolecule()
         {
             //atom count is first line, second line is title
             //PLEASE DO NOT USE XYZ Files with non cartesian coordinates
@@ -32,13 +37,13 @@ namespace PorphyStruct.Files
 
                     string identifier = "";
                     identifier = xyzLine[0];
-                    if (isIXYZ)
+                    if (IXYZ)
                         identifier = xyzLine[0].Split('/')[0];
                     double x = Convert.ToDouble(xyzLine[1], CultureInfo.InvariantCulture);
                     double y = Convert.ToDouble(xyzLine[2], CultureInfo.InvariantCulture);
                     double z = Convert.ToDouble(xyzLine[3], CultureInfo.InvariantCulture);
                     Atom a = new Atom(identifier, x, y, z);
-                    if (isIXYZ)
+                    if (IXYZ)
                     {
                         try
                         { a.Element = Element.Create(xyzLine[0].Split('/')[1]); }
@@ -49,7 +54,7 @@ namespace PorphyStruct.Files
             }
 
             //if is iXYZ the identifier is set correctly (hopefully!)
-            if (!isIXYZ)
+            if (!IXYZ)
             {
                 //making a guess!
                 int C = 1;

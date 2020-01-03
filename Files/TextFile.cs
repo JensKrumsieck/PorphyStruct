@@ -1,8 +1,9 @@
-﻿using System;
+﻿using PorphyStruct.Chemistry;
+using System;
 
 namespace PorphyStruct.Files
 {
-    abstract class TextFile
+    public abstract class TextFile
     {
         /// <summary>
         /// the files path
@@ -29,5 +30,12 @@ namespace PorphyStruct.Files
             Content = System.IO.File.ReadAllText(this.Path);
             Lines = Content.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None);
         }
+
+        /// <summary>
+        /// returns a molecule from file
+        /// </summary>
+        /// <returns></returns>
+        public abstract Molecule GetMolecule();
+
     }
 }

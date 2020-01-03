@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace PorphyStruct.Files
 {
-    class Mol2File : TextFile
+    public class Mol2File : TextFile
     {
 
         public Mol2File(string path) : base(path) { }
@@ -15,7 +15,7 @@ namespace PorphyStruct.Files
         /// Gets Molecule from Mol2 File
         /// </summary>
         /// <returns></returns>
-        public Molecule GetMolecule()
+        public override Molecule GetMolecule()
         {
             // read mol2 - File and get parameters & coordinate
             string title = System.IO.Path.GetFileNameWithoutExtension(this.Path);

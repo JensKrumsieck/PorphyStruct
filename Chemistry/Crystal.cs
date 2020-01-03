@@ -72,5 +72,11 @@ namespace PorphyStruct.Chemistry
                 }
             }
         }
+
+        /// <summary>
+        /// Converts To Molecule
+        /// </summary>
+        /// <returns></returns>
+        public Molecule ToMolecule() => new Molecule(Atoms);
     }
 }

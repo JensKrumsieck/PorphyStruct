@@ -10,6 +10,12 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         public enum PaintMode { Exp, Sim, Diff, Com1, Com2 };
 
+        /// <summary>
+        /// Paints the Macrocycle object
+        /// </summary>
+        /// <param name="pm"></param>
+        /// <param name="cycle"></param>
+        /// <param name="mode"></param>
         public static void Paint(PlotModel pm, Macrocycle cycle, PaintMode mode)
         {
             foreach (var dp in cycle.dataPoints) AssignValue(dp, mode);
