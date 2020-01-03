@@ -345,15 +345,15 @@ namespace PorphyStruct
                 foreach (KeyValuePair<string, double> i in Sim.par)
                 {
                     composition += i.Value.ToString("N2", System.Globalization.CultureInfo.InvariantCulture) + "% of " + i.Key + ",";
-                    absComposition += (i.Value / 100 * Sim.MeanDisplacement()).ToString("N4", System.Globalization.CultureInfo.InvariantCulture) + " of " + i.Key + ",";
+                    absComposition += (i.Value / 100 * Sim.cycle.MeanDisplacement()).ToString("N4", System.Globalization.CultureInfo.InvariantCulture) + " of " + i.Key + ",";
                 }
                 composition.Remove(composition.LastIndexOf(','));
                 Simu.AddParagraph("The final composition of normal modes is " + composition + " as also listed in the table below. "
-                    + "The mean displacement parameter is " + Sim.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture)
+                    + "The mean displacement parameter is " + Sim.cycle.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture)
                     + " The absolute composition therefore is " + absComposition + ".");
 
                 Simu.AddImage(this.Filename + "SimResult.png", "Visualization of Simulationparameters");
-                Simu.AddPropertyTable("Simulationparameters with a mean displacement parameter of " + Sim.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture), Sim.par);
+                Simu.AddPropertyTable("Simulationparameters with a mean displacement parameter of " + Sim.cycle.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture), Sim.par);
             }
             return report;
         }
@@ -461,11 +461,11 @@ namespace PorphyStruct
         private void SaveResult(string Extension)
         {
             List<XElement> simRes = Sim.par.Select(par => new XElement("parameter", new XAttribute("name", par.Key), par.Value)).ToList();
-            simRes.AddRange(Sim.par.Select(par => new XElement("absolute", new XAttribute("name", par.Key), par.Value / 100 * Sim.MeanDisplacement())).ToList());
+            simRes.AddRange(Sim.par.Select(par => new XElement("absolute", new XAttribute("name", par.Key), par.Value / 100 * Sim.cycle.MeanDisplacement())).ToList());
 
             List<XElement> metrix = Cycle.Metrics().Select(met => new XElement(met.Key.Split('_')[0], new XAttribute("atoms", met.Key.Split('_')[1]), met.Value)).ToList();
 
-            simRes.Add(new XElement("doop", Sim.MeanDisplacement()));
+            simRes.Add(new XElement("doop", Sim.cycle.MeanDisplacement()));
             simRes.Add(new XElement("errors",
                 new XElement("data", Sim.errors[0]),
                 new XElement("derivative", Sim.errors[1]),

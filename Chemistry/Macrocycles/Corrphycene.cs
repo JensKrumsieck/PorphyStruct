@@ -8,6 +8,10 @@ namespace PorphyStruct.Chemistry.Macrocycles
     {
         public Corrphycene(List<Atom> Atoms) : base(Atoms) { }
 
+        //assign type (legacy)
+        public override Type type => Type.Corrphycene;
+
+
         /// <summary>
         /// Corroles Bonds by Identifiers
         /// </summary>
@@ -85,5 +89,11 @@ namespace PorphyStruct.Chemistry.Macrocycles
             new string[] { "C4", "N1", "N3", "C12" }
         };
         public override List<string[]> Dihedrals => _Dihedrals;
+
+        /// <summary>
+        /// Clones the object
+        /// </summary>
+        /// <returns></returns>
+        public override object Clone() => new Corrphycene(Atoms);
     }
 }

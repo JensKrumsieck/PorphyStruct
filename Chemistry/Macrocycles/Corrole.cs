@@ -8,6 +8,8 @@ namespace PorphyStruct.Chemistry.Macrocycles
     {
         public Corrole(List<Atom> Atoms) : base(Atoms) { }
 
+        //assign type (legacy)
+        public override Type type => Type.Corrole;
         /// <summary>
         /// Corroles Bonds by Identifiers
         /// </summary>
@@ -39,5 +41,11 @@ namespace PorphyStruct.Chemistry.Macrocycles
         /// Corroles Dihedrals
         /// </summary>
         public override List<string[]> Dihedrals => Porphyrin._Dihedrals;
+
+        /// <summary>
+        /// Clones the object
+        /// </summary>
+        /// <returns></returns>
+        public override object Clone() => new Corrole(Atoms);
     }
 }

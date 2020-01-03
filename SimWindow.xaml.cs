@@ -41,6 +41,7 @@ namespace PorphyStruct
         /// Simulation Parameters
         /// </summary>
         public Macrocycle cycle;
+        public Macrocycle.Type MType = Application.Current.Windows.OfType<MainWindow>().First().type;
         public List<SimParam> param; //list of all simulation parameters
         private Simplex simplex = null; //simplex matrix
 
@@ -72,19 +73,19 @@ namespace PorphyStruct
                 new SimParam("Ruffling", 0),
                 new SimParam("Saddling", 0)
             };
-            if (cycle.type == Macrocycle.Type.Corrole || cycle.type == Macrocycle.Type.Corrphycene || cycle.type == Macrocycle.Type.Porphycene)
+            if (MType == Macrocycle.Type.Corrole || MType == Macrocycle.Type.Corrphycene || MType == Macrocycle.Type.Porphycene)
             {
                 param.Add(new SimParam("Waving 2 (X)", 0));
                 param.Add(new SimParam("Waving 2 (Y)", 0));
             }
-            else if (cycle.type == Macrocycle.Type.Porphyrin)
+            else if (MType == Macrocycle.Type.Porphyrin)
             {
                 param.Add(new SimParam("Waving 1 (X)", 0));
                 param.Add(new SimParam("Waving 1 (Y)", 0));
                 param.Add(new SimParam("Waving 2 (X)", 0));
                 param.Add(new SimParam("Waving 2 (Y)", 0));
             }
-            else if (cycle.type == Macrocycle.Type.Norcorrole)
+            else if (MType == Macrocycle.Type.Norcorrole)
             {
                 param.Add(new SimParam("Waving 2 (Dipy)", 0));
                 param.Add(new SimParam("Waving 2 (Bipy)", 0));
@@ -199,7 +200,7 @@ namespace PorphyStruct
                 //plot current
                 if ((DateTime.Now - previousTime).Milliseconds >= 500)
                 {
-                    Macrocycle currentConf = MacrocycleFactory.Build(cycle.Atoms, cycle.type);
+                    Macrocycle currentConf = MacrocycleFactory.Build(cycle.Atoms, MType);
                     currentConf.dataPoints = cycle.dataPoints.OrderBy(s => s.X).ToList();
 
                     for (int i = 0; i < currentConf.dataPoints.Count; i++)
@@ -242,7 +243,7 @@ namespace PorphyStruct
                         simGrid.Items.Refresh();
                     }), err);
 
-                    Macrocycle bestConf = MacrocycleFactory.Build(cycle.Atoms, cycle.type);
+                    Macrocycle bestConf = MacrocycleFactory.Build(cycle.Atoms, MType);
                     bestConf.dataPoints = cycle.dataPoints.OrderBy(s => s.X).ToList();
 
                     for (int i = 0; i < bestConf.dataPoints.Count; i++)
@@ -265,7 +266,7 @@ namespace PorphyStruct
                         {
                             tmp.Add(new AtomDataPoint(dp.X, dp.Y * fac, dp.atom));
                         }
-                        Macrocycle tmpC = MacrocycleFactory.Build(cycle.Atoms, cycle.type);
+                        Macrocycle tmpC = MacrocycleFactory.Build(cycle.Atoms, MType);
                         tmpC.dataPoints = tmp;
                         meanDisPar.Content = tmpC.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture);
 
@@ -433,18 +434,17 @@ namespace PorphyStruct
                 parentView.Model.Series.Add(exp);
 
                 ScatterSeries sim = (ScatterSeries)simView.Model.Series.FirstOrDefault(s => s.Title == "Best");
-                Simulation simObj = new Simulation(cycle.Atoms)
+                Simulation simObj = new Simulation((Macrocycle)cycle.Clone())
                 {
-                    type = cycle.type,
-                    dataPoints = (List<AtomDataPoint>)sim.ItemsSource,
                     simParam = param
                 };
+                simObj.cycle.dataPoints = (List<AtomDataPoint>)sim.ItemsSource;
 
                 //dont mark (sim)
-                for (int i = 0; i < simObj.dataPoints.Count; i++)
+                for (int i = 0; i < simObj.cycle.dataPoints.Count; i++)
                 {
-                    if (dontMark.Contains(simObj.dataPoints[i].atom.Type) || dontMark.Contains(simObj.dataPoints[i].atom.Identifier))
-                        simObj.dataPoints[i].Size = 0;
+                    if (dontMark.Contains(simObj.cycle.dataPoints[i].atom.Type) || dontMark.Contains(simObj.cycle.dataPoints[i].atom.Identifier))
+                        simObj.cycle.dataPoints[i].Size = 0;
                 }
                 //export param
                 foreach (SimParam p in param)
@@ -465,8 +465,7 @@ namespace PorphyStruct
                 Application.Current.Windows.OfType<MainWindow>().First().DelSimButton.IsEnabled = true;
                 Application.Current.Windows.OfType<MainWindow>().First().DiffSimButton.IsEnabled = true;
 
-
-                simObj.Paint(parentView.Model);
+                MacrocyclePainter.Paint(parentView.Model, simObj.cycle, MacrocyclePainter.PaintMode.Sim);
                 Application.Current.Windows.OfType<MainWindow>().First().simulation = simObj;
                 Application.Current.Windows.OfType<MainWindow>().First().Analyze();
             }

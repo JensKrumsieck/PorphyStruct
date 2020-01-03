@@ -9,6 +9,9 @@ namespace PorphyStruct.Chemistry.Macrocycles
     {
         public Porphyrin(List<Atom> Atoms) : base(Atoms) { }
 
+        //assign type (legacy)
+        public override Type type => Type.Porphyrin;
+
         /// <summary>
         /// Porphyrins Bonds by Identifiers
         /// </summary>
@@ -110,7 +113,7 @@ namespace PorphyStruct.Chemistry.Macrocycles
         /// because of special C1-C20 Bond.
         /// </summary>
         /// <returns>Annotation aka Bonds</returns>
-        public override IEnumerable<ArrowAnnotation> DrawBonds(int mode = 0) => base.DrawBonds().Where(s => !((string)s.Tag).Contains("C20")).Concat(DrawPorphyrinBonds());
+        public override IEnumerable<ArrowAnnotation> DrawBonds(int mode = 0) => base.DrawBonds(mode).Where(s => !((string)s.Tag).Contains("C20")).Concat(DrawPorphyrinBonds(mode));
 
         /// <summary>
         /// Draw Porphyrin specific Bonds
@@ -119,8 +122,8 @@ namespace PorphyStruct.Chemistry.Macrocycles
         /// <returns></returns>
         private IEnumerable<ArrowAnnotation> DrawPorphyrinBonds(int mode = 0)
         {
-            yield return DrawBond(dataPoints.OrderBy(s => s.X).First(), dataPoints.Where(s => s.atom.Identifier == "C1" && s.atom.IsMacrocycle).First()); 
-            yield return DrawBond(dataPoints.OrderBy(s => s.X).Last(), dataPoints.Where(s => s.atom.Identifier == "C19" && s.atom.IsMacrocycle).First());
+            yield return DrawBond(dataPoints.OrderBy(s => s.X).First(), dataPoints.Where(s => s.atom.Identifier == "C1" && s.atom.IsMacrocycle).First(), mode); 
+            yield return DrawBond(dataPoints.OrderBy(s => s.X).Last(), dataPoints.Where(s => s.atom.Identifier == "C19" && s.atom.IsMacrocycle).First(), mode);
         }
 
         /// <summary>
@@ -139,5 +142,11 @@ namespace PorphyStruct.Chemistry.Macrocycles
             //add c20
             yield return new AtomDataPoint(1, ByIdentifier("C20", true).DistanceToPlane(GetMeanPlane()), ByIdentifier("C20", true));
         }
+
+        /// <summary>
+        /// Clones the object
+        /// </summary>
+        /// <returns></returns>
+        public override object Clone() => new Porphyrin(Atoms);
     }
 }

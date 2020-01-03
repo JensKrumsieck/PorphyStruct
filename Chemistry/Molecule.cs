@@ -1,6 +1,7 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 using MathNet.Spatial.Euclidean;
 using PorphyStruct.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -143,6 +144,6 @@ namespace PorphyStruct.Chemistry
         /// Gets the first detected metal atom in molecule
         /// </summary>
         /// <returns></returns>
-        public Atom GetMetal() => Atoms.Where(s => s.IsMetal).FirstOrDefault();
+        public Atom GetMetal() => Atoms.Where(s => s.IsMetal).FirstOrDefault();        
     }
 }

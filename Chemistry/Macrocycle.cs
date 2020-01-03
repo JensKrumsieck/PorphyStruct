@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace PorphyStruct.Chemistry
 {
-    public abstract class Macrocycle : Molecule
+    public abstract class Macrocycle : Molecule, ICloneable
     {
         public Macrocycle(List<Atom> Atoms) : base(Atoms) { }
 
@@ -43,7 +43,7 @@ namespace PorphyStruct.Chemistry
         public abstract List<string[]> Dihedrals { get; }
 
         public enum Type { Corrole, Porphyrin, Norcorrole, Corrphycene, Porphycene };
-        public Macrocycle.Type type;
+        public virtual Macrocycle.Type type { get; }
 
         /// <summary>
         /// Gets the centroid of this Macrocycle
@@ -255,6 +255,8 @@ namespace PorphyStruct.Chemistry
                 IsAxisVisible = false
             };
 
+
+
             xR.AddRange(0, 0.1, Element.Create("C").OxyColor);
             //sim
             xR.AddRange(1000, 1000.1, OxyColor.FromAColor(75, Element.Create("C").OxyColor));
@@ -441,5 +443,11 @@ namespace PorphyStruct.Chemistry
                 for (int j = 1; j <= 4; j++) N4Cavity(cycle).Where(s => Neighbors(s).Contains(ByIdentifier(AlphaAtoms[2 * j - 1]))).FirstOrDefault().Identifier = "N" + j;
             }
         }
+        /// <summary>
+        /// Returns new Instance of this molecule
+        /// ICloneable.Clone()
+        /// </summary>
+        /// <returns></returns>
+        public abstract object Clone();
     }
 }

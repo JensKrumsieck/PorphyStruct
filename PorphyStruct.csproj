@@ -132,6 +132,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Chemistry\MacrocyclePainter.cs" />
     <Compile Include="Util\DFSUtil.cs" />
     <Compile Include="Chemistry\Element.cs" />
     <Compile Include="Chemistry\MacrocycleFactory.cs" />

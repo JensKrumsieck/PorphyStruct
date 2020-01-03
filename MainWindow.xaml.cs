@@ -91,34 +91,34 @@ namespace PorphyStruct
                 //if normalize and simulation is'nt->normalize
                 if (normalize && !simulation.isNormalized)
                 {
-                    simulation.dataPoints = MathUtil.Normalize(simulation.dataPoints);
+                    simulation.cycle.dataPoints = MathUtil.Normalize(simulation.cycle.dataPoints);
                     simulation.isNormalized = true;
                 }
                 //if not normalzing but sim is normalized, denorm!
                 else if (!normalize && simulation.isNormalized)
                 {
-                    simulation.dataPoints = MathUtil.Factor(simulation.dataPoints, 1 / this.normFac);
+                    simulation.cycle.dataPoints = MathUtil.Factor(simulation.cycle.dataPoints, 1 / this.normFac);
                     simulation.isNormalized = false;
                 }
 
                 //if inverting but sim is not inverted yet, invert!
                 if (invert && !simulation.isInverted)
                 {
-                    simulation.dataPoints = MathUtil.Invert(simulation.dataPoints);
+                    simulation.cycle.dataPoints = MathUtil.Invert(simulation.cycle.dataPoints);
                     simulation.isInverted = true;
                 }
                 //if not inverting but simulation is Inverted-> invert!
                 else if (!invert && simulation.isInverted)
                 {
-                    simulation.dataPoints = MathUtil.Invert(simulation.dataPoints);
+                    simulation.cycle.dataPoints = MathUtil.Invert(simulation.cycle.dataPoints);
                     simulation.isInverted = false;
                 }
 
                 //dont mark (sim)
-                for (int i = 0; i < simulation.dataPoints.Count; i++)
+                for (int i = 0; i < simulation.cycle.dataPoints.Count; i++)
                 {
-                    if (dontMark.Contains(simulation.dataPoints[i].atom.Type) || dontMark.Contains(simulation.dataPoints[i].atom.Identifier))
-                        simulation.dataPoints[i].Size = 0;
+                    if (dontMark.Contains(simulation.cycle.dataPoints[i].atom.Type) || dontMark.Contains(simulation.cycle.dataPoints[i].atom.Identifier))
+                        simulation.cycle.dataPoints[i].Size = 0;
                 }
                 //paint simulation
                 simulation.Paint(pm);
@@ -126,16 +126,13 @@ namespace PorphyStruct
                 //if simulation has Difference
                 if (hasDifference)
                 {
-                    Simulation tmpDiff = new Simulation(cycle.Atoms)
-                    {
-                        type = this.type,
-                        dataPoints = GetDifference(data, simulation.dataPoints)
-                    };
+                    Simulation tmpDiff = new Simulation((Macrocycle)cycle.Clone());
+                    tmpDiff.cycle.dataPoints = GetDifference(data, simulation.cycle.dataPoints);
                     //dont mark (diff)
-                    for (int i = 0; i < tmpDiff.dataPoints.Count; i++)
+                    for (int i = 0; i < tmpDiff.cycle.dataPoints.Count; i++)
                     {
-                        if (dontMark.Contains(tmpDiff.dataPoints[i].atom.Type) || dontMark.Contains(tmpDiff.dataPoints[i].atom.Identifier))
-                            tmpDiff.dataPoints[i].Size = 0;
+                        if (dontMark.Contains(tmpDiff.cycle.dataPoints[i].atom.Type) || dontMark.Contains(tmpDiff.cycle.dataPoints[i].atom.Identifier))
+                            tmpDiff.cycle.dataPoints[i].Size = 0;
                     }
                     tmpDiff.Paint(pm, "Diff.");
                 }
@@ -187,10 +184,10 @@ namespace PorphyStruct
             {
                 Simulation com = CompareWindow.GetData(comp1Path);
                 // dont mark(comp1)
-                for (int i = 0; i < com.dataPoints.Count; i++)
+                for (int i = 0; i < com.cycle.dataPoints.Count; i++)
                 {
-                    if (dontMark.Contains(com.dataPoints[i].atom.Type) || dontMark.Contains(com.dataPoints[i].atom.Identifier))
-                        com.dataPoints[i].Size = 0;
+                    if (dontMark.Contains(com.cycle.dataPoints[i].atom.Type) || dontMark.Contains(com.cycle.dataPoints[i].atom.Identifier))
+                        com.cycle.dataPoints[i].Size = 0;
                 }
                 com.Paint(pm, "Com.1");
             }
@@ -198,10 +195,10 @@ namespace PorphyStruct
             {
                 Simulation com = CompareWindow.GetData(comp2Path);
                 // dont mark(comp1)
-                for (int i = 0; i < com.dataPoints.Count; i++)
+                for (int i = 0; i < com.cycle.dataPoints.Count; i++)
                 {
-                    if (dontMark.Contains(com.dataPoints[i].atom.Type) || dontMark.Contains(com.dataPoints[i].atom.Identifier))
-                        com.dataPoints[i].Size = 0;
+                    if (dontMark.Contains(com.cycle.dataPoints[i].atom.Type) || dontMark.Contains(com.cycle.dataPoints[i].atom.Identifier))
+                        com.cycle.dataPoints[i].Size = 0;
                 }
                 com.Paint(pm, "Com.2");
             }
