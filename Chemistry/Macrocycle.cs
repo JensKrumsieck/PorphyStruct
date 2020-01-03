@@ -396,9 +396,14 @@ namespace PorphyStruct.Chemistry
                 if (cycle.Count == RingAtoms.Count)
                     break;
             }
+            //assign Identifiers
             NameAtoms(cycle);
         }
 
+        /// <summary>
+        /// Assign the correct Identifiers for a cycle CN-corpus
+        /// </summary>
+        /// <param name="cycle"></param>
         public void NameAtoms(IEnumerable<Atom> cycle)
         {
             //cycle valid?
@@ -424,15 +429,12 @@ namespace PorphyStruct.Chemistry
                 //loop through atoms and name them
                 while (visited.Count() != carbons.Count())
                 {
-                    foreach (var neighbor in Neighbors(current, cycle).Where(s => !visited.Contains(s)))
+                    foreach (var neighbor in Neighbors(current, cycle).Where(s => !visited.Contains(s) && !N4Cavity(cycle).Contains(s)))
                     {
-                        if (!N4Cavity(cycle).Contains(neighbor))
-                        {
-                            //add to visited and assign Identifier
-                            neighbor.Identifier = carbons[i];
-                            visited.Add(current = neighbor);
-                            i++;
-                        }
+                        //add to visited and assign Identifier
+                        neighbor.Identifier = carbons[i];
+                        visited.Add(current = neighbor);
+                        i++;
                     }
                 }
                 //set up identifiers for nitrogens
