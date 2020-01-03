@@ -38,7 +38,7 @@ namespace PorphyStruct.Chemistry
             TextFile file;
             if (Path.GetExtension(path) == ".cif")
                 file = new CifFile(path);
-            else if (Path.GetExtension(path) == ".mol" || System.IO.Path.GetExtension(path) == ".mol2")
+            else if (Path.GetExtension(path) == ".mol" || Path.GetExtension(path) == ".mol2")
                 file = new Mol2File(path);
             else if (Path.GetExtension(path) == ".ixyz")
                 file = new XYZFile(path, true);

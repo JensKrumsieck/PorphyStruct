@@ -91,6 +91,13 @@ namespace PorphyStruct.Chemistry.Macrocycles
         public override List<string[]> Dihedrals => _Dihedrals;
 
         /// <summary>
+        /// Sets C1 to Corrole-Type C1
+        /// </summary>
+        /// <param name="cycle"></param>
+        /// <returns></returns>
+        public override Atom C1(IEnumerable<Atom> cycle) => Corrole._C1(cycle);
+
+        /// <summary>
         /// Clones the object
         /// </summary>
         /// <returns></returns>

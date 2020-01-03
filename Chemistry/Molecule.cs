@@ -120,7 +120,7 @@ namespace PorphyStruct.Chemistry
         /// <param name="A"></param>
         /// <param name="list"></param>
         /// <returns></returns>
-        public IEnumerable<Atom> Neighbors(Atom A, IEnumerable<Atom> list) => list.Where(B => A.BondTo(B) && A != B);
+        public static IEnumerable<Atom> Neighbors(Atom A, IEnumerable<Atom> list) => list.Where(B => A.BondTo(B) && A != B);
 
         /// <summary>
         /// Returns non metla neighbors of atom
@@ -128,7 +128,7 @@ namespace PorphyStruct.Chemistry
         /// <param name="A"></param>
         /// <param name="list"></param>
         /// <returns></returns>
-        public IEnumerable<Atom> NonMetalNeighbors(Atom A, IEnumerable<Atom> list) => Neighbors(A, list).Where(s => !s.IsMetal);
+        public static IEnumerable<Atom> NonMetalNeighbors(Atom A, IEnumerable<Atom> list) => Neighbors(A, list).Where(s => !s.IsMetal);
 
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         /// <param name="mol"></param>
         /// <returns></returns>
-        public IEnumerable<Atom> Vertex3Atoms(IEnumerable<Atom> mol) => mol.Where(s => DFSUtil.VertexDegree(mol, s, Neighbors) == 3);
+        public static IEnumerable<Atom> Vertex3Atoms(IEnumerable<Atom> mol) => mol.Where(s => DFSUtil.VertexDegree(mol, s, Neighbors) == 3);
 
 
         /// <summary>

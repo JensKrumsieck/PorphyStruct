@@ -43,6 +43,24 @@ namespace PorphyStruct.Chemistry.Macrocycles
         public override List<string[]> Dihedrals => Porphyrin._Dihedrals;
 
         /// <summary>
+        /// Returns C1 for Corrole (and Norcorrole)
+        /// </summary>
+        /// <param name="cycle"></param>
+        /// <returns></returns>
+        public static Atom _C1(IEnumerable<Atom> cycle)
+        {
+            Atom C1 = null;
+            //loop alpha atoms
+            foreach(var atom in Vertex3Atoms(cycle))
+            {
+                if (Neighbors(atom, cycle).Where(l => Vertex3Atoms(cycle).Contains(l)).Count() != 0) C1 = atom;
+            }
+            return C1;
+        }
+
+        public override Atom C1(IEnumerable<Atom> cycle) => _C1(cycle);
+
+        /// <summary>
         /// Clones the object
         /// </summary>
         /// <returns></returns>
