@@ -240,7 +240,6 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="markSelection"></param>
         /// <param name="force"></param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Don't need to catch sth.")]
         private void UpdateMolView(bool markSelection = false, bool force = false, bool detect = false)
         {
             Macrocycle cycle = MacrocycleFactory.Build(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList(), type);
@@ -252,89 +251,13 @@ namespace PorphyStruct
                 old = cycle;
                 oldIndex = coordGrid.SelectedIndex;
                 MolViewer.Children.Clear();
-
                 MolViewer.Children.Add(new DefaultLights());
+                Atom selected = markSelection ? (Atom)coordGrid.SelectedItem : null;
 
                 //create 3d model
                 System.Windows.Media.Media3D.ModelVisual3D model = new System.Windows.Media.Media3D.ModelVisual3D();
                 System.Windows.Media.Media3D.Model3DGroup group = new System.Windows.Media.Media3D.Model3DGroup();
-
-                foreach (Atom a in cycle.Atoms)
-                {
-                    MeshBuilder b = new MeshBuilder(true, true);
-
-                    //atom vars
-                    string identifier = a.Type;
-                    var pos = new System.Windows.Media.Media3D.Point3D(a.X, a.Y, a.Z);
-                    
-                    var radius = a.AtomRadius / 2;
-                    Brush brush = a.Brush;
-                    if (markSelection)
-                    {
-                        if (a == (Atom)coordGrid.SelectedItem)
-                        {
-                            brush = Brushes.LightGoldenrodYellow;
-                        }
-                    }
-                    var fill = MaterialHelper.CreateMaterial(brush);
-                    b.AddSphere(pos, radius);
-                    group.Children.Add(new System.Windows.Media.Media3D.GeometryModel3D(b.ToMesh(), fill));
-                }
-                foreach (Tuple<string, string> t in cycle.Bonds)
-                {
-                    MeshBuilder b = new MeshBuilder(true, true);
-                    try
-                    {
-                        Atom a1 = cycle.ByIdentifier(t.Item1, true);
-                        Atom a2 = cycle.ByIdentifier(t.Item2, true);
-                        var p1 = new System.Windows.Media.Media3D.Point3D(a1.X, a1.Y, a1.Z);
-                        var p2 = new System.Windows.Media.Media3D.Point3D(a2.X, a2.Y, a2.Z);
-                        b.AddCylinder(p1, p2, 0.2, 10);
-                        //add only to selection if both are macrocycle marked
-                        if (a1.IsMacrocycle && a2.IsMacrocycle)
-                            group.Children.Add(new System.Windows.Media.Media3D.GeometryModel3D(b.ToMesh(), Materials.Blue));
-                    }
-                    catch {/**does nothing**/ }
-                }
-                //add metal bonds
-                if (cycle.HasMetal)
-                {
-                    List<Atom> Nitrogen = cycle.Atoms.Where(s => Regex.IsMatch(s.Identifier, "N[1-4]")).ToList();
-                    Atom m = cycle.GetMetal();
-                    foreach (Atom n in Nitrogen)
-                    {
-                        MeshBuilder b = new MeshBuilder(true, true);
-                        try
-                        {
-                            var p1 = new System.Windows.Media.Media3D.Point3D(n.X, n.Y, n.Z);
-                            var p2 = new System.Windows.Media.Media3D.Point3D(m.X, m.Y, m.Z);
-                            b.AddCylinder(p1, p2, 0.2, 10);
-                            //add only to selection if both are macrocycle marked
-                            if (n.IsMacrocycle && m.IsMacrocycle)
-                                group.Children.Add(new System.Windows.Media.Media3D.GeometryModel3D(b.ToMesh(), Materials.Blue));
-                        }
-                        catch {/**does nothing**/ }
-                    }
-                }
-
-                for (int i = 0; i < cycle.Atoms.Count; i++)
-                {
-                    for (int j = 0; j < cycle.Atoms.Count; j++)
-                    {
-                        Atom a1 = cycle.Atoms[i];
-                        Atom a2 = cycle.Atoms[j];
-                        if (Atom.Distance(a1, a2) < (a1.Element.Radius + a2.Element.Radius) + 0.25)
-                        {
-                            MeshBuilder b = new MeshBuilder(true, true);
-                            //draw bond
-                            var p1 = new System.Windows.Media.Media3D.Point3D(a1.X, a1.Y, a1.Z);
-                            var p2 = new System.Windows.Media.Media3D.Point3D(a2.X, a2.Y, a2.Z);
-                            b.AddCylinder(p1, p2, 0.075, 10);
-                            group.Children.Add(new System.Windows.Media.Media3D.GeometryModel3D(b.ToMesh(), Materials.Gray));
-                        }
-                    }
-                }
-                model.Content = MacrocyclePainter.Paint3D(cycle);
+                model.Content = MacrocyclePainter.Paint3D(cycle, selected);
                 MolViewer.Children.Add(model);
             }
         }        
