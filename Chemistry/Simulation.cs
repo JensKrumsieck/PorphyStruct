@@ -23,17 +23,17 @@ namespace PorphyStruct.Chemistry
         /// Paints the Simulation to a PlotModel
         /// </summary>
         /// <param name="pm">PlotModel</param>
-        public void Paint(PlotModel pm, string title = "Sim.")
+        public void Paint(PlotModel pm, string title = "Sim")
         {
             //set mode
             int mode = 0;
-            if (title == "Sim.")
+            if (title == "Sim")
                 mode = 1;
-            if (title == "Diff.")
+            if (title == "Diff")
                 mode = 2;
-            if (title == "Com.1")
+            if (title == "Com1")
                 mode = 3;
-            if (title == "Com.2")
+            if (title == "Com2")
                 mode = 4;
 
             MacrocyclePainter.Paint(pm, cycle, (MacrocyclePainter.PaintMode)mode);

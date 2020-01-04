@@ -51,142 +51,82 @@ namespace PorphyStruct
         public void Analyze()
         {
             string[] dontMark = Properties.Settings.Default.dontMark.Split(',');
-            //plot that shit
+
+            //set up default plot model
             Oxy.Override.StandardPlotModel pm = new Oxy.Override.StandardPlotModel();
             Oxy.Override.LinearAxis y = pm.yAxis;
 
             //generate cycle
             Macrocycle cycle = MacrocycleFactory.Build(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList(), type);
-
-            List<AtomDataPoint> data = cycle.GetDataPoints();
+            cycle.GetDataPoints();
 
             //normalisation
             if (normalize)
             {
-                this.normFac = MathUtil.GetNormalizationFactor(data);
-                //save normalized data
-                data = MathUtil.Normalize(data);
-                cycle.dataPoints = data;
+                this.normFac = MathUtil.GetNormalizationFactor(cycle.dataPoints);
+                cycle.dataPoints = cycle.dataPoints.Normalize();
+                if(simulation != null && !simulation.isNormalized)
+                {
+                    simulation.cycle.dataPoints = simulation.cycle.dataPoints.Normalize();
+                    simulation.isNormalized = true;
+                }
+            }
+            else
+            {
+                if (simulation != null && simulation.isNormalized)
+                {
+                    simulation.cycle.dataPoints = simulation.cycle.dataPoints.Factor(1 / this.normFac);
+                    simulation.isNormalized = false;
+                }
             }
 
             //invert
             if (invert)
             {
-                data = MathUtil.Invert(data);
-                cycle.dataPoints = data;
-            }
-
-            //dont mark (data)
-            for (int i = 0; i < cycle.dataPoints.Count; i++)
-            {
-                if (dontMark.Contains(cycle.dataPoints[i].atom.Type) || dontMark.Contains(cycle.dataPoints[i].atom.Identifier))
-                    cycle.dataPoints[i].Size = 0;
-            }
-
-            //has simulation
-            if (simulation != null)
-            {
-                //if normalize and simulation is'nt->normalize
-                if (normalize && !simulation.isNormalized)
+                cycle.dataPoints = cycle.dataPoints.Invert();
+                if (simulation != null && !simulation.isInverted)
                 {
-                    simulation.cycle.dataPoints = MathUtil.Normalize(simulation.cycle.dataPoints);
-                    simulation.isNormalized = true;
-                }
-                //if not normalzing but sim is normalized, denorm!
-                else if (!normalize && simulation.isNormalized)
-                {
-                    simulation.cycle.dataPoints = MathUtil.Factor(simulation.cycle.dataPoints, 1 / this.normFac);
-                    simulation.isNormalized = false;
-                }
-
-                //if inverting but sim is not inverted yet, invert!
-                if (invert && !simulation.isInverted)
-                {
-                    simulation.cycle.dataPoints = MathUtil.Invert(simulation.cycle.dataPoints);
+                    simulation.cycle.dataPoints = simulation.cycle.dataPoints.Invert();
                     simulation.isInverted = true;
                 }
-                //if not inverting but simulation is Inverted-> invert!
-                else if (!invert && simulation.isInverted)
-                {
-                    simulation.cycle.dataPoints = MathUtil.Invert(simulation.cycle.dataPoints);
-                    simulation.isInverted = false;
-                }
+            }
+            else if (simulation != null && simulation.isInverted)
+            {
+                simulation.cycle.dataPoints = simulation.cycle.dataPoints.Invert();
+                simulation.isInverted = false;
+            }
 
-                //dont mark (sim)
-                for (int i = 0; i < simulation.cycle.dataPoints.Count; i++)
-                {
-                    if (dontMark.Contains(simulation.cycle.dataPoints[i].atom.Type) || dontMark.Contains(simulation.cycle.dataPoints[i].atom.Identifier))
-                        simulation.cycle.dataPoints[i].Size = 0;
-                }
-                //paint simulation
-                simulation.Paint(pm);
-
-                //if simulation has Difference
-                if (hasDifference)
-                {
-                    Simulation tmpDiff = new Simulation((Macrocycle)cycle.Clone());
-                    tmpDiff.cycle.dataPoints = GetDifference(data, simulation.cycle.dataPoints);
-                    //dont mark (diff)
-                    for (int i = 0; i < tmpDiff.cycle.dataPoints.Count; i++)
-                    {
-                        if (dontMark.Contains(tmpDiff.cycle.dataPoints[i].atom.Type) || dontMark.Contains(tmpDiff.cycle.dataPoints[i].atom.Identifier))
-                            tmpDiff.cycle.dataPoints[i].Size = 0;
-                    }
-                    tmpDiff.Paint(pm, "Diff");
-                }
+            if (simulation != null) simulation.Paint(pm);
+            if(hasDifference)
+            {
+                Simulation tmpDiff = new Simulation((Macrocycle)cycle.Clone());
+                tmpDiff.cycle.dataPoints = GetDifference(cycle.dataPoints, simulation.cycle.dataPoints);                
+                tmpDiff.Paint(pm, "Diff");
             }
 
             MacrocyclePainter.Paint(pm, cycle, MacrocyclePainter.PaintMode.Exp);
 
-            displaceView.Model = pm;
-            pm.InvalidatePlot(true);
-
-            foreach (OxyPlot.Annotations.ArrowAnnotation a in cycle.DrawBonds())
-            {
-                pm.Annotations.Add(a);
-            }
-
-            if (Properties.Settings.Default.zero)
-            {
-                //show zero
-                OxyPlot.Annotations.LineAnnotation zero = new OxyPlot.Annotations.LineAnnotation()
-                {
-                    Color = OxyColor.FromAColor(75, OxyColors.Gray),
-                    StrokeThickness = Properties.Settings.Default.lineThickness,
-                    Intercept = 0,
-                    Slope = 0
-                };
-                pm.Annotations.Add(zero);
-            }
-
-            //comparison
             if (!String.IsNullOrEmpty(comp1Path))
             {
                 Simulation com = CompareWindow.GetData(comp1Path);
-                // dont mark(comp1)
-                for (int i = 0; i < com.cycle.dataPoints.Count; i++)
-                {
-                    if (dontMark.Contains(com.cycle.dataPoints[i].atom.Type) || dontMark.Contains(com.cycle.dataPoints[i].atom.Identifier))
-                        com.cycle.dataPoints[i].Size = 0;
-                }
                 com.Paint(pm, "Com1");
             }
             if (!String.IsNullOrEmpty(comp2Path))
             {
                 Simulation com = CompareWindow.GetData(comp2Path);
-                // dont mark(comp1)
-                for (int i = 0; i < com.cycle.dataPoints.Count; i++)
-                {
-                    if (dontMark.Contains(com.cycle.dataPoints[i].atom.Type) || dontMark.Contains(com.cycle.dataPoints[i].atom.Identifier))
-                        com.cycle.dataPoints[i].Size = 0;
-                }
                 com.Paint(pm, "Com2");
             }
 
+            //handle dont mark
+            foreach (ScatterSeries s in pm.Series)
+            {
+                List<AtomDataPoint> data = (List<AtomDataPoint>)s.ItemsSource;
+                data.Where(dp => dontMark.Contains(dp.atom.Identifier) || dontMark.Contains(dp.atom.Type)).ToList().ForEach(dp => dp.Size = 0);
+            } 
 
+            displaceView.Model = pm;
             pm.InvalidatePlot(true);
-
-
+                       
             //scale if neccessary
             if (!normalize)
             {

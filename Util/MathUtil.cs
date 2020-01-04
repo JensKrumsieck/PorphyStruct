@@ -56,7 +56,7 @@ namespace PorphyStruct.Util
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static List<AtomDataPoint> Normalize(List<AtomDataPoint> data)
+        public static List<AtomDataPoint> Normalize(this List<AtomDataPoint> data)
         {
             double fac = GetNormalizationFactor(data);
             return Factor(data, fac);
@@ -67,7 +67,7 @@ namespace PorphyStruct.Util
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static List<AtomDataPoint> Invert(List<AtomDataPoint> data)
+        public static List<AtomDataPoint> Invert(this List<AtomDataPoint> data)
         {
             return Factor(data, -1);
         }
@@ -78,7 +78,7 @@ namespace PorphyStruct.Util
         /// <param name="data"></param>
         /// <param name="fac"></param>
         /// <returns></returns>
-        public static List<AtomDataPoint> Factor(List<AtomDataPoint> data, double fac)
+        public static List<AtomDataPoint> Factor(this List<AtomDataPoint> data, double fac)
         {
             List<AtomDataPoint> normData = new List<AtomDataPoint>();
             foreach (AtomDataPoint dp in data)
