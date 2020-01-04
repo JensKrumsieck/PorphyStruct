@@ -395,6 +395,15 @@ namespace PorphyStruct.Chemistry
                 for (int j = 1; j <= 4; j++) N4Cavity(cycle).Where(s => Neighbors(s).Contains(ByIdentifier(AlphaAtoms[2 * j - 1]))).FirstOrDefault().Identifier = "N" + j;
             }
         }
+
+        /// <summary>
+        /// Returns true if the bond between the two atoms is a valid macrocycle bond
+        /// </summary>
+        /// <param name="a1"></param>
+        /// <param name="a2"></param>
+        /// <returns></returns>
+        public bool IsValidBond(Atom a1, Atom a2) => a1.IsMacrocycle && a2.IsMacrocycle && (Bonds.Contains(new Tuple<string, string>(a1.Identifier, a2.Identifier)) || Bonds.Contains(new Tuple<string, string>(a2.Identifier, a1.Identifier)));
+
         /// <summary>
         /// Returns new Instance of this molecule
         /// ICloneable.Clone()

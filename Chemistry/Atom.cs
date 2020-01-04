@@ -194,10 +194,13 @@ namespace PorphyStruct.Chemistry
         /// Prints Identifier
         /// </summary>
         /// <returns></returns>
-        public override string ToString()
-        {
-            return Identifier;
-        }
+        public override string ToString() => Identifier;
+
+        /// <summary>
+        /// Converts Atom to simple Point3D
+        /// </summary>
+        /// <returns></returns>
+        public System.Windows.Media.Media3D.Point3D ToPoint3D() => new System.Windows.Media.Media3D.Point3D(X, Y, Z);
     }
 
 }

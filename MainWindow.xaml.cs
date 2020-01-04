@@ -266,6 +266,7 @@ namespace PorphyStruct
                     //atom vars
                     string identifier = a.Type;
                     var pos = new System.Windows.Media.Media3D.Point3D(a.X, a.Y, a.Z);
+                    
                     var radius = a.AtomRadius / 2;
                     Brush brush = a.Brush;
                     if (markSelection)
@@ -333,7 +334,7 @@ namespace PorphyStruct
                         }
                     }
                 }
-                model.Content = group;
+                model.Content = MacrocyclePainter.Paint3D(cycle);
                 MolViewer.Children.Add(model);
             }
         }        
