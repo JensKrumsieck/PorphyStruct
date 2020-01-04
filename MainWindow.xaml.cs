@@ -274,19 +274,14 @@ namespace PorphyStruct
                 path = wi.FileName;
                 type = (Macrocycle.Type)wi.Type;
                 this.Title = "Structural Analysis of Porphyrinoids (PorphyStruct) - " + type.ToString() + " Mode";
-                AnalButton.IsEnabled = true;
-                RefMolButton.IsEnabled = true;
-                CenterMolButton.IsEnabled = true;
-                DetectMolButton.IsEnabled = true;
-                NormalizeButton.IsEnabled = true;
-                InvertButton.IsEnabled = true;
-                SaveButton.IsEnabled = true;
-                SimButton.IsEnabled = true;
-                CompButton.IsEnabled = true;
+                
+                //reset gui elements
+                AnalButton.IsEnabled = RefMolButton.IsEnabled = CenterMolButton.IsEnabled = DetectMolButton.IsEnabled = NormalizeButton.IsEnabled = InvertButton.IsEnabled = SaveButton.IsEnabled = SimButton.IsEnabled = CompButton.IsEnabled = true;
+                normalize = invert = hasDifference = DelSimButton.IsEnabled = DiffSimButton.IsEnabled = false;
+                NormalizeButton.Foreground = InvertButton.Foreground = DiffSimButton.Foreground = CompButton.Foreground = Brushes.Black;
 
                 //clear plotview
-                if (displaceView.Model != null)
-                    displaceView.Model = null;
+                displaceView.Model = null;
                 displaceView.InvalidatePlot();
 
                 //clear sim
@@ -299,16 +294,7 @@ namespace PorphyStruct
                 oldIndex = -1;
 
                 //reset comparison
-                comp1Path = "";
-                comp2Path = "";
-
-                //reset buttons
-                normalize = invert = hasDifference = false;
-                NormalizeButton.Foreground = InvertButton.Foreground = DiffSimButton.Foreground = CompButton.Foreground = Brushes.Black;
-
-                //disable delete&diff sim button
-                DelSimButton.IsEnabled = false;
-                DiffSimButton.IsEnabled = false;
+                comp1Path = comp2Path = "";
 
                 cycle = MacrocycleFactory.Load(path, type);
                 //add to grid
