@@ -50,8 +50,6 @@ namespace PorphyStruct
         /// </summary>
         public void Analyze()
         {
-            string[] dontMark = Properties.Settings.Default.dontMark.Split(',');
-
             //set up default plot model
             Oxy.Override.StandardPlotModel pm = new Oxy.Override.StandardPlotModel();
             Oxy.Override.LinearAxis y = pm.yAxis;
@@ -75,7 +73,7 @@ namespace PorphyStruct
             {
                 if (simulation != null && simulation.isNormalized)
                 {
-                    simulation.cycle.dataPoints = simulation.cycle.dataPoints.Factor(1 / this.normFac);
+                    simulation.cycle.dataPoints = simulation.cycle.dataPoints.Factor(1 / this.normFac).ToList();
                     simulation.isNormalized = false;
                 }
             }
@@ -97,29 +95,17 @@ namespace PorphyStruct
             }
 
             if (simulation != null) simulation.Paint(pm);
-            if(hasDifference)
-            {
-                Simulation tmpDiff = new Simulation((Macrocycle)cycle.Clone());
-                tmpDiff.cycle.dataPoints = GetDifference(cycle.dataPoints, simulation.cycle.dataPoints);                
-                tmpDiff.Paint(pm, "Diff");
-            }
+            if (hasDifference) GetDifference(cycle, simulation).Paint(pm, "Diff");
 
             MacrocyclePainter.Paint(pm, cycle, MacrocyclePainter.PaintMode.Exp);
 
-            if (!String.IsNullOrEmpty(comp1Path))
-            {
-                Simulation com = CompareWindow.GetData(comp1Path);
-                com.Paint(pm, "Com1");
-            }
-            if (!String.IsNullOrEmpty(comp2Path))
-            {
-                Simulation com = CompareWindow.GetData(comp2Path);
-                com.Paint(pm, "Com2");
-            }
+            if (!String.IsNullOrEmpty(comp1Path)) CompareWindow.GetData(comp1Path).Paint(pm, "Com1");           
+            if (!String.IsNullOrEmpty(comp2Path)) CompareWindow.GetData(comp2Path).Paint(pm, "Com2");
 
             //handle dont mark
             foreach (ScatterSeries s in pm.Series)
             {
+                string[] dontMark = Properties.Settings.Default.dontMark.Split(',');
                 List<AtomDataPoint> data = (List<AtomDataPoint>)s.ItemsSource;
                 data.Where(dp => dontMark.Contains(dp.atom.Identifier) || dontMark.Contains(dp.atom.Type)).ToList().ForEach(dp => dp.Size = 0);
             } 
@@ -140,16 +126,10 @@ namespace PorphyStruct
                 y.AbsoluteMinimum = min;
                 y.AbsoluteMaximum = max;
             }
-
             pm.Scale(pm.xAxis);
 
             //update simstack
             UpdateStack();
-
-            //update plane coordinates
-            Plane pl = cycle.GetMeanPlane();
-            UnitVecTB.Text = "(" + pl.A.ToString("G3") + "," + pl.B.ToString("G3") + "," + pl.C.ToString("G3") + ")";
-            DistTB.Text = pl.D.ToString("G3");
         }
         /// <summary>
         /// Update Sim WrapPanel
@@ -169,6 +149,13 @@ namespace PorphyStruct
                     };
                     simStack.Children.Add(c);
                 }
+            }
+            if (coordGrid.ItemsSource != null)
+            {
+                //update plane coordinates
+                Plane pl = GetCycle().GetMeanPlane();
+                UnitVecTB.Text = "(" + pl.A.ToString("G3") + "," + pl.B.ToString("G3") + "," + pl.C.ToString("G3") + ")";
+                DistTB.Text = pl.D.ToString("G3");
             }
         }     
 
@@ -238,22 +225,11 @@ namespace PorphyStruct
         /// returns difference between exp and sim
         /// </summary>
         /// <returns></returns>
-        public List<AtomDataPoint> GetDifference(List<AtomDataPoint> data, List<AtomDataPoint> simData)
+        public Simulation GetDifference(Macrocycle cycle, Simulation sim)
         {
-            List<AtomDataPoint> diff = new List<AtomDataPoint>();
-
-            //strip metal
-            data = data.Where(s => !s.atom.IsMetal).ToList();
-            //Shows the difference between sim and exp.
-            if (this.simulation != null)
-            {
-                for (int i = 0; i < data.Count; i++)
-                {
-                    AtomDataPoint dp = new AtomDataPoint(data[i].X, (data[i].Y - simData[i].Y), data[i].atom);
-                    diff.Add(dp);
-                }
-            }
-            return diff;
+            Macrocycle difference = (Macrocycle)cycle.Clone();
+            difference.dataPoints = cycle.dataPoints.Where(s => !s.atom.IsMetal).Difference(sim.cycle.dataPoints).ToList();
+            return new Simulation(difference);
         }
 
 

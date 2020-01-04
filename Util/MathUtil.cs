@@ -4,6 +4,7 @@ using MathNet.Spatial.Euclidean;
 using PorphyStruct.Chemistry;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PorphyStruct.Util
 {
@@ -59,7 +60,7 @@ namespace PorphyStruct.Util
         public static List<AtomDataPoint> Normalize(this List<AtomDataPoint> data)
         {
             double fac = GetNormalizationFactor(data);
-            return Factor(data, fac);
+            return Factor(data, fac).ToList();
         }
 
         /// <summary>
@@ -69,7 +70,7 @@ namespace PorphyStruct.Util
         /// <returns></returns>
         public static List<AtomDataPoint> Invert(this List<AtomDataPoint> data)
         {
-            return Factor(data, -1);
+            return Factor(data, -1).ToList();
         }
 
         /// <summary>
@@ -78,14 +79,26 @@ namespace PorphyStruct.Util
         /// <param name="data"></param>
         /// <param name="fac"></param>
         /// <returns></returns>
-        public static List<AtomDataPoint> Factor(this List<AtomDataPoint> data, double fac)
+        public static IEnumerable<AtomDataPoint> Factor(this List<AtomDataPoint> data, double fac)
         {
-            List<AtomDataPoint> normData = new List<AtomDataPoint>();
             foreach (AtomDataPoint dp in data)
             {
-                normData.Add(new AtomDataPoint(dp.X, dp.Y / fac, dp.atom));
+                yield return new AtomDataPoint(dp.X, dp.Y / fac, dp.atom);
             }
-            return normData;
+        }
+
+        /// <summary>
+        /// Gets the difference between to lists of ADP
+        /// </summary>
+        /// <param name="data1"></param>
+        /// <param name="data2"></param>
+        /// <returns></returns>
+        public static IEnumerable<AtomDataPoint> Difference(this IEnumerable<AtomDataPoint> data1, IEnumerable<AtomDataPoint> data2)
+        {
+            //sort lists
+            data1 = data1.OrderBy(s => s.X).ToList();
+            data2 = data2.OrderBy(s => s.X).ToList();
+            for (int i = 0; i < data2.Count(); i++) yield return new AtomDataPoint(data1.ElementAt(i).X, (data1.ElementAt(i).Y - data2.ElementAt(i).Y), data1.ElementAt(i).atom);
         }
 
 
