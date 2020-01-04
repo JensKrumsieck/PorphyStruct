@@ -21,8 +21,9 @@ namespace PorphyStruct
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, IDisposable
+    public partial class MainWindow : Window
     {
+        public Macrocycle cycle;
         private Macrocycle old;
         public string path = "";
         public double normFac = 0;
@@ -34,7 +35,7 @@ namespace PorphyStruct
 
         public Simulation simulation = null;
         public Macrocycle.Type type = Macrocycle.Type.Corrole;
-        public SnackbarMessageQueue MessageQueue = new SnackbarMessageQueue(TimeSpan.FromSeconds(2));
+
 
         string comp1Path = "";
         string comp2Path = "";
@@ -42,7 +43,6 @@ namespace PorphyStruct
         public MainWindow()
         {
             InitializeComponent();
-            Snack.MessageQueue = MessageQueue;
         }
 
         /// <summary>
@@ -53,9 +53,6 @@ namespace PorphyStruct
             //set up default plot model
             Oxy.Override.StandardPlotModel pm = new Oxy.Override.StandardPlotModel();
             Oxy.Override.LinearAxis y = pm.yAxis;
-
-            //generate cycle
-            Macrocycle cycle = MacrocycleFactory.Build(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList(), type);
             cycle.GetDataPoints();
 
             //normalisation
@@ -153,7 +150,7 @@ namespace PorphyStruct
             if (coordGrid.ItemsSource != null)
             {
                 //update plane coordinates
-                Plane pl = GetCycle().GetMeanPlane();
+                Plane pl = cycle.GetMeanPlane();
                 UnitVecTB.Text = "(" + pl.A.ToString("G3") + "," + pl.B.ToString("G3") + "," + pl.C.ToString("G3") + ")";
                 DistTB.Text = pl.D.ToString("G3");
             }
@@ -167,7 +164,6 @@ namespace PorphyStruct
         /// <param name="force"></param>
         private void UpdateMolView(bool markSelection = false, bool force = false, bool detect = false)
         {
-            Macrocycle cycle = MacrocycleFactory.Build(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList(), type);
             if (detect)
                 cycle.Detect();
 
@@ -181,44 +177,9 @@ namespace PorphyStruct
 
                 //create 3d model
                 System.Windows.Media.Media3D.ModelVisual3D model = new System.Windows.Media.Media3D.ModelVisual3D();
-                System.Windows.Media.Media3D.Model3DGroup group = new System.Windows.Media.Media3D.Model3DGroup();
                 model.Content = MacrocyclePainter.Paint3D(cycle, selected);
                 MolViewer.Children.Add(model);
             }
-        }        
-
-        /// <summary>
-        /// returns the plot data of exp.
-        /// </summary>
-        /// <returns></returns>
-        public List<AtomDataPoint> GetData()
-        {
-            List<AtomDataPoint> data = new List<AtomDataPoint>();
-            ScatterSeries series = (ScatterSeries)displaceView.Model.Series.FirstOrDefault(s => s.Title == "Exp");
-            data.AddRange((List<AtomDataPoint>)series.ItemsSource);
-            return data;
-        }
-
-        /// <summary>
-        /// returns current macrocycle
-        /// </summary>
-        /// <returns></returns>
-        public Macrocycle GetCycle()
-        {
-            List<AtomDataPoint> data = new List<AtomDataPoint>();
-            try
-            {
-                data = GetData();
-            }
-            catch
-            {
-                System.Diagnostics.Debug.WriteLine("Failed to MainWindow.GetData() because no Data is present");
-            }
-            var cycle = MacrocycleFactory.Build(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList(), type);
-            cycle.Title = Path.GetFileNameWithoutExtension(this.path);
-            cycle.dataPoints = data;
-
-            return cycle;
         }
 
         /// <summary>
@@ -239,7 +200,6 @@ namespace PorphyStruct
         public void Center()
         {
             //Center Molecule
-            Macrocycle cycle = MacrocycleFactory.Build(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList(), type);
             cycle.Center(s => s.IsMacrocycle);
 
             //update list
@@ -350,11 +310,9 @@ namespace PorphyStruct
                 DelSimButton.IsEnabled = false;
                 DiffSimButton.IsEnabled = false;
 
-                Macrocycle cycle = MacrocycleFactory.Load(path, type);
+                cycle = MacrocycleFactory.Load(path, type);
                 //add to grid
                 coordGrid.ItemsSource = cycle.Atoms.OrderByDescending(s => s.IsMacrocycle).ToList();
-                //show message
-                MessageQueue.Enqueue("File opened!");
             }
         }
 
@@ -365,11 +323,10 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void Analyze_Click(object sender, RoutedEventArgs e)
         {
+            //get the current data from source
+            cycle.Atoms = ((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList();
             //call analyze void
             Analyze();
-
-            //show message
-            MessageQueue.Enqueue("Analysis complete!");
         }
 
         /// <summary>
@@ -377,13 +334,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CenterMolButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Center();
-
-            //show message
-            MessageQueue.Enqueue("Molecule has been centerd into origin by subtraction of its centroid!");
-        }
+        private void CenterMolButton_Click(object sender, RoutedEventArgs e) => this.Center();
 
 
         /// <summary>
@@ -406,8 +357,6 @@ namespace PorphyStruct
             }
             //reanalyze
             this.Analyze();
-            //show message
-            MessageQueue.Enqueue("Analysis complete!");
         }
 
         /// <summary>
@@ -418,7 +367,7 @@ namespace PorphyStruct
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             //open save dialog
-            SaveWindow svW = new SaveWindow(GetCycle(), this.simulation);
+            SaveWindow svW = new SaveWindow(cycle, this.simulation);
             svW.ShowDialog();
         }
 
@@ -443,8 +392,6 @@ namespace PorphyStruct
             }
             //reanalyze
             this.Analyze();
-            //show message
-            MessageQueue.Enqueue("Analysis complete!");
         }
 
         /// <summary>
@@ -460,9 +407,9 @@ namespace PorphyStruct
             SimWindow sw;
             if (simulation != null)
             {
-                sw = new SimWindow(GetCycle(), displaceView, simulation);
+                sw = new SimWindow(cycle, displaceView, simulation);
             }
-            else sw = new SimWindow(GetCycle(), displaceView);
+            else sw = new SimWindow(cycle, displaceView);
 
             //open sim window
             sw.Show();
@@ -562,31 +509,8 @@ namespace PorphyStruct
         {
             this.UpdateMolView(false, false, true);
             coordGrid.Items.Refresh();
-            //show message
-            MessageQueue.Enqueue("Detection Algorithmus finished!");
         }
 
         #endregion
-
-        /// <summary>
-        /// Implement IDisposable
-        /// </summary>
-        /// <param name="disposing"></param>
-        /// <see cref="IDisposable.Dispose"/>
-        protected virtual void Dispose(bool disposing)
-        {
-            //dispose managed resources
-            if (disposing) MessageQueue.Dispose();
-        }
-
-        /// <summary>
-        /// Wrapper for Dispose(true)
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
     }
 }
