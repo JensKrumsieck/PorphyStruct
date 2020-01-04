@@ -4,7 +4,6 @@ using MathNet.Spatial.Euclidean;
 using OxyPlot;
 using OxyPlot.Series;
 using PorphyStruct.Chemistry;
-using PorphyStruct.Files;
 using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,6 @@ using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -324,15 +322,9 @@ namespace PorphyStruct
         /// </summary>
         public void Center()
         {
+            //Center Molecule
             Macrocycle cycle = MacrocycleFactory.Build(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList(), type);
-            Vector3D centroid = cycle.GetCentroid();
-            //subtract centroid
-            foreach (Atom a in cycle.Atoms)
-            {
-                a.X -= centroid.X;
-                a.Y -= centroid.Y;
-                a.Z -= centroid.Z;
-            }
+            cycle.Center(s => s.IsMacrocycle);
 
             //update list
             coordGrid.ItemsSource = cycle.Atoms.OrderByDescending(s => s.IsMacrocycle).ToList();

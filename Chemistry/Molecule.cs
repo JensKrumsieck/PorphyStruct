@@ -144,6 +144,22 @@ namespace PorphyStruct.Chemistry
         /// Gets the first detected metal atom in molecule
         /// </summary>
         /// <returns></returns>
-        public Atom GetMetal() => Atoms.Where(s => s.IsMetal).FirstOrDefault();        
+        public Atom GetMetal() => Atoms.Where(s => s.IsMetal).FirstOrDefault();
+
+        /// <summary>
+        /// Centers the molecule by using lambda expression
+        /// </summary>
+        /// <param name="predicate"></param>
+        public void Center(Func<Atom, bool> predicate)
+        {
+            var centroid = GetCentroid(Atoms.Where(predicate));
+            foreach (Atom a in Atoms)
+            {
+                a.X -= centroid.X;
+                a.Y -= centroid.Y;
+                a.Z -= centroid.Z;
+            }
+        }
+
     }
 }
