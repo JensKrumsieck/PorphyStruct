@@ -292,8 +292,6 @@ namespace PorphyStruct
                 //reset values
                 normFac = 0;
                 oldIndex = -1;
-
-                //reset comparison
                 comp1Path = comp2Path = "";
 
                 cycle = MacrocycleFactory.Load(path, type);
