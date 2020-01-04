@@ -104,6 +104,10 @@ namespace PorphyStruct.Util
             return result;
         }
 
+        /// <summary>
+        /// Helix Toolkit origin shortcut
+        /// </summary>
+        public static System.Windows.Media.Media3D.Point3D Origin => new System.Windows.Media.Media3D.Point3D(0, 0, 0);
 
     }
 }

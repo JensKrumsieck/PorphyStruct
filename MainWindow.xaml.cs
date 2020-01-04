@@ -322,39 +322,29 @@ namespace PorphyStruct
         /// <summary>
         /// Centers Molecule into origin and updates camera to bestview
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Ausstehend>")]
         public void Center()
         {
             Macrocycle cycle = MacrocycleFactory.Build(((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList(), type);
             Vector3D centroid = cycle.GetCentroid();
-
+            //subtract centroid
             foreach (Atom a in cycle.Atoms)
             {
-                Vector3D coord = new Vector3D(a.X, a.Y, a.Z);
-                Vector3D newCoord = coord - centroid;
-
-                a.X = newCoord.X;
-                a.Y = newCoord.Y;
-                a.Z = newCoord.Z;
+                a.X -= centroid.X;
+                a.Y -= centroid.Y;
+                a.Z -= centroid.Z;
             }
 
+            //update list
             coordGrid.ItemsSource = cycle.Atoms.OrderByDescending(s => s.IsMacrocycle).ToList();
             coordGrid.Items.Refresh();
+            //update 3d image
             this.UpdateMolView(false, true);
-            try
-            {
-                //update camera
-                Plane pl = cycle.GetMeanPlane();
-                var normal = new System.Windows.Media.Media3D.Point3D(pl.A, pl.B, pl.C);
-                while (normal.DistanceTo(new System.Windows.Media.Media3D.Point3D(0, 0, 0)) < 25)
-                {
-                    normal = normal.Multiply(1.1);
-                }
-                MolViewer.CameraController.CameraPosition = normal;
-                MolViewer.CameraController.CameraTarget = new System.Windows.Media.Media3D.Point3D(0, 0, 0);
-            }
-            catch { }
-
+            //update camera
+            Plane pl = cycle.GetMeanPlane();
+            var normal = new System.Windows.Media.Media3D.Point3D(pl.A, pl.B, pl.C);
+            while (normal.DistanceTo(MathUtil.Origin) < 25) normal = normal.Multiply(1.1);
+            MolViewer.CameraController.CameraPosition = normal;
+            MolViewer.CameraController.CameraTarget = MathUtil.Origin;
         }
 
         #region UI Interaction
