@@ -3,7 +3,6 @@ using MathNet.Numerics.LinearAlgebra.Double;
 using MathNet.Spatial.Euclidean;
 using OxyPlot;
 using OxyPlot.Annotations;
-using OxyPlot.Axes;
 using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
@@ -240,54 +239,7 @@ namespace PorphyStruct.Chemistry
         /// <param name="id"></param>
         /// <param name="forceMacroCycle"></param>
         /// <returns>Atom</returns>
-        public Atom ByIdentifier(string id, bool forceMacroCycle = false) => Atoms.Where(s => s.Identifier == id && (forceMacroCycle ? s.IsMacrocycle == forceMacroCycle : true)).FirstOrDefault();
-
-        /// <summary>
-        /// Builds RangeColorAxis
-        /// </summary>
-        /// <returns></returns>
-        public RangeColorAxis BuildColorAxis()
-        {
-            RangeColorAxis xR = new RangeColorAxis()
-            {
-                Key = "colors",
-                Position = AxisPosition.Bottom,
-                IsAxisVisible = false
-            };
-
-
-
-            xR.AddRange(0, 0.1, Element.Create("C").OxyColor);
-            //sim
-            xR.AddRange(1000, 1000.1, OxyColor.FromAColor(75, Element.Create("C").OxyColor));
-            //diff
-            xR.AddRange(2000, 2000.1, OxyColor.FromAColor(50, Element.Create("C").OxyColor));
-
-            //comparisons
-            xR.AddRange(3000, 3000.1, OxyColor.FromAColor(75, Element.Create("C").OxyColor));
-            xR.AddRange(4000, 4000.1, OxyColor.FromAColor(75, Element.Create("C").OxyColor));
-
-            foreach (AtomDataPoint dp in dataPoints)
-            {
-                if (dp.atom.Type != "C")
-                {
-                    OxyColor color = dp.atom.OxyColor;
-                    double min = dp.X - 0.25;
-                    double max = dp.X + 0.25;
-                    xR.AddRange(min, max, color);
-                    xR.AddRange(min + 1000, max + 1000, OxyColor.FromAColor(75, color));
-                    xR.AddRange(min + 2000, max + 2000, OxyColor.FromAColor(50, color));
-                    xR.AddRange(min + 3000, max + 3000, OxyColor.FromAColor(75, color));
-                    xR.AddRange(min + 4000, max + 4000, OxyColor.FromAColor(75, color));
-                }
-                else if (dp.Value != 1000 && dp.Value != 2000 && dp.Value != 3000 && dp.Value != 4000)
-                {
-                    dp.Value = 0;
-                }
-            }
-
-            return xR;
-        }
+        public Atom ByIdentifier(string id, bool forceMacroCycle = false) => Atoms.Where(s => s.Identifier == id && (forceMacroCycle ? s.IsMacrocycle == forceMacroCycle : true)).FirstOrDefault();        
 
         /// <summary>
         /// Gets the absolute mean displacement over all atoms

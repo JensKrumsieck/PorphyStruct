@@ -115,15 +115,7 @@ namespace PorphyStruct
             //plot that shit
             Oxy.Override.StandardPlotModel pm = new Oxy.Override.StandardPlotModel();
 
-            ScatterSeries series = new ScatterSeries
-            {
-                MarkerType = Properties.Settings.Default.markerType,
-                ItemsSource = cycle.dataPoints
-            };
-            //add de color axis
-            RangeColorAxis xR = cycle.BuildColorAxis();
-            pm.Axes.Add(xR);
-            pm.Series.Add(series);
+            MacrocyclePainter.Paint(pm, cycle, MacrocyclePainter.PaintMode.Exp);
 
             simView.Model = pm;
 

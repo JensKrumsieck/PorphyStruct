@@ -134,29 +134,11 @@ namespace PorphyStruct
                         if (dontMark.Contains(tmpDiff.cycle.dataPoints[i].atom.Type) || dontMark.Contains(tmpDiff.cycle.dataPoints[i].atom.Identifier))
                             tmpDiff.cycle.dataPoints[i].Size = 0;
                     }
-                    tmpDiff.Paint(pm, "Diff.");
+                    tmpDiff.Paint(pm, "Diff");
                 }
             }
 
-
-            if (!Properties.Settings.Default.singleColor)
-            {
-                //build atom coloring axis
-                OxyPlot.Axes.RangeColorAxis xR = cycle.BuildColorAxis();
-                pm.Axes.Add(xR);
-            }
-
-            ScatterSeries series = new ScatterSeries
-            {
-                MarkerType = Properties.Settings.Default.markerType,
-                ItemsSource = data,
-                ColorAxisKey = Properties.Settings.Default.singleColor ? null : "colors",
-                Title = "Exp."
-            };
-            if (Properties.Settings.Default.singleColor)
-                series.MarkerFill = Atom.modesSingleColor[0];
-
-            pm.Series.Add(series);
+            MacrocyclePainter.Paint(pm, cycle, MacrocyclePainter.PaintMode.Exp);
 
             displaceView.Model = pm;
             pm.InvalidatePlot(true);
@@ -189,7 +171,7 @@ namespace PorphyStruct
                     if (dontMark.Contains(com.cycle.dataPoints[i].atom.Type) || dontMark.Contains(com.cycle.dataPoints[i].atom.Identifier))
                         com.cycle.dataPoints[i].Size = 0;
                 }
-                com.Paint(pm, "Com.1");
+                com.Paint(pm, "Com1");
             }
             if (!String.IsNullOrEmpty(comp2Path))
             {
@@ -200,7 +182,7 @@ namespace PorphyStruct
                     if (dontMark.Contains(com.cycle.dataPoints[i].atom.Type) || dontMark.Contains(com.cycle.dataPoints[i].atom.Identifier))
                         com.cycle.dataPoints[i].Size = 0;
                 }
-                com.Paint(pm, "Com.2");
+                com.Paint(pm, "Com2");
             }
 
 
@@ -363,7 +345,7 @@ namespace PorphyStruct
         public List<AtomDataPoint> GetData()
         {
             List<AtomDataPoint> data = new List<AtomDataPoint>();
-            ScatterSeries series = (ScatterSeries)displaceView.Model.Series.FirstOrDefault(s => s.Title == "Exp.");
+            ScatterSeries series = (ScatterSeries)displaceView.Model.Series.FirstOrDefault(s => s.Title == "Exp");
             data.AddRange((List<AtomDataPoint>)series.ItemsSource);
             return data;
         }

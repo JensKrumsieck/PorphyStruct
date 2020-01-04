@@ -114,10 +114,6 @@ namespace PorphyStruct
             if (loaded)
             {
                 TextBox tb = (TextBox)sender;
-                if (tb.Name.Contains("1"))
-                    comp1Plot.Model.Axes.Add(GetData(tb.Text).cycle.BuildColorAxis());
-                else
-                    comp2Plot.Model.Axes.Add(GetData(tb.Text).cycle.BuildColorAxis());
 
                 GetData(tb.Text).Paint(tb.Name.Contains("1") ? comp1Plot.Model : comp2Plot.Model, tb.Name.Contains("1") ? "Com.1" : "Com.2");
 

@@ -1,5 +1,9 @@
 ﻿using OxyPlot;
+using OxyPlot.Axes;
 using OxyPlot.Series;
+using PorphyStruct.Oxy.Override;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PorphyStruct.Chemistry
 {
@@ -37,6 +41,10 @@ namespace PorphyStruct.Chemistry
             if (Properties.Settings.Default.singleColor)
                 series.MarkerFill = Atom.modesSingleColor[(int)mode];
             //add series
+
+            if(!Properties.Settings.Default.singleColor)  pm.Axes.Add(ColorAxis(cycle.dataPoints));
+            else series.MarkerFill = Atom.modesSingleColor[(int) mode];
+
             pm.Series.Add(series);
 
             //draw bonds			
@@ -48,6 +56,17 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         /// <param name="dp"></param>
         /// <param name="value"></param>
-        private static void AssignValue(AtomDataPoint dp, PaintMode mode) => dp.Value = dp.atom.Type == "C" ? 1000d * (int)mode : dp.Value + (1000 * ((int)mode+1));
+        private static void AssignValue(AtomDataPoint dp, PaintMode mode) => dp.Value = dp.atom.Type == "C" ? 1000d * (int)mode : dp.X + (1000 * ((int)mode));
+
+        /// <summary>
+        /// Builds RangeColorAxis
+        /// </summary>
+        /// <returns></returns>
+        public static AtomRangeColorAxis ColorAxis(IEnumerable<AtomDataPoint> dataPoints) => new AtomRangeColorAxis(dataPoints)
+        {
+            Key = "colors",
+            Position = AxisPosition.Bottom,
+            IsAxisVisible = false
+        };
     }
 }
