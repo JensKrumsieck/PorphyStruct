@@ -22,25 +22,17 @@ namespace PorphyStruct
     {
         public Macrocycle cycle;
         private Macrocycle old;
-        public string path = "";
         public double normFac = 0;
         private int oldIndex = -1;
 
-        public bool normalize = false;
-        private bool hasDifference = false;
-        public bool invert = false;
+        public bool normalize, hasDifference, invert;
 
         public Simulation simulation = null;
         public Macrocycle.Type type = Macrocycle.Type.Corrole;
 
+        public string comp1Path, comp2Path, path;
 
-        string comp1Path = "";
-        string comp2Path = "";
-
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
+        public MainWindow() => InitializeComponent();
 
         /// <summary>
         /// Analyze current Macrocycle and print result to PlotView
