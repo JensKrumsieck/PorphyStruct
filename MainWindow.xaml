@@ -123,7 +123,7 @@
                 </Button>
             </ToolBar>
         </ToolBarTray>
-        <DataGrid Grid.Column="0" Grid.Row="1" TargetUpdated="CoordGrid_TargetUpdated" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="coordGrid" CanUserSortColumns="True" CanUserAddRows="False" ItemsSource="{Binding}" AutoGenerateColumns="False" SelectionChanged="CoordGrid_SelectionChanged">
+        <DataGrid Grid.Column="0" Grid.Row="1" TargetUpdated="CoordGrid_Updated" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="coordGrid" CanUserSortColumns="True" CanUserAddRows="False" ItemsSource="{Binding}" AutoGenerateColumns="False" SelectionChanged="CoordGrid_Updated">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Identifier,NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Identifier"/>
                 <DataGridCheckBoxColumn Binding="{Binding IsMacrocycle, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Is Macrocycle" SortDirection="Descending"/>

@@ -111,6 +111,8 @@ namespace PorphyStruct.Oxy.Override
             a.AbsoluteMinimum = min;
             a.AbsoluteMaximum = max;
             a.Zoom(min, max);
+
+            InvalidatePlot(true);
         }
     }
 }

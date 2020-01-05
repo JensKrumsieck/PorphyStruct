@@ -1,6 +1,8 @@
 ﻿using OxyPlot;
 using PorphyStruct.Simulations;
+using PorphyStruct.Util;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PorphyStruct.Chemistry
 {
@@ -37,6 +39,40 @@ namespace PorphyStruct.Chemistry
                 mode = 4;
 
             MacrocyclePainter.Paint(pm, cycle, (MacrocyclePainter.PaintMode)mode);
+        }
+
+        /// <summary>
+        /// Normalizes Simulation
+        /// </summary>
+        public void Normalize(bool normalize, double factor = 0d)
+        {
+            if (!isNormalized && normalize)
+            {
+                cycle.dataPoints = cycle.dataPoints.Normalize();
+                isNormalized = true;
+            }
+            else if(!normalize && isNormalized)
+            {
+                cycle.dataPoints = cycle.dataPoints.Factor(1 / factor).ToList();
+                isNormalized = false;
+            }
+        }
+
+        /// <summary>
+        /// inverts simulation
+        /// </summary>
+        public void Invert(bool invert)
+        {
+            if(!isInverted && invert)
+            {
+                cycle.dataPoints = cycle.dataPoints.Invert();
+                isInverted = true;
+            }
+            else if(isInverted && !invert)
+            {
+                cycle.dataPoints = cycle.dataPoints.Invert();
+                isInverted = false;
+            }
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using HelixToolkit.Wpf;
 using MaterialDesignThemes.Wpf;
 using MathNet.Spatial.Euclidean;
-using OxyPlot;
 using OxyPlot.Series;
 using PorphyStruct.Chemistry;
 using PorphyStruct.Util;
@@ -9,11 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
 
 namespace PorphyStruct
@@ -53,51 +50,33 @@ namespace PorphyStruct
             //set up default plot model
             Oxy.Override.StandardPlotModel pm = new Oxy.Override.StandardPlotModel();
             Oxy.Override.LinearAxis y = pm.yAxis;
+
+            //do analysis
             cycle.GetDataPoints();
 
             //normalisation
             if (normalize)
             {
-                this.normFac = MathUtil.GetNormalizationFactor(cycle.dataPoints);
+                normFac = MathUtil.GetNormalizationFactor(cycle.dataPoints);
                 cycle.dataPoints = cycle.dataPoints.Normalize();
-                if(simulation != null && !simulation.isNormalized)
-                {
-                    simulation.cycle.dataPoints = simulation.cycle.dataPoints.Normalize();
-                    simulation.isNormalized = true;
-                }
             }
-            else
-            {
-                if (simulation != null && simulation.isNormalized)
-                {
-                    simulation.cycle.dataPoints = simulation.cycle.dataPoints.Factor(1 / this.normFac).ToList();
-                    simulation.isNormalized = false;
-                }
-            }
-
             //invert
-            if (invert)
-            {
-                cycle.dataPoints = cycle.dataPoints.Invert();
-                if (simulation != null && !simulation.isInverted)
-                {
-                    simulation.cycle.dataPoints = simulation.cycle.dataPoints.Invert();
-                    simulation.isInverted = true;
-                }
-            }
-            else if (simulation != null && simulation.isInverted)
-            {
-                simulation.cycle.dataPoints = simulation.cycle.dataPoints.Invert();
-                simulation.isInverted = false;
-            }
+            if (invert) cycle.dataPoints = cycle.dataPoints.Invert();
 
-            if (simulation != null) simulation.Paint(pm);
+            //handle sim
+            if (simulation != null)
+            {
+                simulation.Normalize(normalize, normFac);
+                simulation.Invert(invert); 
+                simulation.Paint(pm);
+            }
+            //paint difference
             if (hasDifference) GetDifference(cycle, simulation).Paint(pm, "Diff");
-
-            MacrocyclePainter.Paint(pm, cycle, MacrocyclePainter.PaintMode.Exp);
-
+            //paint comparison
             if (!String.IsNullOrEmpty(comp1Path)) CompareWindow.GetData(comp1Path).Paint(pm, "Com1");           
             if (!String.IsNullOrEmpty(comp2Path)) CompareWindow.GetData(comp2Path).Paint(pm, "Com2");
+            //paint exp
+            MacrocyclePainter.Paint(pm, cycle, MacrocyclePainter.PaintMode.Exp);
 
             //handle dont mark
             foreach (ScatterSeries s in pm.Series)
@@ -108,7 +87,6 @@ namespace PorphyStruct
             } 
 
             displaceView.Model = pm;
-            pm.InvalidatePlot(true);
                        
             //scale if neccessary
             if (!normalize)
@@ -162,11 +140,8 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="markSelection"></param>
         /// <param name="force"></param>
-        private void UpdateMolView(bool markSelection = false, bool force = false, bool detect = false)
+        private void UpdateMolView(bool markSelection = false, bool force = false)
         {
-            if (detect)
-                cycle.Detect();
-
             if ((old != null && !cycle.Atoms.SequenceEqual(old.Atoms)) || (markSelection && oldIndex != coordGrid.SelectedIndex) || force)
             {
                 old = cycle;
@@ -221,7 +196,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CoordGrid_Updated(object sender, EventArgs e) => this.UpdateMolView();
+        private void CoordGrid_Updated(object sender, EventArgs e) => this.UpdateMolView(true);
 
 
         /// <summary>
@@ -243,19 +218,6 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void Refresh_Click(object sender, RoutedEventArgs e) => this.UpdateMolView(false, true);
 
-        /// <summary>
-        /// Handle Selection Changed 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CoordGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) => this.UpdateMolView(true);
-
-        /// <summary>
-        /// Handle Target Updated
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CoordGrid_TargetUpdated(object sender, DataTransferEventArgs e) => this.UpdateMolView(true);
 
         /// <summary>
         /// Handle Open File Button Click
@@ -491,7 +453,9 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void Detect_Click(object sender, RoutedEventArgs e)
         {
-            this.UpdateMolView(false, false, true);
+            cycle.Detect();
+            //update 3d image
+            this.UpdateMolView();
             coordGrid.Items.Refresh();
         }
 
