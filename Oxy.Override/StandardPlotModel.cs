@@ -2,6 +2,8 @@
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PorphyStruct.Oxy.Override
 {
@@ -77,9 +79,8 @@ namespace PorphyStruct.Oxy.Override
 
         public void Scale(Axis a, bool isY = false, bool normalize = false)
         {
-            string val = "X";
-            //get property
-            if (isY) val = "Y";
+            string val = isY ? "Y" : "X";
+
             double min, max;
             if (!normalize)
             {
@@ -91,15 +92,10 @@ namespace PorphyStruct.Oxy.Override
                     //scale x
                     foreach (ScatterSeries s in this.Series)
                     {
-                        foreach (AtomDataPoint dp in s.ItemsSource)
-                        {
-
-                            double value = Convert.ToDouble(dp.GetType().GetProperty(val).GetValue(dp, null));
-                            if (value < min)
-                                min = value;
-                            if (value > max)
-                                max = value;
-                        }
+                        double series_min = ((List<AtomDataPoint>)s.ItemsSource).Min(dp => Convert.ToDouble(dp.GetType().GetProperty(val).GetValue(dp, null)));
+                        double series_max = ((List<AtomDataPoint>)s.ItemsSource).Max(dp => Convert.ToDouble(dp.GetType().GetProperty(val).GetValue(dp, null)));
+                        min = Math.Min(series_min, min);
+                        max = Math.Max(series_max, max);
                     }
                     min -= (isY ? 0.05 : 1);
                     max += (isY ? 0.05 : 1);
@@ -116,6 +112,7 @@ namespace PorphyStruct.Oxy.Override
                 min = -1.1;
                 max = 1.1;
             }
+
             a.AbsoluteMinimum = min;
             a.AbsoluteMaximum = max;
             a.Zoom(min, max);
