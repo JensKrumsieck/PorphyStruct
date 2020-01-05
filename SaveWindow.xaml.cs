@@ -5,6 +5,7 @@ using OxyPlot.Pdf;
 using OxyPlot.Reporting;
 using OxyPlot.Wpf;
 using PorphyStruct.Chemistry;
+using PorphyStruct.Files;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -51,11 +52,23 @@ namespace PorphyStruct
             if (Application.Current.Windows.OfType<MainWindow>().First().normalize && !(Model == null || Model.Series.Count == 0))
             {
                 Application.Current.Windows.OfType<MainWindow>().First().NormalizeButton_Click(null, null);
-                Application.Current.Windows.OfType<MainWindow>().First().Analyze();
-                //as its beeing recreated
                 this.Model = Application.Current.Windows.OfType<MainWindow>().First().displaceView.Model;
             }
 
+        }
+
+        /// <summary>
+        /// Validates Path and Types
+        /// </summary>
+        public bool Validate
+        {
+            get
+            {
+                //validate form
+                if (String.IsNullOrEmpty(PathTB.Text) || !Directory.Exists(PathTB.Text)) { MessageBox.Show("The specified directory does not exist!", "I/O Error", MessageBoxButton.OK, MessageBoxImage.Error); return false; }
+                if (TypeList.SelectedItems.Count == 0) { MessageBox.Show("No Datatype has been selected!", "Datatype Empty", MessageBoxButton.OK, MessageBoxImage.Error); return false; }
+                return true;
+            }
         }
 
         /// <summary>
@@ -65,54 +78,39 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            //validate form
-            if (String.IsNullOrEmpty(PathTB.Text) || !Directory.Exists(PathTB.Text))
-            {
-                MessageBox.Show("The specified directory does not exist!", "I/O Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            if (TypeList.SelectedItems.Count == 0)
-            {
-
-                MessageBox.Show("No Datatype has been selected!", "Datatype Empty", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+            if (!Validate) return; 
             this.Filename = PathTB.Text + "/" + NameTB.Text + "_";
-            List<FileType> types = new List<FileType>();
+            List<ExportFileType> types = new List<ExportFileType>();
 
             //check if graph is present when report is present, otherwise add! 
             foreach (object o in TypeList.SelectedItems)
             {
-                if (((FileType)o).Title == "Report")
+                types.Add((ExportFileType)o);
+                if (((ExportFileType)o).Title == "Report")
                 {
-                    types.Add(new FileType() { Title = "Graph", Extension = "png" });
-                    if (Sim != null) types.Add(new FileType() { Title = "SimResult", Extension = "png" });
+                    types.Add(new ExportFileType() { Title = "Graph", Extension = "png" });
+                    if (Sim != null) types.Add(new ExportFileType() { Title = "SimResult", Extension = "png" });
                 }
             }
 
-            foreach (object o in TypeList.SelectedItems)
-            {
-                types.Add((FileType)o);
-            }
-
-            foreach (FileType t in types)
+            foreach (ExportFileType t in types)
             {
                 switch (t.Title)
                 {
                     case "Graph":
-                        SaveGraph(t.Extension);
+                        MacrocycleExporter.SaveGraph(Model, Cycle, Filename, t.Extension);
                         break;
                     case "ASCII":
-                        SaveASCII(t.Extension);
+                        MacrocycleExporter.SaveASCII(Model, Filename);
                         break;
                     case "SimResult":
                         SaveSimResult(t.Extension);
                         break;
                     case "Macrocycle":
-                        SaveMolecule(t.Extension, true);
+                        MacrocycleExporter.SaveIXYZ(Cycle, Filename, true);
                         break;
                     case "Molecule":
-                        SaveMolecule(t.Extension);
+                        MacrocycleExporter.SaveIXYZ(Cycle, Filename);
                         break;
                     case "Report":
                         SaveReport(t.Extension);
@@ -124,135 +122,7 @@ namespace PorphyStruct
             }
             Close();
         }
-
-        /// <summary>
-        /// Handles Saving Graphs
-        /// </summary>
-        /// <param name="Extension"></param>
-        private void SaveGraph(string Extension)
-        {
-            //reanalyze
-            //Application.Current.Windows.OfType<MainWindow>().First().Analyze();
-
-            //check if data is present
-            if (Model.Series.Where(s => s.IsVisible == true).Count() == 0)
-            {
-                MessageBox.Show("No Data present!", "Data Empty", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            //get number of bonds.
-            int bonds = Cycle.Bonds.Count;
-
-            //remove bonds
-            List<OxyPlot.Annotations.Annotation> annotations = new List<OxyPlot.Annotations.Annotation>();
-            foreach (OxyPlot.Series.ScatterSeries s in Model.Series)
-            {
-                if (!s.IsVisible)
-                {
-                    int index = Model.Series.IndexOf(s);
-                    for (int i = index * bonds; i < (index * bonds) + bonds; i++)
-                    {
-                        annotations.Add(Model.Annotations[i]);
-                    }
-                }
-            }
-            foreach (OxyPlot.Annotations.Annotation a in annotations)
-            {
-                Model.Annotations.Remove(a);
-            }
-
-
-            //exports png
-            if (Extension == "png")
-                PngExporter.Export(Model, this.Filename + "Analysis.png", Properties.Settings.Default.pngWidth, Properties.Settings.Default.pngHeight, OxyColors.Transparent, Properties.Settings.Default.pngRes);
-
-            //exports svg
-            if (Extension == "svg")
-            {
-                var svg = new OxyPlot.Wpf.SvgExporter()
-                {
-                    Width = Properties.Settings.Default.pngWidth,
-                    Height = Properties.Settings.Default.pngHeight
-                };
-                svg.ExportToFile(Model, this.Filename + "Analysis.svg");
-            }
-        }
-
-        /// <summary>
-        /// Saves ascii file
-        /// </summary>
-        /// <param name="Extension"></param>
-        private void SaveASCII(string Extension)
-        {
-            List<OxyPlot.Series.ScatterSeries> export = new List<OxyPlot.Series.ScatterSeries>();
-            foreach (OxyPlot.Series.ScatterSeries s in Model.Series)
-            {
-                export.Add(s);
-            }
-
-            if (export.Count == 0)
-            {
-                MessageBox.Show("No ASCII Data present!", "Data Empty", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            //make title string
-            string title = "A;X;";
-            foreach (OxyPlot.Series.Series s in export) title += s.Title + ";";
-
-            //write data
-            using (StreamWriter sw = new StreamWriter(this.Filename + "Data." + Extension))
-            {
-                sw.WriteLine(title);
-
-                //write data
-                for (int i = 0; i < export[0].ItemsSource.OfType<AtomDataPoint>().Count(); i++)
-                {
-                    string line = export[0].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).atom.Identifier + ";";
-                    line += export[0].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).X + ";";
-                    for (int j = 0; j < export.Count; j++)
-                    {
-                        line += export[j].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).Y + ";";
-                    }
-                    sw.WriteLine(line);
-                }
-            }
-        }
-
-        /// <summary>
-        /// saves Molecule/Macrocycle
-        /// </summary>
-        /// <param name="Extension"></param>
-        /// <param name="CycleOnly"></param>
-        private void SaveMolecule(string Extension, bool CycleOnly = false)
-        {
-            //no validation since a molecule is ALWAYS present!.
-
-            string Filename = this.Filename + (CycleOnly ? "Macrocycle" : "Molecule");
-            if (Extension == "ixyz")
-            {
-                Filename += ".ixyz";
-
-                using (StreamWriter sw = new StreamWriter(Filename))
-                {
-                    if (!CycleOnly) sw.WriteLine(Cycle.Atoms.Count);
-                    else
-                        sw.WriteLine(Cycle.Atoms.Where(s => s.IsMacrocycle).ToList().Count);
-
-                    sw.WriteLine(Filename);
-
-                    foreach (Atom a in Cycle.Atoms)
-                    {
-                        if(CycleOnly && !a.IsMacrocycle) { /*do nothing*/}                        
-                        else
-                        {
-                            sw.WriteLine(a.ExportText);
-                        }
-                    }
-                }
-            }
-        }
+        
 
         /// <summary>
         /// Saves Report
@@ -266,7 +136,7 @@ namespace PorphyStruct
             {
                 using (var w = new WordDocumentReportWriter(Filename))
                 {
-                    w.WriteReport(r, GetReportStyle());
+                    w.WriteReport(r, MacrocycleExporter.ReportStyle);
                     w.Save();
                 }
             }
@@ -274,26 +144,12 @@ namespace PorphyStruct
             {
                 using (var w = new PdfReportWriter(Filename))
                 {
-                    w.WriteReport(r, GetReportStyle());
+                    w.WriteReport(r, MacrocycleExporter.ReportStyle);
                 }
 
             }
         }
 
-        ///<summary>
-        /// gets Reportstyle
-        /// </summary>
-        /// <param name="lang"></param>
-        /// <returns></returns>
-        private ReportStyle GetReportStyle()
-        {
-            ReportStyle reportStyle = new ReportStyle(Properties.Settings.Default.defaultFont, Properties.Settings.Default.defaultFont, Properties.Settings.Default.defaultFont)
-            {
-                FigureTextFormatString = "Figure {0}: {1}.",
-                TableCaptionFormatString = "Table {0}: {1}."
-            };
-            return reportStyle;
-        }
 
         /// <summary>
         /// Gets Report
@@ -505,32 +361,16 @@ namespace PorphyStruct
             }
         }
 
+        /// <summary>
+        /// checks the fields for data
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public bool HasData(string data)
         {
             if ((data == "Graph" || data == "ASCII" || data == "Report") && (Model == null || Model.Series.Count == 0)) return false;
             if ((data == "SimResult" || data == "Result") && Sim == null) return false;
             return true;
-        }
-    }
-    public class FileType
-    {
-        public string Title { get; set; }
-        public PackIcon Icon { get; set; }
-        public PackIcon Secondary { get; set; }
-        public string Extension { get; set; }
-
-        public bool IsEnabled
-        {
-            get
-            {
-                SaveWindow sw = Application.Current.Windows.OfType<SaveWindow>().First();
-                return sw.HasData(Title);
-            }
-        }
-
-        public override string ToString()
-        {
-            return Title + "." + Extension;
         }
     }
 }

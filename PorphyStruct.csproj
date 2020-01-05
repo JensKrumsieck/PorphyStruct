@@ -132,6 +132,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Files\ExportFileType.cs" />
+    <Compile Include="Chemistry\MacrocycleExporter.cs" />
     <Compile Include="Chemistry\MacrocyclePainter.cs" />
     <Compile Include="Oxy.Override\AtomRangeColorAxis.cs" />
     <Compile Include="Util\DFSUtil.cs" />
