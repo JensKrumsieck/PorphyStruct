@@ -41,7 +41,6 @@ namespace PorphyStruct
         {
             //set up default plot model
             Oxy.Override.StandardPlotModel pm = new Oxy.Override.StandardPlotModel();
-            Oxy.Override.LinearAxis y = pm.yAxis;
 
             //do analysis
             cycle.GetDataPoints();
