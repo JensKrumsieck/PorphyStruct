@@ -86,23 +86,18 @@ namespace PorphyStruct
         {
             simStack.Children.Clear();
             if (simulation != null)
-            {
-                foreach (string key in simulation.par.Keys)
-                {
-                    Chip c = new Chip
+                foreach (string key in simulation.par.Keys) simStack.Children.Add(new Chip
                     {
                         Content = key + ": " + simulation.par[key].ToString(System.Globalization.CultureInfo.InvariantCulture) + "%",
                         Margin = new Thickness(0, 0, 4, 4),
                         FontSize = 8
-                    };
-                    simStack.Children.Add(c);
-                }
-            }
+                    });
+
             if (coordGrid.ItemsSource != null)
             {
                 //update plane coordinates
                 Plane pl = cycle.GetMeanPlane();
-                UnitVecTB.Text = "(" + pl.A.ToString("G3") + "," + pl.B.ToString("G3") + "," + pl.C.ToString("G3") + ")";
+                UnitVecTB.Text = $"({pl.A.ToString("G3")}, {pl.B.ToString("G3")}, {pl.C.ToString("G3")})";
                 DistTB.Text = pl.D.ToString("G3");
             }
         }     
@@ -163,7 +158,6 @@ namespace PorphyStruct
             MolViewer.CameraController.CameraTarget = MathUtil.Origin;
         }
 
-        #region UI Interaction
         /// <summary>
         /// Handle Updated Grid
         /// </summary>
@@ -283,12 +277,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Save_Click(object sender, RoutedEventArgs e)
-        {
-            //open save dialog
-            SaveWindow svW = new SaveWindow(cycle, this.simulation);
-            svW.ShowDialog();
-        }
+        private void Save_Click(object sender, RoutedEventArgs e) => new SaveWindow(cycle, this.simulation).ShowDialog();
 
 
         /// <summary>
@@ -323,15 +312,11 @@ namespace PorphyStruct
             //normalize if not done yet!
             if (!normalize)
                 NormalizeButton_Click(sender, e);
-            SimWindow sw;
             if (simulation != null)
             {
-                sw = new SimWindow(cycle, displaceView, simulation);
+                new SimWindow(cycle, displaceView, simulation).Show();
             }
-            else sw = new SimWindow(cycle, displaceView);
-
-            //open sim window
-            sw.Show();
+            else new SimWindow(cycle, displaceView).Show();
         }
 
         /// <summary>
@@ -339,11 +324,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SettingsButton_Click(object sender, RoutedEventArgs e)
-        {
-            Settings st = new Settings();
-            st.ShowDialog();
-        }
+        private void SettingsButton_Click(object sender, RoutedEventArgs e) => new Settings().ShowDialog();
 
         /// <summary>
         /// Handle Delete Simulation Button Click
@@ -386,11 +367,8 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void InfoButton_Click(object sender, RoutedEventArgs e)
-        {
-            Info iw = new Info();
-            iw.Show();
-        }
+        private void InfoButton_Click(object sender, RoutedEventArgs e) => new Info().Show();
+
 
         /// <summary>
         /// handle compare button click
@@ -431,7 +409,5 @@ namespace PorphyStruct
             this.UpdateMolView();
             coordGrid.Items.Refresh();
         }
-
-        #endregion
     }
 }
