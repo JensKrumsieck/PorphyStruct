@@ -1,5 +1,4 @@
-﻿using MaterialDesignThemes.Wpf;
-using OxyPlot;
+﻿using OxyPlot;
 using OxyPlot.OpenXml;
 using OxyPlot.Pdf;
 using OxyPlot.Reporting;
@@ -8,11 +7,9 @@ using PorphyStruct.Chemistry;
 using PorphyStruct.Files;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Xml.Linq;
 using winforms = System.Windows.Forms;
 
 namespace PorphyStruct
