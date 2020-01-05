@@ -98,19 +98,19 @@ namespace PorphyStruct
                 switch (t.Title)
                 {
                     case "Graph":
-                        MacrocycleExporter.SaveGraph(Model, Cycle, Filename, t.Extension);
+                        Model.SaveGraph(Cycle, Filename, t.Extension);
                         break;
                     case "ASCII":
-                        MacrocycleExporter.SaveASCII(Model, Filename);
+                        Model.SaveASCII(Filename);
                         break;
                     case "SimResult":
                         SaveSimResult(t.Extension);
                         break;
                     case "Macrocycle":
-                        MacrocycleExporter.SaveIXYZ(Cycle, Filename, true);
+                        Cycle.SaveIXYZ(Filename, true);
                         break;
                     case "Molecule":
-                        MacrocycleExporter.SaveIXYZ(Cycle, Filename);
+                        Cycle.SaveIXYZ(Filename);
                         break;
                     case "Report":
                         SaveReport(t.Extension);

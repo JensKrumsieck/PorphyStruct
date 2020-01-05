@@ -16,7 +16,7 @@ namespace PorphyStruct.Chemistry
         /// <param name="pm"></param>
         /// <param name="filename"></param>
         /// <param name="extension"></param>
-        public static void SaveGraph(PlotModel pm, Macrocycle cycle, string filename, string extension = "png")
+        public static void SaveGraph(this PlotModel pm, Macrocycle cycle, string filename, string extension = "png")
         {
             pm = MacrocycleExporter.ExportModel(pm, cycle.Bonds.Count);
 
@@ -39,7 +39,7 @@ namespace PorphyStruct.Chemistry
         /// <param name="pm"></param>
         /// <param name="filename"></param>
         /// <param name="extension"></param>
-        public static void SaveASCII(PlotModel pm, string filename, string extension = ".dat")
+        public static void SaveASCII(this PlotModel pm, string filename, string extension = ".dat")
         {
             var export = new List<OxyPlot.Series.ScatterSeries>();
             foreach (OxyPlot.Series.ScatterSeries s in pm.Series) export.Add(s);
@@ -73,7 +73,7 @@ namespace PorphyStruct.Chemistry
         /// <param name="cycle"></param>
         /// <param name="filename"></param>
         /// <param name="CycleOnly"></param>
-        public static void SaveIXYZ(Macrocycle cycle, string filename, bool CycleOnly = false)
+        public static void SaveIXYZ(this Macrocycle cycle, string filename, bool CycleOnly = false)
         {
             filename += (CycleOnly ? "Macrocycle" : "Molecule") + ".ixyz";
             var export = cycle.Atoms.AsEnumerable();
