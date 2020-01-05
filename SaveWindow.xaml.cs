@@ -110,13 +110,13 @@ namespace PorphyStruct
                         Cycle.SaveIXYZ(Filename, true);
                         break;
                     case "Molecule":
-                        Cycle.SaveIXYZ(Filename);
+                        MacrocycleExporter.SaveIXYZ(Cycle, Filename);
                         break;
                     case "Report":
                         SaveReport(t.Extension);
                         break;
                     case "Result":
-                        SaveResult(t.Extension);
+                        Sim.SaveResult(Cycle, Filename);    
                         break;
                 }
             }
@@ -216,6 +216,7 @@ namespace PorphyStruct
 
         /// <summary>
         /// Saves the Sim result as plot
+        /// leave this here until gui is capable of showing this in the first place
         /// </summary>
         /// <param name="extension"></param>
         private void SaveSimResult(string Extension)
@@ -308,33 +309,6 @@ namespace PorphyStruct
                 svg.ExportToFile(pm, this.Filename + "SimResult.svg");
             }
 
-        }
-
-        /// <summary>
-        /// Save XML Result
-        /// </summary>
-        /// <param name="Extension"></param>
-        private void SaveResult(string Extension)
-        {
-            List<XElement> simRes = Sim.par.Select(par => new XElement("parameter", new XAttribute("name", par.Key), par.Value)).ToList();
-            simRes.AddRange(Sim.par.Select(par => new XElement("absolute", new XAttribute("name", par.Key), par.Value / 100 * Sim.cycle.MeanDisplacement())).ToList());
-
-            List<XElement> metrix = Cycle.Metrics().Select(met => new XElement(met.Key.Split('_')[0], new XAttribute("atoms", met.Key.Split('_')[1]), met.Value)).ToList();
-
-            simRes.Add(new XElement("doop", Sim.cycle.MeanDisplacement()));
-            simRes.Add(new XElement("errors",
-                new XElement("data", Sim.errors[0]),
-                new XElement("derivative", Sim.errors[1]),
-                new XElement("integral", Sim.errors[2])
-                ));
-
-            XElement Molecule = new XElement("molecule",
-                new XAttribute("name", NameTB.Text),
-                new XElement("type", Cycle.type.ToString()),
-                new XElement("simulation", simRes),
-                new XElement("metrics", metrix)
-                );
-            Molecule.Save(File.Create(Filename + "Result." + Extension));
         }
 
         /// <summary>

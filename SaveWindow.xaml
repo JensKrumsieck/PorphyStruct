@@ -15,6 +15,7 @@
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         xmlns:sys="clr-namespace:System.Collections;assembly=mscorlib"
+        xmlns:files="clr-namespace:PorphyStruct.Files"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Save File" Height="550" Width="880" ResizeMode="NoResize">
@@ -31,24 +32,24 @@
         </Grid.ColumnDefinitions>
         <Grid.Resources>
             <sys:ArrayList x:Key="SaveTypes">
-                <local:FileType Title="Graph" Icon="{materialDesign:PackIcon Kind=ChartScatterplotHexbin, Size=50}"
+                <files:ExportFileType Title="Graph" Icon="{materialDesign:PackIcon Kind=ChartScatterplotHexbin, Size=50}"
                                 Secondary ="{materialDesign:PackIcon Kind=Image, Size=17}" Extension="png"/>
-                <local:FileType Title="Graph" Icon="{materialDesign:PackIcon Kind=ChartScatterplotHexbin, Size=50}"
+                <files:ExportFileType Title="Graph" Icon="{materialDesign:PackIcon Kind=ChartScatterplotHexbin, Size=50}"
                                 Secondary ="{materialDesign:PackIcon Kind=VectorPolygon, Size=17}" Extension="svg"/>
-                <local:FileType Title="SimResult" Icon="{materialDesign:PackIcon Kind=ChartGantt, Size=50}"
+                <files:ExportFileType Title="SimResult" Icon="{materialDesign:PackIcon Kind=ChartGantt, Size=50}"
                                 Secondary ="{materialDesign:PackIcon Kind=Image, Size=17}" Extension="png"/>
-                <local:FileType Title="SimResult" Icon="{materialDesign:PackIcon Kind=ChartGantt, Size=50}"
+                <files:ExportFileType Title="SimResult" Icon="{materialDesign:PackIcon Kind=ChartGantt, Size=50}"
                                 Secondary ="{materialDesign:PackIcon Kind=VectorPolygon, Size=17}" Extension="svg"/>
-                <local:FileType Title="ASCII" Icon="{materialDesign:PackIcon Kind=TableLarge, Size=50}" Extension="dat" />
-                <local:FileType Title="Report" Icon="{materialDesign:PackIcon Kind=FileDocumentBoxOutline, Size=50}" 
+                <files:ExportFileType Title="ASCII" Icon="{materialDesign:PackIcon Kind=TableLarge, Size=50}" Extension="dat" />
+                <files:ExportFileType Title="Report" Icon="{materialDesign:PackIcon Kind=FileDocumentBoxOutline, Size=50}" 
                                 Secondary="{materialDesign:PackIcon Kind=FileWordBox, Size=17}" Extension="docx" />
-                <local:FileType Title="Report" Icon="{materialDesign:PackIcon Kind=FileDocumentBoxOutline, Size=50}" 
+                <files:ExportFileType Title="Report" Icon="{materialDesign:PackIcon Kind=FileDocumentBoxOutline, Size=50}" 
                                 Secondary="{materialDesign:PackIcon Kind=FilePdfBox, Size=17}" Extension="pdf" />
-                <local:FileType Title="Molecule" Icon="{materialDesign:PackIcon Kind=Molecule, Size=50}" 
+                <files:ExportFileType Title="Molecule" Icon="{materialDesign:PackIcon Kind=Molecule, Size=50}" 
                                 Extension="ixyz" />
-                <local:FileType Title="Macrocycle" Icon="{materialDesign:PackIcon Kind=Molecule, Size=50}" 
+                <files:ExportFileType Title="Macrocycle" Icon="{materialDesign:PackIcon Kind=Molecule, Size=50}" 
                                 Secondary="{materialDesign:PackIcon Kind=Ring, Size=17}" Extension="ixyz" />
-                <local:FileType Title="Result" Icon="{materialDesign:PackIcon Kind=Database, Size=50}" 
+                <files:ExportFileType Title="Result" Icon="{materialDesign:PackIcon Kind=Database, Size=50}" 
                                 Secondary="{materialDesign:PackIcon Kind=Xml, Size=17}" Extension="xml" />
             </sys:ArrayList>
         </Grid.Resources>

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Xml.Linq;
 
 namespace PorphyStruct.Chemistry
 {
@@ -87,6 +88,35 @@ namespace PorphyStruct.Chemistry
 
                 foreach (Atom a in export) sw.WriteLine(a.ExportText);
             }
+        }
+
+        /// <summary>
+        /// Exports simulation to xml
+        /// </summary>
+        /// <param name="sim"></param>
+        /// <param name="cycle"></param>
+        /// <param name="filename"></param>
+        public static void SaveResult(this Simulation sim, Macrocycle exp, string filename)
+        {
+            List<XElement> simRes = sim.par.Select(par => new XElement("parameter", new XAttribute("name", par.Key), par.Value)).ToList();
+            simRes.AddRange(sim.par.Select(par => new XElement("absolute", new XAttribute("name", par.Key), par.Value / 100 * sim.cycle.MeanDisplacement())).ToList());
+
+            List<XElement> metrix = exp.Metrics().Select(met => new XElement(met.Key.Split('_')[0], new XAttribute("atoms", met.Key.Split('_')[1]), met.Value)).ToList();
+
+            simRes.Add(new XElement("doop", sim.cycle.MeanDisplacement()));
+            simRes.Add(new XElement("errors",
+                new XElement("data", sim.errors[0]),
+                new XElement("derivative", sim.errors[1]),
+                new XElement("integral", sim.errors[2])
+                ));
+
+            XElement Molecule = new XElement("molecule",
+                new XAttribute("name", exp.Title),
+                new XElement("type", exp.GetType().Name),
+                new XElement("simulation", simRes),
+                new XElement("metrics", metrix)
+                );
+            Molecule.Save(File.Create(filename + "Result.xml"));
         }
 
 
