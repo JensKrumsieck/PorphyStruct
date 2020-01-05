@@ -82,36 +82,31 @@ namespace PorphyStruct.Oxy.Override
             string val = isY ? "Y" : "X";
 
             double min, max;
-            if (!normalize)
+            min = double.PositiveInfinity;
+            max = double.NegativeInfinity;
+            if ((!isY && Properties.Settings.Default.autoscaleX) || (isY && Properties.Settings.Default.autoscaleY))
             {
-                min = double.PositiveInfinity;
-                max = double.NegativeInfinity;
-                if ((!isY && Properties.Settings.Default.autoscaleX) || (isY && Properties.Settings.Default.autoscaleY))
+                //find min & max automatically
+                foreach (ScatterSeries s in this.Series)
                 {
-                    //find min & max automatically
-                    //scale x
-                    foreach (ScatterSeries s in this.Series)
-                    {
-                        double series_min = ((List<AtomDataPoint>)s.ItemsSource).Min(dp => Convert.ToDouble(dp.GetType().GetProperty(val).GetValue(dp, null)));
-                        double series_max = ((List<AtomDataPoint>)s.ItemsSource).Max(dp => Convert.ToDouble(dp.GetType().GetProperty(val).GetValue(dp, null)));
-                        min = Math.Min(series_min, min);
-                        max = Math.Max(series_max, max);
-                    }
-                    min -= (isY ? 0.05 : 1);
-                    max += (isY ? 0.05 : 1);
+                    double series_min = ((List<AtomDataPoint>)s.ItemsSource).Min(dp => Convert.ToDouble(dp.GetType().GetProperty(val).GetValue(dp, null)));
+                    double series_max = ((List<AtomDataPoint>)s.ItemsSource).Max(dp => Convert.ToDouble(dp.GetType().GetProperty(val).GetValue(dp, null)));
+                    min = Math.Min(series_min, min);
+                    max = Math.Max(series_max, max);
                 }
-                else
-                {
-                    //set min & max manually
-                    min = (isY ? Properties.Settings.Default.minY : Properties.Settings.Default.minX);
-                    max = (isY ? Properties.Settings.Default.maxY : Properties.Settings.Default.maxX);
-                }
+                min -= (isY ? 0.05 : 1);
+                max += (isY ? 0.05 : 1);
             }
             else
             {
-                min = -1.1;
-                max = 1.1;
+                //set min & max manually
+                min = (isY ? Properties.Settings.Default.minY : Properties.Settings.Default.minX);
+                max = (isY ? Properties.Settings.Default.maxY : Properties.Settings.Default.maxX);
             }
+
+            //normalize?
+            min = isY && normalize ? -1.1 : min;
+            max = isY && normalize ? 1.1 : max;
 
             a.AbsoluteMinimum = min;
             a.AbsoluteMaximum = max;
