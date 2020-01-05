@@ -22,56 +22,55 @@ namespace PorphyStruct.Files
         /// <returns></returns>
         public override Molecule GetMolecule()
         {
-            //atom count is first line, second line is title
             //PLEASE DO NOT USE XYZ Files with non cartesian coordinates
             string title = System.IO.Path.GetFileNameWithoutExtension(this.Path);
             Molecule molecule = new Molecule(title);
 
-            //works fine...but where to get Atom Numbering??
             for (int i = 0; i <= Lines.Count() - 1; i++)
             {
-                if (i > 1 && Lines[i] != "")
+                if (i > 1 && !String.IsNullOrEmpty(Lines[i]))
                 {
-                    string[] xyzLine = Lines[i].Split(new[] { " ", "\t" }, StringSplitOptions.None);
-                    xyzLine = xyzLine.Where(j => !string.IsNullOrEmpty(j)).ToArray();
+                    string[] xyzLine = Lines[i].Split(new[] { " ", "\t" }, StringSplitOptions.None).Where(j => !string.IsNullOrEmpty(j)).ToArray();
 
-                    string identifier = "";
-                    identifier = xyzLine[0];
-                    if (IXYZ)
-                        identifier = xyzLine[0].Split('/')[0];
                     double x = Convert.ToDouble(xyzLine[1], CultureInfo.InvariantCulture);
                     double y = Convert.ToDouble(xyzLine[2], CultureInfo.InvariantCulture);
                     double z = Convert.ToDouble(xyzLine[3], CultureInfo.InvariantCulture);
-                    Atom a = new Atom(identifier, x, y, z);
+                    Atom a = new Atom((IXYZ ? xyzLine[0].Split('/')[0] : xyzLine[0]), x, y, z);
                     if (IXYZ)
-                    {
-                        try
-                        { a.Element = Element.Create(xyzLine[0].Split('/')[1]); }
-                        catch { }
-                    }
+                        a.Element = Element.Create(xyzLine[0].Split('/')[1]); 
                     molecule.Atoms.Add(a);
                 }
             }
-
             //if is iXYZ the identifier is set correctly (hopefully!)
-            if (!IXYZ)
-            {
-                //making a guess!
-                int C = 1;
-                int N = 1;
+            if (!IXYZ) molecule = GuessIdentifiers(molecule);
+            
+            return molecule;
+        }
 
-                foreach (Atom a in molecule.Atoms)
+        /// <summary>
+        /// Guessing Identifiers by just enumerating C&N Atoms
+        /// Will fail often, but we have a detect method in macrocycle class
+        /// for later use
+        /// </summary>
+        /// <param name="molecule"></param>
+        /// <returns></returns>
+        private Molecule GuessIdentifiers(Molecule molecule)
+        {
+            //making a guess!
+            int C = 1;
+            int N = 1;
+
+            foreach (Atom a in molecule.Atoms)
+            {
+                if (a.Identifier == "C")
                 {
-                    if (a.Identifier == "C")
-                    {
-                        a.Identifier = "C" + C;
-                        C++;
-                    }
-                    if (a.Identifier == "N")
-                    {
-                        a.Identifier = "N" + N;
-                        N++;
-                    }
+                    a.Identifier = "C" + C;
+                    C++;
+                }
+                if (a.Identifier == "N")
+                {
+                    a.Identifier = "N" + N;
+                    N++;
                 }
             }
             return molecule;
