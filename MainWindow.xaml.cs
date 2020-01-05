@@ -59,6 +59,7 @@ namespace PorphyStruct
             {
                 normFac = MathUtil.GetNormalizationFactor(cycle.dataPoints);
                 cycle.dataPoints = cycle.dataPoints.Normalize();
+                
             }
             //invert
             if (invert) cycle.dataPoints = cycle.dataPoints.Invert();
@@ -82,25 +83,11 @@ namespace PorphyStruct
             foreach (ScatterSeries s in pm.Series)
             {
                 string[] dontMark = Properties.Settings.Default.dontMark.Split(',');
-                List<AtomDataPoint> data = (List<AtomDataPoint>)s.ItemsSource;
-                data.Where(dp => dontMark.Contains(dp.atom.Identifier) || dontMark.Contains(dp.atom.Type)).ToList().ForEach(dp => dp.Size = 0);
+                ((List<AtomDataPoint>)s.ItemsSource).Where(dp => dontMark.Contains(dp.atom.Identifier) || dontMark.Contains(dp.atom.Type)).ToList().ForEach(dp => dp.Size = 0);
             } 
 
             displaceView.Model = pm;
-                       
-            //scale if neccessary
-            if (!normalize)
-            {
-                pm.Scale(pm.yAxis, true);
-            }
-            else
-            {
-                double min = -1.1;
-                double max = 1.1;
-                y.Zoom(min, max);
-                y.AbsoluteMinimum = min;
-                y.AbsoluteMaximum = max;
-            }
+            pm.Scale(pm.yAxis, true, normalize);
             pm.Scale(pm.xAxis);
 
             //update simstack
