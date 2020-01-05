@@ -49,6 +49,7 @@ namespace PorphyStruct.Chemistry
 
             Macrocycle cycle = Build(molecule.Atoms, type);
             cycle.SetIsMacrocycle(type);
+            cycle.Title = Path.GetFileNameWithoutExtension(path);
             return cycle;
         }
     }
