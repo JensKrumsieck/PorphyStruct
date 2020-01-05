@@ -58,8 +58,7 @@ namespace PorphyStruct
             if (normalize)
             {
                 normFac = MathUtil.GetNormalizationFactor(cycle.dataPoints);
-                cycle.dataPoints = cycle.dataPoints.Normalize();
-                
+                cycle.dataPoints = cycle.dataPoints.Normalize();                
             }
             //invert
             if (invert) cycle.dataPoints = cycle.dataPoints.Invert();
@@ -80,11 +79,7 @@ namespace PorphyStruct
             MacrocyclePainter.Paint(pm, cycle, MacrocyclePainter.PaintMode.Exp);
 
             //handle dont mark
-            foreach (ScatterSeries s in pm.Series)
-            {
-                string[] dontMark = Properties.Settings.Default.dontMark.Split(',');
-                ((List<AtomDataPoint>)s.ItemsSource).Where(dp => dontMark.Contains(dp.atom.Identifier) || dontMark.Contains(dp.atom.Type)).ToList().ForEach(dp => dp.Size = 0);
-            } 
+            foreach (ScatterSeries s in pm.Series) ((List<AtomDataPoint>)s.ItemsSource).Where(dp => Properties.Settings.Default.dontMark.Split(',').Contains(dp.atom.Identifier) || Properties.Settings.Default.dontMark.Split(',').Contains(dp.atom.Type)).ToList().ForEach(dp => dp.Size = 0);
 
             displaceView.Model = pm;
             pm.Scale(pm.yAxis, true, normalize);
