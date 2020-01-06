@@ -146,7 +146,7 @@ namespace PorphyStruct
         {
             synchronizationContext.Post(new SendOrPostCallback(o =>
             {
-                if(simView.Model.Series.Where(s => s.Title == target).Count() != 0) simView.Model.Series.Remove(simView.Model.Series.Where(s => s.Title == target).FirstOrDefault());
+                if (simView.Model.Series.Where(s => s.Title == target).Count() != 0) simView.Model.Series.Remove(simView.Model.Series.Where(s => s.Title == target).FirstOrDefault());
                 simView.Model.Series.Add(new ScatterSeries() { ItemsSource = (List<AtomDataPoint>)o, Title = target, MarkerFill = target == "Current" ? OxyColors.PaleVioletRed : OxyColors.LawnGreen, MarkerType = Properties.Settings.Default.simMarkerType });
                 simView.InvalidatePlot();
                 simGrid.Items.Refresh();
@@ -224,38 +224,26 @@ namespace PorphyStruct
 
             //check targets
             List<Tuple<double, double>> errorTargets = new List<Tuple<double, double>>();
-            if (targetData)
-                errorTargets.Add(new Tuple<double, double>(error, currentErr[0]));
-            if (targetDeriv)
-                errorTargets.Add(new Tuple<double, double>(derErr, currentErr[1]));
-            if (targetInt)
-                errorTargets.Add(new Tuple<double, double>(intErr, currentErr[2]));
+            if (targetData) errorTargets.Add(new Tuple<double, double>(error, currentErr[0]));
+            if (targetDeriv) errorTargets.Add(new Tuple<double, double>(derErr, currentErr[1]));
+            if (targetInt) errorTargets.Add(new Tuple<double, double>(intErr, currentErr[2]));
 
-
-
-            double targetSum = 0;
-            double lsSum = 0;
+            double targetSum = 0, lsSum = 0;
             bool[] isBest = new bool[errorTargets.Count];
             for (int i = 0; i < errorTargets.Count; i++)
             {
                 targetSum += errorTargets[i].Item1;
                 lsSum += errorTargets[i].Item2;
-                if (errorTargets[i].Item1 < errorTargets[i].Item2)
-                    isBest[i] = true;
-                else
-                    isBest[i] = false;
+                if (errorTargets[i].Item1 < errorTargets[i].Item2) isBest[i] = true;
+                else isBest[i] = false;
             }
 
-            if (isBest.All(x => x))
-                return true;
+            if (isBest.All(x => x)) return true;
             //now check the sum! if sum of targets is smaller -> return true
             //if not, do nothing
-            if (targetSum < lsSum)
-                return true;
-
+            if (targetSum < lsSum) return true;
             //return false as default
             return false;
-
         }
 
         /// <summary>
@@ -266,8 +254,8 @@ namespace PorphyStruct
         private async void StartBtn_Click(object sender, RoutedEventArgs e)
         {
             //enable/disable gui elements while simulation
-            this.running = stopBtn.IsEnabled = true;
-            simGrid.IsEnabled = startBtn.IsEnabled  = firstOnlyCB.IsEnabled = keepBestCB.IsEnabled = finishSimBtn.IsEnabled = fitDataCB.IsEnabled = fitIntCB.IsEnabled = fitDerivCB.IsEnabled = false;
+            running = stopBtn.IsEnabled = true;
+            simGrid.IsEnabled = startBtn.IsEnabled = firstOnlyCB.IsEnabled = keepBestCB.IsEnabled = finishSimBtn.IsEnabled = fitDataCB.IsEnabled = fitIntCB.IsEnabled = fitDerivCB.IsEnabled = false;
             await Task.Run(() => this.Simulate());
         }
 
@@ -277,7 +265,7 @@ namespace PorphyStruct
         private void EndSimulation()
         {
             //after running reenable/disable gui elements
-            this.running = stopBtn.IsEnabled = false;
+            running = stopBtn.IsEnabled = false;
             startBtn.IsEnabled = firstOnlyCB.IsEnabled = keepBestCB.IsEnabled = simGrid.IsEnabled = finishSimBtn.IsEnabled = fitDataCB.IsEnabled = fitIntCB.IsEnabled = fitDerivCB.IsEnabled = true;
             // set best to start
             if (keepBestCB.IsChecked == true)
@@ -302,20 +290,14 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void FirstOnlyCB_Checked(object sender, RoutedEventArgs e)
-        {
-            firstOnly = (firstOnlyCB.IsChecked == true ? true : false);
-        }
+        private void FirstOnlyCB_Checked(object sender, RoutedEventArgs e) => firstOnly = (firstOnlyCB.IsChecked == true ? true : false);
 
         /// <summary>
         /// Handle Selection Changed of Mode ComboBox
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ModeCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            type = (SimulationMode)modeCB.SelectedIndex;
-        }
+        private void ModeCB_SelectionChanged(object sender, SelectionChangedEventArgs e) => type = (SimulationMode)modeCB.SelectedIndex;
 
         /// <summary>
         /// Handle Finalize Button Click
@@ -324,52 +306,23 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void FinishSimBtn_Click(object sender, RoutedEventArgs e)
         {
-            string[] dontMark = Properties.Settings.Default.dontMark.Split(',');
-            parentView.InvalidatePlot();
-            //has simulation!
             if (simView.Model.Series.Count >= 2)
             {
-                parentView.Model.Annotations.Clear();
                 //save exp series
                 ScatterSeries exp = (ScatterSeries)parentView.Model.Series[0];
 
-                //clear all series and readd series
-                parentView.Model.Series.Clear();
-                parentView.Model.Series.Add(exp);
-
                 ScatterSeries sim = (ScatterSeries)simView.Model.Series.FirstOrDefault(s => s.Title == "Best");
-                Simulation simObj = new Simulation((Macrocycle)cycle.Clone())
-                {
-                    simParam = param
-                };
+                Simulation simObj = new Simulation((Macrocycle)cycle.Clone()) { simParam = param };
                 simObj.cycle.dataPoints = (List<AtomDataPoint>)sim.ItemsSource;
-
-                //dont mark (sim)
-                for (int i = 0; i < simObj.cycle.dataPoints.Count; i++)
-                {
-                    if (dontMark.Contains(simObj.cycle.dataPoints[i].atom.Type) || dontMark.Contains(simObj.cycle.dataPoints[i].atom.Identifier))
-                        simObj.cycle.dataPoints[i].Size = 0;
-                }
                 //export param
-                foreach (SimParam p in param)
-                {
-                    simObj.par.Add(p.Title, Math.Round(p.Best * 100, 2));
-                }
+                foreach (SimParam p in param) simObj.par.Add(p.Title, Math.Round(p.Best * 100, 2));
                 //export errors
-                simObj.errors = new double[]
-                {
-                    Convert.ToDouble(ErrTB.Text.Split(';')[0], System.Globalization.CultureInfo.InvariantCulture),
-                    Convert.ToDouble(ErrTB.Text.Split(';')[1], System.Globalization.CultureInfo.InvariantCulture),
-                    Convert.ToDouble(ErrTB.Text.Split(';')[2], System.Globalization.CultureInfo.InvariantCulture),
-                };
+                simObj.errors = ErrTB.Text.Split(';').Select(s => Convert.ToDouble(s, System.Globalization.CultureInfo.InvariantCulture)).ToArray();
 
                 //set true if exp has been inverted
-                if (Application.Current.Windows.OfType<MainWindow>().First().invert)
-                    simObj.isInverted = true;
+                if (Application.Current.Windows.OfType<MainWindow>().First().invert) simObj.isInverted = true;
                 Application.Current.Windows.OfType<MainWindow>().First().DelSimButton.IsEnabled = true;
                 Application.Current.Windows.OfType<MainWindow>().First().DiffSimButton.IsEnabled = true;
-
-                MacrocyclePainter.Paint(parentView.Model, simObj.cycle, MacrocyclePainter.PaintMode.Sim);
                 Application.Current.Windows.OfType<MainWindow>().First().simulation = simObj;
                 Application.Current.Windows.OfType<MainWindow>().First().Analyze();
             }
@@ -380,29 +333,16 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void FitDataCB_Checked(object sender, RoutedEventArgs e)
-        {
-            targetData = (fitDataCB.IsChecked == true ? true : false);
-        }
-        private void FitDerivCB_Checked(object sender, RoutedEventArgs e)
-        {
-            targetDeriv = (fitDerivCB.IsChecked == true ? true : false);
-        }
-        private void FitIntCB_Checked(object sender, RoutedEventArgs e)
-        {
-            targetInt = (fitIntCB.IsChecked == true ? true : false);
-        }
+        private void FitDataCB_Checked(object sender, RoutedEventArgs e) => targetData = (fitDataCB.IsChecked == true ? true : false);
+        private void FitDerivCB_Checked(object sender, RoutedEventArgs e) => targetDeriv = (fitDerivCB.IsChecked == true ? true : false);
+        private void FitIntCB_Checked(object sender, RoutedEventArgs e) => targetInt = (fitIntCB.IsChecked == true ? true : false);
 
         /// <summary>
         /// Handle Window Closing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            //stop sim thread on closing
-            running = false;
-        }
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) => running = false;
 
         /// <summary>
         /// Reloads Sim File
