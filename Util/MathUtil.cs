@@ -141,5 +141,13 @@ namespace PorphyStruct.Util
         /// <param name="d"></param>
         public static double AbsSum(this IEnumerable<double> d) => d.Sum(s => Math.Abs(s));
 
+        /// <summary>
+        /// Normalizes IEnumerable<double>
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static IEnumerable<double> Normalize(this IEnumerable<double> input) {
+            foreach (var d in input) yield return d / input.AbsSum();
+        }
     }
 }

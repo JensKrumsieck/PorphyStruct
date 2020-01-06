@@ -2,6 +2,7 @@
 using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PorphyStruct.Simulations
 {
@@ -39,10 +40,7 @@ namespace PorphyStruct.Simulations
         /// </summary>
         /// <see cref="IParameterProvider.Evaluate"/>
         /// <returns></returns>
-        public Result Evaluate()
-        {
-            return Function(cycle, Parameters);
-        }
+        public Result Evaluate() => Function(cycle, Parameters);
 
         /// <summary>
         /// provides next values
@@ -58,13 +56,7 @@ namespace PorphyStruct.Simulations
                 else
                     Parameters[i] = rnd.Next(-100, 101);
             }
-
-            //norm
-            double sum = Parameters.AbsSum();
-            for (int i = 0; i < Parameters.Length; i++)
-            {
-                Parameters[i] /= sum;
-            }
+            Parameters = Parameters.Normalize().ToArray();
             //evaluates
             return Evaluate();
         }

@@ -33,11 +33,11 @@
         <oxy:PlotView x:Name="simView" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"></oxy:PlotView>
         <DataGrid x:Name="simGrid" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" CanUserSortColumns="False" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn Binding="{Binding optimize}" Header="Use?" />
-                <DataGridTextColumn Binding="{Binding title}" Header="Con." IsReadOnly="True"/>
-                <DataGridTextColumn Binding="{Binding start,StringFormat=N4}" Header="Start"/>
-                <DataGridTextColumn Binding="{Binding current, StringFormat=N6}" Header="Current"/>
-                <DataGridTextColumn Binding="{Binding best, StringFormat=N6}" Header="Best" IsReadOnly="True"/>
+                <DataGridCheckBoxColumn Binding="{Binding Optimize}" Header="Use?" />
+                <DataGridTextColumn Binding="{Binding Title}" Header="Con." IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Start,StringFormat=N4}" Header="Start"/>
+                <DataGridTextColumn Binding="{Binding Current, StringFormat=N6}" Header="Current"/>
+                <DataGridTextColumn Binding="{Binding Best, StringFormat=N6}" Header="Best" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel Grid.Row="2" Orientation="Horizontal" >

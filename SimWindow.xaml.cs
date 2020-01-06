@@ -1,9 +1,9 @@
 ﻿using Microsoft.Win32;
 using OxyPlot;
-using OxyPlot.Axes;
 using OxyPlot.Series;
 using PorphyStruct.Chemistry;
 using PorphyStruct.Simulations;
+using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -62,7 +62,7 @@ namespace PorphyStruct
             //drop metal data
             if (cycle.HasMetal) this.cycle.dataPoints = this.cycle.dataPoints.Where(s => !s.atom.IsMetal).ToList();
 
-            this.parentView = pv;           
+            this.parentView = pv;
 
             simGrid.ItemsSource = this.param = SimParam.ListParameters(MType);
             PlotExp();
@@ -85,7 +85,6 @@ namespace PorphyStruct
         {
             //plot that shit
             Oxy.Override.StandardPlotModel pm = new Oxy.Override.StandardPlotModel();
-
             MacrocyclePainter.Paint(pm, cycle, MacrocyclePainter.PaintMode.Exp);
 
             simView.Model = pm;
@@ -97,32 +96,26 @@ namespace PorphyStruct
         /// <summary>
         /// Do the Simulation
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Ausstehend>")]
         private void Simulate()
         {
+            //update param
             this.param = (List<SimParam>)simGrid.ItemsSource;
-            double[] coeff = new double[param.Count];
+            double[] coeff = param.Select(p => p.Start).ToArray();
             List<int> indices = new List<int>();
             this.simplex = new Simplex(Conformation.Calculate, coeff, cycle);
             //set start values
-            for (int i = 0; i < param.Count; i++)
-            {
-                coeff[i] = param[i].Start;
-                if (!param[i].Optimize) indices.Add(i);
-            }
+            for (int i = 0; i < param.Count; i++) if (!param[i].Optimize) indices.Add(i);
+
             while (running)
             {
                 //get result
-                Result result = new Result(Conformation: Array.Empty<double>(), Coefficients: Array.Empty<double>(), Error: Array.Empty<double>());
+                Result result;
                 if (firstOnly) result = Conformation.Calculate(cycle, coeff);
                 else
                 {
                     if (type == SimulationMode.MonteCarlo)
                     {
-                        MonteCarlo mc = new MonteCarlo(Conformation.Calculate, coeff, cycle)
-                        {
-                            Indices = indices
-                        };
+                        MonteCarlo mc = new MonteCarlo(Conformation.Calculate, coeff, cycle) { Indices = indices };
                         result = mc.Next();
                     }
                     else //simplex
@@ -131,111 +124,81 @@ namespace PorphyStruct
                         simplex.Indices = indices;
                         result = simplex.Next();
                     }
-
                 }
 
                 //write current
-                for (int i = 0; i < result.Coefficients.Length; i++)
-                {
-                    this.param[i].Current = result.Coefficients[i];
-                }
+                for (int i = 0; i < result.Coefficients.Length; i++) this.param[i].Current = result.Coefficients[i];
 
                 //plot current
                 if ((DateTime.Now - previousTime).Milliseconds >= 500)
                 {
-                    Macrocycle currentConf = MacrocycleFactory.Build(cycle.Atoms, MType);
-                    currentConf.dataPoints = cycle.dataPoints.OrderBy(s => s.X).ToList();
-
-                    for (int i = 0; i < currentConf.dataPoints.Count; i++)
-                    {
-                        //write new y data
-                        currentConf.dataPoints[i] = new AtomDataPoint(currentConf.dataPoints[i].X, result.Conformation[i], currentConf.dataPoints[i].atom);
-                    }
-                    synchronizationContext.Post(new SendOrPostCallback(o =>
-                    {
-                        try
-                        { simView.Model.Series.Remove(simView.Model.Series.FirstOrDefault(s => s.Title == "Current")); }
-                        catch { }
-                        simView.Model.Series.Add(new ScatterSeries() { ItemsSource = (List<AtomDataPoint>)o, Title = "Current", MarkerFill = OxyColors.PaleVioletRed, MarkerType = Properties.Settings.Default.simMarkerType });
-                        simView.InvalidatePlot();
-                        simGrid.Items.Refresh();
-                    }), currentConf.dataPoints);
-
+                    var currentConf = cycle.dataPoints.OrderBy(s => s.X).Select(s => new AtomDataPoint(s.X, result.Conformation[cycle.dataPoints.IndexOf(s)], s.atom)).ToList();
+                    SynchronizeDiagram(currentConf);
                     previousTime = DateTime.Now;
                 }
 
                 //get new best values if every single error is smaller or the overall sum is smaller
                 if (IsNewBest(result))
                 {
-                    currentErr[0] = result.Error[0];
-                    currentErr[1] = result.Error[1];
-                    currentErr[2] = result.Error[2];
-
+                    currentErr = result.Error;
                     //new bestvalues
+                    for (int i = 0; i < result.Coefficients.ToArray().Count(); i++) this.param[i].Best = result.Coefficients.ToArray()[i];
+                    SynchronizeErrors(result);
 
-                    for (int i = 0; i < result.Coefficients.ToArray().Count(); i++)
-                    {
-                        this.param[i].Best = result.Coefficients.ToArray()[i];
-
-                    }
-                    double[] err = result.Error;
-                    synchronizationContext.Post(new SendOrPostCallback(o =>
-                    {
-                        double[] error = (double[])o;
-                        ErrTB.Text = error[0].ToString("N6", System.Globalization.CultureInfo.InvariantCulture) + ";" + error[1].ToString("N6", System.Globalization.CultureInfo.InvariantCulture) + ";" + error[2].ToString("N6", System.Globalization.CultureInfo.InvariantCulture);
-                        simGrid.Items.Refresh();
-                    }), err);
-
-                    Macrocycle bestConf = MacrocycleFactory.Build(cycle.Atoms, MType);
-                    bestConf.dataPoints = cycle.dataPoints.OrderBy(s => s.X).ToList();
-
-                    for (int i = 0; i < bestConf.dataPoints.Count; i++)
-                    {
-                        //write new y data
-                        bestConf.dataPoints[i] = new AtomDataPoint(bestConf.dataPoints[i].X, result.Conformation[i], bestConf.dataPoints[i].atom);
-                    }
-                    synchronizationContext.Post(new SendOrPostCallback(o =>
-                    {
-                        try
-                        { simView.Model.Series.Remove(simView.Model.Series.FirstOrDefault(s => s.Title == "Best")); }
-                        catch { }
-                        simView.Model.Series.Add(new ScatterSeries() { ItemsSource = (List<AtomDataPoint>)o, Title = "Best", MarkerFill = OxyColors.LawnGreen, MarkerType = Properties.Settings.Default.simMarkerType });
-                        simView.InvalidatePlot();
-
-                        //update meadDisplacement BUT! Denormalize before!
-                        double fac = Application.Current.Windows.OfType<MainWindow>().First().normFac;
-                        List<AtomDataPoint> tmp = new List<AtomDataPoint>();
-                        foreach (AtomDataPoint dp in bestConf.dataPoints)
-                        {
-                            tmp.Add(new AtomDataPoint(dp.X, dp.Y * fac, dp.atom));
-                        }
-                        Macrocycle tmpC = MacrocycleFactory.Build(cycle.Atoms, MType);
-                        tmpC.dataPoints = tmp;
-                        meanDisPar.Content = tmpC.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture);
-
-                    }), bestConf.dataPoints);
-
+                    var bestConf = cycle.dataPoints.OrderBy(s => s.X).Select(s => new AtomDataPoint(s.X, result.Conformation[cycle.dataPoints.IndexOf(s)], s.atom)).ToList();
+                    SynchronizeDiagram(bestConf, "Best");
+                    SynchronizeMeanDisp(bestConf);
                 }
                 //if cb is set return...
-                if (firstOnly)
-                {
-                    synchronizationContext.Post(new SendOrPostCallback(o =>
-                    {
-                        running = false;
-                        startBtn.IsEnabled = true;
-                        stopBtn.IsEnabled = false;
-                        firstOnlyCB.IsEnabled = true;
-                        keepBestCB.IsEnabled = true;
-                        finishSimBtn.IsEnabled = true;
-                        simGrid.IsEnabled = true;
-                        fitDataCB.IsEnabled = true;
-                        fitIntCB.IsEnabled = true;
-                        fitDerivCB.IsEnabled = true;
-                    }), null);
-                }
+                if (firstOnly) EndSimulation();
             }
 
         }
+
+        /// <summary>
+        /// Syncs the diagram for current and best
+        /// </summary>
+        internal void SynchronizeDiagram(List<AtomDataPoint> data, string target = "Current")
+        {
+            synchronizationContext.Post(new SendOrPostCallback(o =>
+            {
+                if(simView.Model.Series.Where(s => s.Title == target).Count() != 0) simView.Model.Series.Remove(simView.Model.Series.Where(s => s.Title == target).FirstOrDefault());
+                simView.Model.Series.Add(new ScatterSeries() { ItemsSource = (List<AtomDataPoint>)o, Title = target, MarkerFill = target == "Current" ? OxyColors.PaleVioletRed : OxyColors.LawnGreen, MarkerType = Properties.Settings.Default.simMarkerType });
+                simView.InvalidatePlot();
+                simGrid.Items.Refresh();
+            }), data);
+        }
+
+        /// <summary>
+        /// Synchronize Error Textbox
+        /// </summary>
+        /// <param name="result"></param>
+        internal void SynchronizeErrors(Result result)
+        {
+            synchronizationContext.Post(new SendOrPostCallback(o =>
+            {
+                double[] error = (double[])o;
+                ErrTB.Text = string.Join(";", error.Select(s => s.ToString("N6", System.Globalization.CultureInfo.InvariantCulture)));
+                simGrid.Items.Refresh();
+            }), result.Error);
+        }
+
+        /// <summary>
+        /// Synchronizes Mean Displacement Textbox
+        /// </summary>
+        /// <param name="data"></param>
+        internal void SynchronizeMeanDisp(List<AtomDataPoint> data)
+        {
+            synchronizationContext.Post(new SendOrPostCallback(o =>
+            {
+                //update meadDisplacement BUT! Denormalize before!
+                var tmp = MacrocycleFactory.Build(cycle.Atoms, MType);
+                tmp.dataPoints = ((List<AtomDataPoint>)o).Factor(Application.Current.Windows.OfType<MainWindow>().First().normFac).ToList();
+                meanDisPar.Content = tmp.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture);
+
+            }), data);
+        }
+
         /// <summary>
         /// Checks Errors and returns a boolean whether the result is the new best result
         /// </summary>
@@ -284,7 +247,7 @@ namespace PorphyStruct
             return false;
 
         }
-        #region UI Interaction
+
         /// <summary>
         /// Handle Start Button Click
         /// </summary>
@@ -292,18 +255,28 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private async void StartBtn_Click(object sender, RoutedEventArgs e)
         {
-            this.running = true;
-            simGrid.IsEnabled = false;
-            startBtn.IsEnabled = false;
-            stopBtn.IsEnabled = true;
-            firstOnlyCB.IsEnabled = false;
-            keepBestCB.IsEnabled = false;
-            finishSimBtn.IsEnabled = false;
-            fitDataCB.IsEnabled = false;
-            fitIntCB.IsEnabled = false;
-            fitDerivCB.IsEnabled = false;
-
+            //enable/disable gui elements while simulation
+            this.running = stopBtn.IsEnabled = true;
+            simGrid.IsEnabled = startBtn.IsEnabled  = firstOnlyCB.IsEnabled = keepBestCB.IsEnabled = finishSimBtn.IsEnabled = fitDataCB.IsEnabled = fitIntCB.IsEnabled = fitDerivCB.IsEnabled = false;
             await Task.Run(() => this.Simulate());
+        }
+
+        /// <summary>
+        /// Handle Simulation has ended
+        /// </summary>
+        private void EndSimulation()
+        {
+            //after running reenable/disable gui elements
+            this.running = stopBtn.IsEnabled = false;
+            startBtn.IsEnabled = firstOnlyCB.IsEnabled = keepBestCB.IsEnabled = simGrid.IsEnabled = finishSimBtn.IsEnabled = fitDataCB.IsEnabled = fitIntCB.IsEnabled = fitDerivCB.IsEnabled = true;
+            // set best to start
+            if (keepBestCB.IsChecked == true)
+            {
+                for (int i = 0; i < this.param.Count; i++) this.param[i].Start = this.param[i].Best;
+                simGrid.Items.Refresh();
+            }
+            //clear simplex
+            simplex = null;
         }
 
         /// <summary>
@@ -311,30 +284,8 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void StopBtn_Click(object sender, RoutedEventArgs e)
-        {
-            this.running = false;
+        private void StopBtn_Click(object sender, RoutedEventArgs e) => EndSimulation();
 
-            //set best to start
-            if (keepBestCB.IsChecked == true)
-            {
-                for (int i = 0; i < this.param.Count; i++)
-                {
-                    this.param[i].Start = this.param[i].Best;
-                }
-                simGrid.Items.Refresh();
-            }
-            startBtn.IsEnabled = true;
-            stopBtn.IsEnabled = false;
-            firstOnlyCB.IsEnabled = true;
-            keepBestCB.IsEnabled = true;
-            simGrid.IsEnabled = true;
-            finishSimBtn.IsEnabled = true;
-            fitDataCB.IsEnabled = true;
-            fitIntCB.IsEnabled = true;
-            fitDerivCB.IsEnabled = true;
-            simplex = null;
-        }
 
         /// <summary>
         /// Handle Check&Uncheck of First Only Checkbox
@@ -442,7 +393,6 @@ namespace PorphyStruct
             //stop sim thread on closing
             running = false;
         }
-        #endregion
 
         /// <summary>
         /// Reloads Sim File
