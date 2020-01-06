@@ -122,5 +122,16 @@ namespace PorphyStruct.Util
         /// </summary>
         public static System.Windows.Media.Media3D.Point3D Origin => new System.Windows.Media.Media3D.Point3D(0, 0, 0);
 
+        /// <summary>
+        /// returns difference between exp and sim
+        /// </summary>
+        /// <returns></returns>
+        public static Simulation GetDifference(this Macrocycle cycle, Simulation sim)
+        {
+            Macrocycle difference = (Macrocycle)cycle.Clone();
+            difference.dataPoints = cycle.dataPoints.Where(s => !s.atom.IsMetal).Difference(sim.cycle.dataPoints).ToList();
+            return new Simulation(difference);
+        }
+
     }
 }

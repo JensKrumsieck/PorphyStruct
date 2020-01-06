@@ -25,17 +25,14 @@ namespace PorphyStruct
         /// Form Parameters
         /// </summary>
         private readonly SynchronizationContext synchronizationContext;
-        private OxyPlot.Wpf.PlotView parentView;
+        private readonly OxyPlot.Wpf.PlotView parentView;
         private DateTime previousTime = DateTime.Now;
 
         /// <summary>
         /// Boolean Parameters
         /// </summary>
         public bool running = false; //simulation is running
-        private bool firstOnly = false; //calculate only with start values
-        private bool targetData = true; //error target is data
-        private bool targetInt = false; //error target is integral
-        private bool targetDeriv = false; //error target is derivative
+        private bool firstOnly, targetData, targetInt, targetDeriv; //setup booleans for target
 
         /// <summary>
         /// Simulation Parameters
@@ -97,8 +94,7 @@ namespace PorphyStruct
         }
 
         //if call comes with sim, use this param
-        public SimWindow(Macrocycle cycle, OxyPlot.Wpf.PlotView pv, Simulation sim)
-            : this(cycle, pv)
+        public SimWindow(Macrocycle cycle, OxyPlot.Wpf.PlotView pv, Simulation sim) : this(cycle, pv)
         {
             param = sim.simParam;
             simGrid.ItemsSource = this.param;
@@ -118,26 +114,6 @@ namespace PorphyStruct
             MacrocyclePainter.Paint(pm, cycle, MacrocyclePainter.PaintMode.Exp);
 
             simView.Model = pm;
-
-            foreach (OxyPlot.Annotations.ArrowAnnotation a in cycle.DrawBonds())
-            {
-                pm.Annotations.Add(a);
-            }
-
-
-            if (Properties.Settings.Default.zero)
-            {
-                //show zero
-                OxyPlot.Annotations.LineAnnotation zero = new OxyPlot.Annotations.LineAnnotation()
-                {
-                    Color = OxyColor.FromAColor(40, OxyColors.Gray),
-                    StrokeThickness = Properties.Settings.Default.lineThickness,
-                    Intercept = 0,
-                    Slope = 0
-                };
-                pm.Annotations.Add(zero);
-            }
-
             pm.Scale(pm.xAxis);
             pm.InvalidatePlot(true);
         }

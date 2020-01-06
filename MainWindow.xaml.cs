@@ -49,7 +49,7 @@ namespace PorphyStruct
             if (normalize)
             {
                 normFac = MathUtil.GetNormalizationFactor(cycle.dataPoints);
-                cycle.dataPoints = cycle.dataPoints.Normalize();                
+                cycle.dataPoints = cycle.dataPoints.Normalize();
             }
             //invert
             if (invert) cycle.dataPoints = cycle.dataPoints.Invert();
@@ -58,13 +58,13 @@ namespace PorphyStruct
             if (simulation != null)
             {
                 simulation.Normalize(normalize, normFac);
-                simulation.Invert(invert); 
+                simulation.Invert(invert);
                 simulation.Paint(pm);
             }
             //paint difference
-            if (hasDifference) GetDifference(cycle, simulation).Paint(pm, "Diff");
+            if (hasDifference) cycle.GetDifference(simulation).Paint(pm, "Diff");
             //paint comparison
-            if (!String.IsNullOrEmpty(comp1Path)) CompareWindow.GetData(comp1Path).Paint(pm, "Com1");           
+            if (!String.IsNullOrEmpty(comp1Path)) CompareWindow.GetData(comp1Path).Paint(pm, "Com1");
             if (!String.IsNullOrEmpty(comp2Path)) CompareWindow.GetData(comp2Path).Paint(pm, "Com2");
             //paint exp
             MacrocyclePainter.Paint(pm, cycle, MacrocyclePainter.PaintMode.Exp);
@@ -75,7 +75,6 @@ namespace PorphyStruct
             displaceView.Model = pm;
             pm.Scale(pm.yAxis, true, normalize);
             pm.Scale(pm.xAxis);
-
             //update simstack
             UpdateStack();
         }
@@ -87,11 +86,11 @@ namespace PorphyStruct
             simStack.Children.Clear();
             if (simulation != null)
                 foreach (string key in simulation.par.Keys) simStack.Children.Add(new Chip
-                    {
-                        Content = key + ": " + simulation.par[key].ToString(System.Globalization.CultureInfo.InvariantCulture) + "%",
-                        Margin = new Thickness(0, 0, 4, 4),
-                        FontSize = 8
-                    });
+                {
+                    Content = key + ": " + simulation.par[key].ToString(System.Globalization.CultureInfo.InvariantCulture) + "%",
+                    Margin = new Thickness(0, 0, 4, 4),
+                    FontSize = 8
+                });
 
             if (coordGrid.ItemsSource != null)
             {
@@ -100,7 +99,7 @@ namespace PorphyStruct
                 UnitVecTB.Text = $"({pl.A.ToString("G3")}, {pl.B.ToString("G3")}, {pl.C.ToString("G3")})";
                 DistTB.Text = pl.D.ToString("G3");
             }
-        }     
+        }
 
 
         /// <summary>
@@ -119,21 +118,9 @@ namespace PorphyStruct
                 Atom selected = markSelection ? (Atom)coordGrid.SelectedItem : null;
 
                 //create 3d model
-                System.Windows.Media.Media3D.ModelVisual3D model = new System.Windows.Media.Media3D.ModelVisual3D();
-                model.Content = MacrocyclePainter.Paint3D(cycle, selected);
+                System.Windows.Media.Media3D.ModelVisual3D model = new System.Windows.Media.Media3D.ModelVisual3D() { Content = MacrocyclePainter.Paint3D(cycle, selected) };
                 MolViewer.Children.Add(model);
             }
-        }
-
-        /// <summary>
-        /// returns difference between exp and sim
-        /// </summary>
-        /// <returns></returns>
-        public Simulation GetDifference(Macrocycle cycle, Simulation sim)
-        {
-            Macrocycle difference = (Macrocycle)cycle.Clone();
-            difference.dataPoints = cycle.dataPoints.Where(s => !s.atom.IsMetal).Difference(sim.cycle.dataPoints).ToList();
-            return new Simulation(difference);
         }
 
 
@@ -203,7 +190,7 @@ namespace PorphyStruct
                 path = wi.FileName;
                 type = (Macrocycle.Type)wi.Type;
                 this.Title = "Structural Analysis of Porphyrinoids (PorphyStruct) - " + type.ToString() + " Mode";
-                
+
                 //reset gui elements
                 AnalButton.IsEnabled = RefMolButton.IsEnabled = CenterMolButton.IsEnabled = DetectMolButton.IsEnabled = NormalizeButton.IsEnabled = InvertButton.IsEnabled = SaveButton.IsEnabled = SimButton.IsEnabled = CompButton.IsEnabled = true;
                 normalize = invert = hasDifference = DelSimButton.IsEnabled = DiffSimButton.IsEnabled = false;

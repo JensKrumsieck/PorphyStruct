@@ -73,10 +73,15 @@ namespace PorphyStruct.Oxy.Override
             //make it accessible
             xAxis = x;
             yAxis = y;
-
+            AddZero();
         }
 
-
+        /// <summary>
+        /// Handles scaling
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="isY"></param>
+        /// <param name="normalize"></param>
         public void Scale(Axis a, bool isY = false, bool normalize = false)
         {
             string val = isY ? "Y" : "X";
@@ -113,6 +118,26 @@ namespace PorphyStruct.Oxy.Override
             a.Zoom(min, max);
 
             InvalidatePlot(true);
+        }
+
+        /// <summary>
+        /// Adds zero line
+        /// </summary>
+        public void AddZero()
+        {
+            //add zero
+            if (Properties.Settings.Default.zero)
+            {
+                //show zero
+                OxyPlot.Annotations.LineAnnotation zero = new OxyPlot.Annotations.LineAnnotation()
+                {
+                    Color = OxyColor.FromAColor(40, OxyColors.Gray),
+                    StrokeThickness = Properties.Settings.Default.lineThickness,
+                    Intercept = 0,
+                    Slope = 0
+                };
+                Annotations.Add(zero);
+            }
         }
     }
 }
