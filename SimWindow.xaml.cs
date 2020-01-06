@@ -126,29 +126,13 @@ namespace PorphyStruct
                     }
                 }
 
-                //write current
-                for (int i = 0; i < result.Coefficients.Length; i++) this.param[i].Current = result.Coefficients[i];
+                for (int i = 0; i < result.Coefficients.Length; i++) param[i].Current = result.Coefficients[i];
 
                 //plot current
-                if ((DateTime.Now - previousTime).Milliseconds >= 500)
-                {
-                    var currentConf = cycle.dataPoints.OrderBy(s => s.X).Select(s => new AtomDataPoint(s.X, result.Conformation[cycle.dataPoints.IndexOf(s)], s.atom)).ToList();
-                    SynchronizeDiagram(currentConf);
-                    previousTime = DateTime.Now;
-                }
+                if ((DateTime.Now - previousTime).Milliseconds >= 500) SetNewCurrent(result);
 
                 //get new best values if every single error is smaller or the overall sum is smaller
-                if (IsNewBest(result))
-                {
-                    currentErr = result.Error;
-                    //new bestvalues
-                    for (int i = 0; i < result.Coefficients.ToArray().Count(); i++) this.param[i].Best = result.Coefficients.ToArray()[i];
-                    SynchronizeErrors(result);
-
-                    var bestConf = cycle.dataPoints.OrderBy(s => s.X).Select(s => new AtomDataPoint(s.X, result.Conformation[cycle.dataPoints.IndexOf(s)], s.atom)).ToList();
-                    SynchronizeDiagram(bestConf, "Best");
-                    SynchronizeMeanDisp(bestConf);
-                }
+                if (IsNewBest(result)) SetNewBest(result);
                 //if cb is set return...
                 if (firstOnly) EndSimulation();
             }
@@ -197,6 +181,32 @@ namespace PorphyStruct
                 meanDisPar.Content = tmp.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture);
 
             }), data);
+        }
+
+        /// <summary>
+        /// Updates current
+        /// </summary>
+        /// <param name="result"></param>
+        private void SetNewCurrent(Result result)
+        {
+            var currentConf = cycle.dataPoints.OrderBy(s => s.X).Select(s => new AtomDataPoint(s.X, result.Conformation[cycle.dataPoints.IndexOf(s)], s.atom)).ToList();
+            SynchronizeDiagram(currentConf);
+            previousTime = DateTime.Now;
+        }
+
+        /// <summary>
+        /// Sets new BestValues
+        /// </summary>
+        /// <param name="result"></param>
+        private void SetNewBest(Result result)
+        {
+            currentErr = result.Error;
+            //new bestvalues
+            for (int i = 0; i < result.Coefficients.ToArray().Count(); i++) param[i].Best = result.Coefficients.ToArray()[i];
+            var bestConf = cycle.dataPoints.OrderBy(s => s.X).Select(s => new AtomDataPoint(s.X, result.Conformation[cycle.dataPoints.IndexOf(s)], s.atom)).ToList();
+            SynchronizeDiagram(bestConf, "Best");
+            SynchronizeMeanDisp(bestConf);
+            SynchronizeErrors(result);
         }
 
         /// <summary>
