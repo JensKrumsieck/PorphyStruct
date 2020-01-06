@@ -31,8 +31,7 @@ namespace PorphyStruct
         /// <summary>
         /// Boolean Parameters
         /// </summary>
-        public bool running = false; //simulation is running
-        private bool firstOnly, targetData, targetInt, targetDeriv; //setup booleans for target
+        private bool firstOnly, targetData, targetInt, targetDeriv, running; //setup booleans for target and running
 
         /// <summary>
         /// Simulation Parameters
@@ -63,33 +62,9 @@ namespace PorphyStruct
             //drop metal data
             if (cycle.HasMetal) this.cycle.dataPoints = this.cycle.dataPoints.Where(s => !s.atom.IsMetal).ToList();
 
-            this.parentView = pv;
-            param = new List<SimParam>
-            {
-                new SimParam("Doming", 0),
-                new SimParam("Ruffling", 0),
-                new SimParam("Saddling", 0)
-            };
-            if (MType == Macrocycle.Type.Corrole || MType == Macrocycle.Type.Corrphycene || MType == Macrocycle.Type.Porphycene)
-            {
-                param.Add(new SimParam("Waving 2 (X)", 0));
-                param.Add(new SimParam("Waving 2 (Y)", 0));
-            }
-            else if (MType == Macrocycle.Type.Porphyrin)
-            {
-                param.Add(new SimParam("Waving 1 (X)", 0));
-                param.Add(new SimParam("Waving 1 (Y)", 0));
-                param.Add(new SimParam("Waving 2 (X)", 0));
-                param.Add(new SimParam("Waving 2 (Y)", 0));
-            }
-            else if (MType == Macrocycle.Type.Norcorrole)
-            {
-                param.Add(new SimParam("Waving 2 (Dipy)", 0));
-                param.Add(new SimParam("Waving 2 (Bipy)", 0));
-            }
-            param.Add(new SimParam("Propellering", 0));
+            this.parentView = pv;           
 
-            simGrid.ItemsSource = this.param;
+            simGrid.ItemsSource = this.param = SimParam.ListParameters(MType);
             PlotExp();
         }
 
@@ -132,8 +107,8 @@ namespace PorphyStruct
             //set start values
             for (int i = 0; i < param.Count; i++)
             {
-                coeff[i] = param[i].start;
-                if (!param[i].optimize) indices.Add(i);
+                coeff[i] = param[i].Start;
+                if (!param[i].Optimize) indices.Add(i);
             }
             while (running)
             {
@@ -162,7 +137,7 @@ namespace PorphyStruct
                 //write current
                 for (int i = 0; i < result.Coefficients.Length; i++)
                 {
-                    this.param[i].current = result.Coefficients[i];
+                    this.param[i].Current = result.Coefficients[i];
                 }
 
                 //plot current
@@ -200,7 +175,7 @@ namespace PorphyStruct
 
                     for (int i = 0; i < result.Coefficients.ToArray().Count(); i++)
                     {
-                        this.param[i].best = result.Coefficients.ToArray()[i];
+                        this.param[i].Best = result.Coefficients.ToArray()[i];
 
                     }
                     double[] err = result.Error;
@@ -345,7 +320,7 @@ namespace PorphyStruct
             {
                 for (int i = 0; i < this.param.Count; i++)
                 {
-                    this.param[i].start = this.param[i].best;
+                    this.param[i].Start = this.param[i].Best;
                 }
                 simGrid.Items.Refresh();
             }
@@ -417,7 +392,7 @@ namespace PorphyStruct
                 //export param
                 foreach (SimParam p in param)
                 {
-                    simObj.par.Add(p.title, Math.Round(p.best * 100, 2));
+                    simObj.par.Add(p.Title, Math.Round(p.Best * 100, 2));
                 }
                 //export errors
                 simObj.errors = new double[]

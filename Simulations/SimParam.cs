@@ -1,14 +1,17 @@
-﻿using System;
+﻿using PorphyStruct.Chemistry;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PorphyStruct.Simulations
 {
     public class SimParam
     {
-        public string title { get; set; }
-        public double current { get; set; }
-        public double best { get; set; }
-        public double start { get; set; }
-        public bool optimize { get; set; }
+        public string Title { get; set; }
+        public double Current { get; set; }
+        public double Best { get; set; }
+        public double Start { get; set; }
+        public bool Optimize { get; set; }
 
 
         /// <summary>
@@ -20,25 +23,46 @@ namespace PorphyStruct.Simulations
         /// <param name="current">Currentvalue</param>
         public SimParam(string title, double start, double best = 0, double current = 0, bool optimize = true)
         {
-            this.title = title;
-            this.current = current;
-            this.best = best;
-            this.start = start;
-            this.optimize = optimize;
+            this.Title = title;
+            this.Current = current;
+            this.Best = best;
+            this.Start = start;
+            this.Optimize = optimize;
         }
 
         /// <summary>
-        /// calculates the absolute sum
+        /// Builds a List of Cycle specific parameters
         /// </summary>
-        /// <param name="d"></param>
-        public static double AbsSum(double[] d)
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static List<SimParam> ListParameters (Macrocycle.Type type)
         {
-            double sum = 0;
-            foreach (double i in d)
+            List<SimParam> param = new List<SimParam>
             {
-                sum += Math.Abs(i);
+                new SimParam("Doming", 0),
+                new SimParam("Ruffling", 0),
+                new SimParam("Saddling", 0)
+            };
+            if (type == Macrocycle.Type.Corrole || type == Macrocycle.Type.Corrphycene || type == Macrocycle.Type.Porphycene)
+            {
+                param.Add(new SimParam("Waving 2 (X)", 0));
+                param.Add(new SimParam("Waving 2 (Y)", 0));
             }
-            return sum;
+            else if (type == Macrocycle.Type.Porphyrin)
+            {
+                param.Add(new SimParam("Waving 1 (X)", 0));
+                param.Add(new SimParam("Waving 1 (Y)", 0));
+                param.Add(new SimParam("Waving 2 (X)", 0));
+                param.Add(new SimParam("Waving 2 (Y)", 0));
+            }
+            else if (type == Macrocycle.Type.Norcorrole)
+            {
+                param.Add(new SimParam("Waving 2 (Dipy)", 0));
+                param.Add(new SimParam("Waving 2 (Bipy)", 0));
+            }
+            param.Add(new SimParam("Propellering", 0));
+
+            return param;
         }
 
     }

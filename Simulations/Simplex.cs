@@ -1,4 +1,5 @@
 ﻿using PorphyStruct.Chemistry;
+using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,11 +63,11 @@ namespace PorphyStruct.Simulations
         /// <returns></returns>
         public Result Evaluate(double[] parameters)
         {
-            if (SimParam.AbsSum(parameters) != 1)
+            if (parameters.AbsSum() != 1)
             {
                 for (int i = 0; i < parameters.Length; i++)
                 {
-                    parameters[i] /= SimParam.AbsSum(parameters);
+                    parameters[i] /= parameters.AbsSum();
                 }
             }
             return Function(cycle, parameters);
@@ -198,7 +199,7 @@ namespace PorphyStruct.Simulations
             indices = new int[N + 1];
             simplex = new double[N + 1][];
             //add current 
-            if (SimParam.AbsSum(Parameters) == 0) //add random not zero vector
+            if (Parameters.AbsSum() == 0) //add random not zero vector
             {
                 Result result = mc.Next();
                 Parameters = (double[])result.Coefficients.Clone();

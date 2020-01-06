@@ -133,5 +133,13 @@ namespace PorphyStruct.Util
             return new Simulation(difference);
         }
 
+
+
+        /// <summary>
+        /// calculates the absolute sum
+        /// </summary>
+        /// <param name="d"></param>
+        public static double AbsSum(this IEnumerable<double> d) => d.Sum(s => Math.Abs(s));
+
     }
 }

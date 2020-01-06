@@ -1,4 +1,5 @@
 ﻿using PorphyStruct.Chemistry;
+using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
 
@@ -59,7 +60,7 @@ namespace PorphyStruct.Simulations
             }
 
             //norm
-            double sum = SimParam.AbsSum(Parameters);
+            double sum = Parameters.AbsSum();
             for (int i = 0; i < Parameters.Length; i++)
             {
                 Parameters[i] /= sum;
