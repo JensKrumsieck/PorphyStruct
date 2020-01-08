@@ -57,15 +57,12 @@ namespace PorphyStruct
         /// <summary>
         /// Validates Path and Types
         /// </summary>
-        public bool Validate
+        public bool Validate()
         {
-            get
-            {
-                //validate form
-                if (String.IsNullOrEmpty(PathTB.Text) || !Directory.Exists(PathTB.Text)) { MessageBox.Show("The specified directory does not exist!", "I/O Error", MessageBoxButton.OK, MessageBoxImage.Error); return false; }
-                if (TypeList.SelectedItems.Count == 0) { MessageBox.Show("No Datatype has been selected!", "Datatype Empty", MessageBoxButton.OK, MessageBoxImage.Error); return false; }
-                return true;
-            }
+            //validate form
+            if (String.IsNullOrEmpty(PathTB.Text) || !Directory.Exists(PathTB.Text)) { MessageBox.Show("The specified directory does not exist!", "I/O Error", MessageBoxButton.OK, MessageBoxImage.Error); return false; }
+            if (TypeList.SelectedItems.Count == 0) { MessageBox.Show("No Datatype has been selected!", "Datatype Empty", MessageBoxButton.OK, MessageBoxImage.Error); return false; }
+            return true;
         }
 
         /// <summary>
@@ -75,22 +72,9 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!Validate) return; 
-            this.Filename = PathTB.Text + "/" + NameTB.Text + "_";
-            List<ExportFileType> types = new List<ExportFileType>();
-
-            //check if graph is present when report is present, otherwise add! 
-            foreach (object o in TypeList.SelectedItems)
-            {
-                types.Add((ExportFileType)o);
-                if (((ExportFileType)o).Title == "Report")
-                {
-                    types.Add(new ExportFileType() { Title = "Graph", Extension = "png" });
-                    if (Sim != null) types.Add(new ExportFileType() { Title = "SimResult", Extension = "png" });
-                }
-            }
-
-            foreach (ExportFileType t in types)
+            if (!Validate()) return;
+            Filename = PathTB.Text + "/" + NameTB.Text + "_";
+            foreach (ExportFileType t in TypeList.SelectedItems)
             {
                 switch (t.Title)
                 {
@@ -107,19 +91,19 @@ namespace PorphyStruct
                         Cycle.SaveIXYZ(Filename, true);
                         break;
                     case "Molecule":
-                        MacrocycleExporter.SaveIXYZ(Cycle, Filename);
+                        Cycle.SaveIXYZ(Filename);
                         break;
                     case "Report":
                         SaveReport(t.Extension);
                         break;
                     case "Result":
-                        Sim.SaveResult(Cycle, Filename);    
+                        Sim.SaveResult(Cycle, Filename);
                         break;
                 }
             }
             Close();
         }
-        
+
 
         /// <summary>
         /// Saves Report
@@ -172,7 +156,7 @@ namespace PorphyStruct
                     + "The distance of the ring atoms to the mean plane is plotted against calculated circle coordinates.");
 
 
-            main.AddImage(this.Filename + "Analysis.png", "Displacement Diagram of the " + type.ToLower());
+            main.AddImage(Filename + "Analysis.png", "Displacement Diagram of the " + type.ToLower());
 
             //get exp series
             OxyPlot.Series.ScatterSeries exp = (OxyPlot.Series.ScatterSeries)Model.Series.FirstOrDefault(s => s.Title == "Exp.");

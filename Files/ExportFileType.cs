@@ -4,7 +4,9 @@ using System.Windows;
 
 namespace PorphyStruct.Files
 {
-
+    /// <summary>
+    /// Export File Type for SaveWindow
+    /// </summary>
     public class ExportFileType
     {
         public string Title { get; set; }
@@ -12,18 +14,8 @@ namespace PorphyStruct.Files
         public PackIcon Secondary { get; set; }
         public string Extension { get; set; }
 
-        public bool IsEnabled
-        {
-            get
-            {
-                SaveWindow sw = Application.Current.Windows.OfType<SaveWindow>().First();
-                return sw.HasData(Title);
-            }
-        }
+        public bool IsEnabled => Application.Current.Windows.OfType<SaveWindow>().First().HasData(Title); 
 
-        public override string ToString()
-        {
-            return Title + "." + Extension;
-        }
+        public override string ToString() => Title + "." + Extension;
     }
 }
