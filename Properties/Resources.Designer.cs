@@ -61,6 +61,15 @@ namespace PorphyStruct.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The final composition of normal modes is {0} as also listed in the table below. The mean displacement parameter is {1}. The absolute composition therefore is {2}. ähnelt.
+        /// </summary>
+        public static string CompositionParagraph {
+            get {
+                return ResourceManager.GetString("CompositionParagraph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
         public static System.Drawing.Bitmap corr {
@@ -97,7 +106,7 @@ namespace PorphyStruct.Properties {
         ///3;Li;Lithium;6,94;CC80FF;1,28;
         ///4;Be;Beryllium;9,01;C2FF00;0,96;
         ///5;B;Bor;10,81;FFB5B5;0,84;
-        ///6;C;Carbon;12,01;909090;0,76;
+        ///6;C;Carbon;12,01;000000;0,76;
         ///7;N;Nitrogen;14,01;3050F8;0,71;
         ///8;O;Oxygen;16,00;FF0D0D;0,66;
         ///9;F;Fluorine;19,00;90E050;0,57;
@@ -110,6 +119,15 @@ namespace PorphyStruct.Properties {
         public static string Elements {
             get {
                 return ResourceManager.GetString("Elements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The following figure shows the conformational analysis of {0} displayed as displacement diagram. A middle plane was places through the {1}&apos;s ring atoms. The distance of the ring atoms to the mean plane is plotted against calculated circle coordinates. ähnelt.
+        /// </summary>
+        public static string ExplanationParagraph {
+            get {
+                return ResourceManager.GetString("ExplanationParagraph", resourceCulture);
             }
         }
         
@@ -160,6 +178,15 @@ namespace PorphyStruct.Properties {
             get {
                 object obj = ResourceManager.GetObject("porphystructlogo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die A Simulation has been done using the least squares methode. The conformation of the {0} was traced back to the vibration normal modes of metallo{0}s. The standard vibration modes were obtained by DFT analysis of a metallo{0} at B3LYP/Def2-SVP level of theory. The Simulated conformation was calculated with an error of {1} as root of the sum of the squared errors per atom. For the derivates the error is {2} and for the integrals the following error was measured {3}. ähnelt.
+        /// </summary>
+        public static string SimDetailsParagraph {
+            get {
+                return ResourceManager.GetString("SimDetailsParagraph", resourceCulture);
             }
         }
     }

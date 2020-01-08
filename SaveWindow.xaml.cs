@@ -139,24 +139,16 @@ namespace PorphyStruct
         /// <returns></returns>
         private Report SaveReport()
         {
-            string lang = Properties.Settings.Default.exportLang;
-            Report report = new Report()
-            {
-                Title = "Analysis"
-            };
+            string type = Application.Current.Windows.OfType<MainWindow>().First().type.ToString().ToLower();
+            Report report = new Report()  { Title = "Analysis" };
             ReportSection main = new ReportSection();
             report.AddHeader(1, "Conformational analysis " + NameTB.Text);
             report.Add(main);
-            string type = Cycle.type.ToString();
 
             //basic information
             main.AddHeader(2, "Macrocyclic Conformation");
-            main.AddParagraph("The following figure shows the conformational analysis of " + (!String.IsNullOrEmpty(Cycle.Title) ? Cycle.Title : "the input macrocycle ")
-                    + "displayed as displacement diagram. A middle plane was places through the " + type.ToLower() + "'s ring atoms. "
-                    + "The distance of the ring atoms to the mean plane is plotted against calculated circle coordinates.");
-
-
-            main.AddImage(Filename + "Analysis.png", "Displacement Diagram of the " + type.ToLower());
+            main.AddParagraph(string.Format(Properties.Resources.ExplanationParagraph, Cycle.Title, type));
+            main.AddImage(Filename + "Analysis.png", $"Displacement Diagram of the {type}");
 
             //get exp series
             OxyPlot.Series.ScatterSeries exp = (OxyPlot.Series.ScatterSeries)Model.Series.FirstOrDefault(s => s.Title == "Exp.");
@@ -170,12 +162,7 @@ namespace PorphyStruct
                 ReportSection Simu = new ReportSection();
                 report.Add(Simu);
                 Simu.AddHeader(2, "Simulation Details");
-                Simu.AddParagraph("A Simulation has been done using the least squares methode. The conformation of the "
-                    + type.ToLower() + " was traced back to the vibration normal modes of metallo" + type.ToLower() + "s. "
-                    + "The standard vibration modes were obtained by DFT analysis of a metallo" + type.ToLower() + " at "
-                    + "B3LYP/Def2-SVP level of theory. The Simulated conformation was calculated with an error of " + Sim.errors[0]
-                    + " as root of the sum of the squared errors per atom. For the derivates the error is " + Sim.errors[1]
-                    + " and for the integrals the following error was measured " + Sim.errors[2]);
+                Simu.AddParagraph(string.Format(Properties.Resources.SimDetailsParagraph, type, Sim.errors[0], Sim.errors[1], Sim.errors[2]));
 
                 string composition = "";
                 string absComposition = "";
@@ -185,9 +172,7 @@ namespace PorphyStruct
                     absComposition += (i.Value / 100 * Sim.cycle.MeanDisplacement()).ToString("N4", System.Globalization.CultureInfo.InvariantCulture) + " of " + i.Key + ",";
                 }
                 composition.Remove(composition.LastIndexOf(','));
-                Simu.AddParagraph("The final composition of normal modes is " + composition + " as also listed in the table below. "
-                    + "The mean displacement parameter is " + Sim.cycle.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture)
-                    + " The absolute composition therefore is " + absComposition + ".");
+                Simu.AddParagraph(string.Format(Properties.Resources.CompositionParagraph, composition, Sim.cycle.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture), absComposition));
 
                 Simu.AddImage(this.Filename + "SimResult.png", "Visualization of Simulationparameters");
                 Simu.AddPropertyTable("Simulationparameters with a mean displacement parameter of " + Sim.cycle.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture), Sim.par);
