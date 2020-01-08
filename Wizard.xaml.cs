@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using PorphyStruct.Util;
 using System.Windows;
 
 namespace PorphyStruct
@@ -9,20 +8,14 @@ namespace PorphyStruct
     /// </summary>
     public partial class Wizard : Window
     {
-        public Wizard()
-        {
-            InitializeComponent();
-        }
+        public Wizard() => InitializeComponent();
 
         /// <summary>
         /// Handle Cancel Button Click
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
+        private void Cancel_Click(object sender, RoutedEventArgs e) => this.Close();
 
         /// <summary>
         /// Handle OK Button Click
@@ -42,38 +35,19 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void FileOpen_Click(object sender, RoutedEventArgs e)
         {
-            string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.importPath))
-                initialDir = Properties.Settings.Default.importPath;
-            OpenFileDialog ofd = new OpenFileDialog
-            {
-                InitialDirectory = initialDir,
-                Filter = "Supported Files (*.cif, *.xyz, *.mol2/*.mol, *.ixyz)|*.cif;*.xyz;*.mol2;*.mol;*.ixyz|Crystallographic Information Files (*.cif)|*.cif|Cartesian Coordinate Files (*.xyz)|*.xyz|Mol2 Files (*.mol2, *.mol)|*.mol2;*.mol|XYZ with Identifier (by PorphyStruct) (*.ixyz)|*.ixyz",
-                RestoreDirectory = true
-            };
+            var ofd = FileUtil.DefaultOpenFileDialog("Supported Files(*.cif, *.xyz, *.mol2/*.mol, *.ixyz)|*.cif;*.xyz;*.mol2;*.mol;*.ixyz|Crystallographic Information Files (*.cif)|*.cif|Cartesian Coordinate Files (*.xyz)|*.xyz|Mol2 Files (*.mol2, *.mol)|*.mol2;*.mol|XYZ with Identifier (by PorphyStruct) (*.ixyz)|*.ixyz");
             var DialogResult = ofd.ShowDialog();
-
-            if (DialogResult.HasValue && DialogResult.Value)
-            {
-                pathTextBox.Text = ofd.FileName;
-            }
+            if (DialogResult.HasValue && DialogResult.Value) pathTextBox.Text = ofd.FileName;
         }
 
         /// <summary>
         /// Returns the filename
         /// </summary>
-        public string FileName
-        {
-            get { return pathTextBox.Text; }
-        }
+        public string FileName => pathTextBox.Text;
 
         /// <summary>
         /// Return Macrocycle Type from ComboBox
         /// </summary>
-        public int Type
-        {
-            //0 = corrole, 1 = porphyrin, 2 = norcorrole, 3 = corrphycene, 4 = porphycene
-            get { return TypeListBox.SelectedIndex; }
-        }
+        public int Type => TypeListBox.SelectedIndex;
     }
 }

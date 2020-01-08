@@ -352,17 +352,7 @@ namespace PorphyStruct
         private void ReloadSimBtn_Click(object sender, RoutedEventArgs e)
         {
             //use save dir as default because there should be the results
-            string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.savePath) && !Properties.Settings.Default.useImportExportPath)
-                initialDir = Properties.Settings.Default.savePath;
-            else if (!String.IsNullOrEmpty(Properties.Settings.Default.importPath))
-                initialDir = Properties.Settings.Default.importPath;
-            OpenFileDialog ofd = new OpenFileDialog
-            {
-                InitialDirectory = initialDir,
-                Filter = "Simulation File (*.xml)|*.xml",
-                RestoreDirectory = true
-            };
+            var ofd = FileUtil.DefaultOpenFileDialog("Simulation File (*.xml)|*.xml", true);
             bool? DialogResult = ofd.ShowDialog();
 
             if (DialogResult.HasValue && DialogResult.Value)

@@ -1,7 +1,6 @@
-﻿using Microsoft.Win32;
-using OxyPlot;
-using OxyPlot.Axes;
-using PorphyStruct.Chemistry;
+﻿using PorphyStruct.Chemistry;
+using PorphyStruct.Oxy.Override;
+using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,10 +16,7 @@ namespace PorphyStruct
     public partial class CompareWindow : Window
     {
         private bool loaded = false;
-        public CompareWindow()
-        {
-            InitializeComponent();
-        }
+        public CompareWindow() => InitializeComponent();
 
         /// <summary>
         /// Handles Button click
@@ -32,18 +28,7 @@ namespace PorphyStruct
             //get clicked button number
             int.TryParse((sender as Button).Tag.ToString(), out int comp);
 
-            //use save dir as default because there should be the results
-            string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.savePath) && !Properties.Settings.Default.useImportExportPath)
-                initialDir = Properties.Settings.Default.savePath;
-            else if (!String.IsNullOrEmpty(Properties.Settings.Default.importPath))
-                initialDir = Properties.Settings.Default.importPath;
-            OpenFileDialog ofd = new OpenFileDialog
-            {
-                InitialDirectory = initialDir,
-                Filter = "ASCII Files (DAT) (*.dat)|*.dat",
-                RestoreDirectory = true
-            };
+            var ofd = FileUtil.DefaultOpenFileDialog("ASCII Files(DAT)(*.dat) | *.dat", true);
             var DialogResult = ofd.ShowDialog();
 
             if (DialogResult.HasValue && DialogResult.Value)
@@ -59,8 +44,7 @@ namespace PorphyStruct
         /// <returns></returns>
         public static Simulation GetData(string path)
         {
-            MainWindow mw = Application.Current.Windows.OfType<MainWindow>().First();
-            Macrocycle cycle = mw.cycle;
+            Macrocycle cycle = Application.Current.Windows.OfType<MainWindow>().First().cycle;
             List<AtomDataPoint> mol = new List<AtomDataPoint>();
             string file = File.ReadAllText(path);
             string[] lines = file.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None);
@@ -92,10 +76,7 @@ namespace PorphyStruct
             for (int i = 0; i < dataX.Length; i++)
             {
                 //add datapoint with dummy atom only having identifier
-                Atom A = new Atom(dataA[i], 0, 0, 0)
-                {
-                    IsMacrocycle = true
-                };
+                Atom A = new Atom(dataA[i], 0, 0, 0) { IsMacrocycle = true };
                 atoms.Add(A);
                 mol.Add(new AtomDataPoint(dataX[i], dataY[i], A));
             }
@@ -138,10 +119,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
+        private void Cancel_Click(object sender, RoutedEventArgs e) => this.Close();
 
         /// <summary>
         /// handle loaded
@@ -150,82 +128,12 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            comp1Plot.Model = Pm;
-            comp2Plot.Model = Pm;
+            comp1Plot.Model = new StandardPlotModel();
+            comp2Plot.Model = new StandardPlotModel();
 
             loaded = true;
-            if (!String.IsNullOrEmpty(comparison1Path.Text))
-                ComparisonPath_TextChanged(comparison1Path, null);
-            if (!String.IsNullOrEmpty(comparison2Path.Text))
-                ComparisonPath_TextChanged(comparison2Path, null);
-        }
-
-        /// <summary>
-        /// y axis
-        /// </summary>
-        /// <returns></returns>
-        private PorphyStruct.Oxy.Override.LinearAxis Y_
-        {
-           get{ 
-               PorphyStruct.Oxy.Override.LinearAxis y = new PorphyStruct.Oxy.Override.LinearAxis
-               {
-                   Title = "Δ_{msp}",
-                   Unit = "Å",
-                   Position = AxisPosition.Left,
-                   Key = "Y",
-                   IsAxisVisible = true,
-                   MajorGridlineThickness = Properties.Settings.Default.lineThickness,
-                   TitleFormatString = Properties.Settings.Default.titleFormat,
-                   LabelFormatter = Oxy.Override.OxyUtils._axisFormatter
-               };
-                return y;
-             }
-        }
-
-        /// <summary>
-        /// x axis
-        /// </summary>
-        /// <returns></returns>
-        private LinearAxis X_
-        {
-            get
-            {
-                LinearAxis x = new LinearAxis
-                {
-                    Title = "X",
-                    Unit = "Å",
-                    Position = AxisPosition.Bottom,
-                    Key = "X",
-                    IsAxisVisible = Properties.Settings.Default.xAxis,
-                    MajorGridlineThickness = Properties.Settings.Default.lineThickness,
-                    AbsoluteMinimum = Properties.Settings.Default.minX,
-                    AbsoluteMaximum = Properties.Settings.Default.maxX,
-                    TitleFormatString = Properties.Settings.Default.titleFormat,
-                    LabelFormatter = Oxy.Override.OxyUtils._axisFormatter
-                };
-                return x;
-            }
-        }
-
-        /// <summary>
-        /// gets PlotModel
-        /// </summary>
-        private PlotModel Pm
-        {
-            get
-            {
-                PlotModel pm = new PlotModel()
-                {
-                    IsLegendVisible = false,
-                    DefaultFontSize = Properties.Settings.Default.defaultFontSize,
-                    LegendFontSize = Properties.Settings.Default.defaultFontSize,
-                    DefaultFont = Properties.Settings.Default.defaultFont,
-                    PlotAreaBorderThickness = new OxyThickness(Properties.Settings.Default.lineThickness)
-                };
-                pm.Axes.Add(X_);
-                pm.Axes.Add(Y_);
-                return pm;
-            }
+            if (!String.IsNullOrEmpty(comparison1Path.Text)) ComparisonPath_TextChanged(comparison1Path, null);
+            if (!String.IsNullOrEmpty(comparison2Path.Text)) ComparisonPath_TextChanged(comparison2Path, null);
         }
     }
 }

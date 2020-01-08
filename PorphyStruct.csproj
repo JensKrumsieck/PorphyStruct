@@ -144,6 +144,7 @@
     <Compile Include="Chemistry\Macrocycles\Norcorrole.cs" />
     <Compile Include="Chemistry\Macrocycles\Porphycene.cs" />
     <Compile Include="Chemistry\Macrocycles\Porphyrin.cs" />
+    <Compile Include="Util\FileUtil.cs" />
     <Compile Include="Util\MathUtil.cs" />
     <Compile Include="CompareWindow.xaml.cs">
       <DependentUpon>CompareWindow.xaml</DependentUpon>
