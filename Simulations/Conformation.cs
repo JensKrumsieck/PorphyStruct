@@ -1,8 +1,10 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 using PorphyStruct.Chemistry;
+using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PorphyStruct.Simulations
 {
@@ -20,14 +22,14 @@ namespace PorphyStruct.Simulations
             Matrix<double> D = Displacements.DisplacementMatrix(cycle.type, param.Length);
             Vector<double> C = D * DenseVector.OfArray(param);
             //normalize conformation vector
-            C = Normalize(C);
+            var c = Normalize(C).ToArray();
 
             double[] data = YFromCycle(cycle);
 
-            return new Result(C.ToArray(), param, new double[] {
-                Error.FromArray(data, C.ToArray()),
-                Error.FromArray(Derive(cycle.dataPoints), Derive(GetAtomDataPoints(C.ToArray(), cycle.dataPoints))),
-                Error.FromArray(Integrate(data), Integrate(C.ToArray()))
+            return new Result(c, param, new double[] {
+                Error.FromArray(data, c),
+                Error.FromArray(Derive(cycle.dataPoints), Derive(GetAtomDataPoints(c, cycle.dataPoints))),
+                Error.FromArray(Integrate(data), Integrate(c))
                 });
         }
 
@@ -36,16 +38,7 @@ namespace PorphyStruct.Simulations
         /// </summary>
         /// <param name="cycle"></param>
         /// <returns></returns>
-        private static double[] YFromCycle(Macrocycle cycle)
-        {
-            double[] y = new double[cycle.dataPoints.Count];
-            for (int i = 0; i < cycle.dataPoints.Count; i++)
-            {
-                y[i] = cycle.dataPoints[i].Y;
-            }
-            return y;
-        }
-
+        private static double[] YFromCycle(Macrocycle cycle) => cycle.dataPoints.Select(s => s.Y).ToArray();
         /// <summary>
 		/// Normalizes a Vector
 		/// </summary>
