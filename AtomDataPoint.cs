@@ -24,25 +24,19 @@ namespace PorphyStruct
             : base(x, y, size, value, tag)
         {
             this.atom = atom;
-            this.Value = x;
+            Value = x;
         }
 
         /// <summary>
         /// Convert to Parent Class (ScatterPoint)
         /// </summary>
         /// <returns>ScatterPoint</returns>
-        public ScatterPoint GetScatterPoint()
-        {
-            return new ScatterPoint(X, Y);
-        }
+        public ScatterPoint GetScatterPoint() => new ScatterPoint(X, Y);
 
         /// <summary>
         /// Convert to DataPoint
         /// </summary>
         /// <returns>DataPoint</returns>
-        public DataPoint GetDataPoint()
-        {
-            return new DataPoint(X, Y);
-        }
+        public DataPoint GetDataPoint() => new DataPoint(X, Y);
     }
 }
