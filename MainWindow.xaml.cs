@@ -227,6 +227,7 @@ namespace PorphyStruct
             if (!AnalButton.IsEnabled) return;
             //get the current data from source
             cycle.Atoms = ((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList();
+            //TODO: validate cycle here
             //call analyze void
             Analyze();
         }
