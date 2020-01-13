@@ -4,6 +4,7 @@ using OxyPlot.Series;
 using PorphyStruct.Chemistry;
 using PorphyStruct.Simulations;
 using PorphyStruct.Util;
+using PorphyStruct.Windows;
 using System;
 using System.Collections.Generic;
 using System.IO;

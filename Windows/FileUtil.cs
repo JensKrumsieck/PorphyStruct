@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 
-namespace PorphyStruct.Util
+namespace PorphyStruct.Windows
 {
     public static class FileUtil
     {
