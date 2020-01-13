@@ -171,7 +171,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Refresh_Click(object sender, RoutedEventArgs e) => this.UpdateMolView(false, true);
+        private void Refresh_Click(object sender, RoutedEventArgs e) { if (InvertButton.IsEnabled) UpdateMolView(false, true); }
 
 
         /// <summary>
@@ -224,6 +224,7 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void Analyze_Click(object sender, RoutedEventArgs e)
         {
+            if (!AnalButton.IsEnabled) return;
             //get the current data from source
             cycle.Atoms = ((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList();
             //call analyze void
@@ -245,6 +246,7 @@ namespace PorphyStruct
         /// <param name="e"></param>
         public void NormalizeButton_Click(object sender, RoutedEventArgs e)
         {
+            if (!NormalizeButton.IsEnabled) return;
             //set false
             if (this.normalize)
             {
@@ -265,8 +267,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Save_Click(object sender, RoutedEventArgs e) => new SaveWindow(cycle, this.simulation).ShowDialog();
-
+        private void Save_Click(object sender, RoutedEventArgs e) { if (SaveButton.IsEnabled) new SaveWindow(cycle, simulation).ShowDialog(); }
 
         /// <summary>
         /// Handle Invert Button Click
@@ -275,6 +276,7 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void InvertButton_Click(object sender, RoutedEventArgs e)
         {
+            if (!InvertButton.IsEnabled) return;
             //set false
             if (this.invert)
             {

@@ -16,6 +16,40 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Structural Analysis of Porphyrinoids (PorphyStruct)" Height="780" Width="1230" Loaded="Window_Loaded">
+    
+    <!--Shortcut section-->
+    <Window.Resources>
+        <RoutedUICommand x:Key="Open" Text="Open" />
+        <RoutedUICommand x:Key="Save" Text="Save" />
+        <RoutedUICommand x:Key="Analyze" Text="Analyze" />
+        <RoutedUICommand x:Key="Simulate" Text="Simulate" />
+        <RoutedUICommand x:Key="Refresh" Text="Refresh" />
+        <RoutedUICommand x:Key="Normalize" Text="Normalize" />
+        <RoutedUICommand x:Key="Invert" Text="Invert" />
+    </Window.Resources>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="{StaticResource Open}" Executed="Open_Click" />
+        <CommandBinding Command="{StaticResource Save}" Executed="Save_Click" />
+        <CommandBinding Command="{StaticResource Analyze}" Executed="Analyze_Click" />
+        <CommandBinding Command="{StaticResource Simulate}" Executed="SimButton_Click" />
+        <CommandBinding Command="{StaticResource Refresh}" Executed="Refresh_Click" />
+        <CommandBinding Command="{StaticResource Invert}" Executed="InvertButton_Click" />
+        <CommandBinding Command="{StaticResource Normalize}" Executed="NormalizeButton_Click" />
+    </Window.CommandBindings>
+
+    <Window.InputBindings>
+        <KeyBinding Key="O" Modifiers="Ctrl" Command="{StaticResource Open}" />
+        <KeyBinding Key="S" Modifiers="Ctrl" Command="{StaticResource Save}" />
+        <KeyBinding Key="A" Modifiers="Ctrl" Command="{StaticResource Analyze}" />
+        <KeyBinding Key="P" Modifiers="Ctrl" Command="{StaticResource Simulate}" />
+        <KeyBinding Key="I" Modifiers="Ctrl" Command="{StaticResource Invert}" />
+        <KeyBinding Key="N" Modifiers="Ctrl" Command="{StaticResource Normalize}" />
+        <KeyBinding Key="R" Modifiers="Ctrl" Command="{StaticResource Refresh}" />
+        <KeyBinding Key="F5" Command="{StaticResource Refresh}" />
+    </Window.InputBindings>
+    <!--/Shortcut section-->
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -29,20 +63,20 @@
         </Grid.RowDefinitions>
         <ToolBarTray Grid.ColumnSpan="4" Grid.Row="0">
             <ToolBar  Style="{DynamicResource MaterialDesignToolBar}" HorizontalAlignment="Stretch">
-                <Button ToolTip="Open File" Click="Open_Click">
+                <Button ToolTip="Open File (CTRL+O)" Click="Open_Click">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="FolderOpen"  HorizontalAlignment="Center"/>
                         <TextBlock HorizontalAlignment="Center" FontSize="9">Open</TextBlock>
                     </StackPanel>
                 </Button>
-                <Button ToolTip="Save File" Click="Save_Click" x:Name="SaveButton" IsEnabled="False">
+                <Button ToolTip="Save File (CTRL+S)" Click="Save_Click" x:Name="SaveButton" IsEnabled="False">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="ContentSave" HorizontalAlignment="Center"/>
                         <TextBlock HorizontalAlignment="Center" FontSize="9">Save</TextBlock>
                     </StackPanel>
                 </Button>
                 <Separator />
-                <Button ToolTip="Analyze Conformation" Click="Analyze_Click" IsEnabled="False" x:Name="AnalButton">
+                <Button ToolTip="Analyze Conformation (CTRL+A)" Click="Analyze_Click" IsEnabled="False" x:Name="AnalButton">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="Flask"  HorizontalAlignment="Center"/>
                         <TextBlock HorizontalAlignment="Center" FontSize="9">Analyze</TextBlock>
@@ -55,20 +89,20 @@
                     </StackPanel>
                 </Button>
                 <Separator />
-                <Button ToolTip="Normalize Displacements" Click="NormalizeButton_Click" x:Name="NormalizeButton" IsEnabled="False">
+                <Button ToolTip="Normalize Displacements (CTRL+N)" Click="NormalizeButton_Click" x:Name="NormalizeButton" IsEnabled="False">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="ArrowExpandVertical"  HorizontalAlignment="Center"/>
                         <TextBlock HorizontalAlignment="Center" FontSize="9">Normalize</TextBlock>
                     </StackPanel>
                 </Button>
-                <Button ToolTip="Invert Displacements" Click="InvertButton_Click" x:Name="InvertButton" IsEnabled="False">
+                <Button ToolTip="Invert Displacements (CTRL+I)" Click="InvertButton_Click" x:Name="InvertButton" IsEnabled="False">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="Contrast"  HorizontalAlignment="Center"/>
                         <TextBlock HorizontalAlignment="Center" FontSize="9">Invert</TextBlock>
                     </StackPanel>
                 </Button>
                 <Separator />
-                <Button ToolTip="Simulate Displacements by NSD Method" Click="SimButton_Click" x:Name="SimButton" IsEnabled="False">
+                <Button ToolTip="Simulate Displacements by NSD Method (CTRL+P)" Click="SimButton_Click" x:Name="SimButton" IsEnabled="False">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="AutoFixHigh"  HorizontalAlignment="Center"/>
                         <TextBlock HorizontalAlignment="Center" FontSize="9">Simulate</TextBlock>
@@ -94,7 +128,7 @@
                         <TextBlock HorizontalAlignment="Center" FontSize="9">Center</TextBlock>
                     </StackPanel>
                 </Button>
-                <Button ToolTip="Refresh Molecule Viewer" Click="Refresh_Click" x:Name="RefMolButton" IsEnabled="False">
+                <Button ToolTip="Refresh Molecule Viewer (F5 / CTRL+R)" Click="Refresh_Click" x:Name="RefMolButton" IsEnabled="False">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="Molecule"  HorizontalAlignment="Center"/>
                         <TextBlock HorizontalAlignment="Center" FontSize="9">Refresh</TextBlock>
