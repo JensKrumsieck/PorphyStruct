@@ -178,6 +178,8 @@
     <Compile Include="SimWindow.xaml.cs">
       <DependentUpon>SimWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Win32Util.cs" />
+    <Compile Include="Windows\MacrocyclePainter3D.cs" />
     <Compile Include="Wizard.xaml.cs">
       <DependentUpon>Wizard.xaml</DependentUpon>
     </Compile>

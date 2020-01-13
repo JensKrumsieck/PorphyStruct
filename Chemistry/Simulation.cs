@@ -38,7 +38,7 @@ namespace PorphyStruct.Chemistry
             if (title == "Com2")
                 mode = 4;
 
-            MacrocyclePainter.Paint(pm, cycle, (MacrocyclePainter.PaintMode)mode);
+            cycle.Paint(pm, (MacrocyclePainter.PaintMode)mode);
         }
 
         /// <summary>

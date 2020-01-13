@@ -4,6 +4,7 @@ using MathNet.Spatial.Euclidean;
 using OxyPlot.Series;
 using PorphyStruct.Chemistry;
 using PorphyStruct.Util;
+using PorphyStruct.Windows;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -67,7 +68,7 @@ namespace PorphyStruct
             if (!String.IsNullOrEmpty(comp1Path)) CompareWindow.GetData(comp1Path).Paint(pm, "Com1");
             if (!String.IsNullOrEmpty(comp2Path)) CompareWindow.GetData(comp2Path).Paint(pm, "Com2");
             //paint exp
-            MacrocyclePainter.Paint(pm, cycle, MacrocyclePainter.PaintMode.Exp);
+            cycle.Paint(pm, MacrocyclePainter.PaintMode.Exp);
 
             //handle dont mark
             foreach (ScatterSeries s in pm.Series) ((List<AtomDataPoint>)s.ItemsSource).Where(dp => Properties.Settings.Default.dontMark.Split(',').Contains(dp.atom.Identifier) || Properties.Settings.Default.dontMark.Split(',').Contains(dp.atom.Type)).ToList().ForEach(dp => dp.Size = 0);
@@ -118,7 +119,7 @@ namespace PorphyStruct
                 Atom selected = markSelection ? (Atom)coordGrid.SelectedItem : null;
 
                 //create 3d model
-                System.Windows.Media.Media3D.ModelVisual3D model = new System.Windows.Media.Media3D.ModelVisual3D() { Content = MacrocyclePainter.Paint3D(cycle, selected) };
+                System.Windows.Media.Media3D.ModelVisual3D model = new System.Windows.Media.Media3D.ModelVisual3D() { Content = cycle.Paint3D(selected) };
                 MolViewer.Children.Add(model);
             }
         }
@@ -140,9 +141,9 @@ namespace PorphyStruct
             //update camera
             Plane pl = cycle.GetMeanPlane();
             var normal = new System.Windows.Media.Media3D.Point3D(pl.A, pl.B, pl.C);
-            while (normal.DistanceTo(MathUtil.Origin) < 25) normal = normal.Multiply(1.1);
+            while (normal.DistanceTo(Win32Util.Origin) < 25) normal = normal.Multiply(1.1);
             MolViewer.CameraController.CameraPosition = normal;
-            MolViewer.CameraController.CameraTarget = MathUtil.Origin;
+            MolViewer.CameraController.CameraTarget = Win32Util.Origin;
         }
 
         /// <summary>

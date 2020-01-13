@@ -85,7 +85,7 @@ namespace PorphyStruct
         {
             //plot that shit
             Oxy.Override.StandardPlotModel pm = new Oxy.Override.StandardPlotModel();
-            MacrocyclePainter.Paint(pm, cycle, MacrocyclePainter.PaintMode.Exp);
+            cycle.Paint(pm, MacrocyclePainter.PaintMode.Exp);
 
             simView.Model = pm;
             pm.Scale(pm.xAxis);

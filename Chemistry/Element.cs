@@ -1,7 +1,6 @@
 ﻿using OxyPlot;
 using System;
 using System.Linq;
-using System.Windows.Media;
 
 namespace PorphyStruct.Chemistry
 {
@@ -78,9 +77,5 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         public OxyColor OxyColor { get => OxyColor.Parse(this.Color); }
 
-        /// <summary>
-        /// get Brush for Helix
-        /// </summary>
-        public Brush Brush { get => (Brush)new BrushConverter().ConvertFromString(this.Color); }
     }
 }

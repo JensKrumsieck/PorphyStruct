@@ -2,9 +2,7 @@
 using OxyPlot;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Windows.Media;
 
 namespace PorphyStruct.Chemistry
 {
@@ -126,14 +124,6 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         public double AtomRadius { get => Element.Radius; }
 
-        /// <summary>
-        /// Colors of Atoms for 3D Visualisation
-        /// </summary>
-        public Brush Brush
-        {
-            get => this.Element.Brush;
-        }
-
         //colors for bonds
         public static OxyColor[] modesMultiColor = new OxyColor[]
         {
@@ -196,11 +186,6 @@ namespace PorphyStruct.Chemistry
         /// <returns></returns>
         public override string ToString() => Identifier;
 
-        /// <summary>
-        /// Converts Atom to simple Point3D
-        /// </summary>
-        /// <returns></returns>
-        public System.Windows.Media.Media3D.Point3D ToPoint3D() => new System.Windows.Media.Media3D.Point3D(X, Y, Z);
     }
 
 }
