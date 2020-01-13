@@ -6,11 +6,11 @@ using System.Windows;
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die einer Assembly zugeordnet sind.
 [assembly: AssemblyTitle("PorphyStruct")]
-[assembly: AssemblyDescription("Analysis of Macrocyclic Conformation")]
-[assembly: AssemblyConfiguration("Beta 5")]
+[assembly: AssemblyDescription("Analysis of Macrocyclic Conformations")]
+[assembly: AssemblyConfiguration("Beta 6")]
 [assembly: AssemblyCompany("Jens Krumsieck")]
 [assembly: AssemblyProduct("PorphyStruct")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
+[assembly: AssemblyCopyright("Copyright ©  2019 - 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -50,5 +50,5 @@ using System.Windows;
 // übernehmen, indem Sie "*" eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0")]
-[assembly: AssemblyInformationalVersion("1.0.0 Beta 5")]
-[assembly: AssemblyFileVersion("1.0.0.5")]
+[assembly: AssemblyInformationalVersion("1.0.0 Beta 6")]
+[assembly: AssemblyFileVersion("1.0.0.6")]
