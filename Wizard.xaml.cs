@@ -1,4 +1,5 @@
 ﻿using PorphyStruct.Windows;
+using System.IO;
 using System.Windows;
 
 namespace PorphyStruct
@@ -24,7 +25,8 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = true;
+            //check for file
+            if(!string.IsNullOrWhiteSpace(pathTextBox.Text) && File.Exists(pathTextBox.Text) && TypeListBox.SelectedIndex != -1) DialogResult = true;
             this.Close();
         }
 
