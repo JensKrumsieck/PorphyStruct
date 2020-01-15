@@ -1,6 +1,5 @@
 ﻿using PorphyStruct.Chemistry;
-using PorphyStruct.OxyPlot;
-using PorphyStruct.Util;
+using PorphyStruct.OxyPlotOverride;
 using PorphyStruct.Windows;
 using System;
 using System.Collections.Generic;

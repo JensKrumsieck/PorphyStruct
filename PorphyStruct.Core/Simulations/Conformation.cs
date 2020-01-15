@@ -1,14 +1,13 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 using PorphyStruct.Chemistry;
-using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace PorphyStruct.Simulations
 {
-    static class Conformation
+    public static class Conformation
     {
 
         /// <summary>

@@ -24,24 +24,24 @@ namespace PorphyStruct.Chemistry
             foreach (var dp in cycle.dataPoints) AssignValue(dp, mode);
             //read marker type
             MarkerType mType = MarkerType.Circle;
-            if (mode == PaintMode.Exp) mType = PorphyStruct.Core.Settings.Default.markerType;
-            if (mode == PaintMode.Sim || mode == PaintMode.Diff) mType = PorphyStruct.Core.Settings.Default.simMarkerType;
-            if (mode == PaintMode.Com1) mType = PorphyStruct.Core.Settings.Default.com1MarkerType;
-            if (mode == PaintMode.Com2) mType = PorphyStruct.Core.Settings.Default.com2MarkerType;
+            if (mode == PaintMode.Exp) mType = PorphyStruct.Core.Properties.Settings.Default.markerType;
+            if (mode == PaintMode.Sim || mode == PaintMode.Diff) mType = PorphyStruct.Core.Properties.Settings.Default.simMarkerType;
+            if (mode == PaintMode.Com1) mType = PorphyStruct.Core.Properties.Settings.Default.com1MarkerType;
+            if (mode == PaintMode.Com2) mType = PorphyStruct.Core.Properties.Settings.Default.com2MarkerType;
 
             //build series
             ScatterSeries series = new ScatterSeries()
             {
                 MarkerType = mType,
                 ItemsSource = cycle.dataPoints,
-                ColorAxisKey = PorphyStruct.Core.Settings.Default.singleColor ? null : "colors",
+                ColorAxisKey = PorphyStruct.Core.Properties.Settings.Default.singleColor ? null : "colors",
                 Title = mode.ToString()
             };
-            if (PorphyStruct.Core.Settings.Default.singleColor)
+            if (PorphyStruct.Core.Properties.Settings.Default.singleColor)
                 series.MarkerFill = Atom.modesSingleColor[(int)mode];
             //add series
 
-            if(!PorphyStruct.Core.Settings.Default.singleColor)  pm.Axes.Add(ColorAxis(cycle.dataPoints));
+            if(!PorphyStruct.Core.Properties.Settings.Default.singleColor)  pm.Axes.Add(ColorAxis(cycle.dataPoints));
             else series.MarkerFill = Atom.modesSingleColor[(int) mode];
 
             pm.Series.Add(series);

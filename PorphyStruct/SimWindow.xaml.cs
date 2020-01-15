@@ -85,7 +85,7 @@ namespace PorphyStruct
         private void PlotExp()
         {
             //plot that shit
-            OxyPlotOverride pm = new OxyPlotOverride();
+            OxyPlotOverride.StandardPlotModel pm = new OxyPlotOverride.StandardPlotModel();
             cycle.Paint(pm, MacrocyclePainter.PaintMode.Exp);
 
             simView.Model = pm;
@@ -148,7 +148,7 @@ namespace PorphyStruct
             synchronizationContext.Post(new SendOrPostCallback(o =>
             {
                 if (simView.Model.Series.Where(s => s.Title == target).Count() != 0) simView.Model.Series.Remove(simView.Model.Series.Where(s => s.Title == target).FirstOrDefault());
-                simView.Model.Series.Add(new ScatterSeries() { ItemsSource = (List<AtomDataPoint>)o, Title = target, MarkerFill = target == "Current" ? OxyColors.PaleVioletRed : OxyColors.LawnGreen, MarkerType = PorphyStruct.Core.Settings.Default.simMarkerType });
+                simView.Model.Series.Add(new ScatterSeries() { ItemsSource = (List<AtomDataPoint>)o, Title = target, MarkerFill = target == "Current" ? OxyColors.PaleVioletRed : OxyColors.LawnGreen, MarkerType = PorphyStruct.Core.Properties.Settings.Default.simMarkerType });
                 simView.InvalidatePlot();
                 simGrid.Items.Refresh();
             }), data);

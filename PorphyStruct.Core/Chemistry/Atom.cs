@@ -127,19 +127,19 @@ namespace PorphyStruct.Chemistry
         //colors for bonds
         public static OxyColor[] modesMultiColor = new OxyColor[]
         {
-                OxyColor.Parse(PorphyStruct.Core.Settings.Default.color1),
-                OxyColor.FromAColor(75, OxyColor.Parse(PorphyStruct.Core.Settings.Default.color1)),
-                OxyColor.FromAColor(50, OxyColor.Parse(PorphyStruct.Core.Settings.Default.color1)),
-                OxyColor.FromAColor(75, OxyColor.Parse(PorphyStruct.Core.Settings.Default.color1)),
-                OxyColor.FromAColor(75, OxyColor.Parse(PorphyStruct.Core.Settings.Default.color1)),
+                OxyColor.Parse(Core.Properties.Settings.Default.color1),
+                OxyColor.FromAColor(75, OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color1)),
+                OxyColor.FromAColor(50, OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color1)),
+                OxyColor.FromAColor(75, OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color1)),
+                OxyColor.FromAColor(75, OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color1)),
         };
         public static OxyColor[] modesSingleColor = new OxyColor[]
         {
-                OxyColor.Parse(PorphyStruct.Core.Settings.Default.color1),
-                OxyColor.Parse(PorphyStruct.Core.Settings.Default.color2),
-                OxyColor.Parse(PorphyStruct.Core.Settings.Default.color3),
-                OxyColor.Parse(PorphyStruct.Core.Settings.Default.color4),
-                OxyColor.Parse(PorphyStruct.Core.Settings.Default.color5),
+                OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color1),
+                OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color2),
+                OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color3),
+                OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color4),
+                OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color5),
         };
 
         /// <summary>

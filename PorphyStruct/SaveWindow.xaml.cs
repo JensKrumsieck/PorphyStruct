@@ -1,10 +1,8 @@
 ﻿using OxyPlot;
-using OxyPlot.OpenXml;
-using OxyPlot.Pdf;
 using OxyPlot.Reporting;
 using OxyPlot.Wpf;
 using PorphyStruct.Chemistry;
-using PorphyStruct.Files;
+using PorphyStruct.Windows;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,8 +29,8 @@ namespace PorphyStruct
         {
             get
             {
-                if (PorphyStruct.Core.Settings.Default.useImportExportPath) return PorphyStruct.Core.Settings.Default.importPath;
-                else return PorphyStruct.Core.Settings.Default.savePath;
+                if (PorphyStruct.Core.Properties.Settings.Default.useImportExportPath) return PorphyStruct.Core.Properties.Settings.Default.importPath;
+                else return PorphyStruct.Core.Properties.Settings.Default.savePath;
             }
         }
 
@@ -111,7 +109,7 @@ namespace PorphyStruct
         /// <param name="Extension"></param>
         private void SaveReport(string Extension)
         {
-            string Filename = this.Filename + "Report." + Extension;
+           /** string Filename = this.Filename + "Report." + Extension;
             Report r = SaveReport();
             if (Extension == "docx")
             {
@@ -128,7 +126,7 @@ namespace PorphyStruct
                     w.WriteReport(r, MacrocycleExporter.ReportStyle);
                 }
 
-            }
+            }**/
         }
 
 
@@ -198,10 +196,10 @@ namespace PorphyStruct
             {
                 IsLegendVisible = false,
                 LegendPosition = LegendPosition.RightTop,
-                DefaultFontSize = PorphyStruct.Core.Settings.Default.defaultFontSize,
-                LegendFontSize = PorphyStruct.Core.Settings.Default.defaultFontSize,
-                DefaultFont = PorphyStruct.Core.Settings.Default.defaultFont,
-                PlotAreaBorderThickness = new OxyThickness(PorphyStruct.Core.Settings.Default.lineThickness)
+                DefaultFontSize = PorphyStruct.Core.Properties.Settings.Default.defaultFontSize,
+                LegendFontSize = PorphyStruct.Core.Properties.Settings.Default.defaultFontSize,
+                DefaultFont = PorphyStruct.Core.Properties.Settings.Default.defaultFont,
+                PlotAreaBorderThickness = new OxyThickness(PorphyStruct.Core.Properties.Settings.Default.lineThickness)
             };
 
             OxyPlot.Axes.LinearAxis x = new OxyPlot.Axes.LinearAxis
@@ -211,7 +209,7 @@ namespace PorphyStruct
                 Position = OxyPlot.Axes.AxisPosition.Bottom,
                 Key = "X",
                 IsAxisVisible = true,
-                MajorGridlineThickness = PorphyStruct.Core.Settings.Default.lineThickness,
+                MajorGridlineThickness = PorphyStruct.Core.Properties.Settings.Default.lineThickness,
                 TitleFormatString = "{1}"
             };
 
@@ -221,12 +219,12 @@ namespace PorphyStruct
                 Position = OxyPlot.Axes.AxisPosition.Left
             };
 
-            if (!PorphyStruct.Core.Settings.Default.showBox)
+            if (!PorphyStruct.Core.Properties.Settings.Default.showBox)
             {
                 pm.PlotAreaBorderThickness = new OxyThickness(0);
 
                 x.AxislineStyle = LineStyle.Solid;
-                x.AxislineThickness = PorphyStruct.Core.Settings.Default.lineThickness;
+                x.AxislineThickness = PorphyStruct.Core.Properties.Settings.Default.lineThickness;
             }
 
             pm.Axes.Add(x);
@@ -243,7 +241,7 @@ namespace PorphyStruct
                     End = (i.Value < 0 ? 0 : i.Value),
                     Title = i.Key,
                     CategoryIndex = a,
-                    Color = OxyColor.Parse(PorphyStruct.Core.Settings.Default.color2)
+                    Color = OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color2)
                 };
                 s.Items.Add(item);
                 a++;
@@ -253,7 +251,7 @@ namespace PorphyStruct
             pm.Annotations.Add(new OxyPlot.Annotations.LineAnnotation()
             {
                 Color = OxyColors.Black,
-                StrokeThickness = PorphyStruct.Core.Settings.Default.lineThickness,
+                StrokeThickness = PorphyStruct.Core.Properties.Settings.Default.lineThickness,
                 Type = OxyPlot.Annotations.LineAnnotationType.Vertical,
                 X = 0.0
             });
@@ -262,15 +260,15 @@ namespace PorphyStruct
 
             //save image
             if (Extension == "png")
-                PngExporter.Export(pm, this.Filename + "SimResult.png", PorphyStruct.Core.Settings.Default.pngWidth, PorphyStruct.Core.Settings.Default.pngHeight, OxyColors.Transparent, PorphyStruct.Core.Settings.Default.pngRes);
+                PngExporter.Export(pm, this.Filename + "SimResult.png", PorphyStruct.Core.Properties.Settings.Default.pngWidth, PorphyStruct.Core.Properties.Settings.Default.pngHeight, OxyColors.Transparent, PorphyStruct.Core.Properties.Settings.Default.pngRes);
 
             //exports svg
             if (Extension == "svg")
             {
                 var svg = new OxyPlot.Wpf.SvgExporter()
                 {
-                    Width = PorphyStruct.Core.Settings.Default.pngWidth,
-                    Height = PorphyStruct.Core.Settings.Default.pngHeight
+                    Width = PorphyStruct.Core.Properties.Settings.Default.pngWidth,
+                    Height = PorphyStruct.Core.Properties.Settings.Default.pngHeight
                 };
                 svg.ExportToFile(pm, this.Filename + "SimResult.svg");
             }
@@ -285,10 +283,10 @@ namespace PorphyStruct
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            if (!String.IsNullOrEmpty(PorphyStruct.Core.Settings.Default.savePath) && !PorphyStruct.Core.Settings.Default.useImportExportPath)
-                initialDir = PorphyStruct.Core.Settings.Default.savePath;
-            else if (!String.IsNullOrEmpty(PorphyStruct.Core.Settings.Default.importPath))
-                initialDir = PorphyStruct.Core.Settings.Default.importPath;
+            if (!String.IsNullOrEmpty(PorphyStruct.Core.Properties.Settings.Default.savePath) && !PorphyStruct.Core.Properties.Settings.Default.useImportExportPath)
+                initialDir = PorphyStruct.Core.Properties.Settings.Default.savePath;
+            else if (!String.IsNullOrEmpty(PorphyStruct.Core.Properties.Settings.Default.importPath))
+                initialDir = PorphyStruct.Core.Properties.Settings.Default.importPath;
             using (winforms.FolderBrowserDialog fbd = new winforms.FolderBrowserDialog
             {
                 SelectedPath = initialDir

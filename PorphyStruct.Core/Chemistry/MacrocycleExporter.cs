@@ -1,4 +1,5 @@
 ﻿using OxyPlot;
+using OxyPlot.Core.Drawing;
 using OxyPlot.Reporting;
 using System.Collections.Generic;
 using System.IO;
@@ -21,15 +22,11 @@ namespace PorphyStruct.Chemistry
 
             //exports png
             if (extension == "png")
-                PngExporter.Export(pm, filename + "Analysis.png", PorphyStruct.Core.Settings.Default.pngWidth, PorphyStruct.Core.Settings.Default.pngHeight, OxyColors.Transparent, PorphyStruct.Core.Settings.Default.pngRes);
+                PngExporter.Export(pm, filename + "Analysis.png", PorphyStruct.Core.Properties.Settings.Default.pngWidth, PorphyStruct.Core.Properties.Settings.Default.pngHeight, OxyColors.Transparent, PorphyStruct.Core.Properties.Settings.Default.pngRes);
 
             //exports svg
             if (extension == "svg")
-                new SvgExporter()
-                {
-                    Width = PorphyStruct.Core.Settings.Default.pngWidth,
-                    Height = PorphyStruct.Core.Settings.Default.pngHeight
-                }.ExportToFile(pm, filename + "Analysis.svg");
+                using (var svg = File.Create(filename + "Analysis.svg")) SvgExporter.Export(pm, svg, PorphyStruct.Core.Properties.Settings.Default.pngWidth, PorphyStruct.Core.Properties.Settings.Default.pngHeight, true);
         }
 
         /// <summary>
@@ -153,7 +150,7 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         /// <param name="lang"></param>
         /// <returns></returns>
-        public static ReportStyle ReportStyle => new ReportStyle(PorphyStruct.Core.Settings.Default.defaultFont, PorphyStruct.Core.Settings.Default.defaultFont, PorphyStruct.Core.Settings.Default.defaultFont)
+        public static ReportStyle ReportStyle => new ReportStyle(PorphyStruct.Core.Properties.Settings.Default.defaultFont, PorphyStruct.Core.Properties.Settings.Default.defaultFont, PorphyStruct.Core.Properties.Settings.Default.defaultFont)
         {
             FigureTextFormatString = "Figure {0}: {1}.",
             TableCaptionFormatString = "Table {0}: {1}."

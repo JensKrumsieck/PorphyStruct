@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace PorphyStruct.Simulations
 {
-    class Simplex : IParameterProvider
+    public class Simplex : IParameterProvider
     {
         protected Random rnd;
         protected Macrocycle cycle;

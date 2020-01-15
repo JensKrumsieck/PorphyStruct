@@ -25,7 +25,7 @@ namespace PorphyStruct.OxyPlotOverride
             ref HorizontalAlignment halign,
             ref VerticalAlignment valign)
         {
-            if (axis.Position == AxisPosition.Left && PorphyStruct.Core.Settings.Default.rotateTitle) titlePosition += 10;
+            if (axis.Position == AxisPosition.Left && PorphyStruct.Core.Properties.Settings.Default.rotateTitle) titlePosition += 10;
             double middle = axis.IsHorizontal() ? Lerp(axis.ScreenMin.X, axis.ScreenMax.X, axis.TitlePosition) : Lerp(axis.ScreenMax.Y, axis.ScreenMin.Y, axis.TitlePosition);
 
             if (axis.PositionAtZeroCrossing) middle = Lerp(axis.Transform(axis.ActualMaximum), axis.Transform(axis.ActualMinimum), axis.TitlePosition);
@@ -33,7 +33,7 @@ namespace PorphyStruct.OxyPlotOverride
             switch (axis.Position)
             {
                 case AxisPosition.Left:
-                    if (PorphyStruct.Core.Settings.Default.rotateTitle) angle = 0;
+                    if (PorphyStruct.Core.Properties.Settings.Default.rotateTitle) angle = 0;
                     return new ScreenPoint(titlePosition, middle);
                 case AxisPosition.Right:
                     valign = VerticalAlignment.Bottom;

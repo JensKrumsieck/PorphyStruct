@@ -14,7 +14,7 @@ namespace PorphyStruct.Windows
         public PackIcon Secondary { get; set; }
         public string Extension { get; set; }
 
-        public bool IsEnabled => Application.Current.Windows.OfType<SaveWindow>().First().HasData(Title); 
+        public bool IsEnabled => Application.Current.Windows.OfType<SaveWindow>().First().HasData(Title);
 
         public override string ToString() => Title + "." + Extension;
     }

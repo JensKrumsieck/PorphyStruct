@@ -57,7 +57,7 @@ namespace PorphyStruct.Chemistry
         public static Element Create(string Symbol)
         {
             string[] element = null;
-            string[] lines = Properties.Resources.Elements.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.RemoveEmptyEntries);
+            string[] lines = Core.Properties.Resources.Elements.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string line in lines)
             {
                 if (line.Split(';').Contains(Symbol))

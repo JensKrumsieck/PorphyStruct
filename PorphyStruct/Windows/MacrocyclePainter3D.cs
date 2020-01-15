@@ -1,6 +1,5 @@
 ﻿using HelixToolkit.Wpf;
 using PorphyStruct.Chemistry;
-using PorphyStruct.Util;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 

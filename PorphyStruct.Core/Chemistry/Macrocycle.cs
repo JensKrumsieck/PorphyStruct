@@ -201,9 +201,9 @@ namespace PorphyStruct.Chemistry
             EndPoint = a2.GetDataPoint(),
             HeadWidth = 0,
             HeadLength = 0,
-            Color = PorphyStruct.Core.Settings.Default.singleColor ? Atom.modesSingleColor[mode] : Atom.modesMultiColor[mode],
+            Color = PorphyStruct.Core.Properties.Settings.Default.singleColor ? Atom.modesSingleColor[mode] : Atom.modesMultiColor[mode],
             Layer = AnnotationLayer.BelowSeries,
-            StrokeThickness = PorphyStruct.Core.Settings.Default.lineThickness,
+            StrokeThickness = PorphyStruct.Core.Properties.Settings.Default.lineThickness,
             Tag = a1.atom.Identifier + "," + a2.atom.Identifier
         };
 

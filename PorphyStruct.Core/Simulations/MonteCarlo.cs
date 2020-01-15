@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace PorphyStruct.Simulations
 {
-    class MonteCarlo : IParameterProvider
+    public class MonteCarlo : IParameterProvider
     {
         protected Random rnd;
         protected Macrocycle cycle;
