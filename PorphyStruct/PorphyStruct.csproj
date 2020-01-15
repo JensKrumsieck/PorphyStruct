@@ -14,10 +14,12 @@
     <PackageIconUrl />
     <RepositoryUrl>https://github.com/JensKrumsieck/PorphyStruct</RepositoryUrl>
     <FileVersion>1.0.0.6</FileVersion>
+    <ApplicationIcon>Resources\favicon(7).ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <Resource Include="Resources\Corrphycene.png" />
+    <Resource Include="Resources\porphystructlogo.png" />
     <Resource Include="Resources\Norcorrole.png" />
     <Resource Include="Resources\Porphycene.png" />
     <Resource Include="Resources\Porphyrin.png" />
