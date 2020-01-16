@@ -1,0 +1,196 @@
+﻿<Window x:Class="PorphyStruct.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PorphyStruct"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:h="http://helix-toolkit.org/wpf"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="Structural Analysis of Porphyrinoids (PorphyStruct)" Height="780" Width="1230" Loaded="Window_Loaded">
+
+    <!--Shortcut section-->
+    <Window.Resources>
+        <RoutedUICommand x:Key="Open" Text="Open" />
+        <RoutedUICommand x:Key="Save" Text="Save" />
+        <RoutedUICommand x:Key="Analyze" Text="Analyze" />
+        <RoutedUICommand x:Key="Simulate" Text="Simulate" />
+        <RoutedUICommand x:Key="Refresh" Text="Refresh" />
+        <RoutedUICommand x:Key="Normalize" Text="Normalize" />
+        <RoutedUICommand x:Key="Invert" Text="Invert" />
+    </Window.Resources>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="{StaticResource Open}" Executed="Open_Click" />
+        <CommandBinding Command="{StaticResource Save}" Executed="Save_Click" />
+        <CommandBinding Command="{StaticResource Analyze}" Executed="Analyze_Click" />
+        <CommandBinding Command="{StaticResource Simulate}" Executed="SimButton_Click" />
+        <CommandBinding Command="{StaticResource Refresh}" Executed="Refresh_Click" />
+        <CommandBinding Command="{StaticResource Invert}" Executed="InvertButton_Click" />
+        <CommandBinding Command="{StaticResource Normalize}" Executed="NormalizeButton_Click" />
+    </Window.CommandBindings>
+
+    <Window.InputBindings>
+        <KeyBinding Key="O" Modifiers="Ctrl" Command="{StaticResource Open}" />
+        <KeyBinding Key="S" Modifiers="Ctrl" Command="{StaticResource Save}" />
+        <KeyBinding Key="A" Modifiers="Ctrl" Command="{StaticResource Analyze}" />
+        <KeyBinding Key="P" Modifiers="Ctrl" Command="{StaticResource Simulate}" />
+        <KeyBinding Key="I" Modifiers="Ctrl" Command="{StaticResource Invert}" />
+        <KeyBinding Key="N" Modifiers="Ctrl" Command="{StaticResource Normalize}" />
+        <KeyBinding Key="R" Modifiers="Ctrl" Command="{StaticResource Refresh}" />
+        <KeyBinding Key="F5" Command="{StaticResource Refresh}" />
+    </Window.InputBindings>
+    <!--/Shortcut section-->
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <ToolBarTray Grid.ColumnSpan="4" Grid.Row="0">
+            <ToolBar  Style="{DynamicResource MaterialDesignToolBar}" HorizontalAlignment="Stretch">
+                <Button ToolTip="Open File (CTRL+O)" Click="Open_Click">
+                    <StackPanel>
+                        <materialDesign:PackIcon Kind="FolderOpen"  HorizontalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9">Open</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="Save File (CTRL+S)" Click="Save_Click" x:Name="SaveButton" IsEnabled="False">
+                    <StackPanel>
+                        <materialDesign:PackIcon Kind="ContentSave" HorizontalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9">Save</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Separator />
+                <Button ToolTip="Analyze Conformation (CTRL+A)" Click="Analyze_Click" IsEnabled="False" x:Name="AnalButton">
+                    <StackPanel>
+                        <materialDesign:PackIcon Kind="Flask"  HorizontalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9">Analyze</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="Compare Conformation with two other Molecules" Click="CompButton_Click" IsEnabled="False" x:Name="CompButton">
+                    <StackPanel>
+                        <materialDesign:PackIcon Kind="Compare"  HorizontalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9">Compare</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Separator />
+                <Button ToolTip="Normalize Displacements (CTRL+N)" Click="NormalizeButton_Click" x:Name="NormalizeButton" IsEnabled="False">
+                    <StackPanel>
+                        <materialDesign:PackIcon Kind="ArrowExpandVertical"  HorizontalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9">Normalize</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="Invert Displacements (CTRL+I)" Click="InvertButton_Click" x:Name="InvertButton" IsEnabled="False">
+                    <StackPanel>
+                        <materialDesign:PackIcon Kind="Contrast"  HorizontalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9">Invert</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Separator />
+                <Button ToolTip="Simulate Displacements by NSD Method (CTRL+P)" Click="SimButton_Click" x:Name="SimButton" IsEnabled="False">
+                    <StackPanel>
+                        <materialDesign:PackIcon Kind="AutoFixHigh"  HorizontalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9">Simulate</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="Show Difference" Click="DiffSimButton_Click" Name="DiffSimButton" IsEnabled="False">
+                    <StackPanel>
+                        <materialDesign:PackIcon Kind="VectorDifference"  HorizontalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9">Show Diff.</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="Delete Simulation" Click="DelSimButton_Click" x:Name="DelSimButton" IsEnabled="False">
+                    <StackPanel>
+                        <materialDesign:PackIcon Kind="DeleteForeverOutline"  HorizontalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9">Remove Sim.</TextBlock>
+                    </StackPanel>
+                </Button>
+
+                <Separator />
+                <Button ToolTip="Center Molecule to Origin" Click="CenterMolButton_Click" x:Name="CenterMolButton" IsEnabled="False">
+                    <StackPanel>
+                        <materialDesign:PackIcon Kind="ArrowCollapseAll"  HorizontalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9">Center</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="Refresh Molecule Viewer (F5 / CTRL+R)" Click="Refresh_Click" x:Name="RefMolButton" IsEnabled="False">
+                    <StackPanel>
+                        <materialDesign:PackIcon Kind="Molecule"  HorizontalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9">Refresh</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="Detect Macrocycle (experimental)" Click="Detect_Click" x:Name="DetectMolButton" IsEnabled="False">
+                    <StackPanel>
+                        <materialDesign:PackIcon Kind="TableSearch"  HorizontalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9">Detect</TextBlock>
+                    </StackPanel>
+                </Button>
+
+                <Separator />
+                <Button ToolTip="Settings" Click="SettingsButton_Click" x:Name="SettingsButton">
+                    <StackPanel>
+                        <materialDesign:PackIcon Kind="Settings"  HorizontalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9">Settings</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Separator />
+                <Button ToolTip="Information about PorphyStruct" Click="InfoButton_Click" x:Name="InfoButton">
+                    <StackPanel>
+                        <materialDesign:PackIcon Kind="InfoCircle"  HorizontalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9">About</TextBlock>
+                    </StackPanel>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+        <DataGrid Grid.Column="0" Grid.Row="1" TargetUpdated="CoordGrid_Updated" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="coordGrid" CanUserSortColumns="True" CanUserAddRows="False" ItemsSource="{Binding}" AutoGenerateColumns="False" SelectionChanged="CoordGrid_Updated">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Identifier,NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Identifier"/>
+                <DataGridCheckBoxColumn Binding="{Binding IsMacrocycle, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Is Macrocycle" SortDirection="Descending"/>
+                <DataGridTextColumn Binding="{Binding X, StringFormat=N4}" Header="X" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Y, StringFormat=N4}" Header="Y" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Z, StringFormat=N4}" Header="Z" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <oxy:PlotView x:Name="displaceView" Grid.Column="1" Grid.Row="1" Grid.RowSpan="1">
+            <oxy:PlotView.Background>
+                <ImageBrush ImageSource="Resources/porphystructlogo.png" Stretch="None"/>
+            </oxy:PlotView.Background>
+        </oxy:PlotView>
+        <h:HelixViewport3D Grid.Column="2" Grid.Row="1" x:Name="MolViewer" ShowViewCube="False" ShowCoordinateSystem="True" ZoomExtentsWhenLoaded="True">
+            <h:DefaultLights/>
+        </h:HelixViewport3D>
+        <WrapPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" x:Name="simStack" Margin="10"/>
+        <Grid Grid.Row="2" Grid.Column="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3.5*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="DistTB"  Grid.Row="1" Grid.Column="3"  TextWrapping="Wrap" Text="0" VerticalAlignment="Top"  IsReadOnly="True"/>
+            <TextBox x:Name="UnitVecTB" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" Text="(0,0,0)" VerticalAlignment="Top" IsReadOnly="True" />
+            <Label Content="Unit Vector" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label Content="Distance" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label Content="Current mean plane:" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Top" FontWeight="Bold"/>
+        </Grid>
+    </Grid>
+</Window>
