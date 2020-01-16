@@ -49,10 +49,7 @@ namespace PorphyStruct.Chemistry
             {
                 string line = export[0].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).atom.Identifier + ";";
                 line += export[0].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).X + ";";
-                for (int j = 0; j < export.Count; j++)
-                {
-                    line += export[j].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).Y + ";";
-                }
+                for (int j = 0; j < export.Count; j++) line += export[j].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).Y + ";";
                 sw.WriteLine(line);
             }
         }
