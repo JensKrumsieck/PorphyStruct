@@ -1,5 +1,4 @@
 ﻿using OxyPlot;
-using OxyPlot.Core.Drawing;
 using OxyPlot.Reporting;
 using System.Collections.Generic;
 using System.IO;
@@ -11,22 +10,18 @@ namespace PorphyStruct.Chemistry
     public static class MacrocycleExporter
     {
         /// <summary>
-        /// Saves the Graph of a given PlotModel
+        /// Exports Graph into file with given exporter
+        /// neccessary becaus for quality reasons we need wpf exporters... :/
         /// </summary>
         /// <param name="pm"></param>
+        /// <param name="cycle"></param>
         /// <param name="filename"></param>
+        /// <param name="exporter"></param>
         /// <param name="extension"></param>
-        public static void SaveGraph(this PlotModel pm, Macrocycle cycle, string filename, string extension = "png")
+        public static void ExportGraph(this PlotModel pm, Macrocycle cycle, string filename, IExporter exporter, string extension = "png")
         {
-            pm = MacrocycleExporter.ExportModel(pm, cycle.Bonds.Count);
-
-            //exports png
-            if (extension == "png")
-                PngExporter.Export(pm, filename + "Analysis.png", PorphyStruct.Core.Properties.Settings.Default.pngWidth, PorphyStruct.Core.Properties.Settings.Default.pngHeight, OxyColors.Transparent, PorphyStruct.Core.Properties.Settings.Default.pngRes);
-
-            //exports svg
-            if (extension == "svg")
-                using (var svg = File.Create(filename + "Analysis.svg")) SvgExporter.Export(pm, svg, PorphyStruct.Core.Properties.Settings.Default.pngWidth, PorphyStruct.Core.Properties.Settings.Default.pngHeight, true);
+            pm = ExportModel(pm, cycle.Bonds.Count);
+            using (var file = File.Create(filename + "Analysis." + extension)) exporter.Export(pm, file);
         }
 
         /// <summary>

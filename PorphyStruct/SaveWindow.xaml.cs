@@ -76,8 +76,9 @@ namespace PorphyStruct
             {
                 switch (t.Title)
                 {
-                    case "Graph":
-                        Model.SaveGraph(Cycle, Filename, t.Extension);
+                    case "Graph": //Use WPF Exporters here as the quality is better (at this time) than the OxyPlot.Core.Drawing implementation... So Exporting is still Windows dependent.
+                        if(t.Extension == "png") Model.ExportGraph(Cycle, Filename, new PngExporter() { Height = Core.Properties.Settings.Default.pngHeight, Width = Core.Properties.Settings.Default.pngWidth, Resolution = Core.Properties.Settings.Default.pngRes, Background = OxyColors.Transparent }, t.Extension);
+                        if(t.Extension == "svg") Model.ExportGraph(Cycle, Filename, new OxyPlot.Wpf.SvgExporter() { Height = Core.Properties.Settings.Default.pngHeight, Width = Core.Properties.Settings.Default.pngWidth}, t.Extension);
                         break;
                     case "ASCII":
                         Model.SaveASCII(Filename);

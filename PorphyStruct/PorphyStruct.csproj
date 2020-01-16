@@ -18,14 +18,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Corrole.png" />
     <Resource Include="Resources\Corrphycene.png" />
     <Resource Include="Resources\porphystructlogo.png" />
     <Resource Include="Resources\Norcorrole.png" />
     <Resource Include="Resources\Porphycene.png" />
     <Resource Include="Resources\Porphyrin.png" />
-    <Resource Include="Resources\porphystructlogo.png" />
-    <Resource Include="Resources\corr.png" />
-    <Resource Include="Resources\Corrole.png" />
   </ItemGroup>
 
   <ItemGroup>

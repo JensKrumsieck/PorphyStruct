@@ -110,9 +110,9 @@ namespace PorphyStruct.Core.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("300")]
-        public int pngRes {
+        public double pngRes {
             get {
-                return ((int)(this["pngRes"]));
+                return ((double)(this["pngRes"]));
             }
             set {
                 this["pngRes"] = value;

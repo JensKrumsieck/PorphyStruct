@@ -23,7 +23,7 @@
     <Setting Name="pngHeight" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1000</Value>
     </Setting>
-    <Setting Name="pngRes" Type="System.Int32" Scope="User">
+    <Setting Name="pngRes" Type="System.Double" Scope="User">
       <Value Profile="(Default)">300</Value>
     </Setting>
     <Setting Name="zero" Type="System.Boolean" Scope="User">
