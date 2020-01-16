@@ -65,10 +65,7 @@ namespace PorphyStruct.Util
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static List<AtomDataPoint> Invert(this List<AtomDataPoint> data)
-        {
-            return Factor(data, -1).ToList();
-        }
+        public static List<AtomDataPoint> Invert(this List<AtomDataPoint> data) => Factor(data, -1).ToList();
 
         /// <summary>
         /// multiply by given factor
