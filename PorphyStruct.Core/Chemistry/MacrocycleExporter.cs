@@ -21,7 +21,8 @@ namespace PorphyStruct.Chemistry
         public static void ExportGraph(this PlotModel pm, Macrocycle cycle, string filename, IExporter exporter, string extension = "png")
         {
             pm = ExportModel(pm, cycle.Bonds.Count);
-            using (var file = File.Create(filename + "Analysis." + extension)) exporter.Export(pm, file);
+            using var file = File.Create(filename + "Analysis." + extension);
+            exporter.Export(pm, file);
         }
 
         /// <summary>
@@ -40,21 +41,19 @@ namespace PorphyStruct.Chemistry
             foreach (OxyPlot.Series.Series s in export) title += s.Title + ";";
 
             //write data
-            using (StreamWriter sw = new StreamWriter(filename + "Data." + extension))
-            {
-                sw.WriteLine(title);
+            using StreamWriter sw = new StreamWriter(filename + "Data." + extension);
+            sw.WriteLine(title);
 
-                //write data
-                for (int i = 0; i < export[0].ItemsSource.OfType<AtomDataPoint>().Count(); i++)
+            //write data
+            for (int i = 0; i < export[0].ItemsSource.OfType<AtomDataPoint>().Count(); i++)
+            {
+                string line = export[0].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).atom.Identifier + ";";
+                line += export[0].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).X + ";";
+                for (int j = 0; j < export.Count; j++)
                 {
-                    string line = export[0].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).atom.Identifier + ";";
-                    line += export[0].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).X + ";";
-                    for (int j = 0; j < export.Count; j++)
-                    {
-                        line += export[j].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).Y + ";";
-                    }
-                    sw.WriteLine(line);
+                    line += export[j].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).Y + ";";
                 }
+                sw.WriteLine(line);
             }
         }
 
@@ -70,14 +69,10 @@ namespace PorphyStruct.Chemistry
             var export = cycle.Atoms.AsEnumerable();
             if (CycleOnly) export = cycle.Atoms.Where(s => s.IsMacrocycle);
 
-            using (StreamWriter sw = new StreamWriter(filename))
-            {
-                sw.WriteLine(export.Count());
-
-                sw.WriteLine(filename);
-
-                foreach (Atom a in export) sw.WriteLine(a.ExportText);
-            }
+            using StreamWriter sw = new StreamWriter(filename);
+            sw.WriteLine(export.Count());
+            sw.WriteLine(filename);
+            foreach (Atom a in export) sw.WriteLine(a.ExportText);
         }
 
         /// <summary>
@@ -125,17 +120,10 @@ namespace PorphyStruct.Chemistry
                 if (!s.IsVisible)
                 {
                     int index = pm.Series.IndexOf(s);
-                    for (int i = index * bonds; i < (index * bonds) + bonds; i++)
-                    {
-                        annotations.Add(pm.Annotations[i]);
-                    }
+                    for (int i = index * bonds; i < (index * bonds) + bonds; i++) annotations.Add(pm.Annotations[i]);
                 }
             }
-            foreach (OxyPlot.Annotations.Annotation a in annotations)
-            {
-                pm.Annotations.Remove(a);
-            }
-
+            foreach (OxyPlot.Annotations.Annotation a in annotations) pm.Annotations.Remove(a);
             return pm;
         }
 
