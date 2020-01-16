@@ -77,8 +77,8 @@ namespace PorphyStruct
                 switch (t.Title)
                 {
                     case "Graph": //Use WPF Exporters here as the quality is better (at this time) than the OxyPlot.Core.Drawing implementation... So Exporting is still Windows dependent.
-                        if(t.Extension == "png") Model.ExportGraph(Cycle, Filename, new PngExporter() { Height = Core.Properties.Settings.Default.pngHeight, Width = Core.Properties.Settings.Default.pngWidth, Resolution = Core.Properties.Settings.Default.pngRes, Background = OxyColors.Transparent }, t.Extension);
-                        if(t.Extension == "svg") Model.ExportGraph(Cycle, Filename, new OxyPlot.Wpf.SvgExporter() { Height = Core.Properties.Settings.Default.pngHeight, Width = Core.Properties.Settings.Default.pngWidth}, t.Extension);
+                        if (t.Extension == "png") Model.ExportGraph(Cycle, Filename, new PngExporter() { Height = Core.Properties.Settings.Default.pngHeight, Width = Core.Properties.Settings.Default.pngWidth, Resolution = Core.Properties.Settings.Default.pngRes, Background = OxyColors.Transparent }, t.Extension);
+                        if (t.Extension == "svg") Model.ExportGraph(Cycle, Filename, new OxyPlot.Wpf.SvgExporter() { Height = Core.Properties.Settings.Default.pngHeight, Width = Core.Properties.Settings.Default.pngWidth }, t.Extension);
                         break;
                     case "ASCII":
                         Model.SaveASCII(Filename);
@@ -110,24 +110,24 @@ namespace PorphyStruct
         /// <param name="Extension"></param>
         private void SaveReport(string Extension)
         {
-           /** string Filename = this.Filename + "Report." + Extension;
-            Report r = SaveReport();
-            if (Extension == "docx")
-            {
-                using (var w = new WordDocumentReportWriter(Filename))
-                {
-                    w.WriteReport(r, MacrocycleExporter.ReportStyle);
-                    w.Save();
-                }
-            }
-            if (Extension == "pdf")
-            {
-                using (var w = new PdfReportWriter(Filename))
-                {
-                    w.WriteReport(r, MacrocycleExporter.ReportStyle);
-                }
+            /** string Filename = this.Filename + "Report." + Extension;
+             Report r = SaveReport();
+             if (Extension == "docx")
+             {
+                 using (var w = new WordDocumentReportWriter(Filename))
+                 {
+                     w.WriteReport(r, MacrocycleExporter.ReportStyle);
+                     w.Save();
+                 }
+             }
+             if (Extension == "pdf")
+             {
+                 using (var w = new PdfReportWriter(Filename))
+                 {
+                     w.WriteReport(r, MacrocycleExporter.ReportStyle);
+                 }
 
-            }**/
+             }**/
         }
 
 
@@ -139,7 +139,7 @@ namespace PorphyStruct
         private Report SaveReport()
         {
             string type = Application.Current.Windows.OfType<MainWindow>().First().type.ToString().ToLower();
-            Report report = new Report()  { Title = "Analysis" };
+            Report report = new Report() { Title = "Analysis" };
             ReportSection main = new ReportSection();
             report.AddHeader(1, "Conformational analysis " + NameTB.Text);
             report.Add(main);

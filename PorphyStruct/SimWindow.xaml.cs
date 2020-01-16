@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using OxyPlot;
+﻿using OxyPlot;
 using OxyPlot.Series;
 using PorphyStruct.Chemistry;
 using PorphyStruct.Simulations;

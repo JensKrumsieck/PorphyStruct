@@ -58,7 +58,7 @@ namespace PorphyStruct.Chemistry
 
                 //adjust core to N1->N4
                 if (atom.Type == "N")
-                     if (atom.ID >= 21 && atom.ID <= 24)
+                    if (atom.ID >= 21 && atom.ID <= 24)
                         atom.Identifier = "N" + (atom.ID - 20) + atom.Suffix;
 
                 //remove suffix if suffix is A (primary). Maybe suffix selection in future

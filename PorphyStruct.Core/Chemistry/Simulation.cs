@@ -51,7 +51,7 @@ namespace PorphyStruct.Chemistry
                 cycle.dataPoints = cycle.dataPoints.Normalize();
                 isNormalized = true;
             }
-            else if(!normalize && isNormalized)
+            else if (!normalize && isNormalized)
             {
                 cycle.dataPoints = cycle.dataPoints.Factor(1 / factor).ToList();
                 isNormalized = false;
@@ -63,12 +63,12 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         public void Invert(bool invert)
         {
-            if(!isInverted && invert)
+            if (!isInverted && invert)
             {
                 cycle.dataPoints = cycle.dataPoints.Invert();
                 isInverted = true;
             }
-            else if(isInverted && !invert)
+            else if (isInverted && !invert)
             {
                 cycle.dataPoints = cycle.dataPoints.Invert();
                 isInverted = false;

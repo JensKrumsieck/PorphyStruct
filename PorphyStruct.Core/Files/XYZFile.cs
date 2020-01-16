@@ -31,18 +31,18 @@ namespace PorphyStruct.Files
                 if (i > 1 && !String.IsNullOrEmpty(Lines[i]))
                 {
                     string[] xyzLine = Lines[i].Split(new[] { " ", "\t" }, StringSplitOptions.None).Where(j => !string.IsNullOrEmpty(j)).ToArray();
-                    Atom a = new Atom((IXYZ ? xyzLine[0].Split('/')[0] : xyzLine[0]), 
-                        Convert.ToDouble(xyzLine[1], CultureInfo.InvariantCulture), 
-                        Convert.ToDouble(xyzLine[2], CultureInfo.InvariantCulture), 
+                    Atom a = new Atom((IXYZ ? xyzLine[0].Split('/')[0] : xyzLine[0]),
+                        Convert.ToDouble(xyzLine[1], CultureInfo.InvariantCulture),
+                        Convert.ToDouble(xyzLine[2], CultureInfo.InvariantCulture),
                         Convert.ToDouble(xyzLine[3], CultureInfo.InvariantCulture));
                     if (IXYZ)
-                        a.Element = Element.Create(xyzLine[0].Split('/')[1]); 
+                        a.Element = Element.Create(xyzLine[0].Split('/')[1]);
                     molecule.Atoms.Add(a);
                 }
             }
             //if is iXYZ the identifier is set correctly (hopefully!)
             if (!IXYZ) molecule = GuessIdentifiers(molecule);
-            
+
             return molecule;
         }
 

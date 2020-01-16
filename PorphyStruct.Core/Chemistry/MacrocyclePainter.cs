@@ -41,8 +41,8 @@ namespace PorphyStruct.Chemistry
                 series.MarkerFill = Atom.modesSingleColor[(int)mode];
             //add series
 
-            if(!PorphyStruct.Core.Properties.Settings.Default.singleColor)  pm.Axes.Add(ColorAxis(cycle.dataPoints));
-            else series.MarkerFill = Atom.modesSingleColor[(int) mode];
+            if (!PorphyStruct.Core.Properties.Settings.Default.singleColor) pm.Axes.Add(ColorAxis(cycle.dataPoints));
+            else series.MarkerFill = Atom.modesSingleColor[(int)mode];
 
             pm.Series.Add(series);
 

@@ -32,6 +32,6 @@ namespace PorphyStruct.Windows
         /// Converts Atom to simple Point3D
         /// </summary>
         /// <returns></returns>
-        public static Point3D ToPoint3D(this Atom a) => new  Point3D(a.X, a.Y, a.Z);
+        public static Point3D ToPoint3D(this Atom a) => new Point3D(a.X, a.Y, a.Z);
     }
 }

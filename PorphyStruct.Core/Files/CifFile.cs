@@ -56,7 +56,7 @@ namespace PorphyStruct.Files
             foreach (string l in Lines)
             {
                 //everythin starts \w underscore
-                if (l.StartsWith("_"+ type))
+                if (l.StartsWith("_" + type))
                 {
                     string value = l.Split(' ').Last().Split('(')[0];
                     yield return Convert.ToDouble(value, System.Globalization.CultureInfo.InvariantCulture);

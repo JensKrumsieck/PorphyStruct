@@ -51,7 +51,7 @@ namespace PorphyStruct.Chemistry.Macrocycles
         {
             Atom C1 = null;
             //loop alpha atoms
-            foreach(var atom in Vertex3Atoms(cycle))
+            foreach (var atom in Vertex3Atoms(cycle))
             {
                 if (Neighbors(atom, cycle).Where(l => Vertex3Atoms(cycle).Contains(l)).Count() != 0) C1 = atom;
             }

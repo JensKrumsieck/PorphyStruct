@@ -40,7 +40,7 @@ namespace PorphyStruct.Chemistry.Macrocycles
         /// X-Coordinate Multiplier
         /// </summary>
         public override Dictionary<string, double> Multiplier => Porphyrin._Multiplier;
-        
+
         /// <summary>
         /// Norcorroles Dihedrals
         /// </summary>

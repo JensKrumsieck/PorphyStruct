@@ -73,9 +73,9 @@ namespace PorphyStruct.Util
         {
             visited.Add(start);
             if (localPaths.Count == 0) localPaths.Add(start);
-            if (start.Equals(end) && localPaths.Count() == length) BuildPath(localPaths, output) ;
+            if (start.Equals(end) && localPaths.Count() == length) BuildPath(localPaths, output);
 
-            foreach(var node in func(start))
+            foreach (var node in func(start))
             {
                 if (!visited.Contains(node))
                 {

@@ -1,7 +1,5 @@
 ﻿using PorphyStruct.Chemistry;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace PorphyStruct.Simulations
 {
@@ -35,7 +33,7 @@ namespace PorphyStruct.Simulations
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static List<SimParam> ListParameters (Macrocycle.Type type)
+        public static List<SimParam> ListParameters(Macrocycle.Type type)
         {
             List<SimParam> param = new List<SimParam>
             {

@@ -33,8 +33,8 @@ namespace PorphyStruct.OxyPlotOverride
         {
             byte alpha = (byte)((mode == 0) ? byte.MaxValue : (mode == 2) ? 50 : 75);
             AddRange(
-                (value + (1000 * mode)) - min, 
-                (value + (1000 * mode)) + max, 
+                (value + (1000 * mode)) - min,
+                (value + (1000 * mode)) + max,
                 OxyColor.FromAColor(alpha, dp.atom.OxyColor));
         }
     }
