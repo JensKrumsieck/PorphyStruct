@@ -16,10 +16,7 @@ namespace PorphyStruct.Util
         /// <returns></returns>
         public static IEnumerable<Point3D> ToPoint3D(this IEnumerable<Atom> Atoms)
         {
-            foreach (Atom atom in Atoms)
-            {
-                yield return new Point3D(atom.X, atom.Y, atom.Z);
-            }
+            foreach (Atom atom in Atoms) yield return new Point3D(atom.X, atom.Y, atom.Z);
         }
 
         /// <summary>
@@ -81,10 +78,7 @@ namespace PorphyStruct.Util
         /// <returns></returns>
         public static IEnumerable<AtomDataPoint> Factor(this List<AtomDataPoint> data, double fac)
         {
-            foreach (AtomDataPoint dp in data)
-            {
-                yield return new AtomDataPoint(dp.X, dp.Y / fac, dp.atom);
-            }
+            foreach (AtomDataPoint dp in data) yield return new AtomDataPoint(dp.X, dp.Y / fac, dp.atom);
         }
 
         /// <summary>
