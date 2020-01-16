@@ -1,4 +1,4 @@
-<img src="https://github.com/JensKrumsieck/PorphyStruct/blob/master/Resources/porphystructlogo.png" alt="logo" width="128"/>
+<img src="https://github.com/JensKrumsieck/PorphyStruct/blob/master/PorphyStruct/Resources/porphystructlogo.png" alt="logo" width="128"/>
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/cbc210753b3ef4d72b50/maintainability)](https://codeclimate.com/github/JensKrumsieck/PorphyStruct/maintainability)
 [![Build Status](https://dev.azure.com/jenskrumsieck/jenskrumsieck/_apis/build/status/JensKrumsieck.PorphyStruct?branchName=master)](https://dev.azure.com/jenskrumsieck/jenskrumsieck/_build/latest?definitionId=1&branchName=master)
