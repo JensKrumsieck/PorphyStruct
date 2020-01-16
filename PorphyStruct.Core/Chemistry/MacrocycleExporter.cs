@@ -31,7 +31,7 @@ namespace PorphyStruct.Chemistry
         /// <param name="pm"></param>
         /// <param name="filename"></param>
         /// <param name="extension"></param>
-        public static void SaveASCII(this PlotModel pm, string filename, string extension = ".dat")
+        public static void SaveASCII(this PlotModel pm, string filename, string extension = "dat")
         {
             var export = new List<OxyPlot.Series.ScatterSeries>();
             foreach (OxyPlot.Series.ScatterSeries s in pm.Series) export.Add(s);
