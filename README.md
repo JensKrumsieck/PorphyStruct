@@ -33,7 +33,7 @@ Due to the large number of correlations found for porphyrins, a transfer of this
 * Ablility to import and export various file types
 
 ## People
-<img src="https://avatars3.githubusercontent.com/u/4296194?s=24&v=4" alt="" style="border-radius: 24px;" /> [Jens Krumsieck](https://jenskrumsieck.github.io/)
+[Jens Krumsieck](https://jenskrumsieck.github.io/)
 
 [Martin Bröring](https://www.tu-braunschweig.de/iaac/personal/prof-dr-m-broering)
 
