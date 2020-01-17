@@ -32,11 +32,6 @@ Due to the large number of correlations found for porphyrins, a transfer of this
 * Comparison of Structures and further structural analysis.
 * Ablility to import and export various file types
 
-## People
-[Jens Krumsieck](https://jenskrumsieck.github.io/)
-
-[Martin Bröring](https://www.tu-braunschweig.de/iaac/personal/prof-dr-m-broering)
-
 ### Used Libraries
 * [OxyPlot](https://github.com/oxyplot/oxyplot) by Oystein Bjorke (MIT License)
 * [Math.NET](https://www.mathdotnet.com/)(Numerics/Spatial) (MIT/X11 License)
