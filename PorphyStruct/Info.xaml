@@ -49,8 +49,6 @@
                 <Hyperlink NavigateUri="https://www.mathdotnet.com/" RequestNavigate="Hyperlink_RequestNavigate">Math.Net (Numerics/Spatial)</Hyperlink> (MIT/X11 License)<LineBreak />
                 <Hyperlink NavigateUri="http://helix-toolkit.github.io/" RequestNavigate="Hyperlink_RequestNavigate">Helix Toolkit</Hyperlink> (MIT License)<LineBreak />
                 <Hyperlink NavigateUri="https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit" RequestNavigate="Hyperlink_RequestNavigate">MaterialDesign in XAML Toolkit</Hyperlink> (MIT License)<LineBreak />
-                <Hyperlink NavigateUri="https://github.com/Fody/Fody" RequestNavigate="Hyperlink_RequestNavigate">Fody</Hyperlink> (MIT License)<LineBreak/>
-                <Hyperlink NavigateUri="https://github.com/Fody/Costura" RequestNavigate="Hyperlink_RequestNavigate">Fody.Costura</Hyperlink> (MIT License)<LineBreak/>
         </TextBlock>
 
     </Grid>
