@@ -37,7 +37,7 @@ namespace PorphyStruct.Core.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool xAxis {
             get {
                 return ((bool)(this["xAxis"]));
@@ -49,7 +49,7 @@ namespace PorphyStruct.Core.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.5")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public double lineThickness {
             get {
                 return ((double)(this["lineThickness"]));
@@ -121,7 +121,7 @@ namespace PorphyStruct.Core.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool zero {
             get {
                 return ((bool)(this["zero"]));

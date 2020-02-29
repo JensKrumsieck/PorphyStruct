@@ -6,10 +6,10 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="xAxis" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="lineThickness" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">1.5</Value>
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="defaultFontSize" Type="System.Double" Scope="User">
       <Value Profile="(Default)">14</Value>
@@ -27,7 +27,7 @@
       <Value Profile="(Default)">300</Value>
     </Setting>
     <Setting Name="zero" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="minX" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
