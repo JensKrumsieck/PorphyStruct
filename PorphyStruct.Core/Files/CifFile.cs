@@ -32,7 +32,7 @@ namespace PorphyStruct.Files
             string moleculeLoop = Array.Find(loops, s => s.Contains("_atom_site_label"));
 
             List<string[]> data = new List<string[]>();
-            int headers = moleculeLoop.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None).Count(s => s.StartsWith("_"));
+            int headers = moleculeLoop.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None).Count(s => s.Trim().StartsWith("_"));
             //loop through lines
             foreach (string line in moleculeLoop.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None))
             {
