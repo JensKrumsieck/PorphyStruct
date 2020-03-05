@@ -1,0 +1,160 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:PorphyStruct.Styles"                   
+                    x:Class="PorphyStruct.Styles.DefaultWindow">
+    <SolidColorBrush x:Key="TitleBackgroundBrush" Color="#3C3C3C" />
+    <SolidColorBrush x:Key="BorderBrush" Color="#898989" />
+    <SolidColorBrush x:Key="TitleBackgroundBrushInactive" Color="#323233" />
+    <SolidColorBrush x:Key="TitleForegroundBrush" Color="#ffffff" />
+
+    <Style x:Key="TitleBarButton" TargetType="{x:Type Button}">
+        <Setter Property="Focusable" Value="false" />
+        <Setter Property="Foreground" Value="{StaticResource TitleForegroundBrush}"/>
+        <Setter Property="Width" Value="42" />
+        <Setter Property="Height" Value="34" />
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Border
+                            x:Name="Border"
+                            Background="Transparent"
+                            />
+                        <ContentPresenter />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource BorderBrush}" />
+                            <Setter TargetName="Border" Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="DefaultWindowStyle" TargetType="{x:Type Window}">
+        <Setter Property="AllowsTransparency" Value="True" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="WindowStyle" Value="None" />
+        <Setter Property="ResizeMode" Value="CanResizeWithGrip" />
+        <Setter Property="WindowChrome.WindowChrome">
+            <Setter.Value>
+                <WindowChrome
+                    NonClientFrameEdges="None"
+                    GlassFrameThickness="0"
+                    ResizeBorderThickness="7"
+                    CaptionHeight="32"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Window}">
+                    <Border x:Name="Container" Padding="7 7 7 5">
+                        <Grid 
+                            TextOptions.TextRenderingMode="ClearType"
+                            TextOptions.TextFormattingMode="Display">
+                            <Border
+                                x:Name="Border"
+                                Width="Auto"
+                                Height="Auto"
+                                BorderBrush="{StaticResource BorderBrush}"
+                                Background="#FFFFFF"
+                                BorderThickness="1"
+                                Padding="0">
+                                <DockPanel
+                                    HorizontalAlignment="Stretch"
+                                    Background="Transparent"
+                                    VerticalAlignment="Stretch">
+                                    <Border x:Name="TitleBar"
+                                            DockPanel.Dock="Top" 
+                                            Background="{StaticResource TitleBackgroundBrush}"
+                                            BorderThickness="0">
+                                        <!--Buttons-->
+                                        <Grid Height="32">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="36"/>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="42"/>
+                                                <ColumnDefinition Width="42"/>
+                                                <ColumnDefinition Width="42"/>
+                                            </Grid.ColumnDefinitions>
+                                                    <!--MouseUp="IconMouseUp"
+                                                   MouseLeftButtonDown="IconMouseLeftButtonDown"-->
+                                            <Image x:Name="Icon" 
+                                                   Grid.Column="0" 
+                                                   Source="/Resources/favicon-32x32.png" 
+                                                   HorizontalAlignment="Right"
+                                                   Width="24"
+                                                   Height="24"
+                                                   WindowChrome.IsHitTestVisibleInChrome="True"/>
+                                            <TextBlock
+                                                x:Name="Title"
+                                                Foreground="{StaticResource TitleForegroundBrush}"
+                                                Grid.Column="2"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"
+                                                Margin="4,0,0,0"
+                                                FontFamily="Segoe UI"
+                                                FontSize="12"
+                                                Opacity="0.66"
+                                                Text="{Binding Path=Title, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                            />
+                                            <Button
+                                                Style="{StaticResource TitleBarButton}"
+                                                x:Name="Minimize"
+                                                Grid.Column="3"
+                                                >
+                                                <Grid MaxHeight="12" MaxWidth="12">
+                                                    <Line 
+                                                        Stroke="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                                        StrokeThickness="1"
+                                                        Stretch="None"
+                                                        RenderOptions.EdgeMode="Aliased"
+                                                        X1="0" X2="12" Y1="9" Y2="9"
+                                                        />
+                                                </Grid>
+                                            </Button>
+                                            <Button 
+                                                Style="{StaticResource TitleBarButton}"
+                                                x:Name="Maximize"
+                                                Grid.Column="4">
+                                                <Grid MaxHeight="11" MaxWidth="11">
+                                                    <Path
+                                                    x:Name="PART_MaxButton_Path"
+                                                    Stroke="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                                    StrokeThickness="1"
+                                                    Stretch="None"
+                                                    RenderOptions.EdgeMode="Aliased"
+                                                    Data="M0,0 V10 H10 V0 H0 V10"
+                                                    />
+                                                </Grid>
+                                            </Button>
+                                            <Button
+                                                Style="{StaticResource TitleBarButton}"
+                                                x:Name="Close"
+                                                Grid.Column="5">
+                                                <Grid MaxHeight="12" MaxWidth="12">
+                                                    <Path
+                                                    Stroke="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                                    StrokeThickness="1.5"
+                                                    Stretch="None"
+                                                    Data="M0,0 L11,11 M0,11 L11,0"
+                                                    />
+                                                </Grid>
+                                            </Button>
+                                        </Grid>
+                                    </Border>
+                                    <ContentPresenter />
+                                </DockPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

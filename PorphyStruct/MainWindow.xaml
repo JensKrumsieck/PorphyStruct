@@ -15,6 +15,7 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
+        Style="{StaticResource DefaultWindowStyle}"
         Title="Structural Analysis of Porphyrinoids (PorphyStruct)" Height="780" Width="1230" Loaded="Window_Loaded">
 
     <!--Shortcut section-->
@@ -61,7 +62,7 @@
             <RowDefinition Height="10*" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
-        <ToolBarTray Grid.ColumnSpan="4" Grid.Row="0">
+        <ToolBarTray Grid.ColumnSpan="4" Grid.Row="0" Style="{DynamicResource MaterialDesignToolBarTray}">
             <ToolBar  Style="{DynamicResource MaterialDesignToolBar}" HorizontalAlignment="Stretch">
                 <Button ToolTip="Open File (CTRL+O)" Click="Open_Click">
                     <StackPanel>
@@ -157,7 +158,7 @@
                 </Button>
             </ToolBar>
         </ToolBarTray>
-        <DataGrid Grid.Column="0" Grid.Row="1" TargetUpdated="CoordGrid_Updated" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="coordGrid" CanUserSortColumns="True" CanUserAddRows="False" ItemsSource="{Binding}" AutoGenerateColumns="False" SelectionChanged="CoordGrid_Updated">
+        <DataGrid Grid.Column="0" Grid.Row="1" TargetUpdated="CoordGrid_Updated" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="coordGrid" CanUserSortColumns="True" CanUserAddRows="False" ItemsSource="{Binding}" AutoGenerateColumns="False" SelectionChanged="CoordGrid_Updated" Style="{DynamicResource MaterialDesignDataGrid}">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Identifier,NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Identifier"/>
                 <DataGridCheckBoxColumn Binding="{Binding IsMacrocycle, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Is Macrocycle" SortDirection="Descending"/>
