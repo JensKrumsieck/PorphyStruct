@@ -44,7 +44,7 @@ namespace PorphyStruct
 
             this.Model = Application.Current.Windows.OfType<MainWindow>().First().displaceView.Model;
             //reanalyze
-            if (Application.Current.Windows.OfType<MainWindow>().First().normalize && !(Model == null || Model.Series.Count == 0))
+            if (Application.Current.Windows.OfType<MainWindow>().First().Normalize && !(Model == null || Model.Series.Count == 0))
             {
                 Application.Current.Windows.OfType<MainWindow>().First().NormalizeButton_Click(null, null);
                 this.Model = Application.Current.Windows.OfType<MainWindow>().First().displaceView.Model;

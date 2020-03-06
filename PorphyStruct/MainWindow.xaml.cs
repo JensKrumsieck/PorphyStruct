@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -19,27 +20,77 @@ namespace PorphyStruct
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         public Macrocycle cycle;
         private Macrocycle old;
         public double normFac = 0;
         private int oldIndex = -1;
+        private bool _hasDifference, _invert, _normalize;
 
-        public bool normalize, hasDifference, invert;
+        /// <summary>
+        /// Handles Normalisation
+        /// </summary>
+        public bool Normalize
+        {
+            get => _normalize;
+            set {
+                _normalize = value;
+                NotifyPropertyChanged(nameof(Normalize));
+            }
+        }
+
+        /// <summary>
+        /// Handles Invert
+        /// </summary>
+        public bool Invert
+        {
+            get => _invert;
+            set
+            {
+                _invert = value;
+                NotifyPropertyChanged(nameof(Invert));
+            }
+        }
+
+        /// <summary>
+        /// Handles Difference
+        /// </summary>
+        public bool HasDifference
+        {
+            get => _hasDifference;
+            set
+            {
+                _hasDifference = value;
+            }
+        }
+
+        public bool HasComparison => !string.IsNullOrEmpty(comp1Path) || !string.IsNullOrEmpty(comp2Path);
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")=> PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         public Simulation simulation = null;
         public Macrocycle.Type type = Macrocycle.Type.Corrole;
 
         public string comp1Path, comp2Path, path;
+        public string FileName {
+            get => (string)GetValue(FileNameProperty);
+            set => SetValue(FileNameProperty, value);
+        }
 
-        public MainWindow() => InitializeComponent();
+        public static DependencyProperty FileNameProperty = DependencyProperty.Register("FileName", typeof(string), typeof(MainWindow));
+
+        public MainWindow()
+        {
+            InitializeComponent();
+            DataContext = this;
+        }
 
         /// <summary>
         /// Analyze current Macrocycle and print result to PlotView
         /// </summary>
-        public void Analyze()
-        {
+        public void Analyze() {
             //set up default plot model
             OxyPlotOverride.StandardPlotModel pm = new OxyPlotOverride.StandardPlotModel();
 
@@ -47,23 +98,23 @@ namespace PorphyStruct
             cycle.GetDataPoints();
 
             //normalisation
-            if (normalize)
+            if (Normalize)
             {
                 normFac = MathUtil.GetNormalizationFactor(cycle.dataPoints);
                 cycle.dataPoints = cycle.dataPoints.Normalize();
             }
             //invert
-            if (invert) cycle.dataPoints = cycle.dataPoints.Invert();
+            if (Invert) cycle.dataPoints = cycle.dataPoints.Invert();
 
             //handle sim
             if (simulation != null)
             {
-                simulation.Normalize(normalize, normFac);
-                simulation.Invert(invert);
+                simulation.Normalize(Normalize, normFac);
+                simulation.Invert(Invert);
                 simulation.Paint(pm);
             }
             //paint difference
-            if (hasDifference) cycle.GetDifference(simulation).Paint(pm, "Diff");
+            if (HasDifference) cycle.GetDifference(simulation).Paint(pm, "Diff");
             //paint comparison
             if (!String.IsNullOrEmpty(comp1Path)) CompareWindow.GetData(comp1Path).Paint(pm, "Com1");
             if (!String.IsNullOrEmpty(comp2Path)) CompareWindow.GetData(comp2Path).Paint(pm, "Com2");
@@ -74,7 +125,7 @@ namespace PorphyStruct
             foreach (ScatterSeries s in pm.Series) ((List<AtomDataPoint>)s.ItemsSource).Where(dp => Core.Properties.Settings.Default.dontMark.Split(',').Contains(dp.atom.Identifier) || Core.Properties.Settings.Default.dontMark.Split(',').Contains(dp.atom.Type)).ToList().ForEach(dp => dp.Size = 0);
 
             displaceView.Model = pm;
-            pm.Scale(pm.yAxis, true, normalize);
+            pm.Scale(pm.yAxis, true, Normalize);
             pm.Scale(pm.xAxis);
             //update simstack
             UpdateStack();
@@ -194,8 +245,7 @@ namespace PorphyStruct
 
                 //reset gui elements
                 AnalButton.IsEnabled = RefMolButton.IsEnabled = CenterMolButton.IsEnabled = DetectMolButton.IsEnabled = NormalizeButton.IsEnabled = InvertButton.IsEnabled = SaveButton.IsEnabled = SimButton.IsEnabled = CompButton.IsEnabled = true;
-                normalize = invert = hasDifference = DelSimButton.IsEnabled = DiffSimButton.IsEnabled = false;
-                NormalizeButton.Foreground = InvertButton.Foreground = DiffSimButton.Foreground = CompButton.Foreground = Brushes.Black;
+                Normalize = Invert = HasDifference = DelSimButton.IsEnabled = DiffSimButton.IsEnabled = false;
 
                 //clear plotview
                 displaceView.Model = null;
@@ -212,6 +262,7 @@ namespace PorphyStruct
                 comp1Path = comp2Path = "";
 
                 cycle = MacrocycleFactory.Load(path, type);
+                FileName = cycle.Title;
                 //add to grid
                 coordGrid.ItemsSource = cycle.Atoms.OrderByDescending(s => s.IsMacrocycle).ToList();
             }
@@ -248,18 +299,7 @@ namespace PorphyStruct
         public void NormalizeButton_Click(object sender, RoutedEventArgs e)
         {
             if (!NormalizeButton.IsEnabled) return;
-            //set false
-            if (this.normalize)
-            {
-                this.normalize = false;
-                this.NormalizeButton.Foreground = Brushes.Black;
-            }
-            else
-            {
-                this.normalize = true;
-                this.NormalizeButton.Foreground = Brushes.CornflowerBlue;
-            }
-            //reanalyze
+            Normalize = !Normalize;
             this.Analyze();
         }
 
@@ -278,18 +318,7 @@ namespace PorphyStruct
         private void InvertButton_Click(object sender, RoutedEventArgs e)
         {
             if (!InvertButton.IsEnabled) return;
-            //set false
-            if (this.invert)
-            {
-                this.invert = false;
-                this.InvertButton.Foreground = Brushes.Black;
-            }
-            else
-            {
-                this.invert = true;
-                this.InvertButton.Foreground = Brushes.Magenta;
-            }
-            //reanalyze
+            Invert = !Invert;
             this.Analyze();
         }
 
@@ -301,7 +330,7 @@ namespace PorphyStruct
         private void SimButton_Click(object sender, RoutedEventArgs e)
         {
             //normalize if not done yet!
-            if (!normalize)
+            if (!Normalize)
                 NormalizeButton_Click(sender, e);
             if (simulation != null)
             {
@@ -326,9 +355,8 @@ namespace PorphyStruct
         {
             this.simulation = null;
             DelSimButton.IsEnabled = false;
-            hasDifference = false;
+            HasDifference = false;
             DiffSimButton.IsEnabled = false;
-            this.DiffSimButton.Foreground = Brushes.Black;
             this.Analyze();
         }
 
@@ -339,18 +367,8 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void DiffSimButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!hasDifference)
-            {
-                hasDifference = true;
-                this.Analyze();
-                this.DiffSimButton.Foreground = Brushes.IndianRed;
-            }
-            else
-            {
-                hasDifference = false;
-                this.Analyze();
-                this.DiffSimButton.Foreground = Brushes.Black;
-            }
+            HasDifference = !HasDifference;
+            Analyze();
         }
 
         /// <summary>
@@ -377,13 +395,13 @@ namespace PorphyStruct
             {
                 comp1Path = cw.comparison1Path.Text;
                 comp2Path = cw.comparison2Path.Text;
-                CompButton.Foreground = Brushes.CadetBlue;
+                NotifyPropertyChanged(nameof(HasComparison));
             }
             else
             {
                 comp1Path = "";
                 comp2Path = "";
-                CompButton.Foreground = Brushes.Black;
+                NotifyPropertyChanged(nameof(HasComparison));
             }
             this.Analyze();
         }

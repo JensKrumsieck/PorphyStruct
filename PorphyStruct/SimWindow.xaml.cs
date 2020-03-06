@@ -320,7 +320,7 @@ namespace PorphyStruct
                 simObj.errors = ErrTB.Text.Split(';').Select(s => Convert.ToDouble(s, System.Globalization.CultureInfo.InvariantCulture)).ToArray();
 
                 //set true if exp has been inverted
-                if (Application.Current.Windows.OfType<MainWindow>().First().invert) simObj.isInverted = true;
+                if (Application.Current.Windows.OfType<MainWindow>().First().Invert) simObj.isInverted = true;
                 Application.Current.Windows.OfType<MainWindow>().First().DelSimButton.IsEnabled = true;
                 Application.Current.Windows.OfType<MainWindow>().First().DiffSimButton.IsEnabled = true;
                 Application.Current.Windows.OfType<MainWindow>().First().simulation = simObj;
