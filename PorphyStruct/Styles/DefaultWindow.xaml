@@ -2,11 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:PorphyStruct.Styles"
                     x:Class="PorphyStruct.Styles.DefaultWindow">
-    <SolidColorBrush x:Key="TitleBackgroundBrush" Color="#29384D" />
+    <SolidColorBrush x:Key="TitleBackgroundBrush" Color="#263238" />
     <SolidColorBrush x:Key="BorderBrush" Color="#898989" />
-    <SolidColorBrush x:Key="TitleBackgroundBrushInactive" Color="#323233" />
+    <SolidColorBrush x:Key="TitleBackgroundBrushInactive" Color="#1c2429" />
     <SolidColorBrush x:Key="TitleForegroundBrush" Color="#ffffff" />
-    <SolidColorBrush x:Key="SecondaryColorHue" Color="#DC3545" />
+    <SolidColorBrush x:Key="SecondaryColorHue" Color="#B71C1C" />
 
     <Style x:Key="TitleBarButton" TargetType="{x:Type Button}">
         <Setter Property="Focusable" Value="false" />
