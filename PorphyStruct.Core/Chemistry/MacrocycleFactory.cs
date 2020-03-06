@@ -1,6 +1,7 @@
 ﻿using PorphyStruct.Chemistry.Macrocycles;
 using PorphyStruct.Files;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 
 namespace PorphyStruct.Chemistry
@@ -13,17 +14,17 @@ namespace PorphyStruct.Chemistry
         /// <param name="Atoms"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static Macrocycle Build(List<Atom> Atoms, Macrocycle.Type type)
+        public static Macrocycle Build(ObservableCollection<Atom> Atoms, Macrocycle.Type type)
         {
-            switch (type)
+            return type switch
             {
-                case Macrocycle.Type.Corrole: return new Corrole(Atoms);
-                case Macrocycle.Type.Norcorrole: return new Norcorrole(Atoms);
-                case Macrocycle.Type.Porphyrin: return new Porphyrin(Atoms);
-                case Macrocycle.Type.Corrphycene: return new Corrphycene(Atoms);
-                case Macrocycle.Type.Porphycene: return new Porphycene(Atoms);
-                default: return null;
-            }
+                Macrocycle.Type.Corrole => new Corrole(Atoms),
+                Macrocycle.Type.Norcorrole => new Norcorrole(Atoms),
+                Macrocycle.Type.Porphyrin => new Porphyrin(Atoms),
+                Macrocycle.Type.Corrphycene => new Corrphycene(Atoms),
+                Macrocycle.Type.Porphycene => new Porphycene(Atoms),
+                _ => null,
+            };
         }
 
         /// <summary>

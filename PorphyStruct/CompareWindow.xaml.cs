@@ -44,7 +44,7 @@ namespace PorphyStruct
         /// <returns></returns>
         public static Simulation GetData(string path)
         {
-            Macrocycle cycle = Application.Current.Windows.OfType<MainWindow>().First().cycle;
+            Macrocycle cycle = Application.Current.Windows.OfType<MainWindow>().First().Cycle;
             List<AtomDataPoint> mol = new List<AtomDataPoint>();
             string file = File.ReadAllText(path);
             string[] lines = file.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None);

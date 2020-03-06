@@ -1,22 +1,29 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 using MathNet.Spatial.Euclidean;
+using PorphyStruct.Core.Util;
 using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace PorphyStruct.Chemistry
 {
-    public class Molecule
+    public class Molecule : Bindable
     {
         public string Title = "";
-        //public List<Atom> Atoms = new List<Atom>();
-        public List<Atom> Atoms = new List<Atom>();
+
+        /// <summary>
+        /// The Molecules Atoms
+        /// </summary>
+        public ObservableCollection<Atom> Atoms { get => Get<ObservableCollection<Atom>>(); set => Set(value); } 
 
         /// <summary>
         /// Construct Molecule
         /// </summary>
-        public Molecule() { }
+        public Molecule() {
+            Atoms = new ObservableCollection<Atom>();
+        }
 
         /// <summary>
         /// Construct Molecule with title
@@ -24,6 +31,7 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         /// <param name="title"></param>
         public Molecule(string title)
+            : this()
         {
             this.Title = title;
         }
@@ -33,7 +41,7 @@ namespace PorphyStruct.Chemistry
         /// <seealso cref="Molecule"/>
         /// </summary>
         /// <param name="title"></param>
-        public Molecule(List<Atom> Atoms)
+        public Molecule(ObservableCollection<Atom> Atoms)
             : this()
         {
             this.Atoms = Atoms;

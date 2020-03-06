@@ -27,6 +27,7 @@ namespace PorphyStruct.Styles
 
         public static void SetIsActive(DependencyObject element, bool value) => element.SetValue(LocalExtensions.IsActiveProperty, value);
         public static bool GetIsActive(DependencyObject element) => (bool)element.GetValue(LocalExtensions.IsActiveProperty);
+
     }
 
     public partial class DefaultWindow

@@ -6,18 +6,20 @@ using OxyPlot.Annotations;
 using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace PorphyStruct.Chemistry
 {
     public abstract class Macrocycle : Molecule, ICloneable
     {
-        public Macrocycle(List<Atom> Atoms) : base(Atoms) { }
+        public Macrocycle(ObservableCollection<Atom> Atoms) : base(Atoms) { }
 
         /// <summary>
         /// Current Data Points
         /// </summary>
         public List<AtomDataPoint> dataPoints = new List<AtomDataPoint>();
+
         /// <summary>
         /// Bonds of Macrocycle by Identifiers
         /// </summary>
@@ -92,14 +94,14 @@ namespace PorphyStruct.Chemistry
             //check if every atom is present in configuration
             foreach (string id in RingAtoms)
             {
-                if (Atoms.FindAll(s => s.Identifier == id && s.IsMacrocycle).Count != 1)
+                if (Atoms.ToList().FindAll(s => s.Identifier == id && s.IsMacrocycle).Count != 1)
                 {
                     //System.Windows.Forms.MessageBox.Show($"Found Issues with Atom {id}! Please check your configuration.");
                     yield break;
                 }
             }
             //reorder Atoms
-            Atoms = Atoms.OrderBy(s => RingAtoms.IndexOf(s.Identifier)).ToList();
+            Atoms = new ObservableCollection<Atom>(Atoms.OrderBy(s => RingAtoms.IndexOf(s.Identifier)));
 
             //current alpha-alpha distance
             double distance = 0;

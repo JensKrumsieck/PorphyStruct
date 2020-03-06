@@ -1,19 +1,20 @@
 ﻿using MathNet.Spatial.Euclidean;
 using OxyPlot;
+using PorphyStruct.Core.Util;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace PorphyStruct.Chemistry
 {
-    public class Atom : ICloneable
+    public class Atom : Bindable, ICloneable
     {
 
-        public string Identifier { get; set; }
-        public bool IsMacrocycle { get; set; }
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double Z { get; set; }
+        public string Identifier { get => Get<string>(); set => Set(value); }
+        public bool IsMacrocycle { get => Get<bool>(); set => Set(value); }
+        public double X { get => Get<double>(); set => Set(value); }
+        public double Y { get => Get<double>(); set => Set(value); }
+        public double Z { get => Get<double>(); set => Set(value); }
         public Element Element { get; set; }
 
         public string Type { get => Element.Symbol; }

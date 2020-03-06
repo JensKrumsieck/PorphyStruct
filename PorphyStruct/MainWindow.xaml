@@ -50,19 +50,8 @@
     </Window.InputBindings>
     <!--/Shortcut section-->
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="273*"/>
-            <ColumnDefinition Width="547*"/>
-            <ColumnDefinition Width="270*"/>
-            <ColumnDefinition Width="140*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="70" />
-            <RowDefinition Height="10*" />
-            <RowDefinition Height="1*" />
-        </Grid.RowDefinitions>
-        <ToolBarTray Grid.ColumnSpan="4" Grid.Row="0" Style="{DynamicResource MaterialDesignToolBarTray}" Background="{DynamicResource TitleBackgroundBrush}">
+    <DockPanel>        
+        <ToolBarTray Grid.ColumnSpan="4" Grid.Row="0" Style="{DynamicResource MaterialDesignToolBarTray}" Background="{DynamicResource TitleBackgroundBrush}" DockPanel.Dock="Top">
             <ToolBar Style="{DynamicResource MaterialDesignToolBar}" HorizontalAlignment="Stretch" Background="{DynamicResource TitleBackgroundBrush}">
                 <Button ToolTip="Open File (CTRL+O)" Click="Open_Click" Style="{StaticResource ToolbarButton}">
                     <StackPanel>
@@ -164,40 +153,38 @@
                 </Button>
             </ToolBar>
         </ToolBarTray>
-        <DataGrid Grid.Column="0" Grid.Row="1" TargetUpdated="CoordGrid_Updated" IsSynchronizedWithCurrentItem="True" x:Name="coordGrid" CanUserSortColumns="True" CanUserAddRows="False" ItemsSource="{Binding}" AutoGenerateColumns="False" SelectionChanged="CoordGrid_Updated" Style="{DynamicResource MaterialDesignDataGrid}" Margin="0,0,0,63" Grid.RowSpan="2">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Identifier,NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Identifier"/>
-                <DataGridCheckBoxColumn Binding="{Binding IsMacrocycle, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Is Macrocycle" SortDirection="Descending"/>
-                <DataGridTextColumn Binding="{Binding X, StringFormat=N4}" Header="X" IsReadOnly="True"/>
-                <DataGridTextColumn Binding="{Binding Y, StringFormat=N4}" Header="Y" IsReadOnly="True"/>
-                <DataGridTextColumn Binding="{Binding Z, StringFormat=N4}" Header="Z" IsReadOnly="True"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <oxy:PlotView x:Name="displaceView" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="273,0,0,63">
-            <oxy:PlotView.Background>
-                <ImageBrush ImageSource="Resources/porphystructlogo.png" Stretch="None"/>
-            </oxy:PlotView.Background>
-        </oxy:PlotView>
-        <h:HelixViewport3D Grid.Column="2" Grid.Row="1" x:Name="MolViewer" ShowViewCube="False" ShowCoordinateSystem="True" ZoomExtentsWhenLoaded="True" Grid.ColumnSpan="2" Margin="0,0,0,63" Grid.RowSpan="2">
-            <h:DefaultLights/>
-        </h:HelixViewport3D>
-        <WrapPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" x:Name="simStack" Margin="10,10,10,10"/>
-        <Grid Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
+        <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="3.5*"/>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="DistTB"  Grid.Row="1" Grid.Column="3"  TextWrapping="Wrap" Text="0" VerticalAlignment="Top"  IsReadOnly="True"/>
-            <TextBox x:Name="UnitVecTB" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" Text="(0,0,0)" VerticalAlignment="Top" IsReadOnly="True" />
-            <Label Content="Unit Vector" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Label Content="Distance" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Label Content="Current mean plane:" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Top" FontWeight="Bold"/>
-        </Grid>
-    </Grid>
+            <oxy:PlotView x:Name="displaceView" Grid.Column="0">
+                <oxy:PlotView.Background>
+                    <ImageBrush ImageSource="Resources/porphystructlogo.png" Stretch="None"/>
+                </oxy:PlotView.Background>
+            </oxy:PlotView>
+            <UniformGrid Rows="2" Grid.Column="1">
+                <h:HelixViewport3D x:Name="MolViewer" ShowViewCube="False" ShowCoordinateSystem="True" ZoomExtentsWhenLoaded="True">
+                    <h:DefaultLights/>
+                </h:HelixViewport3D>
+                <TabControl>
+                    <TabItem Header="Coordinates">
+                        <DataGrid TargetUpdated="CoordGrid_Updated" IsSynchronizedWithCurrentItem="True" x:Name="coordGrid" CanUserSortColumns="True" CanUserAddRows="False" ItemsSource="{Binding}" AutoGenerateColumns="False" SelectionChanged="CoordGrid_Updated" Style="{DynamicResource MaterialDesignDataGrid}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Identifier,NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Identifier"/>
+                                <DataGridCheckBoxColumn Binding="{Binding IsMacrocycle, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Is Macrocycle" SortDirection="Descending"/>
+                                <DataGridTextColumn Binding="{Binding X, StringFormat=N4}" Header="X" IsReadOnly="True"/>
+                                <DataGridTextColumn Binding="{Binding Y, StringFormat=N4}" Header="Y" IsReadOnly="True"/>
+                                <DataGridTextColumn Binding="{Binding Z, StringFormat=N4}" Header="Z" IsReadOnly="True"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+                    <TabItem Header="Properties">
+                    </TabItem>
+                </TabControl>
+            </UniformGrid>
+        </Grid>        
+        
+       
+    </DockPanel>
 </Window>

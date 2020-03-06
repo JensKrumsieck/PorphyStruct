@@ -1,5 +1,4 @@
 ﻿using HelixToolkit.Wpf;
-using MaterialDesignThemes.Wpf;
 using MathNet.Spatial.Euclidean;
 using OxyPlot.Series;
 using PorphyStruct.Chemistry;
@@ -9,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -20,24 +20,24 @@ namespace PorphyStruct
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : Window
     {
-        public Macrocycle cycle;
-        private Macrocycle old;
-        public double normFac = 0;
-        private int oldIndex = -1;
-        private bool _hasDifference, _invert, _normalize;
+        private Macrocycle _cycle;
+        public Macrocycle Cycle
+        {
+            get => _cycle;
+            set => SetAndNotify(ref _cycle, value);
+        }
 
+        public double normFac = 0;
+        private bool _hasDifference, _invert, _normalize;
         /// <summary>
         /// Handles Normalisation
         /// </summary>
         public bool Normalize
         {
             get => _normalize;
-            set {
-                _normalize = value;
-                NotifyPropertyChanged(nameof(Normalize));
-            }
+            set => SetAndNotify(ref _normalize, value);
         }
 
         /// <summary>
@@ -46,11 +46,7 @@ namespace PorphyStruct
         public bool Invert
         {
             get => _invert;
-            set
-            {
-                _invert = value;
-                NotifyPropertyChanged(nameof(Invert));
-            }
+            set => SetAndNotify(ref _invert, value);
         }
 
         /// <summary>
@@ -59,22 +55,47 @@ namespace PorphyStruct
         public bool HasDifference
         {
             get => _hasDifference;
-            set
+            set => SetAndNotify(ref _hasDifference, value);
+        }
+
+        /// <summary>
+        /// Indicates whether a comparison is present
+        /// </summary>
+        public bool HasComparison => !string.IsNullOrEmpty(comp1Path) || !string.IsNullOrEmpty(comp2Path);
+
+
+        /// <summary>
+        /// Set and Notify Method
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="field"></param>
+        /// <param name="value"></param>
+        public void SetAndNotify<T>(ref T field, T value, [CallerMemberName] String propertyName = "")
+        {
+            if (!Equals(field, value))
             {
-                _hasDifference = value;
+                field = value;
+                NotifyPropertyChanged(propertyName);
             }
         }
 
-        public bool HasComparison => !string.IsNullOrEmpty(comp1Path) || !string.IsNullOrEmpty(comp2Path);
-
+        /// <summary>
+        /// Adds PropertyChanged Event
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")=> PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        /// <summary>
+        /// Notifies on Property Change
+        /// </summary>
+        /// <param name="propertyName"></param>
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         public Simulation simulation = null;
         public Macrocycle.Type type = Macrocycle.Type.Corrole;
 
         public string comp1Path, comp2Path, path;
-        public string FileName {
+        public string FileName
+        {
             get => (string)GetValue(FileNameProperty);
             set => SetValue(FileNameProperty, value);
         }
@@ -95,16 +116,16 @@ namespace PorphyStruct
             OxyPlotOverride.StandardPlotModel pm = new OxyPlotOverride.StandardPlotModel();
 
             //do analysis
-            cycle.GetDataPoints();
+            Cycle.GetDataPoints();
 
             //normalisation
             if (Normalize)
             {
-                normFac = MathUtil.GetNormalizationFactor(cycle.dataPoints);
-                cycle.dataPoints = cycle.dataPoints.Normalize();
+                normFac = MathUtil.GetNormalizationFactor(Cycle.dataPoints);
+                Cycle.dataPoints = Cycle.dataPoints.Normalize();
             }
             //invert
-            if (Invert) cycle.dataPoints = cycle.dataPoints.Invert();
+            if (Invert) Cycle.dataPoints = Cycle.dataPoints.Invert();
 
             //handle sim
             if (simulation != null)
@@ -114,12 +135,12 @@ namespace PorphyStruct
                 simulation.Paint(pm);
             }
             //paint difference
-            if (HasDifference) cycle.GetDifference(simulation).Paint(pm, "Diff");
+            if (HasDifference) Cycle.GetDifference(simulation).Paint(pm, "Diff");
             //paint comparison
             if (!String.IsNullOrEmpty(comp1Path)) CompareWindow.GetData(comp1Path).Paint(pm, "Com1");
             if (!String.IsNullOrEmpty(comp2Path)) CompareWindow.GetData(comp2Path).Paint(pm, "Com2");
             //paint exp
-            cycle.Paint(pm, MacrocyclePainter.PaintMode.Exp);
+            Cycle.Paint(pm, MacrocyclePainter.PaintMode.Exp);
 
             //handle dont mark
             foreach (ScatterSeries s in pm.Series) ((List<AtomDataPoint>)s.ItemsSource).Where(dp => Core.Properties.Settings.Default.dontMark.Split(',').Contains(dp.atom.Identifier) || Core.Properties.Settings.Default.dontMark.Split(',').Contains(dp.atom.Type)).ToList().ForEach(dp => dp.Size = 0);
@@ -134,7 +155,7 @@ namespace PorphyStruct
         /// Update Sim WrapPanel
         /// </summary>
         public void UpdateStack()
-        {
+        {/**
             simStack.Children.Clear();
             if (simulation != null)
                 foreach (string key in simulation.par.Keys) simStack.Children.Add(new Chip
@@ -150,7 +171,7 @@ namespace PorphyStruct
                 Plane pl = cycle.GetMeanPlane();
                 UnitVecTB.Text = $"({pl.A.ToString("G3")}, {pl.B.ToString("G3")}, {pl.C.ToString("G3")})";
                 DistTB.Text = pl.D.ToString("G3");
-            }
+            }**/
         }
 
 
@@ -161,18 +182,13 @@ namespace PorphyStruct
         /// <param name="force"></param>
         private void UpdateMolView(bool markSelection = false, bool force = false)
         {
-            if ((old != null && !cycle.Atoms.SequenceEqual(old.Atoms)) || (markSelection && oldIndex != coordGrid.SelectedIndex) || force)
-            {
-                old = cycle;
-                oldIndex = coordGrid.SelectedIndex;
-                MolViewer.Children.Clear();
-                MolViewer.Children.Add(new DefaultLights());
-                Atom selected = markSelection ? (Atom)coordGrid.SelectedItem : null;
-
-                //create 3d model
-                System.Windows.Media.Media3D.ModelVisual3D model = new System.Windows.Media.Media3D.ModelVisual3D() { Content = cycle.Paint3D(selected) };
-                MolViewer.Children.Add(model);
-            }
+            Debug.WriteLine("I was fired!" + DateTime.Now.ToString());
+            MolViewer.Children.Clear();
+            MolViewer.Children.Add(new DefaultLights());
+            Atom selected = markSelection ? (Atom)coordGrid.SelectedItem : null;
+            //create 3d model
+            System.Windows.Media.Media3D.ModelVisual3D model = new System.Windows.Media.Media3D.ModelVisual3D() { Content = Cycle.Paint3D(selected) };
+            MolViewer.Children.Add(model);
         }
 
 
@@ -182,15 +198,9 @@ namespace PorphyStruct
         public void Center()
         {
             //Center Molecule
-            cycle.Center(s => s.IsMacrocycle);
-
-            //update list
-            coordGrid.ItemsSource = cycle.Atoms.OrderByDescending(s => s.IsMacrocycle).ToList();
-            coordGrid.Items.Refresh();
-            //update 3d image
-            this.UpdateMolView(false, true);
+            Cycle.Center(s => s.IsMacrocycle);
             //update camera
-            Plane pl = cycle.GetMeanPlane();
+            Plane pl = Cycle.GetMeanPlane();
             var normal = new System.Windows.Media.Media3D.Point3D(pl.A, pl.B, pl.C);
             while (normal.DistanceTo(Win32Util.Origin) < 25) normal = normal.Multiply(1.1);
             MolViewer.CameraController.CameraPosition = normal;
@@ -202,7 +212,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CoordGrid_Updated(object sender, EventArgs e) => this.UpdateMolView(true);
+        private void CoordGrid_Updated(object sender, EventArgs e) { this.UpdateMolView(); } //=> Cycle.Atoms = (List<Atom>)coordGrid.ItemsSource;
 
 
         /// <summary>
@@ -215,6 +225,23 @@ namespace PorphyStruct
             //subscribe to event
             var dpd = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(DataGrid));
             if (dpd != null) dpd.AddValueChanged(coordGrid, CoordGrid_Updated);
+            this.PropertyChanged += OnNotifyPropertyChanged;
+        }
+
+        /// <summary>
+        /// Notify the subscribers that property has changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnNotifyPropertyChanged(object sender, PropertyChangedEventArgs e) {
+            Debug.WriteLine(e.PropertyName);
+            switch (e.PropertyName)
+            {
+                case (nameof(Cycle)):
+                    UpdateMolView();
+                    coordGrid.ItemsSource = Cycle.Atoms;
+                    break;
+            }
         }
 
         /// <summary>
@@ -258,13 +285,12 @@ namespace PorphyStruct
 
                 //reset values
                 normFac = 0;
-                oldIndex = -1;
                 comp1Path = comp2Path = "";
 
-                cycle = MacrocycleFactory.Load(path, type);
-                FileName = cycle.Title;
+                Cycle = MacrocycleFactory.Load(path, type);
+                FileName = Cycle.Title;
                 //add to grid
-                coordGrid.ItemsSource = cycle.Atoms.OrderByDescending(s => s.IsMacrocycle).ToList();
+                coordGrid.ItemsSource = Cycle.Atoms;
             }
         }
 
@@ -276,8 +302,6 @@ namespace PorphyStruct
         private void Analyze_Click(object sender, RoutedEventArgs e)
         {
             if (!AnalButton.IsEnabled) return;
-            //get the current data from source
-            cycle.Atoms = ((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList();
             //TODO: validate cycle here
             //call analyze void
             Analyze();
@@ -308,7 +332,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Save_Click(object sender, RoutedEventArgs e) { if (SaveButton.IsEnabled) new SaveWindow(cycle, simulation).ShowDialog(); }
+        private void Save_Click(object sender, RoutedEventArgs e) { if (SaveButton.IsEnabled) new SaveWindow(Cycle, simulation).ShowDialog(); }
 
         /// <summary>
         /// Handle Invert Button Click
@@ -334,9 +358,9 @@ namespace PorphyStruct
                 NormalizeButton_Click(sender, e);
             if (simulation != null)
             {
-                new SimWindow(cycle, displaceView, simulation).Show();
+                new SimWindow(Cycle, displaceView, simulation).Show();
             }
-            else new SimWindow(cycle, displaceView).Show();
+            else new SimWindow(Cycle, displaceView).Show();
         }
 
         /// <summary>
@@ -411,12 +435,6 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Detect_Click(object sender, RoutedEventArgs e)
-        {
-            cycle.Detect();
-            //update 3d image
-            this.UpdateMolView();
-            coordGrid.Items.Refresh();
-        }
+        private void Detect_Click(object sender, RoutedEventArgs e) => Cycle.Detect();
     }
 }

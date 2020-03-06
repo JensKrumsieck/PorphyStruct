@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace PorphyStruct.Chemistry.Macrocycles
 {
     public class Porphycene : Macrocycle
     {
-        public Porphycene(List<Atom> Atoms) : base(Atoms) { }
+        public Porphycene(ObservableCollection<Atom> Atoms) : base(Atoms) { }
 
         //assign type (legacy)
         public override Type type => Type.Porphycene;

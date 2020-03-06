@@ -1,13 +1,14 @@
 ﻿using OxyPlot.Annotations;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace PorphyStruct.Chemistry.Macrocycles
 {
     public class Porphyrin : Macrocycle
     {
-        public Porphyrin(List<Atom> Atoms) : base(Atoms) { }
+        public Porphyrin(ObservableCollection<Atom> Atoms) : base(Atoms) { }
 
         //assign type (legacy)
         public override Type type => Type.Porphyrin;
