@@ -6,6 +6,7 @@ using PorphyStruct.Util;
 using PorphyStruct.Windows;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
@@ -20,7 +21,7 @@ namespace PorphyStruct
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private Macrocycle _cycle;
         public Macrocycle Cycle
@@ -111,7 +112,8 @@ namespace PorphyStruct
         /// <summary>
         /// Analyze current Macrocycle and print result to PlotView
         /// </summary>
-        public void Analyze() {
+        public void Analyze()
+        {
             //set up default plot model
             OxyPlotOverride.StandardPlotModel pm = new OxyPlotOverride.StandardPlotModel();
 
@@ -180,7 +182,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="markSelection"></param>
         /// <param name="force"></param>
-        private void UpdateMolView(bool markSelection = false, bool force = false)
+        private void UpdateMolView(bool markSelection = true)
         {
             Debug.WriteLine("I was fired!" + DateTime.Now.ToString());
             MolViewer.Children.Clear();
@@ -207,41 +209,17 @@ namespace PorphyStruct
             MolViewer.CameraController.CameraTarget = Win32Util.Origin;
         }
 
+        private void coordGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) => UpdateMolView();
+
+        void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e) => UpdateMolView();
         /// <summary>
-        /// Handle Updated Grid
+        /// Editing of the molecule ended
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CoordGrid_Updated(object sender, EventArgs e) { this.UpdateMolView(); } //=> Cycle.Atoms = (List<Atom>)coordGrid.ItemsSource;
-
-
-        /// <summary>
-        /// Handle Window Loaded
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void coordGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            //subscribe to event
-            var dpd = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(DataGrid));
-            if (dpd != null) dpd.AddValueChanged(coordGrid, CoordGrid_Updated);
-            this.PropertyChanged += OnNotifyPropertyChanged;
-        }
-
-        /// <summary>
-        /// Notify the subscribers that property has changed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnNotifyPropertyChanged(object sender, PropertyChangedEventArgs e) {
-            Debug.WriteLine(e.PropertyName);
-            switch (e.PropertyName)
-            {
-                case (nameof(Cycle)):
-                    UpdateMolView();
-                    coordGrid.ItemsSource = Cycle.Atoms;
-                    break;
-            }
+            if (e.EditAction == DataGridEditAction.Commit) UpdateMolView();
         }
 
         /// <summary>
@@ -249,7 +227,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Refresh_Click(object sender, RoutedEventArgs e) { if (InvertButton.IsEnabled) UpdateMolView(false, true); }
+        private void Refresh_Click(object sender, RoutedEventArgs e) { if (RefMolButton.IsEnabled) UpdateMolView(); }
 
 
         /// <summary>
@@ -289,8 +267,11 @@ namespace PorphyStruct
 
                 Cycle = MacrocycleFactory.Load(path, type);
                 FileName = Cycle.Title;
-                //add to grid
+
+                //bind 
                 coordGrid.ItemsSource = Cycle.Atoms;
+                //register event
+                Cycle.Atoms.CollectionChanged += OnCollectionChanged;
             }
         }
 
@@ -312,7 +293,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CenterMolButton_Click(object sender, RoutedEventArgs e) => this.Center();
+        private void CenterMolButton_Click(object sender, RoutedEventArgs e) => Center();
 
 
         /// <summary>
@@ -356,10 +337,7 @@ namespace PorphyStruct
             //normalize if not done yet!
             if (!Normalize)
                 NormalizeButton_Click(sender, e);
-            if (simulation != null)
-            {
-                new SimWindow(Cycle, displaceView, simulation).Show();
-            }
+            if (simulation != null)  new SimWindow(Cycle, displaceView, simulation).Show();
             else new SimWindow(Cycle, displaceView).Show();
         }
 
@@ -383,6 +361,7 @@ namespace PorphyStruct
             DiffSimButton.IsEnabled = false;
             this.Analyze();
         }
+
 
         /// <summary>
         /// Handle Diff Button Click

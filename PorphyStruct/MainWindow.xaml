@@ -16,7 +16,7 @@
         FontFamily="Segoe UI"
         Style="{DynamicResource DefaultWindowStyle}"
         styles:DefaultWindow.FileName="{Binding FileName, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"
-        Title="Structural Analysis of Porphyrinoids (PorphyStruct)" Height="780" Width="1230" Loaded="Window_Loaded">
+        Title="Structural Analysis of Porphyrinoids (PorphyStruct)" Height="780" Width="1230">
     <!--Shortcut section-->
     <Window.Resources>
         <RoutedUICommand x:Key="Open" Text="Open" />
@@ -169,13 +169,13 @@
                 </h:HelixViewport3D>
                 <TabControl>
                     <TabItem Header="Coordinates">
-                        <DataGrid TargetUpdated="CoordGrid_Updated" IsSynchronizedWithCurrentItem="True" x:Name="coordGrid" CanUserSortColumns="True" CanUserAddRows="False" ItemsSource="{Binding}" AutoGenerateColumns="False" SelectionChanged="CoordGrid_Updated" Style="{DynamicResource MaterialDesignDataGrid}">
+                        <DataGrid IsSynchronizedWithCurrentItem="True" x:Name="coordGrid" CanUserSortColumns="True" CanUserAddRows="False" ItemsSource="{Binding}" AutoGenerateColumns="False" Style="{DynamicResource MaterialDesignDataGrid}" CellEditEnding="coordGrid_CellEditEnding" SelectionChanged="coordGrid_SelectionChanged">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding Identifier,NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Identifier"/>
+                                <DataGridTextColumn Binding="{Binding Identifier, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Identifier"/>
                                 <DataGridCheckBoxColumn Binding="{Binding IsMacrocycle, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Is Macrocycle" SortDirection="Descending"/>
-                                <DataGridTextColumn Binding="{Binding X, StringFormat=N4}" Header="X" IsReadOnly="True"/>
-                                <DataGridTextColumn Binding="{Binding Y, StringFormat=N4}" Header="Y" IsReadOnly="True"/>
-                                <DataGridTextColumn Binding="{Binding Z, StringFormat=N4}" Header="Z" IsReadOnly="True"/>
+                                <DataGridTextColumn Binding="{Binding X, StringFormat=N4, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="X" IsReadOnly="True"/>
+                                <DataGridTextColumn Binding="{Binding Y, StringFormat=N4, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Y" IsReadOnly="True"/>
+                                <DataGridTextColumn Binding="{Binding Z, StringFormat=N4, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Z" IsReadOnly="True"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </TabItem>
