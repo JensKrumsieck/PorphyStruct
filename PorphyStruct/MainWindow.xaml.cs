@@ -112,6 +112,7 @@ namespace PorphyStruct
 
         public MainWindow()
         {
+            //CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
             InitializeComponent();
             DataContext = this;
         }
