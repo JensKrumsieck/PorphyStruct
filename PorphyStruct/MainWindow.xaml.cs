@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -24,7 +23,7 @@ namespace PorphyStruct
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
-    { 
+    {
         private Macrocycle _cycle;
         public Macrocycle Cycle
         {
@@ -112,7 +111,7 @@ namespace PorphyStruct
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = this;            
+            DataContext = this;
         }
 
         /// <summary>
@@ -215,14 +214,25 @@ namespace PorphyStruct
             MolViewer.CameraController.CameraTarget = Win32Util.Origin;
         }
 
-        private void coordGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        /// <summary>
+        /// Returns Atom's Model in Molecule Model
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        private ModelVisual3D ModelByAtom(Atom a) => Molecule3D.Where(s => (s as AtomModelVisual3D)?.Atom == a).FirstOrDefault();
+
+        /// <summary>
+        /// Handles Selection Change
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CoordGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //read selected index of coordgrid
-            Atom selected = (Atom)e.AddedItems[0] ?? null; 
-            
+            Atom selected = (Atom)e.AddedItems[0] ?? null;
+
             //remove atom
-            var SelectModel = Molecule3D.Where(s => (s as AtomModelVisual3D)?.Atom == selected).FirstOrDefault();
-            Molecule3D.Remove(SelectModel); 
+            Molecule3D.Remove(ModelByAtom(selected));
             //add atom
             Molecule3D.Add(selected.Atom3D(true));
 
@@ -230,23 +240,22 @@ namespace PorphyStruct
             Atom previous = e.RemovedItems.Count != 0 ? (Atom)e.RemovedItems[0] : null;
             if (previous != null)
             {
-                var UnSelectModel = Molecule3D.Where(s => (s as AtomModelVisual3D)?.Atom == previous).FirstOrDefault();
-                Molecule3D.Remove(UnSelectModel);
+                Molecule3D.Remove(ModelByAtom(previous));
                 Molecule3D.Add(previous.Atom3D(false));
             }
         }
 
-            /// <summary>
-            /// Handles Collection Changed Event
-            /// </summary>
-            /// <param name="sender"></param>
-            /// <param name="e"></param>
-            void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        /// <summary>
+        /// Handles Collection Changed Event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.OldItems != null)
                 foreach (Atom item in e.OldItems)
                 {
-                    var removedItem = Molecule3D.Where(s => item.Atom3D().Content.Bounds.Location.DistanceTo(s.Content.Bounds.Location) < 1e-2).FirstOrDefault();
+                    var removedItem = ModelByAtom(item);
                     if (removedItem != null) Molecule3D.Remove(removedItem);
                     item.PropertyChanged -= Atom_PropertyChanged;
                 }
@@ -266,40 +275,18 @@ namespace PorphyStruct
         private void Atom_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             //read selected index of coordgrid
-            Atom selected = (Atom)coordGrid.SelectedItem??null;
+            Atom selected = (Atom)coordGrid.SelectedItem ?? null;
             Atom atom = (Atom)sender;
 
-            //remove atom
-            var atomModel = Molecule3D.Where(s => (s as AtomModelVisual3D)?.Atom == atom).FirstOrDefault();
-            Molecule3D.Remove(atomModel);
-
-            //remove bonds
-            var models = Molecule3D.Where(s => (s as BondModelVisual3D)?.Atoms.Contains(atom)??false).ToList();
+            //remove atom and bonds
+            Molecule3D.Remove(ModelByAtom(atom));
+            var models = Molecule3D.Where(s => (s as BondModelVisual3D)?.Atoms.Contains(atom) ?? false).ToList();
             foreach (var m in models) Molecule3D.Remove(m);
 
-            //add atom
+            //add atom and bonds
             Molecule3D.Add(atom.Atom3D(atom == selected));
-            //add bonds
             foreach (var a2 in Cycle.Neighbors(atom)) Molecule3D.Add(a2.Bond3D(atom, Cycle));
         }
-
-        /// <summary>
-        /// Editing of the molecule ended
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void coordGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            if (e.EditAction == DataGridEditAction.Commit) UpdateMolView();
-        }
-
-        /// <summary>
-        /// Handle Refresh Button Click
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Refresh_Click(object sender, RoutedEventArgs e) { if (RefMolButton.IsEnabled) UpdateMolView(); }
-
 
         /// <summary>
         /// Handle Open File Button Click
@@ -320,7 +307,7 @@ namespace PorphyStruct
                 this.Title = "Structural Analysis of Porphyrinoids (PorphyStruct) - " + type.ToString() + " Mode";
 
                 //reset gui elements
-                AnalButton.IsEnabled = RefMolButton.IsEnabled = CenterMolButton.IsEnabled = DetectMolButton.IsEnabled = NormalizeButton.IsEnabled = InvertButton.IsEnabled = SaveButton.IsEnabled = SimButton.IsEnabled = CompButton.IsEnabled = true;
+                AnalButton.IsEnabled = CenterMolButton.IsEnabled = DetectMolButton.IsEnabled = NormalizeButton.IsEnabled = InvertButton.IsEnabled = SaveButton.IsEnabled = SimButton.IsEnabled = CompButton.IsEnabled = true;
                 Normalize = Invert = HasDifference = DelSimButton.IsEnabled = DiffSimButton.IsEnabled = false;
 
                 //clear plotview
@@ -339,14 +326,14 @@ namespace PorphyStruct
                 Cycle = MacrocycleFactory.Load(path, type);
                 Cycle.Atoms.CollectionChanged += OnCollectionChanged;
 
-                foreach(var atom in Cycle.Atoms) atom.PropertyChanged += Atom_PropertyChanged;
+                foreach (var atom in Cycle.Atoms) atom.PropertyChanged += Atom_PropertyChanged;
 
                 FileName = Cycle.Title;
 
                 //bind 
                 coordGrid.ItemsSource = Cycle.Atoms;
                 Molecule3D = new AsyncObservableCollection<ModelVisual3D>(Cycle.Paint3D());
-                MolViewer.ItemsSource= Molecule3D;
+                MolViewer.ItemsSource = Molecule3D;
                 //register event
             }
         }
@@ -412,7 +399,7 @@ namespace PorphyStruct
             //normalize if not done yet!
             if (!Normalize)
                 NormalizeButton_Click(sender, e);
-            if (simulation != null)  new SimWindow(Cycle, displaceView, simulation).Show();
+            if (simulation != null) new SimWindow(Cycle, displaceView, simulation).Show();
             else new SimWindow(Cycle, displaceView).Show();
         }
 

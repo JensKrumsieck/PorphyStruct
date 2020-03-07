@@ -33,7 +33,6 @@
         <CommandBinding Command="{StaticResource Save}" Executed="Save_Click" />
         <CommandBinding Command="{StaticResource Analyze}" Executed="Analyze_Click" />
         <CommandBinding Command="{StaticResource Simulate}" Executed="SimButton_Click" />
-        <CommandBinding Command="{StaticResource Refresh}" Executed="Refresh_Click" />
         <CommandBinding Command="{StaticResource Invert}" Executed="InvertButton_Click" />
         <CommandBinding Command="{StaticResource Normalize}" Executed="NormalizeButton_Click" />
     </Window.CommandBindings>
@@ -45,8 +44,6 @@
         <KeyBinding Key="P" Modifiers="Ctrl" Command="{StaticResource Simulate}" />
         <KeyBinding Key="I" Modifiers="Ctrl" Command="{StaticResource Invert}" />
         <KeyBinding Key="N" Modifiers="Ctrl" Command="{StaticResource Normalize}" />
-        <KeyBinding Key="R" Modifiers="Ctrl" Command="{StaticResource Refresh}" />
-        <KeyBinding Key="F5" Command="{StaticResource Refresh}" />
     </Window.InputBindings>
     <!--/Shortcut section-->
 
@@ -124,12 +121,6 @@
                         <TextBlock HorizontalAlignment="Center" FontSize="9">Center</TextBlock>
                     </StackPanel>
                 </Button>
-                <Button ToolTip="Refresh Molecule Viewer (F5 / CTRL+R)" Click="Refresh_Click" x:Name="RefMolButton" IsEnabled="False" Style="{StaticResource ToolbarButton}">
-                    <StackPanel>
-                        <materialDesign:PackIcon Kind="Molecule"  HorizontalAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="9">Refresh</TextBlock>
-                    </StackPanel>
-                </Button>
                 <Button ToolTip="Detect Macrocycle (experimental)" Click="Detect_Click" x:Name="DetectMolButton" IsEnabled="False" Style="{StaticResource ToolbarButton}">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="TableSearch"  HorizontalAlignment="Center"/>
@@ -169,7 +160,7 @@
                 </h:HelixViewport3D>
                 <TabControl>
                     <TabItem Header="Coordinates">
-                        <DataGrid IsSynchronizedWithCurrentItem="True" x:Name="coordGrid" CanUserSortColumns="True" CanUserAddRows="False" ItemsSource="{Binding}" AutoGenerateColumns="False" Style="{DynamicResource MaterialDesignDataGrid}" CellEditEnding="coordGrid_CellEditEnding" SelectionChanged="coordGrid_SelectionChanged">
+                        <DataGrid IsSynchronizedWithCurrentItem="True" x:Name="coordGrid" CanUserSortColumns="True" CanUserAddRows="False" ItemsSource="{Binding}" AutoGenerateColumns="False" Style="{DynamicResource MaterialDesignDataGrid}" SelectionChanged="CoordGrid_SelectionChanged">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Binding="{Binding Identifier, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Identifier"/>
                                 <DataGridCheckBoxColumn Binding="{Binding IsMacrocycle, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Is Macrocycle" SortDirection="Descending"/>
