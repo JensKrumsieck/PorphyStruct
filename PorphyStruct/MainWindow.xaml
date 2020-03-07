@@ -9,6 +9,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:h="http://helix-toolkit.org/wpf"
         xmlns:styles="clr-namespace:PorphyStruct.Styles"
+        xmlns:lang="clr-namespace:PorphyStruct.Properties.Language"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal"
@@ -50,96 +51,96 @@
     <DockPanel>        
         <ToolBarTray Grid.ColumnSpan="4" Grid.Row="0" Style="{DynamicResource MaterialDesignToolBarTray}" Background="{DynamicResource TitleBackgroundBrush}" DockPanel.Dock="Top">
             <ToolBar Style="{DynamicResource MaterialDesignToolBar}" HorizontalAlignment="Stretch" Background="{DynamicResource TitleBackgroundBrush}">
-                <Button ToolTip="Open File (CTRL+O)" Click="Open_Click" Style="{StaticResource ToolbarButton}">
+                <Button ToolTip="{x:Static lang:Main.OpenToolTip}" Click="Open_Click" Style="{StaticResource ToolbarButton}">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="FolderOpen"  HorizontalAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="9">Open</TextBlock>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9" Text="{x:Static lang:Main.Open}" />
                     </StackPanel>
                 </Button>
-                <Button ToolTip="Save File (CTRL+S)" Click="Save_Click" x:Name="SaveButton" IsEnabled="False" Style="{StaticResource ToolbarButton}">
+                <Button ToolTip="{x:Static lang:Main.SaveToolTip}" Click="Save_Click" x:Name="SaveButton" IsEnabled="False" Style="{StaticResource ToolbarButton}">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="ContentSave" HorizontalAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="9">Save</TextBlock>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9" Text="{x:Static lang:Main.Save}"/>
                     </StackPanel>
                 </Button>
                 <Separator />
-                <Button ToolTip="Analyze Conformation (CTRL+A)" Click="Analyze_Click" IsEnabled="False" x:Name="AnalButton" Style="{StaticResource ToolbarButton}">
+                <Button ToolTip="{x:Static lang:Main.AnalyzeToolTip}" Click="Analyze_Click" IsEnabled="False" x:Name="AnalButton" Style="{StaticResource ToolbarButton}">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="Flask"  HorizontalAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="9">Analyze</TextBlock>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9" Text="{x:Static lang:Main.Analyze}"/>
                     </StackPanel>
                 </Button>
-                <Button ToolTip="Compare Conformation with two other Molecules" Click="CompButton_Click" 
+                <Button ToolTip="{x:Static lang:Main.CompareToolTip}" Click="CompButton_Click" 
                         IsEnabled="False" x:Name="CompButton" Style="{StaticResource ToolbarButton}" Tag="{Binding HasComparison}">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="Compare"  HorizontalAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="9">Compare</TextBlock>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9" Text="{x:Static lang:Main.Compare}"/>
                     </StackPanel>
                 </Button>
                 <Separator />
-                <Button ToolTip="Normalize Displacements (CTRL+N)" Click="NormalizeButton_Click" 
+                <Button ToolTip="{x:Static lang:Main.NormalizeToolTip}" Click="NormalizeButton_Click" 
                         x:Name="NormalizeButton" IsEnabled="False" Style="{StaticResource ToolbarButton}" Tag="{Binding Normalize}">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="ArrowExpandVertical" HorizontalAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="9">Normalize</TextBlock>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9" Text="{x:Static lang:Main.Normalize}"/>
                     </StackPanel>
                 </Button>
-                <Button ToolTip="Invert Displacements (CTRL+I)" Click="InvertButton_Click" 
+                <Button ToolTip="{x:Static lang:Main.InvertToolTip}" Click="InvertButton_Click" 
                         x:Name="InvertButton" IsEnabled="False" Style="{StaticResource ToolbarButton}" Tag="{Binding Invert}">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="Contrast"  HorizontalAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="9">Invert</TextBlock>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9" Text="{x:Static lang:Main.Invert}"/>
                     </StackPanel>
                 </Button>
                 <Separator />
-                <Button ToolTip="Simulate Displacements by NSD Method (CTRL+P)" Click="SimButton_Click" x:Name="SimButton" IsEnabled="False" Style="{StaticResource ToolbarButton}">
+                <Button ToolTip="{x:Static lang:Main.SimulateToolTip}" Click="SimButton_Click" x:Name="SimButton" IsEnabled="False" Style="{StaticResource ToolbarButton}">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="AutoFixHigh"  HorizontalAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="9">Simulate</TextBlock>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9" Text="{x:Static lang:Main.Simulate}"/>
                     </StackPanel>
                 </Button>
-                <Button ToolTip="Show Difference" Click="DiffSimButton_Click" 
+                <Button ToolTip="{x:Static lang:Main.DifferenceToolTip}" Click="DiffSimButton_Click" 
                         x:Name="DiffSimButton" IsEnabled="False" Style="{StaticResource ToolbarButton}"
                         Tag="{Binding HasDifference}">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="VectorDifference"  HorizontalAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="9">Show Diff.</TextBlock>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9" Text="{x:Static lang:Main.Difference}"/>
                     </StackPanel>
                 </Button>
-                <Button ToolTip="Delete Simulation" Click="DelSimButton_Click" 
+                <Button ToolTip="{x:Static lang:Main.DelSimToolTip}" Click="DelSimButton_Click" 
                         x:Name="DelSimButton" IsEnabled="False" Style="{StaticResource ToolbarButton}">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="DeleteForeverOutline"  HorizontalAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="9">Remove Sim.</TextBlock>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9" Text="{x:Static lang:Main.RemSim}"/>
                     </StackPanel>
                 </Button>
 
                 <Separator />
-                <Button ToolTip="Center Molecule to Origin" Click="CenterMolButton_Click" x:Name="CenterMolButton" IsEnabled="False" Style="{StaticResource ToolbarButton}">
+                <Button ToolTip="{x:Static lang:Main.CenterToolTip}" Click="CenterMolButton_Click" x:Name="CenterMolButton" IsEnabled="False" Style="{StaticResource ToolbarButton}">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="ArrowCollapseAll"  HorizontalAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="9">Center</TextBlock>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9" Text="{x:Static lang:Main.Center}"/>
                     </StackPanel>
                 </Button>
-                <Button ToolTip="Detect Macrocycle (experimental)" Click="Detect_Click" x:Name="DetectMolButton" IsEnabled="False" Style="{StaticResource ToolbarButton}">
+                <Button ToolTip="{x:Static lang:Main.DetectToolTip}" Click="Detect_Click" x:Name="DetectMolButton" IsEnabled="False" Style="{StaticResource ToolbarButton}">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="TableSearch"  HorizontalAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="9">Detect</TextBlock>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9" Text="{x:Static lang:Main.Detect}"/>
                     </StackPanel>
                 </Button>
 
                 <Separator />
-                <Button ToolTip="Settings" Click="SettingsButton_Click" x:Name="SettingsButton" Style="{StaticResource ToolbarButton}">
+                <Button ToolTip="{x:Static lang:Main.SettingsToolTip}" Click="SettingsButton_Click" x:Name="SettingsButton" Style="{StaticResource ToolbarButton}">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="Settings"  HorizontalAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="9">Settings</TextBlock>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9"  Text="{x:Static lang:Main.Settings}"/>
                     </StackPanel>
                 </Button>
                 <Separator />
-                <Button ToolTip="Information about PorphyStruct" Click="InfoButton_Click" x:Name="InfoButton" Style="{StaticResource ToolbarButton}">
+                <Button ToolTip="{x:Static lang:Main.AboutToolTip}" Click="InfoButton_Click" x:Name="InfoButton" Style="{StaticResource ToolbarButton}">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="InfoCircle"  HorizontalAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="9">About</TextBlock>
+                        <TextBlock HorizontalAlignment="Center" FontSize="9" Text="{x:Static lang:Main.About}"/>
                     </StackPanel>
                 </Button>
             </ToolBar>
@@ -159,23 +160,21 @@
                     <h:DefaultLights/>
                 </h:HelixViewport3D>
                 <TabControl>
-                    <TabItem Header="Coordinates">
+                    <TabItem Header="{x:Static lang:Main.Coordinates}">
                         <DataGrid IsSynchronizedWithCurrentItem="True" x:Name="coordGrid" CanUserSortColumns="True" CanUserAddRows="False" ItemsSource="{Binding}" AutoGenerateColumns="False" Style="{DynamicResource MaterialDesignDataGrid}" SelectionChanged="CoordGrid_SelectionChanged">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding Identifier, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Identifier"/>
-                                <DataGridCheckBoxColumn Binding="{Binding IsMacrocycle, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Is Macrocycle" SortDirection="Descending"/>
+                                <DataGridTextColumn Binding="{Binding Identifier, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="{x:Static lang:Main.Identifier}"/>
+                                <DataGridCheckBoxColumn Binding="{Binding IsMacrocycle, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="{x:Static lang:Main.IsMacrocycle}" SortDirection="Descending"/>
                                 <DataGridTextColumn Binding="{Binding X, StringFormat=N4, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="X" IsReadOnly="True"/>
                                 <DataGridTextColumn Binding="{Binding Y, StringFormat=N4, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Y" IsReadOnly="True"/>
                                 <DataGridTextColumn Binding="{Binding Z, StringFormat=N4, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Z" IsReadOnly="True"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </TabItem>
-                    <TabItem Header="Properties">
+                    <TabItem Header="{x:Static lang:Main.Properties}">
                     </TabItem>
                 </TabControl>
             </UniformGrid>
         </Grid>        
-        
-       
     </DockPanel>
 </Window>

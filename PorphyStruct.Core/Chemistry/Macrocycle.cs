@@ -134,7 +134,7 @@ namespace PorphyStruct.Chemistry
             dataPoints.Clear();
             dataPoints.AddRange(CalculateDataPoints());
 
-            if (HasMetal) dataPoints.Add(new AtomDataPoint(
+            if (HasMetal()) dataPoints.Add(new AtomDataPoint(
                     (dataPoints.First().X + dataPoints.Last().X) / 2,
                     GetMetal().DistanceToPlane(GetMeanPlane()),
                     GetMetal()));
@@ -146,7 +146,7 @@ namespace PorphyStruct.Chemistry
         /// <summary>
         /// Indicates if a Metal Atom is present
         /// </summary>
-        public bool HasMetal => Atoms.Where(s => s.IsMacrocycle && s.IsMetal).Count() > 0;
+        public bool HasMetal(bool isMacrocycle = true) => Atoms.Where(s => (isMacrocycle ? s.IsMacrocycle == isMacrocycle : true) && s.IsMetal).Count() > 0;
 
         /// <summary>
         /// Returns Bondlenghts, etc. for the cycles
@@ -156,7 +156,7 @@ namespace PorphyStruct.Chemistry
         {
             Dictionary<string, double> MetricDict = new Dictionary<string, double>();
             //N4 Lenghts
-            if (HasMetal)
+            if (HasMetal())
             {
                 for (int i = 1; i <= 4; i++) MetricDict.Add($"Bond_N{i},M", CalculateDistance($"N{i}", GetMetal().Identifier));
                 MetricDict.Add("Bond_M,msp", GetMetal().DistanceToPlane(GetMeanPlane()));
@@ -225,7 +225,7 @@ namespace PorphyStruct.Chemistry
                     mode);
 
             //add metal atoms
-            if (HasMetal)
+            if (HasMetal())
                 foreach (AtomDataPoint n in dataPoints.Where(s => s.atom.Type == "N").ToList())
                 {
                     ArrowAnnotation b = DrawBond(dataPoints.Where(s => s.atom == GetMetal()).FirstOrDefault(), n);

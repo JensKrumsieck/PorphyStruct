@@ -60,7 +60,7 @@ namespace PorphyStruct
             this.cycle = cycle;
 
             //drop metal data
-            if (cycle.HasMetal) this.cycle.dataPoints = this.cycle.dataPoints.Where(s => !s.atom.IsMetal).ToList();
+            if (cycle.HasMetal()) this.cycle.dataPoints = this.cycle.dataPoints.Where(s => !s.atom.IsMetal).ToList();
 
             this.parentView = pv;
 

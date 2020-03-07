@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -180,24 +182,6 @@ namespace PorphyStruct
                 DistTB.Text = pl.D.ToString("G3");
             }**/
         }
-
-
-        /// <summary>
-        /// Update 3D Model
-        /// </summary>
-        /// <param name="markSelection"></param>
-        /// <param name="force"></param>
-        private void UpdateMolView(bool markSelection = true)
-        {
-            //Debug.WriteLine("I was fired!" + DateTime.Now.ToString());
-            //MolViewer.Children.Clear();
-            //MolViewer.Children.Add(new DefaultLights());
-            //Atom selected = markSelection ? (Atom)coordGrid.SelectedItem : null;
-            ////create 3d model
-            //System.Windows.Media.Media3D.ModelVisual3D model = new System.Windows.Media.Media3D.ModelVisual3D() { Content = Cycle.Paint3D(selected) };
-            //MolViewer.Children.Add(model);
-        }
-
 
         /// <summary>
         /// Centers Molecule into origin and updates camera to bestview
