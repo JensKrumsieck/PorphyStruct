@@ -16,13 +16,13 @@ namespace PorphyStruct.Chemistry
         /// <summary>
         /// The Molecules Atoms
         /// </summary>
-        public ObservableCollection<Atom> Atoms { get => Get<ObservableCollection<Atom>>(); set => Set(value); } 
+        public AsyncObservableCollection<Atom> Atoms { get => Get<AsyncObservableCollection<Atom>>(); set => Set(value); } 
 
         /// <summary>
         /// Construct Molecule
         /// </summary>
         public Molecule() {
-            Atoms = new ObservableCollection<Atom>();
+            Atoms = new AsyncObservableCollection<Atom>();
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace PorphyStruct.Chemistry
         /// <seealso cref="Molecule"/>
         /// </summary>
         /// <param name="title"></param>
-        public Molecule(ObservableCollection<Atom> Atoms)
+        public Molecule(AsyncObservableCollection<Atom> Atoms)
             : this()
         {
             this.Atoms = Atoms;

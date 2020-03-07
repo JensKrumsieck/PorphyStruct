@@ -3,17 +3,18 @@ using MathNet.Numerics.LinearAlgebra.Double;
 using MathNet.Spatial.Euclidean;
 using OxyPlot;
 using OxyPlot.Annotations;
+using PorphyStruct.Core.Util;
 using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PorphyStruct.Chemistry
 {
     public abstract class Macrocycle : Molecule, ICloneable
     {
-        public Macrocycle(ObservableCollection<Atom> Atoms) : base(Atoms) { }
+        public Macrocycle(AsyncObservableCollection<Atom> Atoms) : base(Atoms) { }
 
         /// <summary>
         /// Current Data Points
@@ -101,7 +102,7 @@ namespace PorphyStruct.Chemistry
                 }
             }
             //reorder Atoms
-            Atoms = new ObservableCollection<Atom>(Atoms.OrderBy(s => RingAtoms.IndexOf(s.Identifier)));
+            Atoms = new AsyncObservableCollection<Atom>(Atoms.OrderBy(s => RingAtoms.IndexOf(s.Identifier)));
 
             //current alpha-alpha distance
             double distance = 0;
@@ -331,16 +332,15 @@ namespace PorphyStruct.Chemistry
         /// Detect the macrocyclic structure
         /// </summary>
         /// <returns></returns>
-        public void Detect()
+        public async Task Detect()
         {
             //find all connected structures
             HashSet<HashSet<Atom>> connected = new HashSet<HashSet<Atom>>();
             foreach (var atom in Atoms.Where(s => !s.IsMetal))
-                connected.Add(DFSUtil.DFS(atom, NonMetalNeighbors));
+                connected.Add(await DFSUtil.DFS(atom, NonMetalNeighbors));
             //and compare to get all distinct structures
             //from the distinct structures select all that have more atoms than type's ringatoms 
             var distinct = connected.Distinct(HashSet<Atom>.CreateSetComparer()).Where(s => s.Count() >= RingAtoms.Count);
-
             var cycle = new HashSet<Atom>();
             //loop through all remaining connected figures
             foreach (var mol in distinct)
@@ -368,24 +368,25 @@ namespace PorphyStruct.Chemistry
                 //set macrocycle flag
                 Atoms.Where(s => cycle.Contains(s)).ToList().ForEach(s => { s.IsMacrocycle = true; s.Identifier = s.Type + "M"; });
                 Atoms.Where(s => !cycle.Contains(s)).ToList().ForEach(s => { s.IsMacrocycle = false; s.Identifier = s.Type + "X"; });
-
                 //track visited atoms
                 HashSet<Atom> visited = new HashSet<Atom>();
 
                 //set Identifier for C1 Atom
                 C1(cycle).Identifier = "C1";
-
+                //get N4 Cavity, necessary for performance
+                var cavity = N4Cavity(cycle);
                 //force c2 to be first step
-                Atom current = Neighbors(C1(cycle), cycle).Where(s => !N4Cavity(cycle).Contains(s) && !RingPath(N4Cavity(cycle).First(), RingAtoms.Count() - 8).Contains(s)).FirstOrDefault();
+                Atom current = Neighbors(C1(cycle), cycle).Where(s => !cavity.Contains(s) && !RingPath(cavity.First(), RingAtoms.Count() - 8).Contains(s)).FirstOrDefault();
                 current.Identifier = "C2";
                 //add C1&C2 to visited
                 visited.UnionWith(new HashSet<Atom>() { current, C1(cycle) });
+                //get carbon atoms
                 var carbons = RingAtoms.Where(s => s.Contains("C")).OrderBy(s => int.Parse(s.Replace("C", ""))).ToList();
                 int i = 2;
                 //loop through atoms and name them
                 while (visited.Count() != carbons.Count())
                 {
-                    foreach (var neighbor in Neighbors(current, cycle).Where(s => !visited.Contains(s) && !N4Cavity(cycle).Contains(s)))
+                    foreach (var neighbor in Neighbors(current, cycle).Where(s => !visited.Contains(s) && !cavity.Contains(s)))
                     {
                         //add to visited and assign Identifier
                         neighbor.Identifier = carbons[i];
@@ -394,7 +395,7 @@ namespace PorphyStruct.Chemistry
                     }
                 }
                 //set up identifiers for nitrogens
-                for (int j = 1; j <= 4; j++) N4Cavity(cycle).Where(s => Neighbors(s).Contains(ByIdentifier(AlphaAtoms[2 * j - 1]))).FirstOrDefault().Identifier = "N" + j;
+                for (int j = 1; j <= 4; j++) cavity.Where(s => Neighbors(s).Contains(ByIdentifier(AlphaAtoms[2 * j - 1]))).FirstOrDefault().Identifier = "N" + j;
             }
         }
 

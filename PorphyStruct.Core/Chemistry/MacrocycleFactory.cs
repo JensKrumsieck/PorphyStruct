@@ -1,4 +1,5 @@
 ﻿using PorphyStruct.Chemistry.Macrocycles;
+using PorphyStruct.Core.Util;
 using PorphyStruct.Files;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,7 +15,7 @@ namespace PorphyStruct.Chemistry
         /// <param name="Atoms"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static Macrocycle Build(ObservableCollection<Atom> Atoms, Macrocycle.Type type)
+        public static Macrocycle Build(AsyncObservableCollection<Atom> Atoms, Macrocycle.Type type)
         {
             return type switch
             {

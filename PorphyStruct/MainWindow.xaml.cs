@@ -2,6 +2,7 @@
 using MathNet.Spatial.Euclidean;
 using OxyPlot.Series;
 using PorphyStruct.Chemistry;
+using PorphyStruct.Core.Util;
 using PorphyStruct.Util;
 using PorphyStruct.Windows;
 using System;
@@ -15,6 +16,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
 
 namespace PorphyStruct
 {
@@ -22,7 +24,7 @@ namespace PorphyStruct
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
-    {
+    { 
         private Macrocycle _cycle;
         public Macrocycle Cycle
         {
@@ -64,6 +66,10 @@ namespace PorphyStruct
         /// </summary>
         public bool HasComparison => !string.IsNullOrEmpty(comp1Path) || !string.IsNullOrEmpty(comp2Path);
 
+        /// <summary>
+        /// The Molecule as 3D Representation
+        /// </summary>
+        public AsyncObservableCollection<ModelVisual3D> Molecule3D = new AsyncObservableCollection<ModelVisual3D>();
 
         /// <summary>
         /// Set and Notify Method
@@ -106,7 +112,7 @@ namespace PorphyStruct
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = this;
+            DataContext = this;            
         }
 
         /// <summary>
@@ -184,13 +190,13 @@ namespace PorphyStruct
         /// <param name="force"></param>
         private void UpdateMolView(bool markSelection = true)
         {
-            Debug.WriteLine("I was fired!" + DateTime.Now.ToString());
-            MolViewer.Children.Clear();
-            MolViewer.Children.Add(new DefaultLights());
-            Atom selected = markSelection ? (Atom)coordGrid.SelectedItem : null;
-            //create 3d model
-            System.Windows.Media.Media3D.ModelVisual3D model = new System.Windows.Media.Media3D.ModelVisual3D() { Content = Cycle.Paint3D(selected) };
-            MolViewer.Children.Add(model);
+            //Debug.WriteLine("I was fired!" + DateTime.Now.ToString());
+            //MolViewer.Children.Clear();
+            //MolViewer.Children.Add(new DefaultLights());
+            //Atom selected = markSelection ? (Atom)coordGrid.SelectedItem : null;
+            ////create 3d model
+            //System.Windows.Media.Media3D.ModelVisual3D model = new System.Windows.Media.Media3D.ModelVisual3D() { Content = Cycle.Paint3D(selected) };
+            //MolViewer.Children.Add(model);
         }
 
 
@@ -209,9 +215,74 @@ namespace PorphyStruct
             MolViewer.CameraController.CameraTarget = Win32Util.Origin;
         }
 
-        private void coordGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) => UpdateMolView();
+        private void coordGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //read selected index of coordgrid
+            Atom selected = (Atom)e.AddedItems[0] ?? null; 
+            
+            //remove atom
+            var SelectModel = Molecule3D.Where(s => (s as AtomModelVisual3D)?.Atom == selected).FirstOrDefault();
+            Molecule3D.Remove(SelectModel); 
+            //add atom
+            Molecule3D.Add(selected.Atom3D(true));
 
-        void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e) => UpdateMolView();
+            //handle previous
+            Atom previous = e.RemovedItems.Count != 0 ? (Atom)e.RemovedItems[0] : null;
+            if (previous != null)
+            {
+                var UnSelectModel = Molecule3D.Where(s => (s as AtomModelVisual3D)?.Atom == previous).FirstOrDefault();
+                Molecule3D.Remove(UnSelectModel);
+                Molecule3D.Add(previous.Atom3D(false));
+            }
+        }
+
+            /// <summary>
+            /// Handles Collection Changed Event
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
+            void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+                foreach (Atom item in e.OldItems)
+                {
+                    var removedItem = Molecule3D.Where(s => item.Atom3D().Content.Bounds.Location.DistanceTo(s.Content.Bounds.Location) < 1e-2).FirstOrDefault();
+                    if (removedItem != null) Molecule3D.Remove(removedItem);
+                    item.PropertyChanged -= Atom_PropertyChanged;
+                }
+            if (e.NewItems != null)
+                foreach (Atom item in e.NewItems)
+                {
+                    Molecule3D.Add(item.Atom3D());
+                    item.PropertyChanged += Atom_PropertyChanged;
+                }
+        }
+
+        /// <summary>
+        /// Fires when a Property of an Atom has changed. So Repaint the Atom
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Atom_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            //read selected index of coordgrid
+            Atom selected = (Atom)coordGrid.SelectedItem??null;
+            Atom atom = (Atom)sender;
+
+            //remove atom
+            var atomModel = Molecule3D.Where(s => (s as AtomModelVisual3D)?.Atom == atom).FirstOrDefault();
+            Molecule3D.Remove(atomModel);
+
+            //remove bonds
+            var models = Molecule3D.Where(s => (s as BondModelVisual3D)?.Atoms.Contains(atom)??false).ToList();
+            foreach (var m in models) Molecule3D.Remove(m);
+
+            //add atom
+            Molecule3D.Add(atom.Atom3D(atom == selected));
+            //add bonds
+            foreach (var a2 in Cycle.Neighbors(atom)) Molecule3D.Add(a2.Bond3D(atom, Cycle));
+        }
+
         /// <summary>
         /// Editing of the molecule ended
         /// </summary>
@@ -266,15 +337,19 @@ namespace PorphyStruct
                 comp1Path = comp2Path = "";
 
                 Cycle = MacrocycleFactory.Load(path, type);
+                Cycle.Atoms.CollectionChanged += OnCollectionChanged;
+
+                foreach(var atom in Cycle.Atoms) atom.PropertyChanged += Atom_PropertyChanged;
+
                 FileName = Cycle.Title;
 
                 //bind 
                 coordGrid.ItemsSource = Cycle.Atoms;
+                Molecule3D = new AsyncObservableCollection<ModelVisual3D>(Cycle.Paint3D());
+                MolViewer.ItemsSource= Molecule3D;
                 //register event
-                Cycle.Atoms.CollectionChanged += OnCollectionChanged;
             }
         }
-
         /// <summary>
         /// Handle Analyze Button Click
         /// </summary>
@@ -414,6 +489,6 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Detect_Click(object sender, RoutedEventArgs e) => Cycle.Detect();
+        private async void Detect_Click(object sender, RoutedEventArgs e) => await Cycle.Detect();
     }
 }

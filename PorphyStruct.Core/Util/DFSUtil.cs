@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PorphyStruct.Util
 {
@@ -17,10 +18,10 @@ namespace PorphyStruct.Util
         /// <param name="func"></param>
         /// <param name="length</param>
         /// <returns></returns>
-        public static HashSet<T> DFS<T>(T vertex, Func<T, IEnumerable<T>> func)
+        public static async Task<HashSet<T>> DFS<T>(T vertex, Func<T, IEnumerable<T>> func)
         {
             var visited = new HashSet<T>();
-            Traverse(vertex, visited, func);
+            await Traverse(vertex, visited, func);
             return visited;
         }
 
@@ -32,11 +33,11 @@ namespace PorphyStruct.Util
         /// <param name="visited"></param>
         /// <param name="func"></param>
         /// <param name="length</param>
-        public static void Traverse<T>(T vertex, HashSet<T> visited, Func<T, IEnumerable<T>> func)
+        public static async Task Traverse<T>(T vertex, HashSet<T> visited, Func<T, IEnumerable<T>> func)
         {
             visited.Add(vertex);
             foreach (var neighbor in func(vertex).Where(n => !visited.Contains(n)))
-                Traverse(neighbor, visited, func);
+                await Traverse(neighbor, visited, func);
         }
 
         /// <summary>

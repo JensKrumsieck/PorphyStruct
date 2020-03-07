@@ -49,10 +49,7 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         /// <param name="plane">Plane Object (MathNet.Spatial.Euclidean)</param>
         /// <returns>double</returns>
-        public double DistanceToPlane(Plane plane)
-        {
-            return plane.SignedDistanceTo(new Point3D(X, Y, Z));
-        }
+        public double DistanceToPlane(Plane plane) => plane.SignedDistanceTo(new Point3D(X, Y, Z));
 
         /// <summary>
         /// Calculates Distance between to atoms
@@ -60,28 +57,19 @@ namespace PorphyStruct.Chemistry
         /// <param name="a1"></param>
         /// <param name="a2"></param>
         /// <returns></returns>
-        public static double Distance(Atom a1, Atom a2)
-        {
-            return MathNet.Numerics.Distance.Euclidean(a1.XYZ(), a2.XYZ());
-        }
+        public static double Distance(Atom a1, Atom a2) => MathNet.Numerics.Distance.Euclidean(a1.XYZ(), a2.XYZ());
 
         /// <summary>
         /// get element by Identifier (C19 -> C)
         /// </summary>
         /// <returns>string</returns>
-        public Element SetElement()
-        {
-            return Element.Create(Regex.Match(Identifier, @"([A-Z][a-z]*)").Value);
-        }
+        public Element SetElement() => Element.Create(Regex.Match(Identifier, @"([A-Z][a-z]*)").Value);
 
         /// <summary>
         /// Indicates if this is a metal atom.
         /// </summary>
         /// <returns></returns>
-        public bool IsMetal
-        {
-            get => Metals.Contains(Type) || Identifier == "M";
-        }
+        public bool IsMetal => Metals.Contains(Type) || Identifier == "M";
 
         /// <summary>
         /// Indicates a bond
@@ -90,7 +78,7 @@ namespace PorphyStruct.Chemistry
         /// <returns></returns>
         public bool BondTo(Atom test)
         {
-            if (Atom.Distance(this, test) < (Element.Radius + test.Element.Radius) + 0.25)
+            if (Atom.Distance(this, test) < (Element.Radius + test.Element.Radius) + 0.25 && this != test)
                 return true;
             return false;
         }
@@ -114,16 +102,13 @@ namespace PorphyStruct.Chemistry
         /// get Color from  OxyAtomColor-Dictionary
         /// </summary>
         /// <returns>OxyPlot.OxyColor</returns>
-        public OxyColor OxyColor
-        {
-            get => this.Element.OxyColor;
-        }
+        public OxyColor OxyColor => this.Element.OxyColor;
 
 
         /// <summary>
         /// Radii of Atoms for 3D Visualisation
         /// </summary>
-        public double AtomRadius { get => Element.Radius; }
+        public double AtomRadius => Element.Radius;
 
         //colors for bonds
         public static OxyColor[] modesMultiColor = new OxyColor[]
@@ -147,19 +132,15 @@ namespace PorphyStruct.Chemistry
         /// clones an atom
         /// </summary>
         /// <returns></returns>
-        public object Clone()
-        {
-            return new Atom(Identifier, X, Y, Z);
-
-        }
+        public object Clone() => new Atom(Identifier, X, Y, Z);
 
         /// <summary>
         /// creates export Text for Atom
         /// </summary>
-        public string ExportText
-        {
-            get => Identifier + "/" + Type + "\t" + X.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + Y.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + Z.ToString("N8", System.Globalization.CultureInfo.InvariantCulture);
-        }
+        public string ExportText => Identifier + "/" + Type + "\t" + 
+            X.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + 
+            Y.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + 
+            Z.ToString("N8", System.Globalization.CultureInfo.InvariantCulture);
 
         /// <summary>
         /// returns number of identifier
@@ -176,10 +157,7 @@ namespace PorphyStruct.Chemistry
         /// <summary>
         /// return Identifiers Suffix
         /// </summary>
-        public string Suffix
-        {
-            get => Regex.Match(Identifier, @"\D$").Value;
-        }
+        public string Suffix => Regex.Match(Identifier, @"\D$").Value;
 
         /// <summary>
         /// Prints Identifier
