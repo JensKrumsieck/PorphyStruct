@@ -5,6 +5,10 @@ using System.Threading;
 
 namespace PorphyStruct.Core.Util
 {
+    /// <summary>
+    /// https://gist.github.com/thomaslevesque/10023516
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class AsyncObservableCollection<T> : ObservableCollection<T>
     {
         private readonly SynchronizationContext _synchronizationContext = SynchronizationContext.Current;
