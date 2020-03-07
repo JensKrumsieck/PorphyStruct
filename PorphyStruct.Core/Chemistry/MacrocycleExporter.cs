@@ -83,7 +83,7 @@ namespace PorphyStruct.Chemistry
             List<XElement> simRes = sim.par.Select(par => new XElement("parameter", new XAttribute("name", par.Key), par.Value)).ToList();
             simRes.AddRange(sim.par.Select(par => new XElement("absolute", new XAttribute("name", par.Key), par.Value / 100 * sim.cycle.MeanDisplacement())).ToList());
 
-            List<XElement> metrix = exp.Metrics().Select(met => new XElement(met.Key.Split('_')[0], new XAttribute("atoms", met.Key.Split('_')[1]), met.Value)).ToList();
+            //List<XElement> metrix = exp.Metrics().Select(met => new XElement(met.Key.Split('_')[0], new XAttribute("atoms", met.Key.Split('_')[1]), met.Value)).ToList();
 
             simRes.Add(new XElement("doop", sim.cycle.MeanDisplacement()));
             simRes.Add(new XElement("errors",
@@ -95,8 +95,8 @@ namespace PorphyStruct.Chemistry
             XElement Molecule = new XElement("molecule",
                 new XAttribute("name", exp.Title),
                 new XElement("type", exp.GetType().Name),
-                new XElement("simulation", simRes),
-                new XElement("metrics", metrix)
+                new XElement("simulation", simRes)
+                //new XElement("metrics", metrix)
                 );
             Molecule.Save(File.Create(filename + "Result.xml"));
         }

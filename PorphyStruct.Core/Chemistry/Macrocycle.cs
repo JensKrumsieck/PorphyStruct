@@ -7,6 +7,7 @@ using PorphyStruct.Core.Util;
 using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -149,35 +150,19 @@ namespace PorphyStruct.Chemistry
         public bool HasMetal(bool isMacrocycle = true) => Atoms.Where(s => (isMacrocycle ? s.IsMacrocycle == isMacrocycle : true) && s.IsMetal).Count() > 0;
 
         /// <summary>
-        /// Returns Bondlenghts, etc. for the cycles
-        /// </summary>
-        /// <returns></returns>
-        public Dictionary<string, double> Metrics()
-        {
-            Dictionary<string, double> MetricDict = new Dictionary<string, double>();
-            //N4 Lenghts
-            if (HasMetal())
-            {
-                for (int i = 1; i <= 4; i++) MetricDict.Add($"Bond_N{i},M", CalculateDistance($"N{i}", GetMetal().Identifier));
-                MetricDict.Add("Bond_M,msp", GetMetal().DistanceToPlane(GetMeanPlane()));
-            }
-            Dihedrals.ForEach(d => MetricDict.Add("Dihedral_" + string.Join(",", d), Dihedral(d)));
-
-            return MetricDict;
-        }
-
-        /// <summary>
         /// calculates a dihedral
         /// </summary>
         /// <param name="Atoms"></param>
         /// <returns></returns>
-        public double Dihedral(string[] Atoms)
+        public double Dihedral(string[] atoms)
         {
-            if (Atoms.Length != 4) return 0;
+            if (atoms.Length != 4 && Atoms.Where(i => atoms.Contains(i.Identifier)).Count() != 4) return 0;
             //build normalized vectors
-            Vector<double> b1 = (-(DenseVector.OfArray(ByIdentifier(Atoms[0], true).XYZ()) - DenseVector.OfArray(ByIdentifier(Atoms[1], true).XYZ()))).Normalize(2);
-            Vector<double> b2 = (DenseVector.OfArray(ByIdentifier(Atoms[1], true).XYZ()) - DenseVector.OfArray(ByIdentifier(Atoms[2], true).XYZ())).Normalize(2);
-            Vector<double> b3 = (DenseVector.OfArray(ByIdentifier(Atoms[3], true).XYZ()) - DenseVector.OfArray(ByIdentifier(Atoms[2], true).XYZ())).Normalize(2);
+
+            Vector<double> b1 = (-(DenseVector.OfArray(ByIdentifier(atoms[0]).XYZ()) - DenseVector.OfArray(ByIdentifier(atoms[1]).XYZ()))).Normalize(2);
+            Vector<double> b2 = (DenseVector.OfArray(ByIdentifier(atoms[1]).XYZ()) - DenseVector.OfArray(ByIdentifier(atoms[2]).XYZ())).Normalize(2);
+            Vector<double> b3 = (DenseVector.OfArray(ByIdentifier(atoms[3]).XYZ()) - DenseVector.OfArray(ByIdentifier(atoms[2]).XYZ())).Normalize(2);
+
 
             //calculate crossproducts
             var c1 = MathUtil.CrossProduct(b1, b2);
@@ -189,6 +174,7 @@ namespace PorphyStruct.Chemistry
             var y = c3.DotProduct(c2);
 
             return 180.0 / Math.PI * Math.Atan2(y, x);
+
         }
 
         /// <summary>

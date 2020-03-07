@@ -156,12 +156,13 @@
                 </oxy:PlotView.Background>
             </oxy:PlotView>
             <UniformGrid Rows="2" Grid.Column="1">
-                <h:HelixViewport3D x:Name="MolViewer" ShowViewCube="False" ShowCoordinateSystem="True" ZoomExtentsWhenLoaded="True">
+                <h:HelixViewport3D x:Name="MolViewer" ShowViewCube="False" ShowCoordinateSystem="True" ZoomExtentsWhenLoaded="True" Background="#FFFAFAFA">
                     <h:DefaultLights/>
                 </h:HelixViewport3D>
-                <TabControl>
+                <TabControl BorderBrush="{x:Null}" Background="Transparent">
                     <TabItem Header="{x:Static lang:Main.Coordinates}">
-                        <DataGrid IsSynchronizedWithCurrentItem="True" x:Name="coordGrid" CanUserSortColumns="True" CanUserAddRows="False" ItemsSource="{Binding}" AutoGenerateColumns="False" Style="{DynamicResource MaterialDesignDataGrid}" SelectionChanged="CoordGrid_SelectionChanged">
+                        <DataGrid IsSynchronizedWithCurrentItem="True" x:Name="coordGrid" CanUserSortColumns="True" CanUserAddRows="False" ItemsSource="{Binding}" 
+                                  AutoGenerateColumns="False" Style="{DynamicResource MaterialDesignDataGrid}" SelectionChanged="CoordGrid_SelectionChanged" >
                             <DataGrid.Columns>
                                 <DataGridTextColumn Binding="{Binding Identifier, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="{x:Static lang:Main.Identifier}"/>
                                 <DataGridCheckBoxColumn Binding="{Binding IsMacrocycle, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="{x:Static lang:Main.IsMacrocycle}" SortDirection="Descending"/>
@@ -172,6 +173,39 @@
                         </DataGrid>
                     </TabItem>
                     <TabItem Header="{x:Static lang:Main.Properties}">
+                        <DataGrid x:Name="Cycle_Properties" CanUserAddRows="False" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Property" Binding="{Binding Name}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Value" Binding="{Binding Value}" IsReadOnly="True"/>
+                            </DataGrid.Columns>
+                            <DataGrid.GroupStyle>
+                                <GroupStyle>
+                                    <GroupStyle.HeaderTemplate>
+                                        <DataTemplate>
+                                            <TextBlock FontWeight="Bold" FontSize="12" Text="{Binding Name}"/>
+                                        </DataTemplate>
+                                    </GroupStyle.HeaderTemplate>
+                                    <GroupStyle.ContainerStyle>
+                                        <Style TargetType="{x:Type GroupItem}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate>
+                                                        <Expander IsExpanded="True">
+                                                            <Expander.Header>
+                                                                <Border Padding="5" Margin="-15 0 0 0">
+                                                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                                                                </Border>
+                                                            </Expander.Header>
+                                                            <ItemsPresenter />
+                                                        </Expander>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </GroupStyle.ContainerStyle>
+                                </GroupStyle>
+                            </DataGrid.GroupStyle>
+                        </DataGrid>
                     </TabItem>
                 </TabControl>
             </UniformGrid>

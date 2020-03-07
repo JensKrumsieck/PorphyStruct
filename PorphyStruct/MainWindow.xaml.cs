@@ -16,6 +16,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
@@ -72,6 +73,12 @@ namespace PorphyStruct
         /// </summary>
         public AsyncObservableCollection<ModelVisual3D> Molecule3D = new AsyncObservableCollection<ModelVisual3D>();
 
+        Dictionary<string, List<Property>> _cycleProperties = new Dictionary<string, List<Property>>();
+        /// <summary>
+        /// A Dictionary with all shown CycleProperties
+        /// </summary>
+        public Dictionary<string, List<Property>> CycleProperties { get => _cycleProperties; set => SetAndNotify(ref _cycleProperties, value); }
+
         /// <summary>
         /// Set and Notify Method
         /// </summary>
@@ -114,7 +121,7 @@ namespace PorphyStruct
         {
             //CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
             InitializeComponent();
-            DataContext = this;
+            DataContext = this; 
         }
 
         /// <summary>
@@ -158,30 +165,45 @@ namespace PorphyStruct
             displaceView.Model = pm;
             pm.Scale(pm.yAxis, true, Normalize);
             pm.Scale(pm.xAxis);
-            //update simstack
             UpdateStack();
         }
         /// <summary>
         /// Update Sim WrapPanel
         /// </summary>
         public void UpdateStack()
-        {/**
-            simStack.Children.Clear();
-            if (simulation != null)
-                foreach (string key in simulation.par.Keys) simStack.Children.Add(new Chip
-                {
-                    Content = key + ": " + simulation.par[key].ToString(System.Globalization.CultureInfo.InvariantCulture) + "%",
-                    Margin = new Thickness(0, 0, 4, 4),
-                    FontSize = 8
-                });
-
-            if (coordGrid.ItemsSource != null)
+        {
+            //Hardcode that until a better solution is found
+            if (Cycle != null)
             {
-                //update plane coordinates
-                Plane pl = cycle.GetMeanPlane();
-                UnitVecTB.Text = $"({pl.A.ToString("G3")}, {pl.B.ToString("G3")}, {pl.C.ToString("G3")})";
-                DistTB.Text = pl.D.ToString("G3");
-            }**/
+                var msp = Cycle.GetMeanPlane();
+                CycleProperties["General"] = new List<Property>()
+                {
+                    new Property("D_oop", Cycle.MeanDisplacement().ToString("G5")),
+                    new Property("D_oop(sim)", simulation != null ? simulation.cycle.MeanDisplacement().ToString("G5") : double.NaN.ToString())
+                };
+
+                CycleProperties["Dihedrals"] = Cycle.Dihedrals.Select(s => new Property(string.Join("-", s), Cycle.Dihedral(s).ToString("G3") + "°")).ToList();
+                if (Cycle.HasMetal(false))
+                    CycleProperties["Distances"] = Cycle.Atoms.Where(s => s.BondTo(Cycle.GetMetal()))
+                        .Select(s => new Property($"{s.Identifier}-{Cycle.GetMetal().Identifier}", Atom.Distance(s, Cycle.GetMetal()).ToString("G3") + " Å"))
+                        .Append(new Property($"{Cycle.GetMetal().Identifier} - Mean Plane", Cycle.GetMetal().DistanceToPlane(msp).ToString("G3") + " Å")).ToList();
+                if (simulation != null)
+                    CycleProperties["Simulation"] = simulation.par.Select(s => new Property(s.Key, 
+                        $"{s.Value.ToString("G4")} % / {(s.Value / 100 * simulation.cycle.MeanDisplacement()).ToString("G6")} Å")).ToList();
+                CycleProperties["Mean Plane"] = new List<Property>()
+                {
+                    new Property("Unit Vector", $"({msp.A.ToString("G3")}, {msp.B.ToString("G3")}, {msp.C.ToString("G3")})"),
+                    new Property("Distance", msp.D.ToString("G3"))
+                };
+            }
+
+            //bind to control
+            var flattened = CycleProperties.SelectMany(x => x.Value?.Select(y => new { x.Key, y.Name, y.Value })).ToList();
+            Cycle_Properties.ItemsSource = flattened;
+
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(Cycle_Properties.ItemsSource);
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("Key");
+            view.GroupDescriptions.Add(groupDescription);
         }
 
         /// <summary>
@@ -289,7 +311,7 @@ namespace PorphyStruct
 
                 path = wi.FileName;
                 type = (Macrocycle.Type)wi.Type;
-                this.Title = "Structural Analysis of Porphyrinoids (PorphyStruct) - " + type.ToString() + " Mode";
+                Title = $"Structural Analysis of Porphyrinoids (PorphyStruct) - {type.ToString()} Mode";
 
                 //reset gui elements
                 AnalButton.IsEnabled = CenterMolButton.IsEnabled = DetectMolButton.IsEnabled = NormalizeButton.IsEnabled = InvertButton.IsEnabled = SaveButton.IsEnabled = SimButton.IsEnabled = CompButton.IsEnabled = true;
@@ -319,7 +341,6 @@ namespace PorphyStruct
                 coordGrid.ItemsSource = Cycle.Atoms;
                 Molecule3D = new AsyncObservableCollection<ModelVisual3D>(Cycle.Paint3D());
                 MolViewer.ItemsSource = Molecule3D;
-                //register event
             }
         }
         /// <summary>
@@ -408,7 +429,6 @@ namespace PorphyStruct
             DiffSimButton.IsEnabled = false;
             this.Analyze();
         }
-
 
         /// <summary>
         /// Handle Diff Button Click
