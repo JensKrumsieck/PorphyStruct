@@ -173,10 +173,10 @@
                         </DataGrid>
                     </TabItem>
                     <TabItem Header="{x:Static lang:Main.Properties}">
-                        <DataGrid x:Name="Cycle_Properties" CanUserAddRows="False" AutoGenerateColumns="False">
+                            <DataGrid x:Name="Cycle_Properties" CanUserAddRows="False" AutoGenerateColumns="False">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Property" Binding="{Binding Name}" IsReadOnly="True" />
-                                <DataGridTextColumn Header="Value" Binding="{Binding Value}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="{x:Static lang:Main.Property}" Binding="{Binding Name}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="{x:Static lang:Main.Value}" Binding="{Binding Value}" IsReadOnly="True"/>
                             </DataGrid.Columns>
                             <DataGrid.GroupStyle>
                                 <GroupStyle>
@@ -205,7 +205,7 @@
                                     </GroupStyle.ContainerStyle>
                                 </GroupStyle>
                             </DataGrid.GroupStyle>
-                        </DataGrid>
+                            </DataGrid>
                     </TabItem>
                 </TabControl>
             </UniformGrid>

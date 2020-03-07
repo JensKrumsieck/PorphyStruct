@@ -186,6 +186,9 @@
   <data name="Properties" xml:space="preserve">
     <value>Properties</value>
   </data>
+  <data name="Property" xml:space="preserve">
+    <value>Property</value>
+  </data>
   <data name="RemSim" xml:space="preserve">
     <value>Remove Sim.</value>
   </data>
@@ -206,5 +209,8 @@
   </data>
   <data name="SimulateToolTip" xml:space="preserve">
     <value>Simulate Displacements by NSD Method (CTRL+P)</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Value</value>
   </data>
 </root>

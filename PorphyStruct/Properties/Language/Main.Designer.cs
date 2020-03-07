@@ -268,6 +268,15 @@ namespace PorphyStruct.Properties.Language {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Property ähnelt.
+        /// </summary>
+        public static string Property {
+            get {
+                return ResourceManager.GetString("Property", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Remove Sim. ähnelt.
         /// </summary>
         public static string RemSim {
@@ -327,6 +336,15 @@ namespace PorphyStruct.Properties.Language {
         public static string SimulateToolTip {
             get {
                 return ResourceManager.GetString("SimulateToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Value ähnelt.
+        /// </summary>
+        public static string Value {
+            get {
+                return ResourceManager.GetString("Value", resourceCulture);
             }
         }
     }

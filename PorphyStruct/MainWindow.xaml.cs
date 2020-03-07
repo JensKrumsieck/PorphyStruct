@@ -429,7 +429,6 @@ namespace PorphyStruct
             DiffSimButton.IsEnabled = false;
             this.Analyze();
         }
-
         /// <summary>
         /// Handle Diff Button Click
         /// </summary>
