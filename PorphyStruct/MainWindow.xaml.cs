@@ -10,8 +10,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -309,13 +307,15 @@ namespace PorphyStruct
             {
                 displaceView.Background = Brushes.White;
 
+                //drive the reset train
+                foreach(var child in this.FindVisualChildren<Button>())
+                    child.IsEnabled = !child.Name.Contains("Sim");
+
                 path = wi.FileName;
                 type = (Macrocycle.Type)wi.Type;
                 Title = $"Structural Analysis of Porphyrinoids (PorphyStruct) - {type.ToString()} Mode";
 
-                //reset gui elements
-                AnalButton.IsEnabled = CenterMolButton.IsEnabled = DetectMolButton.IsEnabled = NormalizeButton.IsEnabled = InvertButton.IsEnabled = SaveButton.IsEnabled = SimButton.IsEnabled = CompButton.IsEnabled = true;
-                Normalize = Invert = HasDifference = DelSimButton.IsEnabled = DiffSimButton.IsEnabled = false;
+                Normalize = Invert = HasDifference = default;
 
                 //clear plotview
                 displaceView.Model = null;
@@ -323,8 +323,6 @@ namespace PorphyStruct
 
                 //clear sim
                 this.simulation = null;
-                //update simstack
-                UpdateStack();
 
                 //reset values
                 normFac = 0;
@@ -341,6 +339,9 @@ namespace PorphyStruct
                 coordGrid.ItemsSource = Cycle.Atoms;
                 Molecule3D = new AsyncObservableCollection<ModelVisual3D>(Cycle.Paint3D());
                 MolViewer.ItemsSource = Molecule3D;
+
+                //update sdtack
+                UpdateStack();
             }
         }
         /// <summary>
