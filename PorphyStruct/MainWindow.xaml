@@ -16,7 +16,7 @@
         TextOptions.TextRenderingMode="Auto"
         FontFamily="Segoe UI"
         Style="{DynamicResource DefaultWindowStyle}"
-        styles:DefaultWindow.FileName="{Binding FileName, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"
+        styles:DefaultWindow.FileName="{Binding Cycle.Title}"
         Title="Structural Analysis of Porphyrinoids (PorphyStruct)" Height="780" Width="1230">
     <!--Shortcut section-->
     <Window.Resources>
@@ -150,19 +150,19 @@
                 <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <oxy:PlotView x:Name="displaceView" Grid.Column="0">
+            <oxy:PlotView x:Name="displaceView" Grid.Column="0" Model="{Binding Model, NotifyOnSourceUpdated=True}">
                 <oxy:PlotView.Background>
                     <ImageBrush ImageSource="Resources/porphystructlogo.png" Stretch="None"/>
                 </oxy:PlotView.Background>
             </oxy:PlotView>
             <UniformGrid Rows="2" Grid.Column="1">
-                <h:HelixViewport3D x:Name="MolViewer" ShowViewCube="False" ShowCoordinateSystem="True" ZoomExtentsWhenLoaded="True" Background="#FFFAFAFA">
+                <h:HelixViewport3D x:Name="MolViewer" ShowViewCube="False" ShowCoordinateSystem="True" ZoomExtentsWhenLoaded="True" Background="#FFFAFAFA" ItemsSource="{Binding Molecule3D}">
                     <h:DefaultLights/>
                 </h:HelixViewport3D>
                 <TabControl BorderBrush="{x:Null}" Background="Transparent">
                     <TabItem Header="{x:Static lang:Main.Coordinates}">
-                        <DataGrid IsSynchronizedWithCurrentItem="True" x:Name="coordGrid" CanUserSortColumns="True" CanUserAddRows="False" ItemsSource="{Binding}" 
-                                  AutoGenerateColumns="False" Style="{DynamicResource MaterialDesignDataGrid}" SelectionChanged="CoordGrid_SelectionChanged" >
+                        <DataGrid IsSynchronizedWithCurrentItem="True" x:Name="coordGrid" CanUserSortColumns="True" CanUserAddRows="False" ItemsSource="{Binding Cycle.Atoms}" 
+                                  AutoGenerateColumns="False" Style="{DynamicResource MaterialDesignDataGrid}" SelectedItem="{Binding SelectedItem}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Binding="{Binding Identifier, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="{x:Static lang:Main.Identifier}"/>
                                 <DataGridCheckBoxColumn Binding="{Binding IsMacrocycle, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="{x:Static lang:Main.IsMacrocycle}" SortDirection="Descending"/>

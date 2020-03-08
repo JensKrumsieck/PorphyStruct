@@ -44,11 +44,11 @@ namespace PorphyStruct
 
             this.Model = Application.Current.Windows.OfType<MainWindow>().First().displaceView.Model;
             //reanalyze
-            if (Application.Current.Windows.OfType<MainWindow>().First().Normalize && !(Model == null || Model.Series.Count == 0))
-            {
-                Application.Current.Windows.OfType<MainWindow>().First().NormalizeButton_Click(null, null);
-                this.Model = Application.Current.Windows.OfType<MainWindow>().First().displaceView.Model;
-            }
+            //if (Application.Current.Windows.OfType<MainWindow>().First().Normalize && !(Model == null || Model.Series.Count == 0))
+            //{
+            //    Application.Current.Windows.OfType<MainWindow>().First().NormalizeButton_Click(null, null);
+            //    this.Model = Application.Current.Windows.OfType<MainWindow>().First().displaceView.Model;
+            //}
 
         }
 
@@ -138,45 +138,46 @@ namespace PorphyStruct
         /// <returns></returns>
         private Report SaveReport()
         {
-            string type = Application.Current.Windows.OfType<MainWindow>().First().type.ToString().ToLower();
-            Report report = new Report() { Title = "Analysis" };
-            ReportSection main = new ReportSection();
-            report.AddHeader(1, "Conformational analysis " + NameTB.Text);
-            report.Add(main);
+            ////string type = Application.Current.Windows.OfType<MainWindow>().First().type.ToString().ToLower();
+            //Report report = new Report() { Title = "Analysis" };
+            //ReportSection main = new ReportSection();
+            //report.AddHeader(1, "Conformational analysis " + NameTB.Text);
+            //report.Add(main);
 
-            //basic information
-            main.AddHeader(2, "Macrocyclic Conformation");
-            main.AddParagraph(string.Format(Properties.Resources.ExplanationParagraph, Cycle.Title, type));
-            main.AddImage(Filename + "Analysis.png", $"Displacement Diagram of the {type}");
+            ////basic information
+            //main.AddHeader(2, "Macrocyclic Conformation");
+            ////main.AddParagraph(string.Format(Properties.Resources.ExplanationParagraph, Cycle.Title, type));
+            //main.AddImage(Filename + "Analysis.png", $"Displacement Diagram of the {type}");
 
-            //get exp series
-            OxyPlot.Series.ScatterSeries exp = (OxyPlot.Series.ScatterSeries)Model.Series.FirstOrDefault(s => s.Title == "Exp.");
-            main.AddItemsTable("Experimental Data",
-                exp.ItemsSource.OfType<AtomDataPoint>(),
-                new List<ItemsTableField> { new ItemsTableField("X", "X") { Width = 1000 }, new ItemsTableField("Y", "Y") { Width = 1000 }
-                });
+            ////get exp series
+            //OxyPlot.Series.ScatterSeries exp = (OxyPlot.Series.ScatterSeries)Model.Series.FirstOrDefault(s => s.Title == "Exp.");
+            //main.AddItemsTable("Experimental Data",
+            //    exp.ItemsSource.OfType<AtomDataPoint>(),
+            //    new List<ItemsTableField> { new ItemsTableField("X", "X") { Width = 1000 }, new ItemsTableField("Y", "Y") { Width = 1000 }
+            //    });
 
-            if (this.Sim != null)
-            {
-                ReportSection Simu = new ReportSection();
-                report.Add(Simu);
-                Simu.AddHeader(2, "Simulation Details");
-                Simu.AddParagraph(string.Format(Properties.Resources.SimDetailsParagraph, type, Sim.errors[0], Sim.errors[1], Sim.errors[2]));
+            //if (this.Sim != null)
+            //{
+            //    ReportSection Simu = new ReportSection();
+            //    report.Add(Simu);
+            //    Simu.AddHeader(2, "Simulation Details");
+            //    Simu.AddParagraph(string.Format(Properties.Resources.SimDetailsParagraph, type, Sim.errors[0], Sim.errors[1], Sim.errors[2]));
 
-                string composition = "";
-                string absComposition = "";
-                foreach (KeyValuePair<string, double> i in Sim.par)
-                {
-                    composition += i.Value.ToString("N2", System.Globalization.CultureInfo.InvariantCulture) + "% of " + i.Key + ",";
-                    absComposition += (i.Value / 100 * Sim.cycle.MeanDisplacement()).ToString("N4", System.Globalization.CultureInfo.InvariantCulture) + " of " + i.Key + ",";
-                }
-                composition.Remove(composition.LastIndexOf(','));
-                Simu.AddParagraph(string.Format(Properties.Resources.CompositionParagraph, composition, Sim.cycle.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture), absComposition));
+            //    string composition = "";
+            //    string absComposition = "";
+            //    foreach (KeyValuePair<string, double> i in Sim.par)
+            //    {
+            //        composition += i.Value.ToString("N2", System.Globalization.CultureInfo.InvariantCulture) + "% of " + i.Key + ",";
+            //        absComposition += (i.Value / 100 * Sim.cycle.MeanDisplacement()).ToString("N4", System.Globalization.CultureInfo.InvariantCulture) + " of " + i.Key + ",";
+            //    }
+            //    composition.Remove(composition.LastIndexOf(','));
+            //    Simu.AddParagraph(string.Format(Properties.Resources.CompositionParagraph, composition, Sim.cycle.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture), absComposition));
 
-                Simu.AddImage(this.Filename + "SimResult.png", "Visualization of Simulationparameters");
-                Simu.AddPropertyTable("Simulationparameters with a mean displacement parameter of " + Sim.cycle.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture), Sim.par);
-            }
-            return report;
+            //    Simu.AddImage(this.Filename + "SimResult.png", "Visualization of Simulationparameters");
+            //    Simu.AddPropertyTable("Simulationparameters with a mean displacement parameter of " + Sim.cycle.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture), Sim.par);
+            //}
+            //return report;
+            return null;
         }
 
         /// <summary>

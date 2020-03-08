@@ -29,6 +29,7 @@ namespace PorphyStruct.Core.Util
         /// <param name="name"></param>
         protected void Set<T>(T value, [CallerMemberName] string name = default)
         {
+            OnPropertyChanging(name);
             if (Equals(value, Get<T>(name))) return;
             _properties[name] = value;
             OnPropertyChanged(name);
@@ -38,11 +39,18 @@ namespace PorphyStruct.Core.Util
         /// Declares Event
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangingEventHandler PropertyChanging;
 
         /// <summary>
         /// Eventhandler
         /// </summary>
         /// <param name="name"></param>
-        protected virtual void OnPropertyChanged([CallerMemberName] string name = default)=> PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        protected virtual void OnPropertyChanged([CallerMemberName] string name = default) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
+        /// <summary>
+        /// Eventhandler fires before the values has changed
+        /// </summary>
+        /// <param name="name"></param>
+        protected virtual void OnPropertyChanging([CallerMemberName] string name = default) => PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(name));
     }
 }
