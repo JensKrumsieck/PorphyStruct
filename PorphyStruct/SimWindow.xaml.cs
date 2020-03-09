@@ -37,7 +37,7 @@ namespace PorphyStruct
         /// Simulation Parameters
         /// </summary>
         public Macrocycle cycle;
-        //public Macrocycle.Type MType = Application.Current.Windows.OfType<MainWindow>().First().type;
+        public Macrocycle.Type MType = Application.Current.Windows.OfType<MainWindow>().First().viewModel.Type;
         public List<SimParam> param; //list of all simulation parameters
         private Simplex simplex = null; //simplex matrix
 
@@ -64,7 +64,7 @@ namespace PorphyStruct
 
             this.parentView = pv;
 
-            //simGrid.ItemsSource = this.param = SimParam.ListParameters(MType);
+            simGrid.ItemsSource = this.param = SimParam.ListParameters(MType);
             PlotExp();
         }
 
@@ -176,9 +176,9 @@ namespace PorphyStruct
             synchronizationContext.Post(new SendOrPostCallback(o =>
             {
                 //update meadDisplacement BUT! Denormalize before!
-                //var tmp = MacrocycleFactory.Build(cycle.Atoms, MType);
-                //tmp.dataPoints = ((List<AtomDataPoint>)o).Factor(Application.Current.Windows.OfType<MainWindow>().First().normFac).ToList();
-                //meanDisPar.Content = tmp.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture);
+                var tmp = MacrocycleFactory.Build(cycle.Atoms, MType);
+                tmp.dataPoints = ((List<AtomDataPoint>)o).Factor(Application.Current.Windows.OfType<MainWindow>().First().viewModel.normFac).ToList();
+                meanDisPar.Content = tmp.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture);
 
             }), data);
         }
@@ -320,10 +320,10 @@ namespace PorphyStruct
                 simObj.errors = ErrTB.Text.Split(';').Select(s => Convert.ToDouble(s, System.Globalization.CultureInfo.InvariantCulture)).ToArray();
 
                 //set true if exp has been inverted
-                //if (Application.Current.Windows.OfType<MainWindow>().First().Invert) simObj.isInverted = true;
+                if (Application.Current.Windows.OfType<MainWindow>().First().viewModel.Invert) simObj.isInverted = true;
                 Application.Current.Windows.OfType<MainWindow>().First().DelSimButton.IsEnabled = true;
                 Application.Current.Windows.OfType<MainWindow>().First().DiffSimButton.IsEnabled = true;
-                //Application.Current.Windows.OfType<MainWindow>().First().simulation = simObj;
+                Application.Current.Windows.OfType<MainWindow>().First().viewModel.simulation = simObj;
                 Application.Current.Windows.OfType<MainWindow>().First().Analyze();
             }
         }

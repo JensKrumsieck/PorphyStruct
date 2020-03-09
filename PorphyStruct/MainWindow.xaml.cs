@@ -179,10 +179,10 @@ namespace PorphyStruct
         private void SimButton_Click(object sender, RoutedEventArgs e)
         {
             //normalize if not done yet!
-            //if (!Normalize)
-            //    NormalizeButton_Click(sender, e);
-            //if (simulation != null) new SimWindow(Cycle, displaceView, simulation).Show();
-            //else new SimWindow(Cycle, displaceView).Show();
+            if (!viewModel.Normalize)
+                NormalizeButton_Click(sender, e);
+            if (viewModel.simulation == null) new SimWindow(viewModel.Cycle, displaceView).Show();
+            else new SimWindow(viewModel.Cycle, displaceView, viewModel.simulation).Show();
         }
 
         /// <summary>
