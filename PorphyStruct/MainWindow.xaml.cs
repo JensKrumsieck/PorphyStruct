@@ -50,8 +50,6 @@ namespace PorphyStruct
         /// </summary>
         public void UpdateStack()
         {
-            viewModel.UpdateProperties();
-
             //bind to control
             var flattened = viewModel.CycleProperties.SelectMany(x => x.Value?.Select(y => new { x.Key, y.Name, y.Value })).ToList();
             Cycle_Properties.ItemsSource = flattened;
@@ -98,17 +96,29 @@ namespace PorphyStruct
 
                 viewModel = new MainViewModel(wi.FileName, (Macrocycle.Type)wi.Type);
                 DataContext = viewModel;
-                
+                viewModel.PropertyChanged += ViewModel_PropertyChanged;
+
                 Title = $"Structural Analysis of Porphyrinoids (PorphyStruct) - {viewModel.Type} Mode";
 
                 //clear plotview
                 displaceView.Model = null;
                 displaceView.InvalidatePlot();
 
-                //update stack
-                UpdateStack();
+                //set properties initially
+                viewModel.UpdateProperties();
             }
         }
+
+        /// <summary>
+        /// Check for changed properties that are not tracked by bindings.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(viewModel.CycleProperties)) UpdateStack();
+        }
+
         /// <summary>
         /// Handle Analyze Button Click
         /// </summary>

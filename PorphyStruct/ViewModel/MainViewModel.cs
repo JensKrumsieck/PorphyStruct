@@ -21,6 +21,10 @@ namespace PorphyStruct.ViewModel
         {
             Path = path;
             Type = type;
+
+            //init properties
+            CycleProperties = new Dictionary<string, List<Property>>();
+
             //Load cycle
             Cycle = MacrocycleFactory.Load(Path, Type);
             //Bind Events
@@ -29,9 +33,7 @@ namespace PorphyStruct.ViewModel
             //fill molecule 3D
             Molecule3D = new AsyncObservableCollection<ModelVisual3D>();
             Cycle.Paint3D().ToList().ForEach(s => Molecule3D.Add(s));
-
-            //init properties
-            CycleProperties = new Dictionary<string, List<Property>>();
+            FileName = Cycle.Title;
         }
 
         public Simulation simulation = null;
@@ -39,7 +41,14 @@ namespace PorphyStruct.ViewModel
         public string comp1Path, comp2Path, Path;
         public double normFac = 0;
 
+        /// <summary>
+        /// The Macrocycle
+        /// </summary>
         public Macrocycle Cycle { get => Get<Macrocycle>(); set => Set(value); }
+
+        //Cycles FileName / Title
+        public string FileName { get => Get<string>(); set => Set(value); }
+
         /// <summary>
         /// Handles Normalisation
         /// </summary>
@@ -106,12 +115,21 @@ namespace PorphyStruct.ViewModel
         protected override void OnPropertyChanged([CallerMemberName] string name = null)
         {
             base.OnPropertyChanged(name);
-            if(name == "SelectedItem")
+            switch (name)
             {
-                //remove selected
-                Molecule3D.Remove(ModelByAtom(SelectedItem));
-                //add atom
-                Molecule3D.Add(SelectedItem.Atom3D(true));
+                case nameof(SelectedItem):
+                    if (SelectedItem != null)
+                    {
+                        //remove selected
+                        Molecule3D.Remove(ModelByAtom(SelectedItem));
+                        //add atom
+                        Molecule3D.Add(SelectedItem.Atom3D(true));
+                    }
+                    break;
+                case nameof(Model):
+                case nameof(Cycle):
+                    UpdateProperties();
+                    break;
             }
         }
 
@@ -123,7 +141,7 @@ namespace PorphyStruct.ViewModel
         {
             base.OnPropertyChanging(name);
 
-            if (name == "SelectedItem"  && SelectedItem != null)
+            if (name == "SelectedItem" && SelectedItem != null)
             {
                 //remove selected
                 Molecule3D.Remove(ModelByAtom(SelectedItem));
@@ -225,6 +243,7 @@ namespace PorphyStruct.ViewModel
                     new Property("Distance", msp.D.ToString("G3"))
                 };
             }
+            OnPropertyChanged(nameof(CycleProperties));
         }
     }
 }
