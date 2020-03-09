@@ -65,7 +65,7 @@ namespace PorphyStruct
         }
 
 
-        
+
         /// <summary>
         /// Handle Open File Button Click
         /// </summary>
@@ -81,7 +81,7 @@ namespace PorphyStruct
                 displaceView.Background = Brushes.White;
 
                 //drive the reset train
-                foreach(var child in this.FindVisualChildren<Button>())
+                foreach (var child in this.FindVisualChildren<Button>())
                     child.IsEnabled = !child.Name.Contains("Sim");
 
                 viewModel = new MainViewModel(wi.FileName, (Macrocycle.Type)wi.Type);
@@ -106,7 +106,15 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(viewModel.CycleProperties)) UpdateStack();
+            switch (e.PropertyName)
+            {
+                case nameof(viewModel.CycleProperties):
+                    UpdateStack();
+                    break;
+                case nameof(viewModel.Model):
+                    displaceView.InvalidatePlot();
+                    break;
+            }
         }
 
         /// <summary>
@@ -157,7 +165,7 @@ namespace PorphyStruct
         private void InvertButton_Click(object sender, RoutedEventArgs e)
         {
             if (!InvertButton.IsEnabled) return;
-                viewModel.Invert = !viewModel.Invert;
+            viewModel.Invert = !viewModel.Invert;
             this.Analyze();
         }
 
@@ -244,6 +252,6 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void Detect_Click(object sender, RoutedEventArgs e)  => await viewModel.Cycle.Detect();
+        private async void Detect_Click(object sender, RoutedEventArgs e) => await viewModel.Cycle.Detect();
     }
 }

@@ -31,7 +31,7 @@
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
         <oxy:PlotView x:Name="simView" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Model="{Binding Model}"></oxy:PlotView>
-        <DataGrid x:Name="simGrid" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" ItemsSource="{Binding Parameters}" IsSynchronizedWithCurrentItem="True" CanUserSortColumns="False" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
+        <DataGrid x:Name="simGrid" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" ItemsSource="{Binding Parameters, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True, NotifyOnSourceUpdated=True}" IsSynchronizedWithCurrentItem="True" CanUserSortColumns="False" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Binding="{Binding Optimize}" Header="Use?" />
                 <DataGridTextColumn Binding="{Binding Title}" Header="Con." IsReadOnly="True"/>
@@ -46,20 +46,20 @@
         </StackPanel>
         <Label Grid.Row="1" Grid.Column="1"  Grid.ColumnSpan="2" Content="Min RMSD (Y, Deriv., Int.):"/>
         <Label Grid.Row="3" Grid.Column="1" Content="Fit Target: " VerticalAlignment="Top"/>
-        <CheckBox Content="Data" Grid.Column="2" Grid.Row="3"  x:Name="fitDataCB" IsChecked="True" Checked="FitDataCB_Checked" Unchecked="FitDataCB_Checked" />
-        <CheckBox Content="Deriv." Grid.Column="3" Grid.Row="3" x:Name="fitDerivCB" IsChecked="False"  Checked="FitDerivCB_Checked" Unchecked="FitDerivCB_Checked"/>
-        <CheckBox Content="Int." Grid.Column="4" Grid.Row="3" x:Name="fitIntCB" IsChecked="False" Checked="FitIntCB_Checked" Unchecked="FitIntCB_Checked" />
+        <CheckBox Content="Data" Grid.Column="2" Grid.Row="3"  x:Name="fitDataCB" IsChecked="{Binding TargetData}"/>
+        <CheckBox Content="Deriv." Grid.Column="3" Grid.Row="3" x:Name="fitDerivCB" IsChecked="{Binding TargetDerivative}"/>
+        <CheckBox Content="Int." Grid.Column="4" Grid.Row="3" x:Name="fitIntCB" IsChecked="{Binding TargetIntegral}" />
 
         <TextBox  Grid.Row="1" Grid.Column="3" Text="NaN" x:Name="ErrTB" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
         <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" Content="Start" Grid.Column="1" Grid.Row="4" VerticalAlignment="Top" 
                 Width="75" x:Name="startBtn" Click="StartBtn_Click"/>
         <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Content="Stop" Grid.Column="3" Grid.Row="4" VerticalAlignment="Top" Width="75" x:Name="stopBtn" Click="StopBtn_Click" IsEnabled="False"/>
         <Label Content="Simulation Mode" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" />
-        <ComboBox x:Name="modeCB" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Width="250" Margin="175,0,0,0" VerticalAlignment="Top" SelectionChanged="ModeCB_SelectionChanged">
-            <ComboBox.Items>
+        <ComboBox x:Name="modeCB" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Width="250" Margin="175,0,0,0" VerticalAlignment="Top" ItemsSource="{Binding Mode}">
+            <!--<ComboBox.Items>
                 <ComboBoxItem Content="Monte Carlo" />
                 <ComboBoxItem Content="Monte Carlo + Simplex" IsSelected="True" />
-            </ComboBox.Items>
+            </ComboBox.Items>-->
         </ComboBox>
         <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Center">
             <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" x:Name="finishSimBtn" Width="200" Content="Finalize Simulation" 
@@ -68,7 +68,7 @@
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" x:Name="reloadSimBtn" Width="150" Content="Reload Simulation" 
                     IsEnabled="True" VerticalAlignment="Top" Margin="5,0,0,0" Click="ReloadSimBtn_Click"/>
         </StackPanel>
-        <CheckBox Content="Calc. /w startparam. only" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Top" x:Name="firstOnlyCB" Checked="FirstOnlyCB_Checked" Unchecked="FirstOnlyCB_Checked"/>
-        <CheckBox Content="Set best as start values" Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Top" x:Name="keepBestCB" IsChecked="True"/>
+        <CheckBox Content="Calc. /w startparam. only" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Top" x:Name="firstOnlyCB" IsChecked="{Binding FirstOnly}"/>
+        <CheckBox Content="Set best as start values" Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Top" x:Name="keepBestCB" IsChecked="{Binding KeepBest}" />
     </Grid>
 </Window>
