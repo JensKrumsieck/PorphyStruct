@@ -30,8 +30,8 @@
             <RowDefinition Height="30" />
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
-        <oxy:PlotView x:Name="simView" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"></oxy:PlotView>
-        <DataGrid x:Name="simGrid" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" CanUserSortColumns="False" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
+        <oxy:PlotView x:Name="simView" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Model="{Binding Model}"></oxy:PlotView>
+        <DataGrid x:Name="simGrid" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" ItemsSource="{Binding Parameters}" IsSynchronizedWithCurrentItem="True" CanUserSortColumns="False" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Binding="{Binding Optimize}" Header="Use?" />
                 <DataGridTextColumn Binding="{Binding Title}" Header="Con." IsReadOnly="True"/>

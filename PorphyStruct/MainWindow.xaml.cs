@@ -171,8 +171,8 @@ namespace PorphyStruct
             //normalize if not done yet!
             if (!viewModel.Normalize)
                 NormalizeButton_Click(sender, e);
-            if (viewModel.simulation == null) new SimWindow(viewModel.Cycle, displaceView).Show();
-            else new SimWindow(viewModel.Cycle, displaceView, viewModel.simulation).Show();
+            if (viewModel.simulation == null) new SimWindow().Show();
+            else new SimWindow(viewModel.simulation).Show();
         }
 
         /// <summary>

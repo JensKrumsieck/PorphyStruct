@@ -48,31 +48,30 @@ namespace PorphyStruct
 
         //Simulation Mode Setter
         private enum SimulationMode { MonteCarlo, Simplex };
-        private SimulationMode type = SimulationMode.MonteCarlo;
+        private SimulationMode type = SimulationMode.Simplex;
+
+        public SimViewModel viewModel;
 
         /// <summary>
         /// Constructs the Window
         /// </summary>
         /// <param name="cycle">Macrocycle to simulate</param>
         /// <param name="pv">Plotview to Plot after Simulation</param>
-        public SimWindow(Macrocycle cycle, OxyPlot.Wpf.PlotView pv)
+        public SimWindow()
         {
             InitializeComponent();
             synchronizationContext = SynchronizationContext.Current;
-            this.cycle = cycle;
 
-            //drop metal data
-            if (cycle.HasMetal()) this.cycle.dataPoints = this.cycle.dataPoints.Where(s => !s.atom.IsMetal).ToList();
-
-            this.parentView = pv;
-
-            simGrid.ItemsSource = this.param = SimParam.ListParameters(MType);
-            PlotExp();
+            //Copy Cycle & Model
             MainVM = Application.Current.Windows.OfType<MainWindow>().First().viewModel;
+            this.viewModel = new SimViewModel(MainVM.Cycle);
+            //Set Context
+            DataContext = viewModel;
+
         }
 
         //if call comes with sim, use this param
-        public SimWindow(Macrocycle cycle, OxyPlot.Wpf.PlotView pv, Simulation sim) : this(cycle, pv)
+        public SimWindow(Simulation sim) : this()
         {
             param = sim.simParam;
             simGrid.ItemsSource = this.param;
