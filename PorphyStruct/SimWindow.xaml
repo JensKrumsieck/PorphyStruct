@@ -3,10 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lang="clr-namespace:PorphyStruct.Properties.Language"
         xmlns:oxy="http://oxyplot.org/wpf"
-        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
-        xmlns:local="clr-namespace:PorphyStruct"
-        xmlns:vm="clr-namespace:PorphyStruct.ViewModel"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.FontWeight="Regular"
@@ -64,13 +62,13 @@
             </ComboBox.Items>--><!--
         </ComboBox>-->
         <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Center">
-            <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" x:Name="finishSimBtn" Width="200" Content="Finalize Simulation" 
+            <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" x:Name="finishSimBtn" Width="200" Content="{x:Static lang:Sim.Finalize}" 
                     IsEnabled="False" VerticalAlignment="Top" Margin="0,0,5,0" Click="FinishSimBtn_Click"
                     materialDesign:RippleAssist.Feedback="White"/>
-            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" x:Name="reloadSimBtn" Width="150" Content="Reload Simulation" 
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" x:Name="reloadSimBtn" Width="150" Content="{x:Static lang:Sim.Reload}" 
                     IsEnabled="True" VerticalAlignment="Top" Margin="5,0,0,0" Click="ReloadSimBtn_Click"/>
         </StackPanel>
-        <CheckBox Content="Calc. /w startparam. only" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Top" x:Name="firstOnlyCB" IsChecked="{Binding FirstOnly}"/>
-        <CheckBox Content="Set best as start values" Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Top" x:Name="keepBestCB" IsChecked="{Binding KeepBest}" />
+        <CheckBox Content="{x:Static lang:Sim.StartOnly}" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Top" x:Name="firstOnlyCB" IsChecked="{Binding FirstOnly}"/>
+        <CheckBox Content="{x:Static lang:Sim.BestStart}" Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Top" x:Name="keepBestCB" IsChecked="{Binding KeepBest}" />
     </Grid>
 </Window>
