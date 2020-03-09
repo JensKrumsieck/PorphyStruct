@@ -189,7 +189,7 @@ namespace PorphyStruct
                 Simulation simObj = new Simulation((Macrocycle)viewModel.Cycle.Clone()) { simParam = viewModel.Parameters };
                 simObj.cycle.dataPoints = (List<AtomDataPoint>)sim.ItemsSource;
                 //export param
-                foreach (SimParam p in viewModel.Parameters) simObj.par.Add(p.Title, p.Best);
+                foreach (SimParam p in viewModel.Parameters) simObj.par.Add(p.Title, p.Best * 100);
                 //export errors
                 simObj.errors = ErrTB.Text.Split(';').Select(s => Convert.ToDouble(s, System.Globalization.CultureInfo.InvariantCulture)).ToArray();
 

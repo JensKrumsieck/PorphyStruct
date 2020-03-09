@@ -19,6 +19,7 @@ namespace PorphyStruct.ViewModel
             if (Cycle.HasMetal()) this.Cycle.dataPoints = this.Cycle.dataPoints.Where(s => !s.atom.IsMetal).ToList();
             Cycle.Paint(Model, MacrocyclePainter.PaintMode.Exp);
             Parameters = SimParam.ListParameters(Cycle.type);
+            Mode = SimulationMode.Simplex;
 
             //default only fitting data
             TargetData = true;
@@ -81,7 +82,7 @@ namespace PorphyStruct.ViewModel
         .Select(s => new AtomDataPoint(s.X, result.Conformation[Cycle.dataPoints.IndexOf(s)], s.atom)).ToList();
 
 
-        /// <summary
+        /// <summary>
         /// Simulation Parameters
         /// </summary>
         private Simplex simplex = null; //simplex matrix
@@ -90,8 +91,8 @@ namespace PorphyStruct.ViewModel
         private double[] currentErr = new double[] { double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity };
 
         //Simulation Mode Setter
-        private enum SimulationMode { MonteCarlo, Simplex };
-        private SimulationMode Mode { get => Get<SimulationMode>(); set => Set(value); }
+        public enum SimulationMode { MonteCarlo, Simplex };
+        public SimulationMode Mode { get => Get<SimulationMode>(); set => Set(value); }
 
         /// <summary>
         /// Do the Simulation

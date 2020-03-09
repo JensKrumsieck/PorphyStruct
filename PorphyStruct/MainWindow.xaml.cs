@@ -111,9 +111,6 @@ namespace PorphyStruct
                 case nameof(viewModel.CycleProperties):
                     UpdateStack();
                     break;
-                case nameof(viewModel.Model):
-                    displaceView.InvalidatePlot();
-                    break;
             }
         }
 

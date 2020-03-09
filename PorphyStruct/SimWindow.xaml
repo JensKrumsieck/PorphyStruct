@@ -4,7 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         xmlns:local="clr-namespace:PorphyStruct"
+        xmlns:vm="clr-namespace:PorphyStruct.ViewModel"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.FontWeight="Regular"
@@ -15,7 +17,7 @@
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         FontFamily="{StaticResource MaterialDesignFont}"
         Title="Simulation of Macrocyclic Conformation (Least Squares Fitting)" Height="500" Width="1000" Closing="Window_Closing">
-   <Grid>
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="12*" />
             <ColumnDefinition Width="100" />
@@ -30,7 +32,7 @@
             <RowDefinition Height="30" />
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
-        <oxy:PlotView x:Name="simView" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Model="{Binding Model}"></oxy:PlotView>
+        <oxy:PlotView x:Name="simView" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Model="{Binding Model}"></oxy:PlotView>
         <DataGrid x:Name="simGrid" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" ItemsSource="{Binding Parameters, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True, NotifyOnSourceUpdated=True}" IsSynchronizedWithCurrentItem="True" CanUserSortColumns="False" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Binding="{Binding Optimize}" Header="Use?" />
@@ -40,7 +42,7 @@
                 <DataGridTextColumn Binding="{Binding Best, StringFormat=N6}" Header="Best" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel Grid.Row="2" Orientation="Horizontal" >
+        <StackPanel Grid.Row="3" Orientation="Horizontal" >
             <Label Content="Out-of-Plane-Distortion parameter:" />
             <Label x:Name="meanDisPar" Content="0" />
         </StackPanel>
@@ -54,13 +56,13 @@
         <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" Content="Start" Grid.Column="1" Grid.Row="4" VerticalAlignment="Top" 
                 Width="75" x:Name="startBtn" Click="StartBtn_Click"/>
         <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Content="Stop" Grid.Column="3" Grid.Row="4" VerticalAlignment="Top" Width="75" x:Name="stopBtn" Click="StopBtn_Click" IsEnabled="False"/>
-        <Label Content="Simulation Mode" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" />
-        <ComboBox x:Name="modeCB" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Width="250" Margin="175,0,0,0" VerticalAlignment="Top" ItemsSource="{Binding Mode}">
-            <!--<ComboBox.Items>
+        <!--<Label Content="Simulation Mode" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" />-->
+        <!--<ComboBox x:Name="modeCB" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Width="250" Margin="175,0,0,0" VerticalAlignment="Top" ItemsSource="{StaticResource simModes}" SelectedItem="{Binding Mode}">
+            --><!--<ComboBox.Items>
                 <ComboBoxItem Content="Monte Carlo" />
                 <ComboBoxItem Content="Monte Carlo + Simplex" IsSelected="True" />
-            </ComboBox.Items>-->
-        </ComboBox>
+            </ComboBox.Items>--><!--
+        </ComboBox>-->
         <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Center">
             <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" x:Name="finishSimBtn" Width="200" Content="Finalize Simulation" 
                     IsEnabled="False" VerticalAlignment="Top" Margin="0,0,5,0" Click="FinishSimBtn_Click"
