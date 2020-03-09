@@ -44,7 +44,7 @@ namespace PorphyStruct
         /// <returns></returns>
         public static Simulation GetData(string path)
         {
-            //Macrocycle cycle = Application.Current.Windows.OfType<MainWindow>().First().Cycle;
+            Macrocycle cycle = Application.Current.Windows.OfType<MainWindow>().First().viewModel.Cycle;
             List<AtomDataPoint> mol = new List<AtomDataPoint>();
             string file = File.ReadAllText(path);
             string[] lines = file.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None);
@@ -80,10 +80,9 @@ namespace PorphyStruct
                 atoms.Add(A);
                 mol.Add(new AtomDataPoint(dataX[i], dataY[i], A));
             }
-            //Simulation tmpCycle = new Simulation((Macrocycle)cycle.Clone());
-            //tmpCycle.cycle.dataPoints = mol;
-            //return tmpCycle;
-            return null;
+            Simulation tmpCycle = new Simulation((Macrocycle)cycle.Clone());
+            tmpCycle.cycle.dataPoints = mol;
+            return tmpCycle;
         }
 
         /// <summary>

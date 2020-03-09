@@ -17,8 +17,7 @@ namespace PorphyStruct.Core.Util
         protected T Get<T>([CallerMemberName] string name = default)
         {
             object value;
-            if (_properties.TryGetValue(name, out value)) return value == null ? default : (T)value;
-            return default;
+            return _properties.TryGetValue(name, out value) ? value == null ? default : (T)value : (default);
         }
 
         /// <summary>

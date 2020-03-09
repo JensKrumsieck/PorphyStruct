@@ -1,23 +1,15 @@
 ﻿using HelixToolkit.Wpf;
 using MathNet.Spatial.Euclidean;
-using OxyPlot.Series;
 using PorphyStruct.Chemistry;
-using PorphyStruct.Core.Util;
-using PorphyStruct.Util;
 using PorphyStruct.ViewModel;
 using PorphyStruct.Windows;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using System.Windows.Media.Media3D;
 
 namespace PorphyStruct
 {
@@ -43,14 +35,12 @@ namespace PorphyStruct
             displaceView.Model = viewModel.Model;
             //enable simulations
             SimButton.IsEnabled = true;
-            //UpdateStack();
         }
         /// <summary>
         /// Update Sim WrapPanel
         /// </summary>
         public void UpdateStack()
         {
-            //bind to control
             var flattened = viewModel.CycleProperties.SelectMany(x => x.Value?.Select(y => new { x.Key, y.Name, y.Value })).ToList();
             Cycle_Properties.ItemsSource = flattened;
 
@@ -231,24 +221,22 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void CompButton_Click(object sender, RoutedEventArgs e)
         {
-            //this.Analyze();
-            //CompareWindow cw = new CompareWindow();
-            //cw.comparison1Path.Text = comp1Path;
-            //cw.comparison2Path.Text = comp2Path;
-            //cw.ShowDialog();
-            //if (cw.DialogResult.HasValue && cw.DialogResult.Value)
-            //{
-            //    comp1Path = cw.comparison1Path.Text;
-            //    comp2Path = cw.comparison2Path.Text;
-            //    NotifyPropertyChanged(nameof(HasComparison));
-            //}
-            //else
-            //{
-            //    comp1Path = "";
-            //    comp2Path = "";
-            //    NotifyPropertyChanged(nameof(HasComparison));
-            //}
-            //this.Analyze();
+            this.Analyze();
+            CompareWindow cw = new CompareWindow();
+            cw.comparison1Path.Text = viewModel.comp1Path;
+            cw.comparison2Path.Text = viewModel.comp2Path;
+            cw.ShowDialog();
+            if (cw.DialogResult.HasValue && cw.DialogResult.Value)
+            {
+                viewModel.comp1Path = cw.comparison1Path.Text;
+                viewModel.comp2Path = cw.comparison2Path.Text;
+            }
+            else
+            {
+                viewModel.comp1Path = "";
+                viewModel.comp2Path = "";
+            }
+            this.Analyze();
         }
 
         /// <summary>
