@@ -14,7 +14,7 @@ namespace PorphyStruct.Chemistry
     public abstract class Macrocycle : Molecule, ICloneable
     {
         public Macrocycle(AsyncObservableCollection<Atom> Atoms) : base(Atoms) {
-            SetIsMacrocycle(type);
+            if(!IsValid) SetIsMacrocycle(type);
 
             if (HasMetal(false))
             {
