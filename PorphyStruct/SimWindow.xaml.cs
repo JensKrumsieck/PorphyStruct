@@ -43,7 +43,7 @@ namespace PorphyStruct
 
             //Copy Cycle & Model
             MainVM = Application.Current.Windows.OfType<MainWindow>().First().viewModel;
-            this.viewModel = new SimViewModel(MainVM.Cycle);
+            viewModel = new SimViewModel(MainVM.Cycle);
             //Set Context
             DataContext = viewModel;
             viewModel.PropertyChanged += ViewModel_PropertyChanged;

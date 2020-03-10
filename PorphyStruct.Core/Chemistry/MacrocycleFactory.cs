@@ -50,7 +50,6 @@ namespace PorphyStruct.Chemistry
             var molecule = file.GetMolecule();
 
             Macrocycle cycle = Build(molecule.Atoms, type);
-            cycle.SetIsMacrocycle(type);
             cycle.Title = Path.GetFileNameWithoutExtension(path);
             return cycle;
         }

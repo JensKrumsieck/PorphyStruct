@@ -1,8 +1,7 @@
-﻿using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.LinearAlgebra.Double;
-using MathNet.Spatial.Euclidean;
+﻿using MathNet.Spatial.Euclidean;
 using OxyPlot;
 using OxyPlot.Annotations;
+using PorphyStruct.Chemistry.Macrocycles;
 using PorphyStruct.Core.Util;
 using PorphyStruct.Util;
 using System;
@@ -14,12 +13,26 @@ namespace PorphyStruct.Chemistry
 {
     public abstract class Macrocycle : Molecule, ICloneable
     {
-        public Macrocycle(AsyncObservableCollection<Atom> Atoms) : base(Atoms) { }
+        public Macrocycle(AsyncObservableCollection<Atom> Atoms) : base(Atoms) {
+            SetIsMacrocycle(type);
+
+            if (HasMetal(false))
+            {
+                PropertyProviders.Add(new DefaultAngles(ByIdentifier, GetMetal()));
+                PropertyProviders.Add(new DefaultDistances(GetMetal(), Neighbors(GetMetal()).ToList()));
+                PropertyProviders.Add(new PlaneDistances(GetMetal(), new[] { GetMeanPlane(), GetMeanPlane(N4Cavity(Atoms)) }, new[] { "Mean Plane", "N4 Plane" }));
+            }
+        }
 
         /// <summary>
         /// Current Data Points
         /// </summary>
         public List<AtomDataPoint> dataPoints = new List<AtomDataPoint>();
+
+        /// <summary>
+        /// PropertyProviders
+        /// </summary>
+        public IList<IPropertyProvider> PropertyProviders { get; set; } = new List<IPropertyProvider>();
 
         /// <summary>
         /// Bonds of Macrocycle by Identifiers
@@ -38,15 +51,20 @@ namespace PorphyStruct.Chemistry
         /// Multipliers for C-Atom positioning
         /// </summary>
         public abstract Dictionary<string, double> Multiplier { get; }
-
-        /// <summary>
-        /// Dihedrals of Macrocylce
-        /// </summary>
-        public abstract List<string[]> Dihedrals { get; }
-
+        
         public enum Type { Corrole, Porphyrin, Norcorrole, Corrphycene, Porphycene };
         public virtual Macrocycle.Type type { get; }
 
+        /// <summary>
+        /// Returns Cyclic Properties
+        /// </summary>
+        public IEnumerable<KeyValuePair<string, IEnumerable<Property>>> Properties
+        {
+            get {
+                foreach(var propertyProvider in PropertyProviders)
+                    yield return new KeyValuePair<string, IEnumerable<Property>>(propertyProvider.Type.ToString(), propertyProvider.CalculateProperties());
+            }
+        }
         /// <summary>
         /// Gets the centroid of this Macrocycle
         /// </summary>
@@ -172,33 +190,6 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         public bool HasMetal(bool isMacrocycle = true) => Atoms.Where(s => (isMacrocycle ? s.IsMacrocycle == isMacrocycle : true) && s.IsMetal).Count() > 0;
 
-        /// <summary>
-        /// calculates a dihedral
-        /// </summary>
-        /// <param name="Atoms"></param>
-        /// <returns></returns>
-        public double Dihedral(string[] atoms)
-        {
-            if (atoms.Length != 4 || Atoms.Where(i => atoms.Contains(i.Identifier)).Count() != 4) return 0;
-            //build normalized vectors
-
-            Vector<double> b1 = (-(DenseVector.OfArray(ByIdentifier(atoms[0]).XYZ()) - DenseVector.OfArray(ByIdentifier(atoms[1]).XYZ()))).Normalize(2);
-            Vector<double> b2 = (DenseVector.OfArray(ByIdentifier(atoms[1]).XYZ()) - DenseVector.OfArray(ByIdentifier(atoms[2]).XYZ())).Normalize(2);
-            Vector<double> b3 = (DenseVector.OfArray(ByIdentifier(atoms[3]).XYZ()) - DenseVector.OfArray(ByIdentifier(atoms[2]).XYZ())).Normalize(2);
-
-
-            //calculate crossproducts
-            var c1 = MathUtil.CrossProduct(b1, b2);
-            var c2 = MathUtil.CrossProduct(b2, b3);
-            var c3 = MathUtil.CrossProduct(c1, b2);
-
-            //get x&y as dotproducts 
-            var x = c1.DotProduct(c2);
-            var y = c3.DotProduct(c2);
-
-            return 180.0 / Math.PI * Math.Atan2(y, x);
-
-        }
 
         /// <summary>
         /// Draws a line between two points
@@ -251,28 +242,21 @@ namespace PorphyStruct.Chemistry
         /// <param name="id"></param>
         /// <param name="forceMacroCycle"></param>
         /// <returns>Atom</returns>
-        public Atom ByIdentifier(string id, bool forceMacroCycle = false) => Atoms.Where(s => s.Identifier == id && (forceMacroCycle ? s.IsMacrocycle == forceMacroCycle : true)).FirstOrDefault();
+        public Atom ByIdentifier(string id, bool forceMacroCycle) => Atoms.Where(s => s.Identifier == id && (forceMacroCycle ? s.IsMacrocycle == forceMacroCycle : true)).FirstOrDefault();
+
+        /// <summary>
+        /// Get Atom by Identifier
+        /// without IsMacrocycle needed to be true
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Atom ByIdentifier(string id) => ByIdentifier(id, false);
 
         /// <summary>
         /// Gets the absolute mean displacement over all atoms
         /// </summary>
         /// <returns></returns>
         public double MeanDisplacement() => Math.Sqrt(dataPoints.Sum(s => Math.Pow(s.Y, 2)));
-
-        /// <summary>
-        /// Returns all Neighbors of an Atom
-        /// </summary>
-        /// <param name="A"></param>
-        /// <returns></returns>
-        public IEnumerable<Atom> Neighbors(Atom A) => Neighbors(A, Atoms);
-
-        /// <summary>
-        /// Returns non Metal Neighbors of an atom
-        /// </summary>
-        /// <param name="A"></param>
-        /// <returns></returns>
-        public IEnumerable<Atom> NonMetalNeighbors(Atom A) => NonMetalNeighbors(A, Atoms);
-
 
         /// <summary>
         /// Gets the 4 atoms of cavity by centroid method

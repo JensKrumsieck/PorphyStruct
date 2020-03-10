@@ -1,14 +1,15 @@
 ﻿using PorphyStruct.Core.Util;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace PorphyStruct.Chemistry.Macrocycles
 {
     public class Corrole : Macrocycle
     {
-        public Corrole(AsyncObservableCollection<Atom> Atoms) : base(Atoms) { }
+        public Corrole(AsyncObservableCollection<Atom> Atoms) : base(Atoms) {
+            PropertyProviders.Add(new PorphyrinDihedrals(ByIdentifier));
+        }
 
         //assign type (legacy)
         public override Type type => Type.Corrole;
@@ -38,11 +39,6 @@ namespace PorphyStruct.Chemistry.Macrocycles
         /// X-Coordinate Multiplier
         /// </summary>
         public override Dictionary<string, double> Multiplier => Porphyrin._Multiplier;
-
-        /// <summary>
-        /// Corroles Dihedrals
-        /// </summary>
-        public override List<string[]> Dihedrals => Porphyrin._Dihedrals;
 
         /// <summary>
         /// Returns C1 for Corrole (and Norcorrole)

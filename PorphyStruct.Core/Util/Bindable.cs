@@ -14,11 +14,7 @@ namespace PorphyStruct.Core.Util
         /// <typeparam name="T"></typeparam>
         /// <param name="name"></param>
         /// <returns></returns>
-        protected T Get<T>([CallerMemberName] string name = default)
-        {
-            object value;
-            return _properties.TryGetValue(name, out value) ? value == null ? default : (T)value : (default);
-        }
+        protected T Get<T>([CallerMemberName] string name = default) => _properties.TryGetValue(name, out object value) ? value == null ? default : (T)value : (default);
 
         /// <summary>
         /// Sets the Value of a Property

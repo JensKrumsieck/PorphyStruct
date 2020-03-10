@@ -7,7 +7,10 @@ namespace PorphyStruct.Chemistry.Macrocycles
 {
     public class Corrphycene : Macrocycle
     {
-        public Corrphycene(AsyncObservableCollection<Atom> Atoms) : base(Atoms) { }
+        public Corrphycene(AsyncObservableCollection<Atom> Atoms) : base(Atoms)
+        {
+            PropertyProviders.Add(new CorrphyceneDihedrals(ByIdentifier));
+        }
 
         //assign type (legacy)
         public override Type type => Type.Corrphycene;
@@ -77,19 +80,6 @@ namespace PorphyStruct.Chemistry.Macrocycles
             }
         }
         public override Dictionary<string, double> Multiplier => _Multiplier;
-
-        /// <summary>
-        /// Corrphycene Dihedrals
-        /// </summary>
-        internal static List<string[]> _Dihedrals => new List<string[]>(){
-            new string[] { "C2", "C1", "C20", "C19" },
-            new string[] { "C3", "C4", "C6", "C7" },
-            new string[] { "C8", "C9", "C12", "C13" },
-            new string[] { "C14", "C15", "C17", "C18" },
-            new string[] { "C9", "N2", "N4", "C17" },
-            new string[] { "C4", "N1", "N3", "C12" }
-        };
-        public override List<string[]> Dihedrals => _Dihedrals;
 
         /// <summary>
         /// Sets C1 to Corrole-Type C1

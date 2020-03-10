@@ -23,7 +23,7 @@ namespace PorphyStruct.ViewModel
             Type = type;
 
             //init properties
-            CycleProperties = new Dictionary<string, List<Property>>();
+            CycleProperties = new Dictionary<string, IEnumerable<Property>>();
 
             //Load cycle
             Cycle = MacrocycleFactory.Load(Path, Type);
@@ -48,7 +48,7 @@ namespace PorphyStruct.ViewModel
             {
                 case nameof(Cycle.IsValid):
                     //atoms all changed!
-                    foreach(var a in Cycle.Atoms.Where(s => s.IsMacrocycle))
+                    foreach (var a in Cycle.Atoms.Where(s => s.IsMacrocycle))
                         Atom_PropertyChanged(a, e);
                     break;
             }
@@ -102,7 +102,7 @@ namespace PorphyStruct.ViewModel
         /// <summary>
         /// A Dictionary with all shown CycleProperties
         /// </summary>
-        public Dictionary<string, List<Property>> CycleProperties { get => Get<Dictionary<string, List<Property>>>(); set => Set(value); }
+        public Dictionary<string, IEnumerable<Property>> CycleProperties { get => Get<Dictionary<string, IEnumerable<Property>>>(); set => Set(value); }
 
 
         /// <summary>
@@ -240,24 +240,20 @@ namespace PorphyStruct.ViewModel
 
         public void UpdateProperties()
         {
-            //hardcoded until i find better solution....
             if (Cycle != null)
             {
-                var msp = Cycle.GetMeanPlane();
+                CycleProperties = Cycle.Properties.ToLookup(x => x.Key, y => y.Value).ToDictionary(group => group.Key, group => group.SelectMany(value => value));
+                
+                //add these properties hardcoded ;)
                 CycleProperties["General"] = new List<Property>()
                 {
                     new Property("D_oop", Cycle.MeanDisplacement().ToString("G5")),
                     new Property("D_oop(sim)", simulation != null ? simulation.cycle.MeanDisplacement().ToString("G5") : double.NaN.ToString())
                 };
-
-                CycleProperties["Dihedrals"] = Cycle.Dihedrals.Select(s => new Property(string.Join("-", s), Cycle.Dihedral(s).ToString("G3") + "°")).ToList();
-                if (Cycle.HasMetal(false))
-                    CycleProperties["Distances"] = Cycle.Atoms.Where(s => s.BondTo(Cycle.GetMetal()))
-                        .Select(s => new Property($"{s.Identifier}-{Cycle.GetMetal().Identifier}", Atom.Distance(s, Cycle.GetMetal()).ToString("G3") + " Å"))
-                        .Append(new Property($"{Cycle.GetMetal().Identifier} - Mean Plane", Cycle.GetMetal().DistanceToPlane(msp).ToString("G3") + " Å")).ToList();
                 if (simulation != null)
                     CycleProperties["Simulation"] = simulation.par.Select(s => new Property(s.Key,
-                        $"{s.Value.ToString("G4")} % / {(s.Value / 100 * simulation.cycle.MeanDisplacement()).ToString("G6")} Å")).ToList();
+                       $"{s.Value.ToString("G4")} % / {(s.Value / 100 * simulation.cycle.MeanDisplacement()).ToString("G6")} Å")).ToList();
+                var msp = Cycle.GetMeanPlane();
                 CycleProperties["Mean Plane"] = new List<Property>()
                 {
                     new Property("Unit Vector", $"({msp.A.ToString("G3")}, {msp.B.ToString("G3")}, {msp.C.ToString("G3")})"),

@@ -128,6 +128,13 @@ namespace PorphyStruct.Chemistry
         public static IEnumerable<Atom> Neighbors(Atom A, IEnumerable<Atom> list) => list.Where(B => A.BondTo(B) && A != B);
 
         /// <summary>
+        /// Returns all Neighbors of an Atom
+        /// </summary>
+        /// <param name="A"></param>
+        /// <returns></returns>
+        public IEnumerable<Atom> Neighbors(Atom A) => Neighbors(A, Atoms);
+
+        /// <summary>
         /// Returns non metla neighbors of atom
         /// </summary>
         /// <param name="A"></param>
@@ -135,6 +142,12 @@ namespace PorphyStruct.Chemistry
         /// <returns></returns>
         public static IEnumerable<Atom> NonMetalNeighbors(Atom A, IEnumerable<Atom> list) => Neighbors(A, list).Where(s => !s.IsMetal);
 
+        /// <summary>
+        /// Returns non Metal Neighbors of an atom
+        /// </summary>
+        /// <param name="A"></param>
+        /// <returns></returns>
+        public IEnumerable<Atom> NonMetalNeighbors(Atom A) => NonMetalNeighbors(A, Atoms);
 
         /// <summary>
         /// Returns a collection of Atoms with VertexDegree of 3
@@ -165,6 +178,5 @@ namespace PorphyStruct.Chemistry
                 a.Z -= centroid.Z;
             }
         }
-
     }
 }

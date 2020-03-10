@@ -136,5 +136,59 @@ namespace PorphyStruct.Util
         {
             foreach (var d in input) yield return d / input.AbsSum();
         }
+
+        /// <summary>
+        /// Calculates Dihedral
+        /// </summary>
+        /// <param name="atoms"></param>
+        /// <returns></returns>
+        public static double Dihedral(IList<Atom> atoms)
+        {
+            if (atoms.Count() != 4) return 0;
+            //build normalized vectors
+
+            Vector<double> b1 = (-(DenseVector.OfArray(atoms[0].XYZ()) - DenseVector.OfArray(atoms[1].XYZ()))).Normalize(2);
+            Vector<double> b2 = (DenseVector.OfArray(atoms[1].XYZ()) - DenseVector.OfArray(atoms[2].XYZ())).Normalize(2);
+            Vector<double> b3 = (DenseVector.OfArray(atoms[3].XYZ()) - DenseVector.OfArray(atoms[2].XYZ())).Normalize(2);
+
+            //calculate crossproducts
+            var c1 = MathUtil.CrossProduct(b1, b2);
+            var c2 = MathUtil.CrossProduct(b2, b3);
+            var c3 = MathUtil.CrossProduct(c1, b2);
+
+            //get x&y as dotproducts 
+            var x = c1.DotProduct(c2);
+            var y = c3.DotProduct(c2);
+
+            return 180.0 / Math.PI * Math.Atan2(y, x);
+        }
+
+
+        /// <summary>
+        /// Returns the Angle by Identifiers
+        /// </summary>
+        /// <param name="atoms"></param>
+        /// <returns></returns>
+        public static double Angle(IList<Atom> atoms)
+        {
+            if (atoms.Count() != 3) return 0;
+            Vector<double> b1 = (DenseVector.OfArray(atoms[0].XYZ()) - DenseVector.OfArray(atoms[1].XYZ())).Normalize(2);
+            Vector<double> b2 = (DenseVector.OfArray(atoms[2].XYZ()) - DenseVector.OfArray(atoms[1].XYZ())).Normalize(2);
+
+            var x = b1.DotProduct(b2);
+
+            return 180 / Math.PI * Math.Acos(x);
+        }
+
+        /// <summary>
+        /// List Wrapper for Atom.Distance with IList to fit the delegate
+        /// </summary>
+        /// <param name="atoms"></param>
+        /// <returns></returns>
+        public static double Distance(IList<Atom> atoms)
+        {
+            if (atoms.Count() != 2) return 0;
+            return Atom.Distance(atoms[0], atoms[1]);
+        }
     }
 }
