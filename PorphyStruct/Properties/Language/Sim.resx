@@ -117,16 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Best" xml:space="preserve">
+    <value>Best</value>
+  </data>
   <data name="BestStart" xml:space="preserve">
     <value>Set best as start values</value>
   </data>
+  <data name="Current" xml:space="preserve">
+    <value>Current</value>
+  </data>
+  <data name="Doop" xml:space="preserve">
+    <value>Out-of-Plane-Distortion parameter</value>
+  </data>
   <data name="Finalize" xml:space="preserve">
     <value>Finalize Simulation</value>
+  </data>
+  <data name="Mode" xml:space="preserve">
+    <value>Mode</value>
   </data>
   <data name="Reload" xml:space="preserve">
     <value>Reload Simulation</value>
   </data>
   <data name="StartOnly" xml:space="preserve">
     <value>Calc. /w startparam. only</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Simulation of Macrocyclic Conformation (Least Squares Fitting)</value>
+  </data>
+  <data name="Use" xml:space="preserve">
+    <value>Use?</value>
   </data>
 </root>

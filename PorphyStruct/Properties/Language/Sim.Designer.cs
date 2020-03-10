@@ -61,6 +61,15 @@ namespace PorphyStruct.Properties.Language {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Best ähnelt.
+        /// </summary>
+        public static string Best {
+            get {
+                return ResourceManager.GetString("Best", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Set best as start values ähnelt.
         /// </summary>
         public static string BestStart {
@@ -70,11 +79,38 @@ namespace PorphyStruct.Properties.Language {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Current ähnelt.
+        /// </summary>
+        public static string Current {
+            get {
+                return ResourceManager.GetString("Current", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Out-of-Plane-Distortion parameter ähnelt.
+        /// </summary>
+        public static string Doop {
+            get {
+                return ResourceManager.GetString("Doop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Finalize Simulation ähnelt.
         /// </summary>
         public static string Finalize {
             get {
                 return ResourceManager.GetString("Finalize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Mode ähnelt.
+        /// </summary>
+        public static string Mode {
+            get {
+                return ResourceManager.GetString("Mode", resourceCulture);
             }
         }
         
@@ -93,6 +129,24 @@ namespace PorphyStruct.Properties.Language {
         public static string StartOnly {
             get {
                 return ResourceManager.GetString("StartOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Simulation of Macrocyclic Conformation (Least Squares Fitting) ähnelt.
+        /// </summary>
+        public static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Use? ähnelt.
+        /// </summary>
+        public static string Use {
+            get {
+                return ResourceManager.GetString("Use", resourceCulture);
             }
         }
     }

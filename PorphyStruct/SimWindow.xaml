@@ -14,7 +14,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         FontFamily="{StaticResource MaterialDesignFont}"
-        Title="Simulation of Macrocyclic Conformation (Least Squares Fitting)" Height="500" Width="1000" Closing="Window_Closing">
+        Title="{x:Static lang:Sim.Title}" Height="500" Width="1000" Closing="Window_Closing">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="12*" />
@@ -33,15 +33,15 @@
         <oxy:PlotView x:Name="simView" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Model="{Binding Model}"></oxy:PlotView>
         <DataGrid x:Name="simGrid" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" ItemsSource="{Binding Parameters, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True, NotifyOnSourceUpdated=True}" IsSynchronizedWithCurrentItem="True" CanUserSortColumns="False" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn Binding="{Binding Optimize}" Header="Use?" />
-                <DataGridTextColumn Binding="{Binding Title}" Header="Con." IsReadOnly="True"/>
+                <DataGridCheckBoxColumn Binding="{Binding Optimize}" Header="{x:Static lang:Sim.Use}" />
+                <DataGridTextColumn Binding="{Binding Title}" Header="{x:Static lang:Sim.Mode}" IsReadOnly="True"/>
                 <DataGridTextColumn Binding="{Binding Start,StringFormat=N4}" Header="Start"/>
-                <DataGridTextColumn Binding="{Binding Current, StringFormat=N6}" Header="Current"/>
-                <DataGridTextColumn Binding="{Binding Best, StringFormat=N6}" Header="Best" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Current, StringFormat=N6}" Header="{x:Static lang:Sim.Current}"/>
+                <DataGridTextColumn Binding="{Binding Best, StringFormat=N6}" Header="{x:Static lang:Sim.Best}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel Grid.Row="3" Orientation="Horizontal" >
-            <Label Content="Out-of-Plane-Distortion parameter:" />
+            <Label Content="{x:Static lang:Sim.Doop}" />
             <Label x:Name="meanDisPar" Content="0" />
         </StackPanel>
         <Label Grid.Row="1" Grid.Column="1"  Grid.ColumnSpan="2" Content="Min RMSD (Y, Deriv., Int.):"/>
