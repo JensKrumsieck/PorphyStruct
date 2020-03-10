@@ -125,6 +125,8 @@ namespace PorphyStruct
         /// </summary>
         internal void SynchronizeDiagram(List<AtomDataPoint> data, string target = "Current")
         {
+            //also update current if best is updated ;)
+            if (target == "Best") SynchronizeDiagram(data, "Current");
             synchronizationContext.Send(new SendOrPostCallback(o =>
             {
                 simGrid.Items.Refresh();
