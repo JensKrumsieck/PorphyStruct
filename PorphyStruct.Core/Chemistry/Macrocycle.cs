@@ -7,7 +7,6 @@ using PorphyStruct.Core.Util;
 using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -160,7 +159,7 @@ namespace PorphyStruct.Chemistry
             dataPoints.AddRange(CalculateDataPoints());
 
             if (HasMetal()) dataPoints.Add(new AtomDataPoint(
-                    (dataPoints.First().X + dataPoints.Last().X) / 2,
+                    (dataPoints.Max(s => s.X) + dataPoints.Min(s => s.X)) / 2,
                     GetMetal().DistanceToPlane(GetMeanPlane()),
                     GetMetal()));
 
@@ -180,7 +179,7 @@ namespace PorphyStruct.Chemistry
         /// <returns></returns>
         public double Dihedral(string[] atoms)
         {
-            if (atoms.Length != 4 && Atoms.Where(i => atoms.Contains(i.Identifier)).Count() != 4) return 0;
+            if (atoms.Length != 4 || Atoms.Where(i => atoms.Contains(i.Identifier)).Count() != 4) return 0;
             //build normalized vectors
 
             Vector<double> b1 = (-(DenseVector.OfArray(ByIdentifier(atoms[0]).XYZ()) - DenseVector.OfArray(ByIdentifier(atoms[1]).XYZ()))).Normalize(2);
@@ -415,7 +414,15 @@ namespace PorphyStruct.Chemistry
         /// <param name="a1"></param>
         /// <param name="a2"></param>
         /// <returns></returns>
-        public bool IsValidBond(Atom a1, Atom a2) => a1.IsMacrocycle && a2.IsMacrocycle && (Bonds.Contains(new Tuple<string, string>(a1.Identifier, a2.Identifier)) || Bonds.Contains(new Tuple<string, string>(a2.Identifier, a1.Identifier)));
+        public bool IsValidBond(Atom a1, Atom a2) => a1.IsMacrocycle && a2.IsMacrocycle
+            && (
+                Bonds.Contains(new Tuple<string, string>(a1.Identifier, a2.Identifier))
+                || Bonds.Contains(new Tuple<string, string>(a2.Identifier, a1.Identifier)
+                )
+            || (
+                (a1.IsMetal || a2.IsMetal)
+                && HasMetal())
+            );
 
         /// <summary>
         /// Returns new Instance of this molecule

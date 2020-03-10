@@ -40,7 +40,7 @@ namespace PorphyStruct
             coordGrid.IsReadOnly = !coordGrid.IsReadOnly;
         }
         /// <summary>
-        /// Update Sim WrapPanel
+        /// Update Properties
         /// </summary>
         public void UpdateStack()
         {

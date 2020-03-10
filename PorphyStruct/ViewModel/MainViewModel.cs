@@ -234,6 +234,8 @@ namespace PorphyStruct.ViewModel
             Model.Scale(Model.yAxis, true, Normalize);
             Model.Scale(Model.xAxis);
             Model.InvalidatePlot(true);
+            //set properties
+            UpdateProperties();
         }
 
         public void UpdateProperties()
