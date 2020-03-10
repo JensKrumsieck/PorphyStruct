@@ -28,12 +28,30 @@ namespace PorphyStruct.ViewModel
             //Load cycle
             Cycle = MacrocycleFactory.Load(Path, Type);
             //Bind Events
+            Cycle.PropertyChanged += Cycle_PropertyChanged;
             Cycle.Atoms.CollectionChanged += OnCollectionChanged;
             foreach (var atom in Cycle.Atoms) atom.PropertyChanged += Atom_PropertyChanged;
             //fill molecule 3D
             Molecule3D = new AsyncObservableCollection<ModelVisual3D>();
             Cycle.Paint3D().ToList().ForEach(s => Molecule3D.Add(s));
             FileName = Cycle.Title;
+        }
+
+        /// <summary>
+        /// Is Valid? Redraw!
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Cycle_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(Cycle.IsValid):
+                    //atoms all changed!
+                    foreach(var a in Cycle.Atoms.Where(s => s.IsMacrocycle))
+                        Atom_PropertyChanged(a, e);
+                    break;
+            }
         }
 
         public Simulation simulation = null;

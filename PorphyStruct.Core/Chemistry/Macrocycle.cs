@@ -7,7 +7,7 @@ using PorphyStruct.Core.Util;
 using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -85,6 +85,39 @@ namespace PorphyStruct.Chemistry
             int i = Array.IndexOf(AlphaAtoms, a.Identifier) + 1;
             if (AlphaAtoms.Length > i) return ByIdentifier(AlphaAtoms[i], true);
             else return null;
+        }
+
+        /// <summary>
+        /// Validates Configuration
+        /// </summary>
+        private bool _isValid
+        {
+            get
+            {
+                if (Atoms.Where(a => a.IsMacrocycle).Count() != RingAtoms.Count) return false; //count mismatch
+                foreach (string id in RingAtoms)
+                {
+                    if (Atoms.Where(a => a.IsMacrocycle && a.Identifier == id).Count() != 1)
+                        return false; //identifier missing
+                }
+                foreach (var b in Bonds)
+                {
+                    if (!IsValidBond(ByIdentifier(b.Item1, true), ByIdentifier(b.Item2, true)) || !ByIdentifier(b.Item1, true).BondTo(ByIdentifier(b.Item2, true)))
+                        return false; //Bond is missing
+                }
+                return true;
+            }
+        }
+        /// <summary>
+        /// public validation boolean
+        /// </summary>
+        public bool IsValid
+        {
+            get
+            {
+                Set(_isValid);
+                return Get<bool>();
+            }
         }
 
         /// <summary>

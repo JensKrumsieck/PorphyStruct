@@ -108,7 +108,7 @@ namespace PorphyStruct
         /// <param name="target"></param>
         private void SyncGUI(Result result, string target = "Current")
         {
-            if ((DateTime.Now - LastUpdate).Milliseconds >= 500 || target == "Best")
+            if ((DateTime.Now - LastUpdate).Milliseconds >= 100 || target == "Best")
             {
                 SynchronizeDiagram(viewModel.ConformationToData(result), target);
                 LastUpdate = DateTime.Now;
