@@ -19,11 +19,13 @@ namespace PorphyStruct.Chemistry
 
             if (HasMetal(false))
             {
-                PropertyProviders.Add(new DefaultAngles(ByIdentifier, Metal));
-                PropertyProviders.Add(new DefaultDistances(Metal, Neighbors(Metal).ToList()));
+                PropertyProviders.Add(new MetalAngles(ByIdentifier, Metal));
+                PropertyProviders.Add(new MetalDistances(Metal, Neighbors(Metal).ToList()));
                 PropertyProviders.Add(new PlaneDistances(Atoms));
+                PropertyProviders.Add(new InterplanarAngle(ByIdentifier, Metal));
             }
             PropertyProviders.Add(new DefaultDihedrals(ByIdentifier));
+            PropertyProviders.Add(new DefaultDistances(ByIdentifier));
         }
 
         /// <summary>
@@ -92,7 +94,7 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         /// <param name="a"></param>
         /// <returns>boolean</returns>
-        private bool isAlpha(Atom a) => AlphaAtoms.Contains(a.Identifier) ? true : false;
+        private bool IsAlpha(Atom a) => AlphaAtoms.Contains(a.Identifier) ? true : false;
 
         /// <summary>
         /// gets next alpha position for distance measuring
@@ -161,10 +163,10 @@ namespace PorphyStruct.Chemistry
                 if (a.Type == "N") xCoord = fixPoint + distance / 2;
 
                 //starts with C1 which is alpha per definition, so refresh distance every alpha atom.
-                if (isAlpha(a) && GetNextAlpha(a) != null) distance = Atom.Distance(a, GetNextAlpha(a));
+                if (IsAlpha(a) && GetNextAlpha(a) != null) distance = Atom.Distance(a, GetNextAlpha(a));
 
                 //alpha atoms are fixpoints
-                if (isAlpha(a)) fixPoint = xCoord;
+                if (IsAlpha(a)) fixPoint = xCoord;
 
                 yield return new AtomDataPoint(xCoord, a.DistanceToPlane(GetMeanPlane()), a);
             }

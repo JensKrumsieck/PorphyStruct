@@ -11,13 +11,17 @@ namespace PorphyStruct.Util
     public static class MathUtil
     {
         /// <summary>
-        /// Converts the xyz into Point3D because some methods need math net spatial...
+        /// Converts the xyz into Point3D
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<Point3D> ToPoint3D(this IEnumerable<Atom> Atoms)
-        {
-            foreach (Atom atom in Atoms) yield return new Point3D(atom.X, atom.Y, atom.Z);
-        }
+        public static IEnumerable<Point3D> ToPoint3D(this IEnumerable<Atom> Atoms) => from Atom atom in Atoms  select atom.ToPoint3D();
+
+        /// <summary>
+        /// Converts Atom to Point3d
+        /// </summary>
+        /// <param name="atom"></param>
+        /// <returns></returns>
+        public static Point3D ToPoint3D(this Atom atom) => new Point3D(atom.X, atom.Y, atom.Z);
 
         /// <summary>
         /// gets highest Y Value (or lowest)
@@ -178,6 +182,21 @@ namespace PorphyStruct.Util
             var x = b1.DotProduct(b2);
 
             return 180 / Math.PI * Math.Acos(x);
+        }
+
+        /// <summary>
+        /// Calculates an angle between two planes
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <returns></returns>
+        public static double Angle(Plane p1, Plane p2)
+        {
+            var d = Math.Abs((p1.A * p2.A) + (p1.B * p2.B) + (p1.C * p2.C));
+            var e1 = Math.Pow(p1.A, 2) + Math.Pow(p1.B, 2) + Math.Pow(p1.C, 2);
+            var e2 = Math.Pow(p2.A, 2) + Math.Pow(p2.B, 2) + Math.Pow(p2.C, 2);
+            var x = Math.Acos(d / (Math.Sqrt(e1) * Math.Sqrt(e2)));
+            return 180 / Math.PI * x;
         }
 
         /// <summary>

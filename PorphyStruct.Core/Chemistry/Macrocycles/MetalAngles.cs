@@ -4,19 +4,19 @@ using System.Collections.Generic;
 
 namespace PorphyStruct.Chemistry.Macrocycles
 {
-    public class DefaultAngles : AbstractPropertyProvider
+    public class MetalAngles : AbstractPropertyProvider
     {
         /// <summary>
         /// Add Metal to Constructor
         /// </summary>
         /// <param name="function"></param>
         /// <param name="Metal"></param>
-        public DefaultAngles(Func<string, Atom> function, Atom Metal) : this(function)
+        public MetalAngles(Func<string, Atom> function, Atom Metal) : this(function)
         {
             this.Metal = Metal;
         }
 
-        public DefaultAngles(Func<string, Atom> function) : base(function) { }
+        public MetalAngles(Func<string, Atom> function) : base(function) { }
 
         public Atom Metal { get; set; }
 

@@ -5,18 +5,20 @@ using System.Linq;
 
 namespace PorphyStruct.Chemistry.Macrocycles
 {
-    public class PlaneDistances : AbstractPropertyProvider
+    public class MetalDistances : AbstractPropertyProvider
     {
         /// <summary>
         /// Add Metal to Constructor
         /// </summary>
         /// <param name="function"></param>
         /// <param name="Metal"></param>
-        public PlaneDistances(IEnumerable<Atom> Atoms) : base()
+        public MetalDistances(Atom Metal, IList<Atom> Atoms) : base()
         {
+            this.Metal = Metal;
             this.Atoms = Atoms;
         }
-        public IEnumerable<Atom> Atoms { get; set; }
+        public Atom Metal { get; set; }
+        public IList<Atom> Atoms { get; set; }
 
         public override PropertyType Type => PropertyType.Distance;
 
@@ -24,12 +26,9 @@ namespace PorphyStruct.Chemistry.Macrocycles
         /// Override default PropertyCalculation
         /// </summary>
         /// <returns></returns>
-        public override IEnumerable<Property> CalculateProperties()
-        {
-            var Metal = Atoms.Where(s => s.IsMetal).FirstOrDefault(); 
-            yield return new Property($"{Metal.Identifier} - Mean Plane", Metal.DistanceToPlane(Molecule.GetMeanPlane(Atoms.Where(s => s.IsMacrocycle))).ToString("G4") + " Å");
-            yield return new Property($"{Metal.Identifier} - Mean N4 Plane", Metal.DistanceToPlane(Molecule.GetMeanPlane(Atoms.Where(s => s.IsMacrocycle && s.Identifier.Contains("N")))).ToString("G4") + " Å");
-        }
+        public override IEnumerable<Property> CalculateProperties() => 
+            from s in Atoms
+                   select new Property($"{Metal.Identifier}-{s.Identifier}", Atom.Distance(Metal, s).ToString("G4") + " Å");
 
         /** DANGER ZONE**/
 
@@ -38,7 +37,7 @@ namespace PorphyStruct.Chemistry.Macrocycles
         /// Special Case!
         /// </summary>
         /// <param name="function"></param>
-        public PlaneDistances(Func<string, Atom> function) : base(function) { }
+        public MetalDistances(Func<string, Atom> function) : base(function) { }
         public override IList<string[]> Selectors => throw new NotImplementedException();
     }
 }

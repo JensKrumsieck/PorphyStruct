@@ -41,7 +41,7 @@ namespace PorphyStruct.Core.Util
                 _ => "°"
             };
             return from s in Selectors
-                   select new Property(string.Join("-", s), func(s.Select(a => AtomFunction(a)).ToList()).ToString("G3") + unit);
+                   select new Property(string.Join("-", s), func(s.Select(a => AtomFunction(a)).ToList()).ToString("G4") + unit);
         }
     }
 }
