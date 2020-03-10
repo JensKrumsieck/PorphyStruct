@@ -62,10 +62,7 @@ namespace PorphyStruct.Styles
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            ((Window)sender).StateChanged += WindowStateChanged;
-        }
+        public void Window_Loaded(object sender, RoutedEventArgs e) => ((Window)sender).StateChanged += WindowStateChanged;
 
         void WindowStateChanged(object sender, EventArgs e)
         {
@@ -92,15 +89,9 @@ namespace PorphyStruct.Styles
             }
         }
 
-        void CloseButtonClick(object sender, RoutedEventArgs e)
-        {
-            sender.ForWindowFromTemplate(w => SystemCommands.CloseWindow(w));
-        }
+        void CloseButtonClick(object sender, RoutedEventArgs e) => sender.ForWindowFromTemplate(w => SystemCommands.CloseWindow(w));
 
-        void MinimizeButtonClick(object sender, RoutedEventArgs e)
-        {
-            sender.ForWindowFromTemplate(w => SystemCommands.MinimizeWindow(w));
-        }
+        void MinimizeButtonClick(object sender, RoutedEventArgs e) => sender.ForWindowFromTemplate(w => SystemCommands.MinimizeWindow(w));
 
         void MaximizeButtonClick(object sender, RoutedEventArgs e)
         {
