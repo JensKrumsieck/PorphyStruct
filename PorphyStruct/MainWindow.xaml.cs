@@ -67,8 +67,6 @@ namespace PorphyStruct
             MolViewer.CameraController.CameraTarget = Win32Util.Origin;
         }
 
-
-
         /// <summary>
         /// Handle Open File Button Click
         /// </summary>
