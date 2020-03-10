@@ -126,15 +126,6 @@ namespace PorphyStruct.Chemistry
         /// <returns></returns>
         public virtual IEnumerable<AtomDataPoint> CalculateDataPoints()
         {
-            //check if every atom is present in configuration
-            foreach (string id in RingAtoms)
-            {
-                if (Atoms.ToList().FindAll(s => s.Identifier == id && s.IsMacrocycle).Count != 1)
-                {
-                    //System.Windows.Forms.MessageBox.Show($"Found Issues with Atom {id}! Please check your configuration.");
-                    yield break;
-                }
-            }
             //reorder Atoms
             Atoms = new AsyncObservableCollection<Atom>(Atoms.OrderBy(s => RingAtoms.IndexOf(s.Identifier)));
 

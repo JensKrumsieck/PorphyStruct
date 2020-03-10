@@ -31,10 +31,13 @@ namespace PorphyStruct
         /// </summary>
         public void Analyze()
         {
+            //set readonly to get away from the add/edit error
+            coordGrid.IsReadOnly = !coordGrid.IsReadOnly;
             viewModel.Analyze();
             displaceView.Model = viewModel.Model;
             //enable simulations
             SimButton.IsEnabled = true;
+            coordGrid.IsReadOnly = !coordGrid.IsReadOnly;
         }
         /// <summary>
         /// Update Sim WrapPanel
@@ -119,13 +122,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Analyze_Click(object sender, RoutedEventArgs e)
-        {
-            if (!AnalButton.IsEnabled) return;
-            //TODO: validate cycle here
-            //call analyze void
-            Analyze();
-        }
+        private void Analyze_Click(object sender, RoutedEventArgs e) => Analyze();
 
         /// <summary>
         /// Handle Center Button Click
