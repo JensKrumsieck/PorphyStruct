@@ -13,15 +13,17 @@ namespace PorphyStruct.Chemistry
 {
     public abstract class Macrocycle : Molecule, ICloneable
     {
-        public Macrocycle(AsyncObservableCollection<Atom> Atoms) : base(Atoms) {
+        public Macrocycle(AsyncObservableCollection<Atom> Atoms) : base(Atoms)
+        {
             if(!IsValid) SetIsMacrocycle(type);
 
             if (HasMetal(false))
             {
-                PropertyProviders.Add(new DefaultAngles(ByIdentifier, GetMetal()));
-                PropertyProviders.Add(new DefaultDistances(GetMetal(), Neighbors(GetMetal()).ToList()));
-                PropertyProviders.Add(new PlaneDistances(GetMetal(), new[] { GetMeanPlane(), GetMeanPlane(N4Cavity(Atoms)) }, new[] { "Mean Plane", "N4 Plane" }));
+                PropertyProviders.Add(new DefaultAngles(ByIdentifier, Metal));
+                PropertyProviders.Add(new DefaultDistances(Metal, Neighbors(Metal).ToList()));
+                PropertyProviders.Add(new PlaneDistances(Atoms));
             }
+            PropertyProviders.Add(new DefaultDihedrals(ByIdentifier));
         }
 
         /// <summary>
@@ -178,8 +180,8 @@ namespace PorphyStruct.Chemistry
 
             if (HasMetal()) dataPoints.Add(new AtomDataPoint(
                     (dataPoints.Max(s => s.X) + dataPoints.Min(s => s.X)) / 2,
-                    GetMetal().DistanceToPlane(GetMeanPlane()),
-                    GetMetal()));
+                    Metal.DistanceToPlane(GetMeanPlane()),
+                    Metal));
 
             return dataPoints;
         }
@@ -228,7 +230,7 @@ namespace PorphyStruct.Chemistry
             if (HasMetal())
                 foreach (AtomDataPoint n in dataPoints.Where(s => s.atom.Type == "N").ToList())
                 {
-                    ArrowAnnotation b = DrawBond(dataPoints.Where(s => s.atom == GetMetal()).FirstOrDefault(), n);
+                    ArrowAnnotation b = DrawBond(dataPoints.Where(s => s.atom == Metal).FirstOrDefault(), n);
                     b.LineStyle = LineStyle.Dash;
                     b.Color = OxyColor.FromAColor(75, b.Color);
                     b.Tag = "Metal";

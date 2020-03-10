@@ -15,8 +15,7 @@ namespace PorphyStruct.Chemistry.Macrocycles
                 new string[] { "C8", "C9", "C11", "C12" },
                 new string[] { "C13", "C14", "C16", "C17" },
                 new string[] { "C9", "N2", "N4", "C16" },
-                new string[] { "C4", "N1", "N3", "C11" },
-                new string[] { "N1", "N2", "N3", "N4"}
+                new string[] { "C4", "N1", "N3", "C11" }
             };
 
         public override PropertyType Type => PropertyType.Dihedral;

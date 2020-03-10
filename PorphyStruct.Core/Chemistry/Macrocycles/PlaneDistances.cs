@@ -1,8 +1,7 @@
-﻿using MathNet.Spatial.Euclidean;
-using PorphyStruct.Core.Util;
+﻿using PorphyStruct.Core.Util;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PorphyStruct.Chemistry.Macrocycles
 {
@@ -13,15 +12,11 @@ namespace PorphyStruct.Chemistry.Macrocycles
         /// </summary>
         /// <param name="function"></param>
         /// <param name="Metal"></param>
-        public PlaneDistances(Atom Metal, IEnumerable<Plane> Planes, IEnumerable<string> PlaneIdentifiers) : base()
+        public PlaneDistances(IEnumerable<Atom> Atoms) : base()
         {
-            this.Metal = Metal;
-            this.Planes = Planes;
-            this.PlaneIdentifiers = PlaneIdentifiers;
+            this.Atoms = Atoms;
         }
-        public Atom Metal { get; set; }
-        public IEnumerable<Plane> Planes { get; set; }
-        public IEnumerable<string> PlaneIdentifiers { get; set; }
+        public IEnumerable<Atom> Atoms { get; set; }
 
         public override PropertyType Type => PropertyType.Distance;
 
@@ -31,8 +26,9 @@ namespace PorphyStruct.Chemistry.Macrocycles
         /// <returns></returns>
         public override IEnumerable<Property> CalculateProperties()
         {
-            for (int i = 0; i < Planes.Count(); i++)
-                yield return new Property($"{Metal.Identifier}-{PlaneIdentifiers.ElementAt(i)}", Metal.DistanceToPlane(Planes.ElementAt(i)).ToString("G3") + " Å");
+            var Metal = Atoms.Where(s => s.IsMetal).FirstOrDefault(); 
+            yield return new Property($"{Metal.Identifier} - Mean Plane", Metal.DistanceToPlane(Molecule.GetMeanPlane(Atoms.Where(s => s.IsMacrocycle))).ToString("G3") + " Å");
+            yield return new Property($"{Metal.Identifier} - N4 Plane", Metal.DistanceToPlane(Molecule.GetMeanPlane(Atoms.Where(s => s.IsMacrocycle && s.Identifier.Contains("N")))).ToString("G3") + " Å");
         }
 
         /** DANGER ZONE**/

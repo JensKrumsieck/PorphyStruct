@@ -89,7 +89,7 @@ namespace PorphyStruct.Chemistry
         /// Gets the mean plane of a list of atoms
         /// </summary>
         /// <returns>The Plane Object (Math.Net)</returns>
-        public Plane GetMeanPlane(IEnumerable<Atom> atoms)
+        public static Plane GetMeanPlane(IEnumerable<Atom> atoms)
         {
             //convert coordinates into Point3D because centroid method is only available in math net spatial
             List<Point3D> points = atoms.ToPoint3D().ToList();
@@ -162,7 +162,7 @@ namespace PorphyStruct.Chemistry
         /// Gets the first detected metal atom in molecule
         /// </summary>
         /// <returns></returns>
-        public Atom GetMetal() => Atoms.Where(s => s.IsMetal).FirstOrDefault();
+        public Atom Metal => Atoms.Where(s => s.IsMetal).FirstOrDefault();
 
         /// <summary>
         /// Centers the molecule by using lambda expression
