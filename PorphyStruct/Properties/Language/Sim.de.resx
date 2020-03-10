@@ -142,9 +142,9 @@
     <value>Nur Startparameter berechnen</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Simulation von makrozyklischen Konformationen mittels Methode der kleinsten Quadrate</value>
+    <value>Simulation von makrozyklischen Konformationen</value>
   </data>
   <data name="Use" xml:space="preserve">
-    <value>Einbeziehen?</value>
+    <value>Einbez.?</value>
   </data>
 </root>

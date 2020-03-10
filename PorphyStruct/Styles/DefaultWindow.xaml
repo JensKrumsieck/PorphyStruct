@@ -7,6 +7,7 @@
     <SolidColorBrush x:Key="TitleBackgroundBrushInactive" Color="#1c2429" />
     <SolidColorBrush x:Key="TitleForegroundBrush" Color="#ffffff" />
     <SolidColorBrush x:Key="SecondaryColorHue" Color="#B71C1C" />
+    <SolidColorBrush x:Key="SecondaryAccentBrush" Color="#B71C1C"/>
 
     <Style x:Key="TitleBarButton" TargetType="{x:Type Button}">
         <Setter Property="Focusable" Value="false" />
