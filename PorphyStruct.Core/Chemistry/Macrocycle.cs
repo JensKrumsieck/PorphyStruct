@@ -6,6 +6,7 @@ using PorphyStruct.Core.Util;
 using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -270,7 +271,7 @@ namespace PorphyStruct.Chemistry
         internal List<Atom> N4Cavity(IEnumerable<Atom> mol)
         {
             //calculate centroid
-            var centroid = Molecule.GetCentroid(mol);
+            var centroid = GetCentroid(mol);
             //inject centroid into atoms as Lanthanium atom (because of big radius)
             //basically need a sphere where to catch atoms in to get N4 Cavity
             Atoms.Add(new Atom("La Centroid", centroid.X, centroid.Y, centroid.Z));
@@ -298,6 +299,22 @@ namespace PorphyStruct.Chemistry
 
             //get inner ring path
             var corpus = RingPath(cavity.First(), RingAtoms.Count() - 8);
+            if(corpus == null && HasMetal(false))
+            {
+                //use alternative cavity definition and try find again
+                cavity = NonMetalNeighbors(Metal, mol).ToList();
+                //iterate all combinations
+                foreach (var comb in cavity.GetCombinations(4).OrderBy(l => l.Sum(a => Atom.Distance(a, Metal)))) 
+                {
+                    var path = RingPath(comb.First(), RingAtoms.Count() - 8);
+                    if (path != null)
+                    {
+                        foreach (Atom N in comb) path.UnionWith(RingPath(N, 5).AsParallel());
+                        if (path.Count == RingAtoms.Count()) return path;
+                    }
+                }
+            }
+            if (corpus == null) return null;
 
             //just need to find beta atoms now to complete the cycle, luckily we can use the cavity to find five membered rings and combine with corpus, and distinct.
             foreach (Atom N in cavity) corpus.UnionWith(RingPath(N, 5));
@@ -320,7 +337,7 @@ namespace PorphyStruct.Chemistry
         /// An overrideable Method to get C1 Atom. 
         /// In a Porphyrin it does not care which alpha atom is C1, so return any of them...
         /// override this methode in any other class
-        /// TODO: Think of a switch for Isoporphyrins to return C10 as meso C.
+        /// TODO: Think of a switch for Isoporphyrins to return C10 as meso sp3 C.
         /// </summary>
         /// <returns></returns>
         public virtual Atom C1(IEnumerable<Atom> cycle) => Vertex3Atoms(cycle).First();
@@ -332,25 +349,25 @@ namespace PorphyStruct.Chemistry
         public async Task Detect()
         {
             //find all connected structures
-            HashSet<HashSet<Atom>> connected = new HashSet<HashSet<Atom>>();
-            foreach (var atom in Atoms.Where(s => !s.IsMetal))
-                connected.Add(await DFSUtil.DFS(atom, NonMetalNeighbors));
-            //and compare to get all distinct structures
-            //from the distinct structures select all that have more atoms than type's ringatoms 
-            var distinct = connected.Distinct(HashSet<Atom>.CreateSetComparer()).Where(s => s.Count() >= RingAtoms.Count);
+            //Note: the axial ligand is connected to the macrocycle
+            //it will lead to wrong mean planes and Centroid in N4Cavity() -> Cobalamins
+            List<IEnumerable<Atom>> figures = new List<IEnumerable<Atom>>();
+            await foreach (var fig in DFSUtil.ConnectedFigures(Atoms.Where(s => !s.IsMetal && NonMetalNeighbors(s).Count() >= 2), NonMetalNeighbors))
+                figures.Add(fig); 
+            
             var cycle = new HashSet<Atom>();
             //loop through all remaining connected figures
-            foreach (var mol in distinct)
+            foreach (var mol in figures.Where(s => s.Count() >= RingAtoms.Count))
             {
                 //get Corpus by Pathfinding Method
                 cycle = FindCorpus(mol);
 
                 //default to first macrocycle found for now
-                if (cycle.Count == RingAtoms.Count)
+                if (cycle != null && cycle.Count == RingAtoms.Count)
                     break;
             }
             //assign Identifiers
-            NameAtoms(cycle);
+            if (cycle != null) NameAtoms(cycle);
         }
 
         /// <summary>

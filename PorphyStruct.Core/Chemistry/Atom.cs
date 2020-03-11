@@ -1,6 +1,7 @@
 ﻿using MathNet.Spatial.Euclidean;
 using OxyPlot;
 using PorphyStruct.Core.Util;
+using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -164,7 +165,6 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         /// <returns></returns>
         public override string ToString() => Identifier;
-
     }
 
 }
