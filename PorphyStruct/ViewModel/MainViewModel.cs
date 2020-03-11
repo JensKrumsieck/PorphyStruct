@@ -243,7 +243,7 @@ namespace PorphyStruct.ViewModel
             if (Cycle != null)
             {
                 CycleProperties = Cycle.Properties.ToLookup(x => x.Key, y => y.Value).ToDictionary(group => group.Key, group => group.SelectMany(value => value));
-                
+
                 //add these properties hardcoded ;)
                 CycleProperties["General"] = new List<Property>()
                 {

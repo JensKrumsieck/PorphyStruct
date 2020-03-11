@@ -1,15 +1,20 @@
 ﻿using HelixToolkit.Wpf;
 using MathNet.Spatial.Euclidean;
 using PorphyStruct.Chemistry;
+using PorphyStruct.Core.Util;
 using PorphyStruct.ViewModel;
 using PorphyStruct.Windows;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
 
 namespace PorphyStruct
 {
@@ -24,6 +29,8 @@ namespace PorphyStruct
         {
             //CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
             InitializeComponent();
+            synchronizationContext = SynchronizationContext.Current;
+
         }
 
         /// <summary>
@@ -244,6 +251,21 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void Detect_Click(object sender, RoutedEventArgs e) => await viewModel.Cycle.Detect();
+        private async void Detect_Click(object sender, RoutedEventArgs e)
+        {
+            MolViewer.ItemsSource = null;
+            await Task.Run(() => viewModel.Cycle.Detect());
+            Test();
+        }
+
+        private readonly SynchronizationContext synchronizationContext;
+        private void Test()
+        {
+
+            synchronizationContext.Send(new SendOrPostCallback(o =>
+            {
+                MolViewer.ItemsSource = viewModel.Molecule3D;
+            }), 0);
+        }
     }
 }
