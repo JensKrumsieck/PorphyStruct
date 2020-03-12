@@ -1,4 +1,5 @@
 ﻿using OxyPlot.Annotations;
+using PorphyStruct.Chemistry.Properties;
 using PorphyStruct.Core.Util;
 using System;
 using System.Collections.Generic;

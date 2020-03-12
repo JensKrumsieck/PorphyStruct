@@ -2,6 +2,7 @@
 using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PorphyStruct.Chemistry.Properties
 {
@@ -37,11 +38,15 @@ namespace PorphyStruct.Chemistry.Properties
         public override IEnumerable<Property> CalculateProperties()
         {
             IList<Plane> planes = new List<Plane>();
-            foreach (var s in Selectors)
-                planes.Add(Plane.FromPoints(AtomFunction(s[0]).ToPoint3D(), AtomFunction(s[1]).ToPoint3D(), AtomFunction(s[2]).ToPoint3D()));
+            foreach (var selector in Selectors)
+                //validate AtomFunction first
+                if (selector.Select(identifier => AtomFunction(identifier)).Count(atom => atom == null) == 0)
+                    planes.Add(Plane.FromPoints(AtomFunction(selector[0]).ToPoint3D(), AtomFunction(selector[1]).ToPoint3D(), AtomFunction(selector[2]).ToPoint3D()));
 
-            //Interplanar angle is angle between N1-M-N4 and N2-M-N3 Planes!
-            yield return new Property($"[{string.Join("-", Selectors[0])}]x[{string.Join("-", Selectors[1])}]", MathUtil.Angle(planes[0], planes[1]).ToString("G4") + "°");
+            if (planes.Count == 2)             //Interplanar angle is angle between N1-M-N4 and N2-M-N3 Planes!
+                yield return new Property($"[{string.Join("-", Selectors[0])}]x[{string.Join("-", Selectors[1])}]", MathUtil.Angle(planes[0], planes[1]).ToString("G4") + "°");
+            else
+                yield break;
         }
     }
 }

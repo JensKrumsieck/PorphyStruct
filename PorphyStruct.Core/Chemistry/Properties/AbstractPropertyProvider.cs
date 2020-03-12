@@ -1,5 +1,4 @@
-﻿using PorphyStruct.Chemistry;
-using PorphyStruct.Util;
+﻿using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,8 +39,9 @@ namespace PorphyStruct.Chemistry.Properties
                 PropertyType.Distance => " Å",
                 _ => "°"
             };
-            return from s in Selectors
-                   select new Property(string.Join("-", s), func(s.Select(a => AtomFunction(a)).ToList()).ToString("G4") + unit);
+            return from selector in Selectors
+                   where selector.Select(identifier => AtomFunction(identifier)).Count(item => item == null) == 0 //Validate AtomFunction
+                   select new Property(string.Join("-", selector), func(selector.Select(identifier => AtomFunction(identifier)).ToList()).ToString("G4") + unit);
         }
     }
 }

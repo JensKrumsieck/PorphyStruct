@@ -1,4 +1,5 @@
-﻿using PorphyStruct.Core.Util;
+﻿using PorphyStruct.Chemistry.Properties;
+using PorphyStruct.Core.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;

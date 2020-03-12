@@ -1,6 +1,7 @@
 ﻿using HelixToolkit.Wpf;
 using MathNet.Spatial.Euclidean;
 using PorphyStruct.Chemistry;
+using PorphyStruct.Chemistry.Properties;
 using PorphyStruct.Core.Util;
 using PorphyStruct.ViewModel;
 using PorphyStruct.Windows;
