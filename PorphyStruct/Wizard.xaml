@@ -77,41 +77,11 @@
                     </Setter>
                 </Style>
             </ListBox.ItemContainerStyle>
-            <ListBoxItem x:Name="Corrole" Padding="0">
-                <Image>
-                    <Image.Source>
-                        <BitmapImage DecodePixelWidth="1000" UriSource="/PorphyStruct;component/Resources/Corrole.png"/>
-                    </Image.Source>
-                </Image>
-            </ListBoxItem>
-            <ListBoxItem x:Name="Porphyrin" Padding="0">
-                <Image>
-                    <Image.Source>
-                        <BitmapImage DecodePixelWidth="1000" UriSource="/PorphyStruct;component/Resources/Porphyrin.png"/>
-                    </Image.Source>
-                </Image>
-            </ListBoxItem>
-            <ListBoxItem x:Name="Norcorrole" Padding="0">
-                <Image>
-                    <Image.Source>
-                        <BitmapImage DecodePixelWidth="1000" UriSource="/PorphyStruct;component/Resources/Norcorrole.png"/>
-                    </Image.Source>
-                </Image>
-            </ListBoxItem>
-            <ListBoxItem x:Name="Corrphycene" Padding="0">
-                <Image>
-                    <Image.Source>
-                        <BitmapImage DecodePixelWidth="1000" UriSource="/PorphyStruct;component/Resources/Corrphycene.png"/>
-                    </Image.Source>
-                </Image>
-            </ListBoxItem>
-            <ListBoxItem x:Name="Porphycene" Padding="0">
-                <Image>
-                    <Image.Source>
-                        <BitmapImage DecodePixelWidth="1000" UriSource="/PorphyStruct;component/Resources/Porphycene.png"/>
-                    </Image.Source>
-                </Image>
-            </ListBoxItem>
+            <ListBoxItem x:Name="Corrole" Padding="0" ContentTemplate="{StaticResource Corrole}" RenderOptions.BitmapScalingMode="Fant"/>
+            <ListBoxItem x:Name="Porphyrin" Padding="0" ContentTemplate="{StaticResource Porphyrin}" RenderOptions.BitmapScalingMode="Fant" />
+            <ListBoxItem x:Name="Norcorrole" Padding="0" ContentTemplate="{StaticResource Norcorrole}" RenderOptions.BitmapScalingMode="Fant" />
+            <ListBoxItem x:Name="Corrphycene" Padding="0" ContentTemplate="{StaticResource Corrphycene}" RenderOptions.BitmapScalingMode="Fant" />
+            <ListBoxItem x:Name="Porphycene" Padding="0" ContentTemplate="{StaticResource Porphycene}" RenderOptions.BitmapScalingMode="Fant" />
         </ListBox>
         <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">
             <TextBox x:Name="pathTextBox" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="" Height="40" Width="350">

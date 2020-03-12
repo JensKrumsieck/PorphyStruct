@@ -121,34 +121,16 @@
     <value>The final composition of normal modes is {0} as also listed in the table below. The mean displacement parameter is {1}. The absolute composition therefore is {2}.</value>
     <comment>{0} compositon, {1} mean displacement, {2} abscomposition</comment>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="corr" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\corr.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Corrole" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Corrole.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Corrphycene" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Corrphycene.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="ExplanationParagraph" xml:space="preserve">
     <value>The following figure shows the conformational analysis of {0} displayed as displacement diagram. A middle plane was places through the {1}'s ring atoms. The distance of the ring atoms to the mean plane is plotted against calculated circle coordinates.</value>
     <comment>{0} Cycle.Title; {1} type</comment>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="favicon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\favicon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Norcorrole" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Norcorrole.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Porphycene" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Porphycene.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Porphyrin" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Porphyrin.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="porphystructlogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\porphystructlogo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
