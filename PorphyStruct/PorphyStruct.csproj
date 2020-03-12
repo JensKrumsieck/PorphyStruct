@@ -24,14 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Corrole.png" />
-    <Resource Include="Resources\Corrphycene.png" />
     <Resource Include="Resources\favicon.ico" />
     <Resource Include="Resources\logo.png" />
     <Resource Include="Resources\porphystructlogo.png" />
-    <Resource Include="Resources\Norcorrole.png" />
-    <Resource Include="Resources\Porphycene.png" />
-    <Resource Include="Resources\Porphyrin.png" />
   </ItemGroup>
 
   <ItemGroup>
