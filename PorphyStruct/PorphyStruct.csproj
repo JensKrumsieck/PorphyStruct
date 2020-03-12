@@ -20,13 +20,14 @@
   <ItemGroup>
     <None Remove="Resources\favicon-32x32.png" />
     <None Remove="Resources\favicon.ico" />
+    <None Remove="Resources\logo.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Resources\Corrole.png" />
     <Resource Include="Resources\Corrphycene.png" />
-    <Resource Include="Resources\favicon-32x32.png" />
     <Resource Include="Resources\favicon.ico" />
+    <Resource Include="Resources\logo.png" />
     <Resource Include="Resources\porphystructlogo.png" />
     <Resource Include="Resources\Norcorrole.png" />
     <Resource Include="Resources\Porphycene.png" />

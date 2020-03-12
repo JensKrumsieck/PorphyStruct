@@ -1,22 +1,16 @@
 ﻿using HelixToolkit.Wpf;
 using MathNet.Spatial.Euclidean;
 using PorphyStruct.Chemistry;
-using PorphyStruct.Chemistry.Properties;
-using PorphyStruct.Core.Util;
 using PorphyStruct.ViewModel;
 using PorphyStruct.Windows;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using System.Windows.Media.Media3D;
-using System.Windows.Threading;
 
 namespace PorphyStruct
 {

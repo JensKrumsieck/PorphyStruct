@@ -107,10 +107,11 @@
                                                    MouseLeftButtonDown="IconMouseLeftButtonDown"-->
                                             <Image x:Name="Icon" 
                                                    Grid.Column="0" 
-                                                   Source="/Resources/favicon-32x32.png" 
+                                                   Source="/Resources/logo.png" 
                                                    HorizontalAlignment="Center"
                                                    Width="24"
                                                    Height="24"
+                                                   RenderOptions.BitmapScalingMode="Fant"
                                                    WindowChrome.IsHitTestVisibleInChrome="True"/>
                                             <TextBlock
                                                 x:Name="Title"
@@ -121,7 +122,6 @@
                                                 Margin="4 0 0 0"
                                                 FontFamily="Segoe UI"
                                                 FontSize="12"
-                                                Opacity="0.66"
                                                 Text="{Binding Path=Title, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                             />
                                             <TextBlock
@@ -187,6 +187,10 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="WindowState" Value="Maximized">
                             <Setter TargetName="PART_MaxButton_Path" Property="Data" Value="M0,2 H8 V10 H0 V2 M2,2 V0 H10 V8 H8"/>
+                        </Trigger>
+                        <Trigger Property="IsActive" Value="False">
+                            <Setter TargetName="TitleBar" Property="Background" Value="{StaticResource TitleBackgroundBrushInactive}" />
+                            <Setter TargetName="Title" Property="Foreground" Value="#ccc" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

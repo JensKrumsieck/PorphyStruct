@@ -121,9 +121,9 @@ namespace PorphyStruct.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap favicon_32x32 {
+        public static System.Drawing.Bitmap logo {
             get {
-                object obj = ResourceManager.GetObject("favicon_32x32", resourceCulture);
+                object obj = ResourceManager.GetObject("logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
