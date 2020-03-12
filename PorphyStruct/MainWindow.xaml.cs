@@ -16,6 +16,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System.Windows.Threading;
 
 namespace PorphyStruct
 {
@@ -30,7 +31,6 @@ namespace PorphyStruct
         {
             //CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
             InitializeComponent();
-            synchronizationContext = SynchronizationContext.Current;
 
         }
 
@@ -252,21 +252,6 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void Detect_Click(object sender, RoutedEventArgs e)
-        {
-            MolViewer.ItemsSource = null;
-            await Task.Run(() => viewModel.Cycle.Detect());
-            Test();
-        }
-
-        private readonly SynchronizationContext synchronizationContext;
-        private void Test()
-        {
-
-            synchronizationContext.Send(new SendOrPostCallback(o =>
-            {
-                MolViewer.ItemsSource = viewModel.Molecule3D;
-            }), 0);
-        }
+        private void Detect_Click(object sender, RoutedEventArgs e) => Task.Run(viewModel.Cycle.Detect);
     }
 }

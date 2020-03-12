@@ -7,6 +7,7 @@ using PorphyStruct.Util;
 using PorphyStruct.Windows;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace PorphyStruct.ViewModel
             Cycle.Atoms.CollectionChanged += OnCollectionChanged;
             foreach (var atom in Cycle.Atoms) atom.PropertyChanged += Atom_PropertyChanged;
             //fill molecule 3D
-            Molecule3D = new AsyncObservableCollection<ModelVisual3D>();
+            Molecule3D = new ObservableCollection<ModelVisual3D>();
             Cycle.Paint3D().ToList().ForEach(s => Molecule3D.Add(s));
             FileName = Cycle.Title;
         }
@@ -98,7 +99,7 @@ namespace PorphyStruct.ViewModel
         /// <summary>
         /// The Molecule as 3D Representation
         /// </summary>
-        public AsyncObservableCollection<ModelVisual3D> Molecule3D { get => Get<AsyncObservableCollection<ModelVisual3D>>(); set => Set(value); }
+        public ObservableCollection<ModelVisual3D> Molecule3D { get => Get<ObservableCollection<ModelVisual3D>>(); set => Set(value); }
 
         /// <summary>
         /// A Dictionary with all shown CycleProperties
@@ -118,13 +119,16 @@ namespace PorphyStruct.ViewModel
             Atom atom = (Atom)sender;
 
             //remove atom and bonds
-            Molecule3D.Remove(ModelByAtom(atom));
-            var models = Molecule3D.Where(s => (s as BondModelVisual3D)?.Atoms.Contains(atom) ?? false).ToList();
-            foreach (var m in models) Molecule3D.Remove(m);
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                Molecule3D.Remove(ModelByAtom(atom));
+                var models = Molecule3D.Where(s => (s as BondModelVisual3D)?.Atoms.Contains(atom) ?? false).ToList();
+                foreach (var m in models) Molecule3D.Remove(m);
 
-            //add atom and bonds
-            Molecule3D.Add(atom.Atom3D(atom == selected));
-            foreach (var a2 in Cycle.Neighbors(atom)) Molecule3D.Add(a2.Bond3D(atom, Cycle));
+                //add atom and bonds
+                Molecule3D.Add(atom.Atom3D(atom == selected));
+                foreach (var a2 in Cycle.Neighbors(atom)) Molecule3D.Add(a2.Bond3D(atom, Cycle));
+            });
         }
 
         /// <summary>
