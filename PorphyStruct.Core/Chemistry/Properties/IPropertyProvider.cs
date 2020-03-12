@@ -1,8 +1,7 @@
-﻿using PorphyStruct.Chemistry;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace PorphyStruct.Core.Util
+namespace PorphyStruct.Chemistry.Properties
 {
     public enum PropertyType { Distance, Angle, Dihedral }
     public interface IPropertyProvider

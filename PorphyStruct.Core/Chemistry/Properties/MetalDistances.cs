@@ -1,9 +1,8 @@
-﻿using PorphyStruct.Core.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PorphyStruct.Chemistry.Macrocycles
+namespace PorphyStruct.Chemistry.Properties
 {
     public class MetalDistances : AbstractPropertyProvider
     {

@@ -1,12 +1,11 @@
 ﻿using MathNet.Spatial.Euclidean;
 using OxyPlot;
 using OxyPlot.Annotations;
-using PorphyStruct.Chemistry.Macrocycles;
+using PorphyStruct.Chemistry.Properties;
 using PorphyStruct.Core.Util;
 using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 

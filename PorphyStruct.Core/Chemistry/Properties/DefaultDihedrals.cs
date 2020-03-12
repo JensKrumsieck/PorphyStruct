@@ -1,8 +1,7 @@
-﻿using PorphyStruct.Core.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace PorphyStruct.Chemistry.Macrocycles
+namespace PorphyStruct.Chemistry.Properties
 {
     public class DefaultDihedrals : AbstractPropertyProvider
     {

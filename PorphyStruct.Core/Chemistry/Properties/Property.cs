@@ -1,4 +1,4 @@
-﻿namespace PorphyStruct.Core.Util
+﻿namespace PorphyStruct.Chemistry.Properties
 {
     public class Property
     {
