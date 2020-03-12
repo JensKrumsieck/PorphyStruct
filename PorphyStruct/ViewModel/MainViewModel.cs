@@ -119,6 +119,7 @@ namespace PorphyStruct.ViewModel
             Atom atom = (Atom)sender;
 
             //remove atom and bonds
+            //Invoke to not run into object ownership issues
             App.Current.Dispatcher.Invoke(() =>
             {
                 Molecule3D.Remove(ModelByAtom(atom));
