@@ -252,6 +252,12 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Detect_Click(object sender, RoutedEventArgs e) => Task.Run(viewModel.Cycle.Detect);
+        private async void Detect_Click(object sender, RoutedEventArgs e)
+        {
+            //Block UI Interaction during Detect
+            IsEnabled = false;
+            await Task.Run(viewModel.Cycle.Detect);
+            IsEnabled = true;
+        }
     }
 }
