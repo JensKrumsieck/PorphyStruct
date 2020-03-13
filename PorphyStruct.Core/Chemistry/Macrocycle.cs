@@ -15,7 +15,7 @@ namespace PorphyStruct.Chemistry
     {
         public Macrocycle(AsyncObservableCollection<Atom> Atoms) : base(Atoms)
         {
-            if(!IsValid) SetIsMacrocycle(type);
+            if (!IsValid) SetIsMacrocycle(type);
 
             if (HasMetal(false))
             {
@@ -55,7 +55,7 @@ namespace PorphyStruct.Chemistry
         /// Multipliers for C-Atom positioning
         /// </summary>
         public abstract Dictionary<string, double> Multiplier { get; }
-        
+
         public enum Type { Corrole, Porphyrin, Norcorrole, Corrphycene, Porphycene };
         public virtual Macrocycle.Type type { get; }
 
@@ -64,8 +64,9 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         public IEnumerable<KeyValuePair<string, IEnumerable<Property>>> Properties
         {
-            get {
-                foreach(var propertyProvider in PropertyProviders)
+            get
+            {
+                foreach (var propertyProvider in PropertyProviders)
                     yield return new KeyValuePair<string, IEnumerable<Property>>(propertyProvider.Type.ToString(), propertyProvider.CalculateProperties());
             }
         }
@@ -298,12 +299,12 @@ namespace PorphyStruct.Chemistry
 
             //get inner ring path
             var corpus = RingPath(cavity.First(), RingAtoms.Count() - 8);
-            if(corpus == null && HasMetal(false))
+            if (corpus == null && HasMetal(false))
             {
                 //use alternative cavity definition and try find again
                 cavity = NonMetalNeighbors(Metal, mol).ToList();
                 //iterate all combinations
-                foreach (var comb in cavity.GetCombinations(4).OrderBy(l => l.Sum(a => Atom.Distance(a, Metal)))) 
+                foreach (var comb in cavity.GetCombinations(4).OrderBy(l => l.Sum(a => Atom.Distance(a, Metal))))
                 {
                     var path = RingPath(comb.First(), RingAtoms.Count() - 8);
                     if (path != null)
@@ -352,8 +353,8 @@ namespace PorphyStruct.Chemistry
             //it will lead to wrong mean planes and Centroid in N4Cavity() -> Cobalamins
             List<IEnumerable<Atom>> figures = new List<IEnumerable<Atom>>();
             await foreach (var fig in DFSUtil.ConnectedFigures(Atoms.Where(s => !s.IsMetal && NonMetalNeighbors(s).Count() >= 2), NonMetalNeighbors))
-                figures.Add(fig); 
-            
+                figures.Add(fig);
+
             var cycle = new HashSet<Atom>();
             //loop through all remaining connected figures
             foreach (var mol in figures.Where(s => s.Count() >= RingAtoms.Count))
