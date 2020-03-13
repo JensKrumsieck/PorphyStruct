@@ -24,16 +24,6 @@ namespace PorphyStruct.Simulations
             this.Error = Error;
         }
 
-        internal double MeanDisplacement()
-        {
-            double sum = 0;
-            foreach (double d in Conformation)
-            {
-                sum += Math.Pow(d, 2);
-            }
-            return Math.Sqrt(sum);
-        }
-
         /// <summary>
         /// Caclulate the resulting conformation from given parameters
         /// </summary>
