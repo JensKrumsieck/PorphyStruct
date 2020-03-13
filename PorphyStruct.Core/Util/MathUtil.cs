@@ -94,9 +94,7 @@ namespace PorphyStruct.Util
             for (int i = 0; i < data.Count; i++)
             {
                 if (i != 0)
-                {
                     derivative[i] = (data[i].Y - data[i - 1].Y) / (data[i].X - data[i - 1].X);
-                }
                 else
                     derivative[i] = 0;
             }
@@ -114,9 +112,7 @@ namespace PorphyStruct.Util
             for (int i = 0; i < data.Length; i++)
             {
                 if (i != 0)
-                {
                     integral[i] = integral[i - 1] + data[i];
-                }
                 else
                     integral[i] = data[i];
             }
