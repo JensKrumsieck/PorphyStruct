@@ -103,7 +103,7 @@ namespace PorphyStruct.ViewModel
             //this.param = (List<SimParam>)simGrid.ItemsSource;
             double[] coeff = Parameters.Select(p => p.Start).ToArray();
             List<int> indices = new List<int>();
-            this.simplex = new Simplex(Conformation.Calculate, coeff, Cycle);
+            this.simplex = new Simplex(Result.Calculate, coeff, Cycle);
             //set start values
             for (int i = 0; i < Parameters.Count; i++) if (!Parameters[i].Optimize) indices.Add(i);
 
@@ -111,12 +111,12 @@ namespace PorphyStruct.ViewModel
             {
                 //get result
                 Result result;
-                if (FirstOnly) result = Conformation.Calculate(Cycle, coeff);
+                if (FirstOnly) result = Result.Calculate(Cycle, coeff);
                 else
                 {
                     if (Mode == SimulationMode.MonteCarlo)
                     {
-                        MonteCarlo mc = new MonteCarlo(Conformation.Calculate, coeff, Cycle) { Indices = indices };
+                        MonteCarlo mc = new MonteCarlo(Result.Calculate, coeff, Cycle) { Indices = indices };
                         result = mc.Next();
                     }
                     else //simplex
