@@ -11,19 +11,6 @@ namespace PorphyStruct.Util
     public static class MathUtil
     {
         /// <summary>
-        /// Converts the xyz into Point3D
-        /// </summary>
-        /// <returns></returns>
-        public static IEnumerable<Point3D> ToPoint3D(this IEnumerable<Atom> Atoms) => from Atom atom in Atoms  select atom.ToPoint3D();
-
-        /// <summary>
-        /// Converts Atom to Point3d
-        /// </summary>
-        /// <param name="atom"></param>
-        /// <returns></returns>
-        public static Point3D ToPoint3D(this Atom atom) => new Point3D(atom.X, atom.Y, atom.Z);
-
-        /// <summary>
         /// gets highest Y Value (or lowest)
         /// </summary>
         /// <param name="data">AtomDataPoints</param>
@@ -96,6 +83,45 @@ namespace PorphyStruct.Util
             for (int i = 0; i < data2.Count(); i++) yield return new AtomDataPoint(data1.ElementAt(i).X, (data1.ElementAt(i).Y - data2.ElementAt(i).Y), data1.ElementAt(i).atom);
         }
 
+        // <summary>
+        /// Calculate the Derivative of given DataPoints
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static double[] Derive(this List<AtomDataPoint> data)
+        {
+            double[] derivative = new double[data.Count];
+            for (int i = 0; i < data.Count; i++)
+            {
+                if (i != 0)
+                {
+                    derivative[i] = (data[i].Y - data[i - 1].Y) / (data[i].X - data[i - 1].X);
+                }
+                else
+                    derivative[i] = 0;
+            }
+            return derivative;
+        }
+
+        /// <summary>
+		/// Calculate the integral of given DataPoints
+		/// </summary>
+		/// <param name="data"></param>
+		/// <returns></returns>
+		public static double[] Integrate(this double[] data)
+        {
+            double[] integral = new double[data.Length];
+            for (int i = 0; i < data.Length; i++)
+            {
+                if (i != 0)
+                {
+                    integral[i] = integral[i - 1] + data[i];
+                }
+                else
+                    integral[i] = data[i];
+            }
+            return integral;
+        }
 
         /// <summary>
         /// Vector Crossproduct for MathNet Numerics
@@ -122,8 +148,6 @@ namespace PorphyStruct.Util
             difference.dataPoints = cycle.dataPoints.Where(s => !s.atom.IsMetal).Difference(sim.cycle.dataPoints).ToList();
             return new Simulation(difference);
         }
-
-
 
         /// <summary>
         /// calculates the absolute sum
