@@ -89,7 +89,7 @@ namespace PorphyStruct
             PorphyStruct.Core.Properties.Settings.Default.color4 = CheckColor(color4.Text) ? color4.Text : "#0101DF";
             PorphyStruct.Core.Properties.Settings.Default.color5 = CheckColor(color5.Text) ? color5.Text : "#FF8000";
             PorphyStruct.Core.Properties.Settings.Default.Save();
-            this.Close();
+            Close();
         }
 
 

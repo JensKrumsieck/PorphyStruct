@@ -11,7 +11,7 @@ namespace PorphyStruct.Chemistry.Properties
     public abstract class AbstractPropertyProvider : IPropertyProvider
     {
         //base constructor
-        public AbstractPropertyProvider() {}
+        public AbstractPropertyProvider() { }
 
         public AbstractPropertyProvider(Func<string, Atom> function) : this()
         {

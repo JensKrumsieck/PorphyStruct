@@ -40,7 +40,7 @@ namespace PorphyStruct.Files
             }
 
             //build returning object
-            Crystal crystal = new Crystal(System.IO.Path.GetFileNameWithoutExtension(this.Path),
+            Crystal crystal = new Crystal(System.IO.Path.GetFileNameWithoutExtension(Path),
                 cellLenghts, cellAngles, data, headers);
 
             return crystal.ToMolecule();

@@ -20,7 +20,7 @@ namespace PorphyStruct.Util
         public static async IAsyncEnumerable<IEnumerable<T>> ConnectedFigures<T>(IEnumerable<T> list, Func<T, IEnumerable<T>> func)
         {
             var visited = new HashSet<T>();
-            foreach(var item in list) if (!visited.Contains(item)) yield return await DFS(item, func, visited);
+            foreach (var item in list) if (!visited.Contains(item)) yield return await DFS(item, func, visited);
         }
 
         /// <summary>

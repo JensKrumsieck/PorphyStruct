@@ -16,7 +16,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Cancel_Click(object sender, RoutedEventArgs e) => this.Close();
+        private void Cancel_Click(object sender, RoutedEventArgs e) => Close();
 
         /// <summary>
         /// Handle OK Button Click
@@ -27,7 +27,7 @@ namespace PorphyStruct
         {
             //check for file
             if (!string.IsNullOrWhiteSpace(pathTextBox.Text) && File.Exists(pathTextBox.Text) && TypeListBox.SelectedIndex != -1) DialogResult = true;
-            this.Close();
+            Close();
         }
 
         /// <summary>

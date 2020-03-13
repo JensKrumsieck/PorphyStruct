@@ -8,7 +8,8 @@ namespace PorphyStruct.Chemistry.Macrocycles
 {
     public class Corrole : Macrocycle
     {
-        public Corrole(AsyncObservableCollection<Atom> Atoms) : base(Atoms) {
+        public Corrole(AsyncObservableCollection<Atom> Atoms) : base(Atoms)
+        {
             PropertyProviders.Add(new PorphyrinDihedrals(ByIdentifier));
         }
 

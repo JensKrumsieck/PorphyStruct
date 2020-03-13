@@ -20,7 +20,7 @@ namespace PorphyStruct.Chemistry.Properties
         /// <summary>
         /// Converts Atoms to 
         /// </summary>
-        public Func<string, Atom> AtomFunction {get; set;}
+        public Func<string, Atom> AtomFunction { get; set; }
 
         /// <summary>
         /// Returns the actual properties

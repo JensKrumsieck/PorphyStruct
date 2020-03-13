@@ -141,7 +141,7 @@ namespace PorphyStruct
         {
             if (!NormalizeButton.IsEnabled) return;
             viewModel.Normalize = !viewModel.Normalize;
-            this.Analyze();
+            Analyze();
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace PorphyStruct
         {
             if (!InvertButton.IsEnabled) return;
             viewModel.Invert = !viewModel.Invert;
-            this.Analyze();
+            Analyze();
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace PorphyStruct
             DelSimButton.IsEnabled = false;
             viewModel.HasDifference = false;
             DiffSimButton.IsEnabled = false;
-            this.Analyze();
+            Analyze();
         }
         /// <summary>
         /// Handle Diff Button Click
@@ -223,7 +223,7 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void CompButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Analyze();
+            Analyze();
             CompareWindow cw = new CompareWindow();
             cw.comparison1Path.Text = viewModel.comp1Path;
             cw.comparison2Path.Text = viewModel.comp2Path;
@@ -238,7 +238,7 @@ namespace PorphyStruct
                 viewModel.comp1Path = "";
                 viewModel.comp2Path = "";
             }
-            this.Analyze();
+            Analyze();
         }
 
         /// <summary>

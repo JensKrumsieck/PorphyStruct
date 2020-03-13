@@ -37,12 +37,12 @@ namespace PorphyStruct
         public SaveWindow(Macrocycle cycle, Simulation Sim = null)
         {
             InitializeComponent();
-            this.Cycle = cycle;
+            Cycle = cycle;
             this.Sim = Sim;
             DataContext = this;
             NameTB.Text = cycle.Title;
 
-            this.Model = Application.Current.Windows.OfType<MainWindow>().First().displaceView.Model;
+            Model = Application.Current.Windows.OfType<MainWindow>().First().displaceView.Model;
             //reanalyze
             //if (Application.Current.Windows.OfType<MainWindow>().First().Normalize && !(Model == null || Model.Series.Count == 0))
             //{
@@ -262,7 +262,7 @@ namespace PorphyStruct
 
             //save image
             if (Extension == "png")
-                PngExporter.Export(pm, this.Filename + "SimResult.png", PorphyStruct.Core.Properties.Settings.Default.pngWidth, PorphyStruct.Core.Properties.Settings.Default.pngHeight, OxyColors.Transparent, PorphyStruct.Core.Properties.Settings.Default.pngRes);
+                PngExporter.Export(pm, Filename + "SimResult.png", PorphyStruct.Core.Properties.Settings.Default.pngWidth, PorphyStruct.Core.Properties.Settings.Default.pngHeight, OxyColors.Transparent, PorphyStruct.Core.Properties.Settings.Default.pngRes);
 
             //exports svg
             if (Extension == "svg")
@@ -272,7 +272,7 @@ namespace PorphyStruct
                     Width = PorphyStruct.Core.Properties.Settings.Default.pngWidth,
                     Height = PorphyStruct.Core.Properties.Settings.Default.pngHeight
                 };
-                svg.ExportToFile(pm, this.Filename + "SimResult.svg");
+                svg.ExportToFile(pm, Filename + "SimResult.svg");
             }
 
         }

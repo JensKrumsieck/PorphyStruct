@@ -13,7 +13,7 @@ namespace PorphyStruct.OxyPlotOverride
         /// <see cref="Axis.Render(IRenderContext, int)"/>
         public override void Render(IRenderContext rc, int pass)
         {
-            var r = new AlternativeAxisRenderer(rc, this.PlotModel);
+            var r = new AlternativeAxisRenderer(rc, PlotModel);
             r.Render(this, pass);
         }
 

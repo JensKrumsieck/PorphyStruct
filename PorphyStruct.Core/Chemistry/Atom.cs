@@ -28,11 +28,11 @@ namespace PorphyStruct.Chemistry
         /// <param name="z">Z Coordinate in Angstrom</param>
         public Atom(string identifier, double x, double y, double z)
         {
-            this.Identifier = identifier;
-            this.X = x;
-            this.Y = y;
-            this.Z = z;
-            this.Element = SetElement();
+            Identifier = identifier;
+            X = x;
+            Y = y;
+            Z = z;
+            Element = SetElement();
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace PorphyStruct.Chemistry
         /// get Color from  OxyAtomColor-Dictionary
         /// </summary>
         /// <returns>OxyPlot.OxyColor</returns>
-        public OxyColor OxyColor => this.Element.OxyColor;
+        public OxyColor OxyColor => Element.OxyColor;
 
 
         /// <summary>
@@ -137,9 +137,9 @@ namespace PorphyStruct.Chemistry
         /// <summary>
         /// creates export Text for Atom
         /// </summary>
-        public string ExportText => Identifier + "/" + Type + "\t" + 
-            X.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + 
-            Y.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + 
+        public string ExportText => Identifier + "/" + Type + "\t" +
+            X.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" +
+            Y.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" +
             Z.ToString("N8", System.Globalization.CultureInfo.InvariantCulture);
 
         /// <summary>

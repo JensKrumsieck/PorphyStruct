@@ -25,9 +25,9 @@ namespace PorphyStruct.Chemistry.Properties
         /// Override default PropertyCalculation
         /// </summary>
         /// <returns></returns>
-        public override IEnumerable<Property> CalculateProperties() => 
+        public override IEnumerable<Property> CalculateProperties() =>
             from s in Atoms
-                   select new Property($"{Metal.Identifier}-{s.Identifier}", Atom.Distance(Metal, s).ToString("G4") + " Å");
+            select new Property($"{Metal.Identifier}-{s.Identifier}", Atom.Distance(Metal, s).ToString("G4") + " Å");
 
         /** DANGER ZONE**/
 

@@ -11,7 +11,7 @@ namespace PorphyStruct.Styles
         {
             if (((FrameworkElement)templateFrameworkElement).TemplatedParent is Window window) action(window);
         }
-        
+
 
         public static IntPtr GetWindowHandle(this Window window)
         {

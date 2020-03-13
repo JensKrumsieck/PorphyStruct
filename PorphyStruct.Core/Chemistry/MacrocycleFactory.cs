@@ -1,8 +1,6 @@
 ﻿using PorphyStruct.Chemistry.Macrocycles;
 using PorphyStruct.Core.Util;
 using PorphyStruct.Files;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 
 namespace PorphyStruct.Chemistry

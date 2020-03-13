@@ -111,7 +111,7 @@ namespace PorphyStruct
         private void OK_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
-            this.Close();
+            Close();
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Cancel_Click(object sender, RoutedEventArgs e) => this.Close();
+        private void Cancel_Click(object sender, RoutedEventArgs e) => Close();
 
         /// <summary>
         /// handle loaded

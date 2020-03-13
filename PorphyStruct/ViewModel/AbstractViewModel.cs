@@ -3,5 +3,5 @@
 namespace PorphyStruct.ViewModel
 {
     public abstract class AbstractViewModel : Bindable
-    {  }
+    { }
 }

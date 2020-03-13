@@ -25,7 +25,7 @@ namespace PorphyStruct.Chemistry.Properties
         /// <returns></returns>
         public override IEnumerable<Property> CalculateProperties()
         {
-            var Metal = Atoms.Where(s => s.IsMetal).FirstOrDefault(); 
+            var Metal = Atoms.Where(s => s.IsMetal).FirstOrDefault();
             yield return new Property($"{Metal.Identifier} - Mean Plane", Metal.DistanceToPlane(Molecule.GetMeanPlane(Atoms.Where(s => s.IsMacrocycle))).ToString("G4") + " Å");
             yield return new Property($"{Metal.Identifier} - Mean N4 Plane", Metal.DistanceToPlane(Molecule.GetMeanPlane(Atoms.Where(s => s.IsMacrocycle && s.Identifier.Contains("N")))).ToString("G4") + " Å");
         }

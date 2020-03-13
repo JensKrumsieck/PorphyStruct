@@ -13,7 +13,7 @@ namespace PorphyStruct.Files
         public bool IXYZ = false;
         public XYZFile(string path) : base(path) { }
 
-        public XYZFile(string path, bool isIXYZ) : base(path) => this.IXYZ = isIXYZ;
+        public XYZFile(string path, bool isIXYZ) : base(path) => IXYZ = isIXYZ;
 
         /// <summary>
         /// Gets Molecule from XYZ File
@@ -23,7 +23,7 @@ namespace PorphyStruct.Files
         public override Molecule GetMolecule()
         {
             //PLEASE DO NOT USE XYZ Files with non cartesian coordinates
-            string title = System.IO.Path.GetFileNameWithoutExtension(this.Path);
+            string title = System.IO.Path.GetFileNameWithoutExtension(Path);
             Molecule molecule = new Molecule(title);
 
             for (int i = 0; i <= Lines.Count() - 1; i++)

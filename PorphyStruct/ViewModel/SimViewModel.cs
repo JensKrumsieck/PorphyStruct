@@ -102,7 +102,7 @@ namespace PorphyStruct.ViewModel
             //update param
             double[] coeff = Parameters.Select(p => p.Start).ToArray();
             List<int> indices = new List<int>();
-            this.simplex = new Simplex(Result.Calculate, coeff, Cycle);
+            simplex = new Simplex(Result.Calculate, coeff, Cycle);
             //set start values
             for (int i = 0; i < Parameters.Count; i++) if (!Parameters[i].Optimize) indices.Add(i);
 
@@ -186,7 +186,7 @@ namespace PorphyStruct.ViewModel
         public async void StartSimulation()
         {
             IsRunning = true;
-            await Task.Run(() => this.Simulate());
+            await Task.Run(() => Simulate());
         }
 
         /// <summary>

@@ -25,9 +25,9 @@ namespace PorphyStruct.Files
         /// <param name="path"></param>
         public TextFile(string path)
         {
-            this.Path = path;
+            Path = path;
             // read cif - File and get parameters & coordinates
-            Content = System.IO.File.ReadAllText(this.Path);
+            Content = System.IO.File.ReadAllText(Path);
             Lines = Content.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None);
         }
 
