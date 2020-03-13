@@ -39,9 +39,9 @@ namespace PorphyStruct.Simulations
             double[] data = cycle.dataPoints.ToDoubleArray();
 
             return new Result(c, param, new double[] {
-                Simulations.Error.FromArray(data, c),
-                Simulations.Error.FromArray(cycle.dataPoints.Derive(), c.ToAtomDataPoints(cycle.dataPoints).Derive()),
-                Simulations.Error.FromArray(data.Integrate(), c.Integrate())
+                ErrorUtil.ErrorFromArray(data, c),
+                ErrorUtil.ErrorFromArray(cycle.dataPoints.Derive(), c.ToAtomDataPoints(cycle.dataPoints).Derive()),
+                ErrorUtil.ErrorFromArray(data.Integrate(), c.Integrate())
                 });
         }
     }
