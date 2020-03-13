@@ -2,7 +2,6 @@
 using MathNet.Numerics.LinearAlgebra.Double;
 using PorphyStruct.Chemistry;
 using PorphyStruct.Util;
-using System;
 
 namespace PorphyStruct.Simulations
 {
