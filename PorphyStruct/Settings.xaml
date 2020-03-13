@@ -8,58 +8,120 @@
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
+        FontFamily="Segoe UI"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
-        Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}"
+        Style="{DynamicResource DefaultWindowStyle}"
         Title="Settings" Height="650" Width="1000" ResizeMode="NoResize" Closing="Window_Closing">
+    <Window.Resources>
+        <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#f8263238" />
+    </Window.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="50" />            
-        </Grid.RowDefinitions>
         <TabControl TabStripPlacement="Left" Padding="10">
+            <TabControl.Style>
+                <Style TargetType="TabControl">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type TabControl}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="37"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <ToggleButton Width="40" Height="35" Padding="0" HorizontalAlignment="Left" BorderThickness="0" IsChecked="True" x:Name="XToggle">
+                                            <materialDesign:PackIcon Kind="HamburgerMenu" Foreground="#ccc" />
+                                            <ToggleButton.Triggers>
+                                                <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation From="250" To="40" Duration="0:0:.2" Storyboard.TargetProperty="Width" Storyboard.TargetName="PART_Host"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </EventTrigger>
+                                                <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation From="40" To="250" Duration="0:0:.2" Storyboard.TargetProperty="Width" Storyboard.TargetName="PART_Host"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </EventTrigger>
+                                            </ToggleButton.Triggers>
+                                            <ToggleButton.Style>
+                                                <Style TargetType="{x:Type ToggleButton}">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                                <Border Background="Transparent" x:Name="PART_Border" HorizontalAlignment="Stretch">
+                                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsChecked" Value="True">
+                                                                        <Setter TargetName="PART_Border" Property="Background" Value="{DynamicResource SecondaryHueMidBrush}"/>
+                                                                    </Trigger>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter TargetName="PART_Border" Property="BorderBrush" Value="{StaticResource TitleBackgroundBrushInactive}"/>
+                                                                        <Setter TargetName="PART_Border" Property="BorderThickness" Value="1"/>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </ToggleButton.Style>
+                                        </ToggleButton>
+                                        <TabPanel IsItemsHost="True" DockPanel.Dock="Left" Width="250" x:Name="PART_Host" Grid.Row="1"/>
+                                    </Grid>
+                                    <ContentPresenter Name="PART_SelectedContentHost" ContentSource="SelectedContent" Grid.Column="1"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Style>
             <TabControl.ItemContainerStyle>
                 <Style TargetType="{x:Type TabItem}">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type TabItem}">
-                                <Border Margin="15" x:Name="Border" Padding="5">
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <Polygon x:Name="Trian" Points="0,0 8,5, 0,10" Stroke="{DynamicResource SecondaryHueMidBrush}" Fill="{DynamicResource SecondaryHueMidBrush}" Margin="-20,6,0,0" Visibility="Hidden"/>
-                                        <ContentPresenter ContentSource="Header" x:Name="Content"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type TabItem}">
+                                <TextBlock Padding="4 10 10 10" x:Name="headBorder" Width="250">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                        <Rectangle x:Name="Trian" Width="2" Stroke="{DynamicResource SecondaryHueMidBrush}" Fill="{DynamicResource SecondaryHueMidBrush}" Margin="0,0,3,0" Visibility="Hidden"/>
+                                        <ContentPresenter ContentSource="Header" x:Name="Content" RecognizesAccessKey="True"  HorizontalAlignment="Stretch"/>
                                     </StackPanel>
-                                </Border>
+                                </TextBlock>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="True">
                                         <Setter TargetName="Trian" Property="Visibility" Value="Visible"/>
                                     </Trigger>
+                                    <Trigger SourceName="headBorder" Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="headBorder" Property="Background" Value="{StaticResource TitleBackgroundBrushInactive}" />
+                                    </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
             </TabControl.ItemContainerStyle>
-            <TabItem>
+            <TabItem IsSelected="True">
                 <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" local:MarginSetter.Margin="5,0,0,0">
-                        <materialDesign:PackIcon Kind="ChartScatterPlotHexbin" Width="24" Height="24"/>
-                        <TextBlock Text="Graph &amp; Axis" Style="{StaticResource MaterialDesignSubtitle1TextBlock}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="ChartScatterPlotHexbin" Width="24" Height="24" Margin="0 0 7 0" Foreground="#ccc"/>
+                        <TextBlock Text="Graph &amp; Axis" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="#ccc"/>
                     </StackPanel>
                 </TabItem.Header>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Orientation="Vertical" local:MarginSetter.Margin="0,10,0,0">
+                <UniformGrid Columns="2" Margin="0" Background="#fcfcfc">
+                    <StackPanel Orientation="Vertical" Margin="10">
                         <!--Graph Settings-->
                         <TextBlock Text="Graph Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Bold"/>
                         <!--Appearance-->
                         <TextBlock Text="Appearance" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
-                        <TextBox  x:Name="defaultFont" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=defaultFont, Mode=TwoWay}" >
+                        <TextBox x:Name="defaultFont" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=defaultFont, Mode=TwoWay}" >
                             <materialDesign:HintAssist.Hint>Default Font</materialDesign:HintAssist.Hint>
                         </TextBox>
                         <TextBox x:Name="lineThickness" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=lineThickness, Mode=TwoWay}">
@@ -75,9 +137,9 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Show Plot Area Border" />
                             <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" x:Name="showBox" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=showBox, Mode=TwoWay}"/>
-                        </Grid>                        
+                        </Grid>
                     </StackPanel>
-                    <StackPanel Grid.Column="1" Orientation="Vertical">
+                    <StackPanel Orientation="Vertical" Margin="10">
                         <!--Axis Settings-->
                         <TextBlock Text="Axis Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Bold"/>
                         <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text=""></TextBlock>
@@ -87,7 +149,7 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Show X Axis"  Grid.Column="0"/>
-                            
+
                             <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" x:Name="xAxis" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=xAxis, Mode=TwoWay}" Grid.Column="1"/>
                         </Grid>
                         <Grid>
@@ -166,22 +228,19 @@
                             <materialDesign:HintAssist.Hint>Axis Title Format ({0} = Title, {1} = Unit)</materialDesign:HintAssist.Hint>
                         </TextBox>
                     </StackPanel>
-                </Grid>
+                </UniformGrid>
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" local:MarginSetter.Margin="5,0,0,0">
-                        <materialDesign:PackIcon Kind="ImportExport" Width="24" Height="24"/>
-                        <TextBlock Text="Import &amp; Export" Style="{StaticResource MaterialDesignSubtitle1TextBlock}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <materialDesign:PackIcon Kind="ImportExport" Width="24" Height="24"  Margin="0 0 7 0" Foreground="#ccc"/>
+                        <TextBlock Text="Import &amp; Export" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="#ccc"/>
 
                     </StackPanel>
                 </TabItem.Header>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Orientation="Vertical" local:MarginSetter.Margin="0,10,0,0">
+                <UniformGrid Columns="2" Margin="0" Background="#fcfcfc">
+
+                    <StackPanel Grid.Column="0" Orientation="Vertical"  Margin="10">
                         <TextBlock Text="Import Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Bold"/>
                         <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text=""></TextBlock>
                         <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Default Import Directory"/>
@@ -206,7 +265,7 @@
                             <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" x:Name="useImportExportPath" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=useImportExportPath, Mode=TwoWay}"/>
                         </Grid>
                     </StackPanel>
-                    <StackPanel Grid.Column="1" Orientation="Vertical" local:MarginSetter.Margin="0,10,0,0">
+                    <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10">
                         <TextBlock Text="Export Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Bold"/>
                         <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text=""></TextBlock>
                         <!--Export Settings-->
@@ -230,21 +289,17 @@
                             <materialDesign:HintAssist.Hint>Resolution</materialDesign:HintAssist.Hint>
                         </TextBox>
                     </StackPanel>
-                </Grid>
+                </UniformGrid>
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" local:MarginSetter.Margin="5,0,0,0">
-                        <materialDesign:PackIcon Kind="FileTableOutline" Width="24" Height="24"/>
-                        <TextBlock Text="Data" Style="{StaticResource MaterialDesignSubtitle1TextBlock}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="FileTableOutline" Width="24" Height="24" Margin="0 0 7 0" Foreground="#ccc"/>
+                        <TextBlock Text="Data" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="#ccc"/>
                     </StackPanel>
                 </TabItem.Header>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel local:MarginSetter.Margin="0,10,0,0">
+                <UniformGrid Columns="2" Margin="0" Background="#fcfcfc">
+                    <StackPanel  Margin="10">
 
                         <!--Data Settings-->
                         <TextBlock Text="Data Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Bold"/>
@@ -340,21 +395,17 @@
                             </TextBox>
                         </Grid>
                     </StackPanel>
-                </Grid>
+                </UniformGrid>
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" local:MarginSetter.Margin="5,0,0,0">
-                        <materialDesign:PackIcon Kind="ColorLens" Width="24" Height="24"/>
-                        <TextBlock Text="Color" Style="{StaticResource MaterialDesignSubtitle1TextBlock}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="ColorLens" Width="24" Height="24" Margin="0 0 7 0" Foreground="#ccc"/>
+                        <TextBlock Text="Color" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="#ccc"/>
                     </StackPanel>
                 </TabItem.Header>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel local:MarginSetter.Margin="0,10,0,0">
+                <UniformGrid Columns="2" Margin="0" Background="#fcfcfc">
+                    <StackPanel Margin="10">
                         <!--Color Settings-->
                         <TextBlock Text="Color Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Bold"/>
                         <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text=""></TextBlock>
@@ -428,10 +479,8 @@
                                           Grid.Column="1"/>
                         </Grid>
                     </StackPanel>
-                </Grid>
+                </UniformGrid>
             </TabItem>
         </TabControl>
-        <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" x:Name="saveBtn" Content="Save" Click="SaveBtn_Click" Grid.Row="1" Width="200"/>     
-        
     </Grid>
 </Window>

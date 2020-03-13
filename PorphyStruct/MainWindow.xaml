@@ -10,12 +10,10 @@
         xmlns:h="http://helix-toolkit.org/wpf"
         xmlns:styles="clr-namespace:PorphyStruct.Styles"
         xmlns:lang="clr-namespace:PorphyStruct.Properties.Language"
-        TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         FontFamily="Segoe UI"
-        xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
         Style="{DynamicResource DefaultWindowStyle}"
         styles:DefaultWindow.FileName="{Binding Cycle.Title}"
         Title="Structural Analysis of Porphyrinoids (PorphyStruct)" Height="780" Width="1230">

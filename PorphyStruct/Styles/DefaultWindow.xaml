@@ -3,6 +3,7 @@
                     xmlns:local="clr-namespace:PorphyStruct.Styles"
                     x:Class="PorphyStruct.Styles.DefaultWindow">
     <SolidColorBrush x:Key="TitleBackgroundBrush" Color="#263238" />
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#FFFFFF" />
     <SolidColorBrush x:Key="BorderBrush" Color="#898989" />
     <SolidColorBrush x:Key="TitleBackgroundBrushInactive" Color="#1c2429" />
     <SolidColorBrush x:Key="TitleForegroundBrush" Color="#ffffff" />
@@ -79,19 +80,20 @@
                                 x:Name="Border"
                                 Width="Auto"
                                 Height="Auto"
-                                BorderBrush="{StaticResource TitleBackgroundBrush}"
-                                Background="#FFFFFF"
-                                BorderThickness="1"
-                                Padding="0">
+                                BorderBrush="{DynamicResource TitleBackgroundBrush}"
+                                CornerRadius="5"
+                                Background="{DynamicResource WindowBackgroundBrush}"
+                                BorderThickness="0">
                                 <DockPanel
                                     HorizontalAlignment="Stretch"
-                                    Background="Transparent"
+                                    Margin="-1"
                                     VerticalAlignment="Stretch">
                                     <Border x:Name="TitleBar"
                                             DockPanel.Dock="Top" 
-                                            Background="{StaticResource TitleBackgroundBrush}"
+                                            Background="{DynamicResource TitleBackgroundBrush}"
+                                            CornerRadius="5 5 0 0"
                                             BorderThickness="0"
-                                            Height="36">
+                                            Height="35">
                                         <!--Buttons-->
                                         <Grid>
                                         <Grid Height="36" VerticalAlignment="Top">
