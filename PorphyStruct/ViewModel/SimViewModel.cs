@@ -62,7 +62,7 @@ namespace PorphyStruct.ViewModel
         /// Keep Best as Start Values?
         /// </summary>
         public bool KeepBest { get => Get<bool>(); set => Set(value); }
-        
+
         /// <summary>
         /// Best Result,yet
         /// </summary>
@@ -100,7 +100,6 @@ namespace PorphyStruct.ViewModel
         private void Simulate()
         {
             //update param
-            //this.param = (List<SimParam>)simGrid.ItemsSource;
             double[] coeff = Parameters.Select(p => p.Start).ToArray();
             List<int> indices = new List<int>();
             this.simplex = new Simplex(Result.Calculate, coeff, Cycle);
@@ -134,7 +133,7 @@ namespace PorphyStruct.ViewModel
                 //get new best values if every single error is smaller or the overall sum is smaller
                 if (IsNewBest(result))
                 {
-                    Best = result; 
+                    Best = result;
                     currentErr = result.Error;
                     //new bestvalues
                     for (int i = 0; i < result.Coefficients.ToArray().Count(); i++) Parameters[i].Best = result.Coefficients.ToArray()[i];
