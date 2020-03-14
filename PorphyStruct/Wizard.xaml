@@ -66,7 +66,7 @@
                 <h:DefaultLights/>
             </h:HelixViewport3D>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20 0 20">
-                <TextBox x:Name="pathTextBox" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="" Height="40" Width="300" TextChanged="pathTextBox_TextChanged">
+                <TextBox x:Name="pathTextBox" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="" Height="40" Width="300" TextChanged="PathTextBox_TextChanged">
                     <materialDesign:HintAssist.Hint>
                         <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
                             <TextBlock>Please choose a file...</TextBlock>

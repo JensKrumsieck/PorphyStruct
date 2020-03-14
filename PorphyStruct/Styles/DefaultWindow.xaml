@@ -84,6 +84,9 @@
                                 CornerRadius="5"
                                 Background="{DynamicResource WindowBackgroundBrush}"
                                 BorderThickness="0">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="10" Color="#ccf" Opacity="0.1" Direction="270" ShadowDepth="3" />
+                                </Border.Effect>
                                 <DockPanel
                                     HorizontalAlignment="Stretch"
                                     Margin="-1"

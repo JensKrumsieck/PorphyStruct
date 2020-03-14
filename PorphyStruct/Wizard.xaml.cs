@@ -54,7 +54,7 @@ namespace PorphyStruct
         /// </summary>
         public int Type => TypeListBox.SelectedIndex;
 
-        private void pathTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => Refresh();
+        private void PathTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => Refresh();
 
         private void TypeListBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) => Refresh();
 
