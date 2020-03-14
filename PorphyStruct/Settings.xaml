@@ -34,6 +34,9 @@
                                             <RowDefinition Height="37"/>
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
+                                        <Grid.Effect>
+                                            <BlurEffect Radius="0.5"/>
+                                        </Grid.Effect>
                                         <TabPanel IsItemsHost="True" DockPanel.Dock="Left" x:Name="PART_Host" Grid.Row="1">
                                             <TabPanel.Style>
                                                 <Style TargetType="{x:Type TabPanel}">
@@ -47,7 +50,7 @@
                                                     </Style.Triggers>
                                                 </Style>
                                             </TabPanel.Style>
-                                        </TabPanel>
+                                            </TabPanel>
                                         <ToggleButton Width="40" Height="35" Padding="0" HorizontalAlignment="Left" BorderThickness="0" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=settingsCollapsed, Mode=TwoWay}" x:Name="XToggle">
                                             <materialDesign:PackIcon Kind="HamburgerMenu" Foreground="#ccc" />
                                             <ToggleButton.Triggers>

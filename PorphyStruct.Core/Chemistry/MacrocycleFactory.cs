@@ -34,7 +34,21 @@ namespace PorphyStruct.Chemistry
         /// <returns></returns>
         public static Macrocycle Load(string path, Macrocycle.Type type)
         {
-            //handle file open
+            //get molecule
+            var molecule = Load(path);
+
+            Macrocycle cycle = Build(molecule.Atoms, type);
+            cycle.Title = Path.GetFileNameWithoutExtension(path);
+            return cycle;
+        }
+
+        /// <summary>
+        /// Loads Molecule
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static Molecule Load(string path)
+        {
             TextFile file;
             if (Path.GetExtension(path) == ".cif")
                 file = new CifFile(path);
@@ -45,11 +59,7 @@ namespace PorphyStruct.Chemistry
             else
                 file = new XYZFile(path);
             //get molecule
-            var molecule = file.GetMolecule();
-
-            Macrocycle cycle = Build(molecule.Atoms, type);
-            cycle.Title = Path.GetFileNameWithoutExtension(path);
-            return cycle;
+            return file.GetMolecule();
         }
     }
 }

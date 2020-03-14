@@ -3,68 +3,44 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PorphyStruct"
-        xmlns:Prop="clr-namespace:PorphyStruct.Properties"
+        xmlns:h="http://helix-toolkit.org/wpf"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
-        Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="Open File" Height="550" Width="835" ResizeMode="NoResize">
-    <Grid Margin="10,0,10,0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="9*"/>
-            <RowDefinition Height="10*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="10"/>
-        </Grid.RowDefinitions>
+        FontFamily="Segoe UI"
+        Style="{DynamicResource DefaultWindowStyle}"
+        Title="Open File" Height="625" Width="800" ResizeMode="NoResize">
+    <Grid Margin="0,0,0,0">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="325" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <TextBlock  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"><Bold>The following Input-Types are supported</Bold>:
-            <LineBreak/> - CIF File (crystallographic information file, <Bold>recommended</Bold>)
-            <LineBreak/> - XYZ File (cartesian coordinates in Angstrom)
-            <LineBreak/> - Mol2 File (TRIPOS Mol2 Format)
-            <LineBreak/> - iXYZ File (PorphyStruct File Format)
-        </TextBlock>
-        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="WrapWithOverflow">
-            You can choose between the following macrocyclic frameworks: <Bold>Porphyrin, Corrole, Norcorrole, Corrphycene and Porphycene</Bold>.
-            <LineBreak/> 
-            For the analysis, the data must be labelled as shown below. Heteroatoms must be substituted so that the naming follows 
-            the guidelines. However Heteroatoms will continue to be treated as such internally.
-            <LineBreak/><LineBreak/>
-            Automatic recognition is possible for CIF-files, which also accepts other scenarios in addition to the guidelines below. 
-            These are IUPAC-numbering (N21-N24) and "mathematically numbering" (counting from zero). 
-            <LineBreak/>
-            For XYZ-files, the C and N atoms are numbered in ascending order. With a bit of luck this will fit quite well.
-            <LineBreak/>
-             Mol2-files may contain crystallographic identifiers. If that is the case, then these are handled analogously to CIF files, otherwise analogously to XYZ files.
-
-        </TextBlock>
-        <ListBox Style="{StaticResource MaterialDesignToolToggleListBox}"
+        <StackPanel Orientation="Vertical" Margin="10">
+            <TextBlock Text="Select a Framework" Style="{StaticResource MaterialDesignHeadline6TextBlock}" FontWeight="Light" HorizontalAlignment="Center"/>
+            <ListBox Style="{StaticResource MaterialDesignToolToggleListBox}"
                  HorizontalAlignment="Center"
-                 Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" x:Name="TypeListBox"
-                 SelectedIndex="0">
+                 x:Name="TypeListBox" Margin="0 10 0 0"
+                 SelectedIndex="0" SelectionChanged="TypeListBox_SelectionChanged">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="2"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                <Border x:Name="border" 
+                                <Border x:Name="border"
                                         BorderThickness="{TemplateBinding BorderThickness}"
                                         BorderBrush="{TemplateBinding BorderBrush}" 
                                         Background="{TemplateBinding Background}"
                                         CornerRadius="5">
                                     <ContentPresenter x:Name="content"/>
-                                </Border>
+                                    </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="true">
                                         <Setter Property="BorderBrush" Value="{DynamicResource SecondaryHueMidBrush}" />
@@ -83,17 +59,26 @@
             <ListBoxItem x:Name="Corrphycene" Padding="0" ContentTemplate="{StaticResource Corrphycene}" RenderOptions.BitmapScalingMode="Fant" />
             <ListBoxItem x:Name="Porphycene" Padding="0" ContentTemplate="{StaticResource Porphycene}" RenderOptions.BitmapScalingMode="Fant" />
         </ListBox>
-        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">
-            <TextBox x:Name="pathTextBox" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="" Height="40" Width="350">
-                <materialDesign:HintAssist.Hint>
-                    <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
-                        <TextBlock>Please choose a file...</TextBlock>
-                    </StackPanel>
-                </materialDesign:HintAssist.Hint>
-            </TextBox>
-            <Button  Content="Select File" Width="100" Click="FileOpen_Click" Margin="20,0,0,0"/>
         </StackPanel>
-        <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" Content="Ok" Grid.Row="5" Grid.Column="0" Width="100" Click="Ok_Click" IsDefault="True"/>
-        <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Content="Cancel" Grid.Row="5" Grid.Column="1"  Width="100" Click="Cancel_Click" IsCancel="True"/>
+        <StackPanel Grid.Column="1" Background="#FFF" Margin="10">
+            <TextBlock Text="Preview" Style="{StaticResource MaterialDesignHeadline6TextBlock}" FontWeight="Light" HorizontalAlignment="Center"/>
+            <h:HelixViewport3D x:Name="MolViewer" ShowViewCube="False" ShowCoordinateSystem="True" ZoomExtentsWhenLoaded="True" Background="#FFFAFAFA" Height="350" Margin="0 10 0 0">
+                <h:DefaultLights/>
+            </h:HelixViewport3D>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20 0 20">
+                <TextBox x:Name="pathTextBox" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="" Height="40" Width="300" TextChanged="pathTextBox_TextChanged">
+                    <materialDesign:HintAssist.Hint>
+                        <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
+                            <TextBlock>Please choose a file...</TextBlock>
+                        </StackPanel>
+                    </materialDesign:HintAssist.Hint>
+                </TextBox>
+                <Button  Content="Select File" Width="100" Click="FileOpen_Click" Margin="20,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" Content="Ok" Grid.Row="2" Grid.Column="0" Width="100" Click="Ok_Click" IsDefault="True" Margin="5"/>
+                <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Content="Cancel" Grid.Row="2" Grid.Column="1"  Width="100" Click="Cancel_Click" IsCancel="True" Margin="5"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>
