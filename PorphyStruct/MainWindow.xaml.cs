@@ -176,6 +176,7 @@ namespace PorphyStruct
             //normalize if not done yet!
             if (!viewModel.Normalize)
                 NormalizeButton_Click(sender, e);
+
             new SimWindow().Show();
         }
 

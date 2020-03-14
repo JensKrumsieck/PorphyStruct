@@ -209,8 +209,8 @@ namespace PorphyStruct.ViewModel
             //calculate Data
             Cycle.GetDataPoints();
 
-            if (Normalize) Cycle.Normalize();
-            if (Invert) Cycle.Invert();
+            Cycle.Normalize(Normalize);
+            Cycle.Invert(Invert);
 
             //paint difference
             //not affected by Normalize and Invert since always freshly calc'd
@@ -223,6 +223,7 @@ namespace PorphyStruct.ViewModel
                         Cycle.DataProviders.Where(s => s.DataType == DataType.Simulation).FirstOrDefault() as SimulationData)
                     );
             }
+
             //paint comparison
             if (!string.IsNullOrEmpty(comp1Path)) CompareWindow.GetData(comp1Path).Paint(Model, "Com1");
             if (!string.IsNullOrEmpty(comp2Path)) CompareWindow.GetData(comp2Path).Paint(Model, "Com2");

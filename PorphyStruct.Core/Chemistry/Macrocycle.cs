@@ -87,19 +87,25 @@ namespace PorphyStruct.Chemistry
         /// <summary>
         /// Normalizes all Data
         /// </summary>
-        public void Normalize()
+        public void Normalize(bool normalize = true)
         {
             foreach (var dataProvider in DataProviders)
-                dataProvider.DataPoints = dataProvider.DataPoints.Normalize();
+            {
+                if(normalize && !dataProvider.Normalized || !normalize && dataProvider.Normalized)
+                    dataProvider.Normalize();
+            }
         }
 
         /// <summary>
         /// Inverts all Data
         /// </summary>
-        public void Invert()
+        public void Invert(bool invert = true)
         {
             foreach (var dataProvider in DataProviders)
-                dataProvider.DataPoints = dataProvider.DataPoints.Invert();
+            {
+                if(invert && !dataProvider.Inverted || !invert && dataProvider.Inverted)
+                    dataProvider.Invert();
+            }
         }
 
         /// <summary>

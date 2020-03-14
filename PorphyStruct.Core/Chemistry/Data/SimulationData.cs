@@ -11,6 +11,10 @@ namespace PorphyStruct.Chemistry.Data
 
         public IEnumerable<AtomDataPoint> DataPoints { get; set; }
 
+        public bool Normalized { get; set; }
+        public bool Inverted { get; set; }
+        public double Factor { get; set; }
+
         /// <summary>
         /// The parameters when simulation is finalized
         /// </summary>
@@ -28,6 +32,24 @@ namespace PorphyStruct.Chemistry.Data
                 yield return new Property(param.Title + " (absolute)", (param.Best * DataPoints.MeanDisplacement()).ToString("N4") + " Å");
             }
             yield return new Property("OOP-Distortion (Sim)", DataPoints.MeanDisplacement().ToString("G6") + " Å");
+        }
+
+        public void Normalize()
+        {
+            if (!Normalized)
+            {
+                Factor = DataPoints.GetNormalizationFactor();
+                DataPoints = DataPoints.Normalize();
+            }
+            else DataPoints = DataPoints.Factor(1 / Factor);
+                
+            Normalized = !Normalized;
+        }
+
+        public void Invert()
+        {
+             DataPoints = DataPoints.Invert();
+             Inverted = !Inverted;
         }
 
         /** DANGER ZONE**/

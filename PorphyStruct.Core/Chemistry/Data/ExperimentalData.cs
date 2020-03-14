@@ -1,12 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using PorphyStruct.Util;
+using System.Collections.Generic;
 
 namespace PorphyStruct.Chemistry.Data
 {
-    public class ExperimentalData : IAtomDataPointProvider
+    public class ExperimentalData : AbstractAtomDataPointProvider
     {
-        public DataType DataType => DataType.Experimental;
-        public IEnumerable<AtomDataPoint> DataPoints { get; set; }
+        public override DataType DataType => DataType.Experimental;
 
         public ExperimentalData(IEnumerable<AtomDataPoint> dataPoints) => DataPoints = dataPoints;
+
+        //No need to keep track of states as Experimental is regenrated every time
+        public override void Normalize() => DataPoints = DataPoints.Normalize();
+
+        public override void Invert() => DataPoints = DataPoints.Invert();
     }
 }

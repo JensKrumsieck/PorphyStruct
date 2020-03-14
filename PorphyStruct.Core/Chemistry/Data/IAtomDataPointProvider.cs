@@ -16,6 +16,21 @@ namespace PorphyStruct.Chemistry.Data
         /// Data provides by the provider
         /// </summary>
         public IEnumerable<AtomDataPoint> DataPoints { get; set; }
+
+        /// <summary>
+        /// Handles Normalization
+        /// </summary>
+        public void Normalize();
+
+        /// <summary>
+        /// Handles Inversion
+        /// </summary>
+        public void Invert();
+
+        public bool Normalized { get; set; }
+        public bool Inverted { get; set; }
+        public double Factor { get; set; }
+
     }
 
     public enum DataType { Experimental, Simulation, Comparison, Difference }

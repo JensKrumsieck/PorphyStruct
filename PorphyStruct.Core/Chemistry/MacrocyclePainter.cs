@@ -20,23 +20,23 @@ namespace PorphyStruct.Chemistry
             foreach (var dp in data.DataPoints) AssignValue(dp, data.DataType);
             //read marker type
             MarkerType mType = MarkerType.Circle;
-            if (data.DataType == DataType.Experimental) mType = PorphyStruct.Core.Properties.Settings.Default.markerType;
-            if (data.DataType == DataType.Simulation ) mType = PorphyStruct.Core.Properties.Settings.Default.simMarkerType;
-            if (data.DataType == DataType.Comparison) mType = PorphyStruct.Core.Properties.Settings.Default.com1MarkerType;
+            if (data.DataType == DataType.Experimental) mType = Core.Properties.Settings.Default.markerType;
+            if (data.DataType == DataType.Simulation || data.DataType == DataType.Difference) mType = Core.Properties.Settings.Default.simMarkerType;
+            if (data.DataType == DataType.Comparison) mType = Core.Properties.Settings.Default.com1MarkerType;
 
             //build series
             ScatterSeries series = new ScatterSeries()
             {
                 MarkerType = mType,
                 ItemsSource = data.DataPoints,
-                ColorAxisKey = PorphyStruct.Core.Properties.Settings.Default.singleColor ? null : "colors",
+                ColorAxisKey = Core.Properties.Settings.Default.singleColor ? null : "colors",
                 Title = data.DataType.ToString()
             };
-            if (PorphyStruct.Core.Properties.Settings.Default.singleColor)
+            if (Core.Properties.Settings.Default.singleColor)
                 series.MarkerFill = Atom.modesSingleColor[(int)data.DataType];
             //add series
 
-            if (!PorphyStruct.Core.Properties.Settings.Default.singleColor) pm.Axes.Add(ColorAxis(data.DataPoints));
+            if (!Core.Properties.Settings.Default.singleColor) pm.Axes.Add(ColorAxis(data.DataPoints));
             else series.MarkerFill = Atom.modesSingleColor[(int)data.DataType];
 
             pm.Series.Add(series);

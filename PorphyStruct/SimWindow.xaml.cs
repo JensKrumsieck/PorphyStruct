@@ -27,7 +27,7 @@ namespace PorphyStruct
         /// </summary>
         private readonly SynchronizationContext synchronizationContext;
 
-        private MainViewModel MainVM;
+        private readonly MainViewModel MainVM;
 
         public SimViewModel viewModel;
 
@@ -36,8 +36,6 @@ namespace PorphyStruct
         /// <summary>
         /// Constructs the Window
         /// </summary>
-        /// <param name="cycle">Macrocycle to simulate</param>
-        /// <param name="pv">Plotview to Plot after Simulation</param>
         public SimWindow()
         {
             InitializeComponent();
@@ -171,6 +169,7 @@ namespace PorphyStruct
                 ScatterSeries sim = (ScatterSeries)simView.Model.Series.FirstOrDefault(s => s.Title == "Best");
                 var simObj = new SimulationData((IEnumerable<AtomDataPoint>)sim.ItemsSource);
                 simObj.SimulationParameters = viewModel.Parameters;
+                simObj.Inverted = MainVM.Invert;
 
                 //Le sim is property and data provider
                 viewModel.Cycle.PropertyProviders.Add(simObj);
