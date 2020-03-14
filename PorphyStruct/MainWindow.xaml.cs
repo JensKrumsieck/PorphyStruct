@@ -170,6 +170,10 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void SimButton_Click(object sender, RoutedEventArgs e)
         {
+
+            //drop metal data
+            if (viewModel.Cycle.HasMetal(true))
+                viewModel.Cycle.Atoms.Where(s => s.IsMacrocycle && s.IsMetal).ToList().ForEach(s => s.IsMacrocycle = false);
             //normalize if not done yet!
             if (!viewModel.Normalize)
                 NormalizeButton_Click(sender, e);

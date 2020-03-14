@@ -209,32 +209,19 @@ namespace PorphyStruct.ViewModel
             //calculate Data
             Cycle.GetDataPoints();
 
-            //normalisation
-            if (Normalize)
-            {
-                normFac = MathUtil.GetNormalizationFactor(Cycle.dataPoints);
-                Cycle.dataPoints = Cycle.dataPoints.Normalize();
-            }
-            //invert
-            if (Invert) Cycle.dataPoints = Cycle.dataPoints.Invert();
+            if (Normalize) Cycle.Normalize();
+            if (Invert) Cycle.Invert();
 
-            //handle sim
-            if (simulation != null)
-            {
-                simulation.Normalize(Normalize, normFac);
-                simulation.Invert(Invert);
-                simulation.Paint(Model);
-            }
             //paint difference
             if (HasDifference) Cycle.GetDifference(simulation).Paint(Model, "Diff");
             //paint comparison
             if (!string.IsNullOrEmpty(comp1Path)) CompareWindow.GetData(comp1Path).Paint(Model, "Com1");
             if (!string.IsNullOrEmpty(comp2Path)) CompareWindow.GetData(comp2Path).Paint(Model, "Com2");
             //paint exp
-            Cycle.Paint(Model, MacrocyclePainter.PaintMode.Exp);
+            Cycle.Paint(Model);
 
             //handle dont mark
-            foreach (ScatterSeries s in Model.Series) ((List<AtomDataPoint>)s.ItemsSource).Where(dp => Core.Properties.Settings.Default.dontMark.Split(',').Contains(dp.atom.Identifier) || Core.Properties.Settings.Default.dontMark.Split(',').Contains(dp.atom.Type)).ToList().ForEach(dp => dp.Size = 0);
+            foreach (ScatterSeries s in Model.Series) ((IEnumerable<AtomDataPoint>)s.ItemsSource).Where(dp => Core.Properties.Settings.Default.dontMark.Split(',').Contains(dp.atom.Identifier) || Core.Properties.Settings.Default.dontMark.Split(',').Contains(dp.atom.Type)).ToList().ForEach(dp => dp.Size = 0);
 
             Model.Scale(Model.yAxis, true, Normalize);
             Model.Scale(Model.xAxis);
@@ -248,16 +235,6 @@ namespace PorphyStruct.ViewModel
             if (Cycle != null)
             {
                 CycleProperties = Cycle.Properties.ToLookup(x => x.Key, y => y.Value).ToDictionary(group => group.Key, group => group.SelectMany(value => value));
-
-                //add these properties hardcoded ;)
-                CycleProperties["General"] = new List<Property>()
-                {
-                    new Property("D_oop", Cycle.MeanDisplacement().ToString("G5")),
-                    new Property("D_oop(sim)", simulation != null ? simulation.cycle.MeanDisplacement().ToString("G5") : double.NaN.ToString())
-                };
-                if (simulation != null)
-                    CycleProperties["Simulation"] = simulation.par.Select(s => new Property(s.Key,
-                       $"{s.Value.ToString("G4")} % / {(s.Value / 100 * simulation.cycle.MeanDisplacement()).ToString("G6")} Å")).ToList();
                 var msp = Cycle.GetMeanPlane();
                 CycleProperties["Mean Plane"] = new List<Property>()
                 {

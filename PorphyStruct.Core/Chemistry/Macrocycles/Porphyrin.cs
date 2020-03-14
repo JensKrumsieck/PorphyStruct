@@ -1,4 +1,5 @@
 ﻿using OxyPlot.Annotations;
+using PorphyStruct.Chemistry.Data;
 using PorphyStruct.Chemistry.Properties;
 using PorphyStruct.Core.Util;
 using System;
@@ -104,17 +105,17 @@ namespace PorphyStruct.Chemistry.Macrocycles
         /// because of special C1-C20 Bond.
         /// </summary>
         /// <returns>Annotation aka Bonds</returns>
-        public override IEnumerable<ArrowAnnotation> DrawBonds(int mode = 0) => base.DrawBonds(mode).Where(s => !((string)s.Tag).Contains("C20")).Concat(DrawPorphyrinBonds(mode));
+        public override IEnumerable<ArrowAnnotation> DrawBonds(IAtomDataPointProvider data) => base.DrawBonds(data).Where(s => !((string)s.Tag).Contains("C20")).Concat(DrawPorphyrinBonds(data));
 
         /// <summary>
         /// Draw Porphyrin specific Bonds
         /// </summary>
         /// <param name="mode"></param>
         /// <returns></returns>
-        private IEnumerable<ArrowAnnotation> DrawPorphyrinBonds(int mode = 0)
+        private IEnumerable<ArrowAnnotation> DrawPorphyrinBonds(IAtomDataPointProvider data)
         {
-            yield return DrawBond(dataPoints.OrderBy(s => s.X).First(), dataPoints.Where(s => s.atom.Identifier == "C1" && s.atom.IsMacrocycle).First(), mode);
-            yield return DrawBond(dataPoints.OrderBy(s => s.X).Last(), dataPoints.Where(s => s.atom.Identifier == "C19" && s.atom.IsMacrocycle).First(), mode);
+            yield return DrawBond(data.DataPoints.OrderBy(s => s.X).First(), data.DataPoints.Where(s => s.atom.Identifier == "C1" && s.atom.IsMacrocycle).First(), data.DataType);
+            yield return DrawBond(data.DataPoints.OrderBy(s => s.X).Last(), data.DataPoints.Where(s => s.atom.Identifier == "C19" && s.atom.IsMacrocycle).First(), data.DataType);
         }
 
         /// <summary>

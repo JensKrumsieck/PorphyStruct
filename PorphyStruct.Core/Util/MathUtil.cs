@@ -15,7 +15,7 @@ namespace PorphyStruct.Util
         /// </summary>
         /// <param name="data">AtomDataPoints</param>
         /// <returns>highest/lowest Y Value</returns>
-        public static double GetNormalizationFactor(List<AtomDataPoint> data)
+        public static double GetNormalizationFactor(this IEnumerable<AtomDataPoint> data)
         {
             //find min & max
             double min = 0;
@@ -45,7 +45,7 @@ namespace PorphyStruct.Util
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static List<AtomDataPoint> Normalize(this List<AtomDataPoint> data)
+        public static IEnumerable<AtomDataPoint> Normalize(this IEnumerable<AtomDataPoint> data)
         {
             double fac = GetNormalizationFactor(data);
             return Factor(data, fac).ToList();
@@ -56,7 +56,7 @@ namespace PorphyStruct.Util
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static List<AtomDataPoint> Invert(this List<AtomDataPoint> data) => Factor(data, -1).ToList();
+        public static IEnumerable<AtomDataPoint> Invert(this IEnumerable<AtomDataPoint> data) => Factor(data, -1).ToList();
 
         /// <summary>
         /// multiply by given factor
@@ -64,7 +64,7 @@ namespace PorphyStruct.Util
         /// <param name="data"></param>
         /// <param name="fac"></param>
         /// <returns></returns>
-        public static IEnumerable<AtomDataPoint> Factor(this List<AtomDataPoint> data, double fac)
+        public static IEnumerable<AtomDataPoint> Factor(this IEnumerable<AtomDataPoint> data, double fac)
         {
             foreach (AtomDataPoint dp in data) yield return new AtomDataPoint(dp.X, dp.Y / fac, dp.atom);
         }
@@ -82,6 +82,13 @@ namespace PorphyStruct.Util
             data2 = data2.OrderBy(s => s.X).ToList();
             for (int i = 0; i < data2.Count(); i++) yield return new AtomDataPoint(data1.ElementAt(i).X, (data1.ElementAt(i).Y - data2.ElementAt(i).Y), data1.ElementAt(i).atom);
         }
+
+        /// <summary>
+        /// Mean Displacement
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static double MeanDisplacement(this IEnumerable<AtomDataPoint> data) => Math.Sqrt(data.Sum(s => Math.Pow(s.Y, 2)));
 
         // <summary>
         /// Calculate the Derivative of given DataPoints
@@ -140,9 +147,10 @@ namespace PorphyStruct.Util
         /// <returns></returns>
         public static Simulation GetDifference(this Macrocycle cycle, Simulation sim)
         {
-            Macrocycle difference = (Macrocycle)cycle.Clone();
-            difference.dataPoints = cycle.dataPoints.Where(s => !s.atom.IsMetal).Difference(sim.cycle.dataPoints).ToList();
-            return new Simulation(difference);
+            return sim;
+            //Macrocycle difference = (Macrocycle)cycle.Clone();
+            //difference.DataPoints = cycle.DataPoints.Where(s => !s.atom.IsMetal).Difference(sim.cycle.dataPoints).ToList();
+            //return new Simulation(difference);
         }
 
         /// <summary>

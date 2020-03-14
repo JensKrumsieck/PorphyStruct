@@ -14,10 +14,7 @@ namespace PorphyStruct.ViewModel
         {
             Model = new StandardPlotModel();
             this.Cycle = Cycle;
-
-            //drop metal data
-            if (Cycle.HasMetal()) this.Cycle.dataPoints = this.Cycle.dataPoints.Where(s => !s.atom.IsMetal).ToList();
-            Cycle.Paint(Model, MacrocyclePainter.PaintMode.Exp);
+            Cycle.Paint(Model);
             Parameters = SimParam.ListParameters(Cycle.type);
             Mode = SimulationMode.Simplex;
 
@@ -78,8 +75,8 @@ namespace PorphyStruct.ViewModel
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        public List<AtomDataPoint> ConformationToData(Result result) => Cycle.dataPoints.OrderBy(s => s.X)
-        .Select(s => new AtomDataPoint(s.X, result.Conformation[Cycle.dataPoints.IndexOf(s)], s.atom)).ToList();
+        public List<AtomDataPoint> ConformationToData(Result result) => Cycle.DataPoints.OrderBy(s => s.X)
+            .Select(s => new AtomDataPoint(s.X, result.Conformation[Cycle.DataPoints.IndexOf(s)], s.atom)).ToList();
 
 
         /// <summary>

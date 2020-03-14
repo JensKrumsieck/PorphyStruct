@@ -81,7 +81,7 @@ namespace PorphyStruct
                 mol.Add(new AtomDataPoint(dataX[i], dataY[i], A));
             }
             Simulation tmpCycle = new Simulation((Macrocycle)cycle.Clone());
-            tmpCycle.cycle.dataPoints = mol;
+            //tmpCycle.cycle.DataPoints = mol;
             return tmpCycle;
         }
 

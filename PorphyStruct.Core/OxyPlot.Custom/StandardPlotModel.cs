@@ -94,8 +94,8 @@ namespace PorphyStruct.OxyPlotOverride
                 //find min & max automatically
                 foreach (ScatterSeries s in Series)
                 {
-                    double series_min = ((List<AtomDataPoint>)s.ItemsSource).Min(dp => Convert.ToDouble(dp.GetType().GetProperty(val).GetValue(dp, null)));
-                    double series_max = ((List<AtomDataPoint>)s.ItemsSource).Max(dp => Convert.ToDouble(dp.GetType().GetProperty(val).GetValue(dp, null)));
+                    double series_min = ((IEnumerable<AtomDataPoint>)s.ItemsSource).Min(dp => Convert.ToDouble(dp.GetType().GetProperty(val).GetValue(dp, null)));
+                    double series_max = ((IEnumerable<AtomDataPoint>)s.ItemsSource).Max(dp => Convert.ToDouble(dp.GetType().GetProperty(val).GetValue(dp, null)));
                     min = Math.Min(series_min, min);
                     max = Math.Max(series_max, max);
                 }

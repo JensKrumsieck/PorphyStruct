@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PorphyStruct.Chemistry.Properties
 {
-    public enum PropertyType { Distance, Angle, Dihedral }
+    public enum PropertyType { Distance, Angle, Dihedral, Simulation }
     public interface IPropertyProvider
     {
         /// <summary>

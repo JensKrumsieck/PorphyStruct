@@ -36,11 +36,11 @@ namespace PorphyStruct.Simulations
             //normalize conformation vector
             var c = C.Normalize(double.PositiveInfinity).ToArray();
 
-            double[] data = cycle.dataPoints.ToDoubleArray();
+            double[] data = cycle.DataPoints.ToDoubleArray();
 
             return new Result(c, param, new double[] {
                 ErrorUtil.ErrorFromArray(data, c),
-                ErrorUtil.ErrorFromArray(cycle.dataPoints.Derive(), c.ToAtomDataPoints(cycle.dataPoints).Derive()),
+                ErrorUtil.ErrorFromArray(cycle.DataPoints.Derive(), c.ToAtomDataPoints(cycle.DataPoints).Derive()),
                 ErrorUtil.ErrorFromArray(data.Integrate(), c.Integrate())
                 });
         }

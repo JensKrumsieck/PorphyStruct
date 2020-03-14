@@ -27,18 +27,18 @@ namespace PorphyStruct.Chemistry
         /// <param name="pm">PlotModel</param>
         public void Paint(PlotModel pm, string title = "Sim")
         {
-            //set mode
-            int mode = 0;
-            if (title == "Sim")
-                mode = 1;
-            if (title == "Diff")
-                mode = 2;
-            if (title == "Com1")
-                mode = 3;
-            if (title == "Com2")
-                mode = 4;
+            ////set mode
+            //int mode = 0;
+            //if (title == "Sim")
+            //    mode = 1;
+            //if (title == "Diff")
+            //    mode = 2;
+            //if (title == "Com1")
+            //    mode = 3;
+            //if (title == "Com2")
+            //    mode = 4;
 
-            cycle.Paint(pm, (MacrocyclePainter.PaintMode)mode);
+            //cycle.Paint(pm, (MacrocyclePainter.PaintMode)mode);
         }
 
         /// <summary>
@@ -46,16 +46,16 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         public void Normalize(bool normalize, double factor = 0d)
         {
-            if (!isNormalized && normalize)
-            {
-                cycle.dataPoints = cycle.dataPoints.Normalize();
-                isNormalized = true;
-            }
-            else if (!normalize && isNormalized)
-            {
-                cycle.dataPoints = cycle.dataPoints.Factor(1 / factor).ToList();
-                isNormalized = false;
-            }
+            //if (!isNormalized && normalize)
+            //{
+            //    cycle.dataPoints = cycle.dataPoints.Normalize();
+            //    isNormalized = true;
+            //}
+            //else if (!normalize && isNormalized)
+            //{
+            //    cycle.dataPoints = cycle.dataPoints.Factor(1 / factor).ToList();
+            //    isNormalized = false;
+            //}
         }
 
         /// <summary>
@@ -63,16 +63,16 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         public void Invert(bool invert)
         {
-            if (!isInverted && invert)
-            {
-                cycle.dataPoints = cycle.dataPoints.Invert();
-                isInverted = true;
-            }
-            else if (isInverted && !invert)
-            {
-                cycle.dataPoints = cycle.dataPoints.Invert();
-                isInverted = false;
-            }
+            //if (!isInverted && invert)
+            //{
+            //    cycle.dataPoints = cycle.dataPoints.Invert();
+            //    isInverted = true;
+            //}
+            //else if (isInverted && !invert)
+            //{
+            //    cycle.dataPoints = cycle.dataPoints.Invert();
+            //    isInverted = false;
+            //}
         }
     }
 }

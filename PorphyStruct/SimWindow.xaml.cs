@@ -1,6 +1,8 @@
 ﻿using OxyPlot;
 using OxyPlot.Series;
 using PorphyStruct.Chemistry;
+using PorphyStruct.Chemistry.Data;
+using PorphyStruct.Chemistry.Properties;
 using PorphyStruct.Simulations;
 using PorphyStruct.Util;
 using PorphyStruct.ViewModel;
@@ -113,11 +115,7 @@ namespace PorphyStruct
                 SynchronizeDiagram(viewModel.ConformationToData(result), target);
                 LastUpdate = DateTime.Now;
             }
-            if (target == "Best")
-            {
-                SynchronizeErrors(result);
-                SynchronizeMeanDisplacement(viewModel.ConformationToData(result));
-            }
+            if (target == "Best") SynchronizeErrors(result);
         }
 
         /// <summary>
@@ -150,21 +148,6 @@ namespace PorphyStruct
         }
 
         /// <summary>
-        /// Synchronizes Mean Displacement Textbox
-        /// </summary>
-        /// <param name="data"></param>
-        internal void SynchronizeMeanDisplacement(List<AtomDataPoint> data)
-        {
-            synchronizationContext.Send(new SendOrPostCallback(o =>
-            {
-                //update meadDisplacement BUT! Denormalize before!
-                var tmp = MacrocycleFactory.Build(viewModel.Cycle.Atoms, viewModel.Cycle.type);
-                tmp.dataPoints = ((List<AtomDataPoint>)o).Factor(MainVM.normFac).ToList();
-                meanDisPar.Content = tmp.MeanDisplacement().ToString("N6", System.Globalization.CultureInfo.InvariantCulture);
-            }), data);
-        }
-
-        /// <summary>
         /// Handle Start Button Click
         /// </summary>
         /// <param name="sender"></param>
@@ -187,19 +170,26 @@ namespace PorphyStruct
         {
             if (simView.Model.Series.Count >= 2)
             {
-                ScatterSeries sim = (ScatterSeries)simView.Model.Series.FirstOrDefault(s => s.Title == "Best");
-                Simulation simObj = new Simulation((Macrocycle)viewModel.Cycle.Clone()) { simParam = viewModel.Parameters };
-                simObj.cycle.dataPoints = (List<AtomDataPoint>)sim.ItemsSource;
-                //export param
-                foreach (SimParam p in viewModel.Parameters) simObj.par.Add(p.Title, p.Best * 100);
-                //export errors
-                simObj.errors = ErrTB.Text.Split(';').Select(s => Convert.ToDouble(s, System.Globalization.CultureInfo.InvariantCulture)).ToArray();
+                //only one Simulation is allowed!
+                viewModel.Cycle.DataProviders.RemoveAll(s => s.DataType == DataType.Simulation);
+                viewModel.Cycle.PropertyProviders.RemoveAll(s => s.Type == PropertyType.Simulation);
 
-                //set true if exp has been inverted
-                if (MainVM.Invert) simObj.isInverted = true;
+                ScatterSeries sim = (ScatterSeries)simView.Model.Series.FirstOrDefault(s => s.Title == "Best");
+                var simObj = new SimulationData((IEnumerable<AtomDataPoint>)sim.ItemsSource);
+                simObj.SimulationParameters = viewModel.Parameters;
+
+                //Le sim is property and data provider
+                viewModel.Cycle.PropertyProviders.Add(simObj);
+                viewModel.Cycle.DataProviders.Add(simObj);
+
+                //Denormalize Sim
+                simObj.DataPoints = simObj.DataPoints.Factor(1 / viewModel.Cycle.CalculateDataPoints().GetNormalizationFactor());
+
+                //////set true if exp has been inverted
+                //if (MainVM.Invert) simObj.isInverted = true;
                 Application.Current.Windows.OfType<MainWindow>().First().DelSimButton.IsEnabled = true;
                 Application.Current.Windows.OfType<MainWindow>().First().DiffSimButton.IsEnabled = true;
-                MainVM.simulation = simObj;
+                //MainVM.simulation = simObj;
                 MainVM.Normalize = false;
                 Application.Current.Windows.OfType<MainWindow>().First().Analyze();
             }
@@ -231,9 +221,7 @@ namespace PorphyStruct
                 var simul = xmld.SelectSingleNode("descendant::simulation");
                 viewModel.Parameters = new List<SimParam>();
                 foreach (XmlNode node in simul.SelectNodes("descendant::parameter"))
-                {
                     viewModel.Parameters.Add(new SimParam(node.Attributes.GetNamedItem("name").InnerText, double.Parse(node.InnerText, System.Globalization.CultureInfo.InvariantCulture) / 100));
-                }
                 simGrid.ItemsSource = viewModel.Parameters;
             }
         }
