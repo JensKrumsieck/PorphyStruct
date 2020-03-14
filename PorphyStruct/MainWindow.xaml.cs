@@ -25,7 +25,6 @@ namespace PorphyStruct
         {
             //CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
             InitializeComponent();
-
         }
 
         /// <summary>
@@ -177,8 +176,7 @@ namespace PorphyStruct
             //normalize if not done yet!
             if (!viewModel.Normalize)
                 NormalizeButton_Click(sender, e);
-            if (viewModel.simulation == null) new SimWindow().Show();
-            else new SimWindow(viewModel.simulation).Show();
+            new SimWindow().Show();
         }
 
         /// <summary>

@@ -142,18 +142,6 @@ namespace PorphyStruct.Util
         }
 
         /// <summary>
-        /// returns difference between exp and sim
-        /// </summary>
-        /// <returns></returns>
-        public static Simulation GetDifference(this Macrocycle cycle, Simulation sim)
-        {
-            return sim;
-            //Macrocycle difference = (Macrocycle)cycle.Clone();
-            //difference.DataPoints = cycle.DataPoints.Where(s => !s.atom.IsMetal).Difference(sim.cycle.dataPoints).ToList();
-            //return new Simulation(difference);
-        }
-
-        /// <summary>
         /// calculates the absolute sum
         /// </summary>
         /// <param name="d"></param>

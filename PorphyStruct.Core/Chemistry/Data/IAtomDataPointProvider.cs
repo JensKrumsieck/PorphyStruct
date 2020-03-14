@@ -18,5 +18,5 @@ namespace PorphyStruct.Chemistry.Data
         public IEnumerable<AtomDataPoint> DataPoints { get; set; }
     }
 
-    public enum DataType { Experimental, Simulation, Comparison, etc }
+    public enum DataType { Experimental, Simulation, Comparison, Difference }
 }

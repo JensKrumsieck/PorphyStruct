@@ -97,12 +97,6 @@ namespace PorphyStruct
             }
         }
 
-        //if call comes with sim, use this param
-        public SimWindow(Simulation sim) : this()
-        {
-            viewModel.Parameters = sim.simParam;
-        }
-
         /// <summary>
         /// Synchronize GUI
         /// </summary>

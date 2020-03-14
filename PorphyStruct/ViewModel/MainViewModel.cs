@@ -1,8 +1,8 @@
 ﻿using OxyPlot.Series;
 using PorphyStruct.Chemistry;
+using PorphyStruct.Chemistry.Data;
 using PorphyStruct.Chemistry.Properties;
 using PorphyStruct.OxyPlotOverride;
-using PorphyStruct.Util;
 using PorphyStruct.Windows;
 using System;
 using System.Collections.Generic;
@@ -213,7 +213,16 @@ namespace PorphyStruct.ViewModel
             if (Invert) Cycle.Invert();
 
             //paint difference
-            if (HasDifference) Cycle.GetDifference(simulation).Paint(Model, "Diff");
+            //not affected by Normalize and Invert since always freshly calc'd
+            Cycle.DataProviders.RemoveAll(s => s.DataType == DataType.Difference);
+            if (HasDifference)
+            {
+                Cycle.DataProviders.Add(
+                    new DifferenceData(
+                        Cycle.DataProviders.Where(s => s.DataType == DataType.Experimental).FirstOrDefault() as ExperimentalData, 
+                        Cycle.DataProviders.Where(s => s.DataType == DataType.Simulation).FirstOrDefault() as SimulationData)
+                    );
+            }
             //paint comparison
             if (!string.IsNullOrEmpty(comp1Path)) CompareWindow.GetData(comp1Path).Paint(Model, "Com1");
             if (!string.IsNullOrEmpty(comp2Path)) CompareWindow.GetData(comp2Path).Paint(Model, "Com2");
