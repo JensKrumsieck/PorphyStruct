@@ -394,5 +394,17 @@ namespace PorphyStruct.Core.Properties {
                 this["importPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool settingsCollapsed {
+            get {
+                return ((bool)(this["settingsCollapsed"]));
+            }
+            set {
+                this["settingsCollapsed"] = value;
+            }
+        }
     }
 }
