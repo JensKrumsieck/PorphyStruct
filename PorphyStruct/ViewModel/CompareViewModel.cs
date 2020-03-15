@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Windows.Input;
 
 namespace PorphyStruct.ViewModel
 {
@@ -28,6 +29,11 @@ namespace PorphyStruct.ViewModel
         public StandardPlotModel Model { get; set; }
 
         public CompareViewModel(Macrocycle cycle) : base() => Cycle = cycle;
+
+        /// <summary>
+        /// Delete Command
+        /// </summary>
+        public ICommand DeleteItem { get; }
 
         /// <summary>
         /// Loads Data into PlotModel

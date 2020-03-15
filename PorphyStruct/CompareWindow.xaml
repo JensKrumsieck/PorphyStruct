@@ -14,11 +14,9 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Compare Data" Height="500" Width="700" ResizeMode="NoResize">
-    <DockPanel LastChildFill="True">
-        <TextBlock TextWrapping="Wrap" DockPanel.Dock="Top">
-            <Run Text="Comparison of your current loaded Data with some already processed data is possible. Please load up to "/>
-            <Bold><Run Text="two"/></Bold>
-            <Run Text=" .DAT/.dat files from a past analysis. The macrocyclic type must be the same and will be choosen automatically based on your current loaded data."/>
+    <DockPanel>
+        <TextBlock TextWrapping="Wrap" DockPanel.Dock="Top" Padding="10" TextAlignment="Justify" FontWeight="Light">
+            <Run Text="Comparison of your current loaded Data with some already processed data is possible. Please load .DAT/.dat files from a past analysis. The macrocyclic type must be the same and will be choosen automatically based on your current loaded data."/>
             <Bold>Note:</Bold> Only the first y data in a DAT file can be extracted!.
         </TextBlock>
        
@@ -32,7 +30,7 @@
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="200" />
             </Grid.ColumnDefinitions>
-            <StackPanel Margin="10">
+            <StackPanel Margin="10" Grid.Column="0">
                 <TextBlock Text="Add Comparison" FontWeight="Light" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="0 15"/>
                 <StackPanel Orientation="Horizontal">
                     <TextBox IsReadOnly="True" x:Name="comparisonPath" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Select a file" Width="250"/>
@@ -43,26 +41,28 @@
             </StackPanel>
             <StackPanel Margin="10" Grid.Column="1">
                 <TextBlock Text="Current Data" FontWeight="Light" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="0 15"/>
-                <ItemsControl x:Name="CompList">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border x:Name="PART_Border" Padding="7">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="40"/>
-                                        <ColumnDefinition Width="1*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Button VerticalAlignment="Center" Width="30" Padding="0" Margin="0" Background="Transparent">
-                                        <materialDesign:PackIcon Kind="Delete"/>
-                                    </Button>
-                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding FileName}" />
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Height="320">
+                    <ItemsControl x:Name="CompList">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border x:Name="PART_Border" Padding="7">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="40"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button VerticalAlignment="Center" Width="30" Padding="0" Margin="0" Background="Transparent" Command="{Binding Remove}" CommandParameter="{Binding}">
+                                            <materialDesign:PackIcon Kind="Delete"/>
+                                        </Button>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding FileName}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
             </StackPanel>
         </Grid>
     </DockPanel>
