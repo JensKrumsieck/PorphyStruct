@@ -55,7 +55,6 @@ namespace PorphyStruct.ViewModel
             }
         }
 
-        public Simulation simulation = null;
         public Macrocycle.Type Type = Macrocycle.Type.Corrole;
         public string comp1Path, comp2Path, Path;
         public double normFac = 0;

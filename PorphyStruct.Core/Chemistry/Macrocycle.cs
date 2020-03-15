@@ -150,7 +150,7 @@ namespace PorphyStruct.Chemistry
         /// <summary>
         /// Validates Configuration
         /// </summary>
-        private bool _isValid
+        private bool Validate
         {
             get
             {
@@ -175,7 +175,7 @@ namespace PorphyStruct.Chemistry
         {
             get
             {
-                Set(_isValid);
+                Set(Validate);
                 return Get<bool>();
             }
         }
