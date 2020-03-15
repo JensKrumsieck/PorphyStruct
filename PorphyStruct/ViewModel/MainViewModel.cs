@@ -3,6 +3,7 @@ using PorphyStruct.Chemistry;
 using PorphyStruct.Chemistry.Data;
 using PorphyStruct.Chemistry.Properties;
 using PorphyStruct.OxyPlotOverride;
+using PorphyStruct.Util;
 using PorphyStruct.Windows;
 using System;
 using System.Collections.Generic;
@@ -224,8 +225,8 @@ namespace PorphyStruct.ViewModel
             }
 
             //paint comparison
-            if (!string.IsNullOrEmpty(comp1Path)) CompareWindow.GetData(comp1Path).Paint(Model, "Com1");
-            if (!string.IsNullOrEmpty(comp2Path)) CompareWindow.GetData(comp2Path).Paint(Model, "Com2");
+            //if (!string.IsNullOrEmpty(comp1Path)) CompareWindow.GetData(comp1Path).Paint(Model, "Com1");
+            //if (!string.IsNullOrEmpty(comp2Path)) CompareWindow.GetData(comp2Path).Paint(Model, "Com2");
             //paint exp
             Cycle.Paint(Model);
 

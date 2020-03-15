@@ -2,11 +2,8 @@
          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:h="http://helix-toolkit.org/wpf"
         xmlns:oxy="http://oxyplot.org/wpf"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PorphyStruct"
-        xmlns:properties="clr-namespace:PorphyStruct.Properties"
         mc:Ignorable="d"
          xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -16,55 +13,57 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="Compare Data" Height="500" Width="700" ResizeMode="NoResize" Loaded="Window_Loaded">
-    <Grid Margin="10" >
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50*"/>
-            <RowDefinition Height="50*"/>
-            <RowDefinition Height="51*"/>
-            <RowDefinition Height="201*"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="51*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="2*"/>
-        </Grid.ColumnDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" TextWrapping="Wrap">
+        Title="Compare Data" Height="500" Width="700" ResizeMode="NoResize">
+    <DockPanel LastChildFill="True">
+        <TextBlock TextWrapping="Wrap" DockPanel.Dock="Top">
             <Run Text="Comparison of your current loaded Data with some already processed data is possible. Please load up to "/>
             <Bold><Run Text="two"/></Bold>
             <Run Text=" .DAT/.dat files from a past analysis. The macrocyclic type must be the same and will be choosen automatically based on your current loaded data."/>
             <Bold>Note:</Bold> Only the first y data in a DAT file can be extracted!.
-            </TextBlock>
-        <Label Grid.Row="1" Grid.Column="0" Content="Comparison 1" FontWeight="Bold" FontSize="16"/>
-        <Label Grid.Row="2" Grid.Column="0" Content="Path"/>
-        <TextBox IsReadOnly="True" TextChanged="ComparisonPath_TextChanged" x:Name="comparison1Path" Grid.Row="2" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Top">
-            <materialDesign:HintAssist.Hint>
-                <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
-                    <TextBlock>Select a file</TextBlock>
+        </TextBlock>
+       
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center">
+            <!--ok/reset-->
+            <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" Content="Add Comparison" x:Name="Add" Click="Add_Click" Margin="5"/>
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}"  Content="Remove All" x:Name="RemoveAll" Click="RemoveAll_Click" Margin="5"/>
+        </StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="200" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Margin="10">
+                <TextBlock Text="Add Comparison" FontWeight="Light" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="0 15"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox IsReadOnly="True" x:Name="comparisonPath" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Select a file" Width="250"/>
+                    <Button Content="Search" x:Name="openBtn" Click="Open_Click" />
                 </StackPanel>
-            </materialDesign:HintAssist.Hint>
-        </TextBox>
-        <Button Grid.Row="2" Grid.Column="2" Content="Search" x:Name="open1Btn" Click="Open_Click" Tag="1"/>
-        <oxy:PlotView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" x:Name="comp1Plot"/>
-        <Label Grid.Row="1" Grid.Column="3" Content="Comparison 2" FontWeight="Bold" FontSize="16"/>
-        <Label Grid.Row="2" Grid.Column="3" Content="Path"/>
-        <TextBox IsReadOnly="True" TextChanged="ComparisonPath_TextChanged" x:Name="comparison2Path" Grid.Row="2" Grid.Column="4" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Top">
-            <materialDesign:HintAssist.Hint>
-                <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
-                    <TextBlock>Select a file</TextBlock>
-                </StackPanel>
-            </materialDesign:HintAssist.Hint>
-        </TextBox>
-        <Button Grid.Row="2" Grid.Column="5" Content="Search" x:Name="open2Btn" Click="Open_Click" Tag="2"/>
-        <oxy:PlotView Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="3" x:Name="comp2Plot"/>
-
-        <!--ok/reset-->
-        <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" Grid.Row="99" Grid.Column="1" Content="Ok" x:Name="OK" Click="OK_Click"/>
-        <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Grid.Row="99" Grid.Column="3" Content="Reset" x:Name="Cancel" Click="Cancel_Click"/>
-    </Grid>
+                <TextBlock Text="Preview" FontWeight="Light" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="0 15"/>
+                <oxy:PlotView x:Name="CompPlot" Height="200" Model="{Binding Model}"/>
+            </StackPanel>
+            <StackPanel Margin="10" Grid.Column="1">
+                <TextBlock Text="Current Data" FontWeight="Light" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="0 15"/>
+                <ItemsControl x:Name="CompList">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border x:Name="PART_Border" Padding="7">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="40"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button VerticalAlignment="Center" Width="30" Padding="0" Margin="0" Background="Transparent">
+                                        <materialDesign:PackIcon Kind="Delete"/>
+                                    </Button>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding FileName}" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
 </Window>

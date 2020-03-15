@@ -19,7 +19,7 @@ namespace PorphyStruct
     {
         public PlotModel Model { get; set; }
         public Macrocycle Cycle;
-        public Simulation Sim;
+       
         public string Filename = "";
 
         /// <summary>
@@ -34,11 +34,11 @@ namespace PorphyStruct
             }
         }
 
-        public SaveWindow(Macrocycle cycle, Simulation Sim = null)
+        public SaveWindow(Macrocycle cycle)
         {
             InitializeComponent();
             Cycle = cycle;
-            this.Sim = Sim;
+          
             DataContext = this;
             NameTB.Text = cycle.Title;
 
@@ -96,7 +96,7 @@ namespace PorphyStruct
                         SaveReport(t.Extension);
                         break;
                     case "Result":
-                        Sim.SaveResult(Cycle, Filename);
+                        //Sim.SaveResult(Cycle, Filename);
                         break;
                 }
             }
@@ -187,93 +187,93 @@ namespace PorphyStruct
         /// <param name="extension"></param>
         private void SaveSimResult(string Extension)
         {
-            if (Sim == null)
-            {
-                MessageBox.Show("No Simulation present!", "Data Empty", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+            //if (Sim == null)
+            //{
+            //    MessageBox.Show("No Simulation present!", "Data Empty", MessageBoxButton.OK, MessageBoxImage.Error);
+            //    return;
+            //}
 
-            //copied from 
-            PlotModel pm = new PlotModel()
-            {
-                IsLegendVisible = false,
-                LegendPosition = LegendPosition.RightTop,
-                DefaultFontSize = PorphyStruct.Core.Properties.Settings.Default.defaultFontSize,
-                LegendFontSize = PorphyStruct.Core.Properties.Settings.Default.defaultFontSize,
-                DefaultFont = PorphyStruct.Core.Properties.Settings.Default.defaultFont,
-                PlotAreaBorderThickness = new OxyThickness(PorphyStruct.Core.Properties.Settings.Default.lineThickness)
-            };
+            ////copied from 
+            //PlotModel pm = new PlotModel()
+            //{
+            //    IsLegendVisible = false,
+            //    LegendPosition = LegendPosition.RightTop,
+            //    DefaultFontSize = PorphyStruct.Core.Properties.Settings.Default.defaultFontSize,
+            //    LegendFontSize = PorphyStruct.Core.Properties.Settings.Default.defaultFontSize,
+            //    DefaultFont = PorphyStruct.Core.Properties.Settings.Default.defaultFont,
+            //    PlotAreaBorderThickness = new OxyThickness(PorphyStruct.Core.Properties.Settings.Default.lineThickness)
+            //};
 
-            OxyPlot.Axes.LinearAxis x = new OxyPlot.Axes.LinearAxis
-            {
-                Title = "",
-                Unit = "%",
-                Position = OxyPlot.Axes.AxisPosition.Bottom,
-                Key = "X",
-                IsAxisVisible = true,
-                MajorGridlineThickness = PorphyStruct.Core.Properties.Settings.Default.lineThickness,
-                TitleFormatString = "{1}"
-            };
+            //OxyPlot.Axes.LinearAxis x = new OxyPlot.Axes.LinearAxis
+            //{
+            //    Title = "",
+            //    Unit = "%",
+            //    Position = OxyPlot.Axes.AxisPosition.Bottom,
+            //    Key = "X",
+            //    IsAxisVisible = true,
+            //    MajorGridlineThickness = PorphyStruct.Core.Properties.Settings.Default.lineThickness,
+            //    TitleFormatString = "{1}"
+            //};
 
-            OxyPlot.Axes.CategoryAxis y = new OxyPlot.Axes.CategoryAxis
-            {
-                IsAxisVisible = false,
-                Position = OxyPlot.Axes.AxisPosition.Left
-            };
+            //OxyPlot.Axes.CategoryAxis y = new OxyPlot.Axes.CategoryAxis
+            //{
+            //    IsAxisVisible = false,
+            //    Position = OxyPlot.Axes.AxisPosition.Left
+            //};
 
-            if (!PorphyStruct.Core.Properties.Settings.Default.showBox)
-            {
-                pm.PlotAreaBorderThickness = new OxyThickness(0);
+            //if (!PorphyStruct.Core.Properties.Settings.Default.showBox)
+            //{
+            //    pm.PlotAreaBorderThickness = new OxyThickness(0);
 
-                x.AxislineStyle = LineStyle.Solid;
-                x.AxislineThickness = PorphyStruct.Core.Properties.Settings.Default.lineThickness;
-            }
+            //    x.AxislineStyle = LineStyle.Solid;
+            //    x.AxislineThickness = PorphyStruct.Core.Properties.Settings.Default.lineThickness;
+            //}
 
-            pm.Axes.Add(x);
-            pm.Axes.Add(y);
+            //pm.Axes.Add(x);
+            //pm.Axes.Add(y);
 
-            //add data;
-            OxyPlot.Series.IntervalBarSeries s = new OxyPlot.Series.IntervalBarSeries();
-            int a = 0;
-            foreach (KeyValuePair<string, double> i in Sim.par.Reverse())
-            {
-                OxyPlot.Series.IntervalBarItem item = new OxyPlot.Series.IntervalBarItem
-                {
-                    Start = (i.Value < 0 ? i.Value : 0),
-                    End = (i.Value < 0 ? 0 : i.Value),
-                    Title = i.Key,
-                    CategoryIndex = a,
-                    Color = OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color2)
-                };
-                s.Items.Add(item);
-                a++;
-            }
-            pm.Series.Add(s);
+            ////add data;
+            //OxyPlot.Series.IntervalBarSeries s = new OxyPlot.Series.IntervalBarSeries();
+            //int a = 0;
+            //foreach (KeyValuePair<string, double> i in Sim.par.Reverse())
+            //{
+            //    OxyPlot.Series.IntervalBarItem item = new OxyPlot.Series.IntervalBarItem
+            //    {
+            //        Start = (i.Value < 0 ? i.Value : 0),
+            //        End = (i.Value < 0 ? 0 : i.Value),
+            //        Title = i.Key,
+            //        CategoryIndex = a,
+            //        Color = OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color2)
+            //    };
+            //    s.Items.Add(item);
+            //    a++;
+            //}
+            //pm.Series.Add(s);
 
-            pm.Annotations.Add(new OxyPlot.Annotations.LineAnnotation()
-            {
-                Color = OxyColors.Black,
-                StrokeThickness = PorphyStruct.Core.Properties.Settings.Default.lineThickness,
-                Type = OxyPlot.Annotations.LineAnnotationType.Vertical,
-                X = 0.0
-            });
+            //pm.Annotations.Add(new OxyPlot.Annotations.LineAnnotation()
+            //{
+            //    Color = OxyColors.Black,
+            //    StrokeThickness = PorphyStruct.Core.Properties.Settings.Default.lineThickness,
+            //    Type = OxyPlot.Annotations.LineAnnotationType.Vertical,
+            //    X = 0.0
+            //});
 
-            pm.InvalidatePlot(true);
+            //pm.InvalidatePlot(true);
 
-            //save image
-            if (Extension == "png")
-                PngExporter.Export(pm, Filename + "SimResult.png", PorphyStruct.Core.Properties.Settings.Default.pngWidth, PorphyStruct.Core.Properties.Settings.Default.pngHeight, OxyColors.Transparent, PorphyStruct.Core.Properties.Settings.Default.pngRes);
+            ////save image
+            //if (Extension == "png")
+            //    PngExporter.Export(pm, Filename + "SimResult.png", PorphyStruct.Core.Properties.Settings.Default.pngWidth, PorphyStruct.Core.Properties.Settings.Default.pngHeight, OxyColors.Transparent, PorphyStruct.Core.Properties.Settings.Default.pngRes);
 
-            //exports svg
-            if (Extension == "svg")
-            {
-                var svg = new OxyPlot.Wpf.SvgExporter()
-                {
-                    Width = PorphyStruct.Core.Properties.Settings.Default.pngWidth,
-                    Height = PorphyStruct.Core.Properties.Settings.Default.pngHeight
-                };
-                svg.ExportToFile(pm, Filename + "SimResult.svg");
-            }
+            ////exports svg
+            //if (Extension == "svg")
+            //{
+            //    var svg = new OxyPlot.Wpf.SvgExporter()
+            //    {
+            //        Width = PorphyStruct.Core.Properties.Settings.Default.pngWidth,
+            //        Height = PorphyStruct.Core.Properties.Settings.Default.pngHeight
+            //    };
+            //    svg.ExportToFile(pm, Filename + "SimResult.svg");
+            //}
 
         }
 
@@ -308,8 +308,8 @@ namespace PorphyStruct
         /// <returns></returns>
         public bool HasData(string data)
         {
-            if ((data == "Graph" || data == "ASCII" || data == "Report") && (Model == null || Model.Series.Count == 0)) return false;
-            if ((data == "SimResult" || data == "Result") && Sim == null) return false;
+            //if ((data == "Graph" || data == "ASCII" || data == "Report") && (Model == null || Model.Series.Count == 0)) return false;
+            //if ((data == "SimResult" || data == "Result") && Sim == null) return false;
             return true;
         }
     }

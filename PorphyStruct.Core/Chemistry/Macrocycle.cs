@@ -7,6 +7,7 @@ using PorphyStruct.Core.Util;
 using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -37,7 +38,7 @@ namespace PorphyStruct.Chemistry
         /// <summary>
         /// The Datapoint providers
         /// </summary>
-        public List<IAtomDataPointProvider> DataProviders { get; set; } = new List<IAtomDataPointProvider>();
+        public ObservableCollection<IAtomDataPointProvider> DataProviders { get; set; } = new ObservableCollection<IAtomDataPointProvider>();
 
         /// <summary>
         /// Bonds of Macrocycle by Identifiers
@@ -218,6 +219,7 @@ namespace PorphyStruct.Chemistry
         {
             //delete provider
             DataProviders?.RemoveAll(s => s.DataType == DataType.Experimental);
+
             List<AtomDataPoint> data = CalculateDataPoints().ToList();
 
             if (HasMetal()) data.Add(new AtomDataPoint(

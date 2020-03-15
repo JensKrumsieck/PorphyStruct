@@ -1,6 +1,5 @@
 ﻿using OxyPlot;
 using OxyPlot.Series;
-using PorphyStruct.Chemistry;
 using PorphyStruct.Chemistry.Data;
 using PorphyStruct.Chemistry.Properties;
 using PorphyStruct.Simulations;

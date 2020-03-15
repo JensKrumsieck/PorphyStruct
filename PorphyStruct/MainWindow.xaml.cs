@@ -148,7 +148,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Save_Click(object sender, RoutedEventArgs e) { if (SaveButton.IsEnabled) new SaveWindow(viewModel.Cycle, viewModel.simulation).ShowDialog(); }
+        private void Save_Click(object sender, RoutedEventArgs e) { if (SaveButton.IsEnabled) new SaveWindow(viewModel.Cycle).ShowDialog(); }
 
         /// <summary>
         /// Handle Invert Button Click
@@ -194,7 +194,6 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void DelSimButton_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.simulation = null;
             DelSimButton.IsEnabled = false;
             viewModel.HasDifference = false;
             DiffSimButton.IsEnabled = false;
@@ -226,22 +225,22 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void CompButton_Click(object sender, RoutedEventArgs e)
         {
-            Analyze();
+            //Analyze();
             CompareWindow cw = new CompareWindow();
-            cw.comparison1Path.Text = viewModel.comp1Path;
-            cw.comparison2Path.Text = viewModel.comp2Path;
+            //cw.comparison1Path.Text = viewModel.comp1Path;
+            //cw.comparison2Path.Text = viewModel.comp2Path;
             cw.ShowDialog();
-            if (cw.DialogResult.HasValue && cw.DialogResult.Value)
-            {
-                viewModel.comp1Path = cw.comparison1Path.Text;
-                viewModel.comp2Path = cw.comparison2Path.Text;
-            }
-            else
-            {
-                viewModel.comp1Path = "";
-                viewModel.comp2Path = "";
-            }
-            Analyze();
+            //if (cw.DialogResult.HasValue && cw.DialogResult.Value)
+            //{
+            //    viewModel.comp1Path = cw.comparison1Path.Text;
+            //    viewModel.comp2Path = cw.comparison2Path.Text;
+            //}
+            //else
+            //{
+            //    viewModel.comp1Path = "";
+            //    viewModel.comp2Path = "";
+            //}
+            //Analyze();
         }
 
         /// <summary>
