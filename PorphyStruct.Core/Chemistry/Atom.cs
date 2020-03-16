@@ -120,15 +120,6 @@ namespace PorphyStruct.Chemistry
                 OxyColor.FromAColor(75, OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color1)),
         };
 
-        public static OxyColor[] modesSingleColor = new OxyColor[]
-        {
-                OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color1),
-                OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color2),
-                OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color3),
-                OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color4),
-                OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color5),
-        };
-
         /// <summary>
         /// clones an atom
         /// </summary>

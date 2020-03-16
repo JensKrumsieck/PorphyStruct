@@ -81,6 +81,7 @@ namespace PorphyStruct.Chemistry
         /// <param name="Model"></param>
         public void Paint(PlotModel Model)
         {
+            DataProviders.Sort(s => s.Priority);
             foreach (var dataProvider in DataProviders)
                 MacrocyclePainter.Paint(this, Model, dataProvider);
         }
@@ -244,13 +245,13 @@ namespace PorphyStruct.Chemistry
         /// <param name="a2"></param>
         /// <param name="type"></param>
         /// <returns>ArrowAnnotation aka Bond</returns>
-        public static ArrowAnnotation DrawBond(AtomDataPoint a1, AtomDataPoint a2, DataType type) => new ArrowAnnotation
+        public ArrowAnnotation DrawBond(AtomDataPoint a1, AtomDataPoint a2, IAtomDataPointProvider data) => new ArrowAnnotation
         {
             StartPoint = a1.GetDataPoint(),
             EndPoint = a2.GetDataPoint(),
             HeadWidth = 0,
             HeadLength = 0,
-            Color = Core.Properties.Settings.Default.singleColor ? Atom.modesSingleColor[(int)type] : Atom.modesMultiColor[(int)type],
+            Color = Core.Properties.Settings.Default.singleColor ? MacrocyclePainter.SingleColor(DataProviders.IndexOf(data), DataProviders.Count) : Atom.modesMultiColor[(int)type],
             Layer = AnnotationLayer.BelowSeries,
             StrokeThickness = Core.Properties.Settings.Default.lineThickness,
             Tag = a1.atom.Identifier + "," + a2.atom.Identifier
@@ -265,16 +266,16 @@ namespace PorphyStruct.Chemistry
             data.DataPoints = data.DataPoints.OrderBy(s => s.X).ToList();
 
             foreach (Tuple<string, string> t in Bonds)
-                yield return Macrocycle.DrawBond(
+                yield return DrawBond(
                     data.DataPoints.Where(s => s.atom.Identifier == t.Item1 && s.atom.IsMacrocycle).First(),
                     data.DataPoints.Where(s => s.atom.Identifier == t.Item2 && s.atom.IsMacrocycle).First(),
-                    data.DataType);
+                    data);
 
             //add metal atoms
             if (HasMetal())
                 foreach (AtomDataPoint n in data.DataPoints.Where(s => s.atom.Type == "N").ToList())
                 {
-                    ArrowAnnotation b = DrawBond(data.DataPoints.Where(s => s.atom == Metal).FirstOrDefault(), n, data.DataType);
+                    ArrowAnnotation b = DrawBond(data.DataPoints.Where(s => s.atom == Metal).FirstOrDefault(), n, data);
                     b.LineStyle = LineStyle.Dash;
                     b.Color = OxyColor.FromAColor(75, b.Color);
                     b.Tag = "Metal";

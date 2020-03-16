@@ -13,5 +13,7 @@ namespace PorphyStruct.Chemistry.Data
         public override void Normalize() => DataPoints = DataPoints.Normalize();
 
         public override void Invert() => DataPoints = DataPoints.Invert();
+
+        public override int Priority => 0;
     }
 }

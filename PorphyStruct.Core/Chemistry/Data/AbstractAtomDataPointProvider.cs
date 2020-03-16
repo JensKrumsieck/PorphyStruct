@@ -11,6 +11,8 @@ namespace PorphyStruct.Chemistry.Data
         public bool Inverted { get; set; }
         public double Factor { get; set; }
 
+        public virtual int Priority => int.MaxValue;
+
         public virtual void Invert() { return; }
 
         public virtual void Normalize() { return; }

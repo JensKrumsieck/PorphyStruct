@@ -31,6 +31,11 @@ namespace PorphyStruct.Chemistry.Data
         public bool Inverted { get; set; }
         public double Factor { get; set; }
 
+        /// <summary>
+        /// Priority to order for coloring
+        /// </summary>
+        public int Priority { get; }
+
     }
 
     public enum DataType { Experimental, Simulation, Comparison, Difference }

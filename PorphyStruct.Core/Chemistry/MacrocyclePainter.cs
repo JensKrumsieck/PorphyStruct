@@ -2,6 +2,7 @@
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using PorphyStruct.Chemistry.Data;
+using PorphyStruct.Core.OxyPlot.Custom;
 using PorphyStruct.OxyPlotOverride;
 using System.Collections.Generic;
 
@@ -34,7 +35,7 @@ namespace PorphyStruct.Chemistry
             };
             //add series
             if (!Core.Properties.Settings.Default.singleColor) pm.Axes.Add(ColorAxis(data.DataPoints));
-            else series.MarkerFill = Atom.modesSingleColor[(int)data.DataType];
+            else series.MarkerFill = SingleColor(cycle.DataProviders.IndexOf(data), cycle.DataProviders.Count);
             pm.Series.Add(series);
 
             //draw bonds			
@@ -58,6 +59,17 @@ namespace PorphyStruct.Chemistry
             Position = AxisPosition.Bottom,
             IsAxisVisible = false
         };
+
+        /// <summary>
+        /// Get Palette Colors
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public static OxyColor SingleColor(int index, int count)
+        {
+            var palette = CustomPalettes.Default(count > 0 ? count : 1);
+            return palette.Colors[index >= 0 ? index : 0];
+        }
 
     }
 }

@@ -114,8 +114,8 @@ namespace PorphyStruct.Chemistry.Macrocycles
         /// <returns></returns>
         private IEnumerable<ArrowAnnotation> DrawPorphyrinBonds(IAtomDataPointProvider data)
         {
-            yield return DrawBond(data.DataPoints.OrderBy(s => s.X).First(), data.DataPoints.Where(s => s.atom.Identifier == "C1" && s.atom.IsMacrocycle).First(), data.DataType);
-            yield return DrawBond(data.DataPoints.OrderBy(s => s.X).Last(), data.DataPoints.Where(s => s.atom.Identifier == "C19" && s.atom.IsMacrocycle).First(), data.DataType);
+            yield return DrawBond(data.DataPoints.OrderBy(s => s.X).First(), data.DataPoints.Where(s => s.atom.Identifier == "C1" && s.atom.IsMacrocycle).First(), data);
+            yield return DrawBond(data.DataPoints.OrderBy(s => s.X).Last(), data.DataPoints.Where(s => s.atom.Identifier == "C19" && s.atom.IsMacrocycle).First(), data);
         }
 
         /// <summary>

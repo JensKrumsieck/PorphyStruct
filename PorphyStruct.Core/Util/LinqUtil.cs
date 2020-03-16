@@ -43,5 +43,25 @@ namespace PorphyStruct.Util
                 }
             }
         }
+
+        /// <summary>
+        /// Sorts an observable collection
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TKey"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="keySelector"></param>
+        /// <param name="comparer"></param>
+        public static void Sort<TSource, TKey>(this ObservableCollection<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer = null)
+        {
+            TSource[] sortedList;//Ein Array, damit die Elemente durch source.Clear nicht gelöscht werden
+            if (comparer == null)
+                sortedList = source.OrderBy(keySelector).ToArray();
+            else
+                sortedList = source.OrderBy(keySelector, comparer).ToArray();
+            source.Clear();
+            foreach (var item in sortedList)
+                source.Add(item);
+        }
     }
 }

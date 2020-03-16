@@ -51,6 +51,8 @@ namespace PorphyStruct.Chemistry.Data
              DataPoints = DataPoints.Invert();
              Inverted = !Inverted;
         }
+               
+        public int Priority => 1;
 
         /** DANGER ZONE**/
         //unused...
