@@ -394,5 +394,17 @@ namespace PorphyStruct.Core.Properties {
                 this["settingsCollapsed"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Default")]
+        public string ColorPalette {
+            get {
+                return ((string)(this["ColorPalette"]));
+            }
+            set {
+                this["ColorPalette"] = value;
+            }
+        }
     }
 }

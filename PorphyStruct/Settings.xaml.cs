@@ -1,4 +1,10 @@
-﻿using System;
+﻿using OxyPlot;
+using PorphyStruct.Core.OxyPlot.Custom;
+using PorphyStruct.Windows;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,7 +22,15 @@ namespace PorphyStruct
         {
             InitializeComponent();
             DataContext = this;
+
+            var availableThemes = from MethodInfo method in typeof(CustomPalettes).GetMethods(BindingFlags.Public|BindingFlags.Static)
+                                  select new PaletteInfo(
+                                      method.Name,
+                                      (OxyPalette)method.Invoke(null, new object[] { 7 } ));
+            PaletteList = availableThemes;
         }
+
+        public IEnumerable<PaletteInfo> PaletteList { get; set; }
 
         /// <summary>
         /// Handle Window Closing

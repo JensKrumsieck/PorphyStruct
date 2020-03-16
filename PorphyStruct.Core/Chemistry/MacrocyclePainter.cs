@@ -5,6 +5,8 @@ using PorphyStruct.Chemistry.Data;
 using PorphyStruct.Core.OxyPlot.Custom;
 using PorphyStruct.OxyPlotOverride;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace PorphyStruct.Chemistry
 {
@@ -67,8 +69,26 @@ namespace PorphyStruct.Chemistry
         /// <returns></returns>
         public static OxyColor SingleColor(int index, int count)
         {
-            var palette = CustomPalettes.Default(count > 0 ? count : 1);
+            int min = 7;
+            if (Core.Properties.Settings.Default.ColorPalette.Contains("GrayScale")) min = 1;
+            var palette = CurrentPalette(count > min ? count : min);
             return palette.Colors[index >= 0 ? index : 0];
+        }
+
+        /// <summary>
+        /// returns palette based on settings and reflection
+        /// </summary>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public static OxyPalette CurrentPalette(int count)
+        {
+            
+                var title = Core.Properties.Settings.Default.ColorPalette;
+                var palette = from MethodInfo method in typeof(CustomPalettes).GetMethods(BindingFlags.Public | BindingFlags.Static)
+                              where method.Name == title
+                              select method;
+            return palette.FirstOrDefault().Invoke(null, new object[] { count }) as OxyPalette;
+                
         }
 
     }
