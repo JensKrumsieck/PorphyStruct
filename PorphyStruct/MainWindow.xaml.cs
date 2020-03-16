@@ -1,6 +1,8 @@
 ﻿using HelixToolkit.Wpf;
 using MathNet.Spatial.Euclidean;
 using PorphyStruct.Chemistry;
+using PorphyStruct.Chemistry.Data;
+using PorphyStruct.Util;
 using PorphyStruct.ViewModel;
 using PorphyStruct.Windows;
 using System.ComponentModel;
@@ -169,7 +171,6 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void SimButton_Click(object sender, RoutedEventArgs e)
         {
-
             //drop metal data
             if (viewModel.Cycle.HasMetal(true))
                 viewModel.Cycle.Atoms.Where(s => s.IsMacrocycle && s.IsMetal).ToList().ForEach(s => s.IsMacrocycle = false);
@@ -197,6 +198,7 @@ namespace PorphyStruct
             DelSimButton.IsEnabled = false;
             viewModel.HasDifference = false;
             DiffSimButton.IsEnabled = false;
+            viewModel.Cycle.DataProviders.RemoveAll(s => s.DataType == DataType.Simulation);
             Analyze();
         }
         /// <summary>
@@ -225,22 +227,8 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void CompButton_Click(object sender, RoutedEventArgs e)
         {
-            //Analyze();
             CompareWindow cw = new CompareWindow();
-            //cw.comparison1Path.Text = viewModel.comp1Path;
-            //cw.comparison2Path.Text = viewModel.comp2Path;
-            cw.ShowDialog();
-            //if (cw.DialogResult.HasValue && cw.DialogResult.Value)
-            //{
-            //    viewModel.comp1Path = cw.comparison1Path.Text;
-            //    viewModel.comp2Path = cw.comparison2Path.Text;
-            //}
-            //else
-            //{
-            //    viewModel.comp1Path = "";
-            //    viewModel.comp2Path = "";
-            //}
-            //Analyze();
+            cw.Show();
         }
 
         /// <summary>

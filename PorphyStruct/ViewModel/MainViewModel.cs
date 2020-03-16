@@ -32,6 +32,7 @@ namespace PorphyStruct.ViewModel
             //Bind Events
             Cycle.PropertyChanged += Cycle_PropertyChanged;
             Cycle.Atoms.CollectionChanged += OnCollectionChanged;
+            Cycle.DataProviders.CollectionChanged += OnDataChanged;
             foreach (var atom in Cycle.Atoms) atom.PropertyChanged += Atom_PropertyChanged;
             //fill molecule 3D
             Molecule3D = new ObservableCollection<ModelVisual3D>();
@@ -39,6 +40,13 @@ namespace PorphyStruct.ViewModel
             FileName = Cycle.Title;
         }
 
+        /// <summary>
+        /// DataProviders Changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnDataChanged(object sender, NotifyCollectionChangedEventArgs e) => HasComparison = Cycle.DataProviders.Where(s => s.DataType == DataType.Comparison).Count() > 0;
+     
         /// <summary>
         /// Is Valid? Redraw!
         /// </summary>
@@ -57,7 +65,7 @@ namespace PorphyStruct.ViewModel
         }
 
         public Macrocycle.Type Type = Macrocycle.Type.Corrole;
-        public string comp1Path, comp2Path, Path;
+        public string Path;
         public double normFac = 0;
 
         /// <summary>
@@ -93,7 +101,7 @@ namespace PorphyStruct.ViewModel
         /// <summary>
         /// Indicates whether a comparison is present
         /// </summary>
-        public bool HasComparison => !string.IsNullOrEmpty(comp1Path) || !string.IsNullOrEmpty(comp2Path);
+        public bool HasComparison { get => Get<bool>(); set => Set(value); }
 
         /// <summary>
         /// The Molecule as 3D Representation
