@@ -73,7 +73,7 @@ namespace PorphyStruct.Core.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Segoe UI")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Arial")]
         public string defaultFont {
             get {
                 return ((string)(this["defaultFont"]));
@@ -241,7 +241,7 @@ namespace PorphyStruct.Core.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool showBox {
             get {
                 return ((bool)(this["showBox"]));
@@ -278,24 +278,12 @@ namespace PorphyStruct.Core.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Circle")]
-        public global::OxyPlot.MarkerType com1MarkerType {
+        public global::OxyPlot.MarkerType comMarkerType {
             get {
-                return ((global::OxyPlot.MarkerType)(this["com1MarkerType"]));
+                return ((global::OxyPlot.MarkerType)(this["comMarkerType"]));
             }
             set {
-                this["com1MarkerType"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Circle")]
-        public global::OxyPlot.MarkerType com2MarkerType {
-            get {
-                return ((global::OxyPlot.MarkerType)(this["com2MarkerType"]));
-            }
-            set {
-                this["com2MarkerType"] = value;
+                this["comMarkerType"] = value;
             }
         }
         

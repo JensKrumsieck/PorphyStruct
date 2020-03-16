@@ -15,7 +15,7 @@
       <Value Profile="(Default)">14</Value>
     </Setting>
     <Setting Name="defaultFont" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Segoe UI</Value>
+      <Value Profile="(Default)">Arial</Value>
     </Setting>
     <Setting Name="pngWidth" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">2000</Value>
@@ -57,7 +57,7 @@
       <Value Profile="(Default)">{0} [{1}]</Value>
     </Setting>
     <Setting Name="showBox" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="autoscaleX" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -65,10 +65,7 @@
     <Setting Name="dontMark" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="com1MarkerType" Type="OxyPlot.MarkerType" Scope="User">
-      <Value Profile="(Default)">Circle</Value>
-    </Setting>
-    <Setting Name="com2MarkerType" Type="OxyPlot.MarkerType" Scope="User">
+    <Setting Name="comMarkerType" Type="OxyPlot.MarkerType" Scope="User">
       <Value Profile="(Default)">Circle</Value>
     </Setting>
     <Setting Name="singleColor" Type="System.Boolean" Scope="User">

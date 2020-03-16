@@ -12,7 +12,11 @@ namespace PorphyStruct
     /// </summary>
     public partial class Settings : Window
     {
-        public Settings() => InitializeComponent();
+        public Settings()
+        {
+            InitializeComponent();
+            DataContext = this;
+        }
 
         /// <summary>
         /// Handle Window Closing

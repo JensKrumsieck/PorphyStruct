@@ -92,7 +92,7 @@ namespace PorphyStruct.Chemistry
         {
             foreach (var dataProvider in DataProviders)
             {
-                if(normalize && !dataProvider.Normalized || !normalize && dataProvider.Normalized)
+                if (normalize && !dataProvider.Normalized || !normalize && dataProvider.Normalized)
                     dataProvider.Normalize();
             }
         }
@@ -104,7 +104,7 @@ namespace PorphyStruct.Chemistry
         {
             foreach (var dataProvider in DataProviders)
             {
-                if(invert && !dataProvider.Inverted || !invert && dataProvider.Inverted)
+                if (invert && !dataProvider.Inverted || !invert && dataProvider.Inverted)
                     dataProvider.Invert();
             }
         }
@@ -242,7 +242,7 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         /// <param name="a1"></param>
         /// <param name="a2"></param>
-        /// <param name="sim">is Simulation</param>
+        /// <param name="type"></param>
         /// <returns>ArrowAnnotation aka Bond</returns>
         public static ArrowAnnotation DrawBond(AtomDataPoint a1, AtomDataPoint a2, DataType type) => new ArrowAnnotation
         {
@@ -250,9 +250,9 @@ namespace PorphyStruct.Chemistry
             EndPoint = a2.GetDataPoint(),
             HeadWidth = 0,
             HeadLength = 0,
-            Color = PorphyStruct.Core.Properties.Settings.Default.singleColor ? Atom.modesSingleColor[(int)type] : Atom.modesMultiColor[(int)type],
+            Color = Core.Properties.Settings.Default.singleColor ? Atom.modesSingleColor[(int)type] : Atom.modesMultiColor[(int)type],
             Layer = AnnotationLayer.BelowSeries,
-            StrokeThickness = PorphyStruct.Core.Properties.Settings.Default.lineThickness,
+            StrokeThickness = Core.Properties.Settings.Default.lineThickness,
             Tag = a1.atom.Identifier + "," + a2.atom.Identifier
         };
 

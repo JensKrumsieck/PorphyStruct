@@ -119,6 +119,7 @@ namespace PorphyStruct.Chemistry
                 OxyColor.FromAColor(75, OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color1)),
                 OxyColor.FromAColor(75, OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color1)),
         };
+
         public static OxyColor[] modesSingleColor = new OxyColor[]
         {
                 OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color1),

@@ -22,7 +22,7 @@ namespace PorphyStruct.Chemistry
             MarkerType mType = MarkerType.Circle;
             if (data.DataType == DataType.Experimental) mType = Core.Properties.Settings.Default.markerType;
             if (data.DataType == DataType.Simulation || data.DataType == DataType.Difference) mType = Core.Properties.Settings.Default.simMarkerType;
-            if (data.DataType == DataType.Comparison) mType = Core.Properties.Settings.Default.com1MarkerType;
+            if (data.DataType == DataType.Comparison) mType = Core.Properties.Settings.Default.comMarkerType;
 
             //build series
             ScatterSeries series = new ScatterSeries()
@@ -32,13 +32,9 @@ namespace PorphyStruct.Chemistry
                 ColorAxisKey = Core.Properties.Settings.Default.singleColor ? null : "colors",
                 Title = data.DataType.ToString()
             };
-            if (Core.Properties.Settings.Default.singleColor)
-                series.MarkerFill = Atom.modesSingleColor[(int)data.DataType];
             //add series
-
             if (!Core.Properties.Settings.Default.singleColor) pm.Axes.Add(ColorAxis(data.DataPoints));
             else series.MarkerFill = Atom.modesSingleColor[(int)data.DataType];
-
             pm.Series.Add(series);
 
             //draw bonds			

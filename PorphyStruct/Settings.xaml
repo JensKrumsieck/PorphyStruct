@@ -50,7 +50,7 @@
                                                     </Style.Triggers>
                                                 </Style>
                                             </TabPanel.Style>
-                                            </TabPanel>
+                                        </TabPanel>
                                         <ToggleButton Width="40" Height="35" Padding="0" HorizontalAlignment="Left" BorderThickness="0" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=settingsCollapsed, Mode=TwoWay}" x:Name="XToggle">
                                             <materialDesign:PackIcon Kind="HamburgerMenu" Foreground="#ccc" />
                                             <ToggleButton.Triggers>
@@ -420,7 +420,7 @@
                         <TextBlock Text="Color" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="#ccc"/>
                     </StackPanel>
                 </TabItem.Header>
-                <UniformGrid Columns="2" Margin="0" Background="#fcfcfc">
+                <UniformGrid Columns="1" Margin="0" Background="#fcfcfc">
                     <StackPanel Margin="10">
                         <!--Color Settings-->
                         <TextBlock Text="Color Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Bold"/>
@@ -430,10 +430,14 @@
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Color 1"/>
+                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}">
+                                Bond Color
+                                <LineBreak />
+                                <Run FontSize="9">The color used for Bonds if Palette Mode is disabled.</Run>
+                            </TextBlock>
                             <TextBox TextChanged="Color_TextChanged" x:Name="color1" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                                      Text="{Binding Source={x:Static properties:Settings.Default}, Path=color1, Mode=TwoWay}" >
-                                <materialDesign:HintAssist.Hint>Color 1</materialDesign:HintAssist.Hint>
+                                <materialDesign:HintAssist.Hint>Bond Color (non Palette Mode)</materialDesign:HintAssist.Hint>
                             </TextBox>
                         </Grid>
                         <Grid>
@@ -441,44 +445,24 @@
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Color 2"/>
-                            <TextBox TextChanged="Color_TextChanged" x:Name="color2" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                                     Text="{Binding Source={x:Static properties:Settings.Default}, Path=color2, Mode=TwoWay}" >
-                                <materialDesign:HintAssist.Hint>Color 2</materialDesign:HintAssist.Hint>
-                            </TextBox>
                         </Grid>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Color 3"/>
-                            <TextBox TextChanged="Color_TextChanged" x:Name="color3" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                                     Text="{Binding Source={x:Static properties:Settings.Default}, Path=color3, Mode=TwoWay}" >
-                                <materialDesign:HintAssist.Hint>Color 3</materialDesign:HintAssist.Hint>
-                            </TextBox>
                         </Grid>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Color 4"/>
-                            <TextBox TextChanged="Color_TextChanged" x:Name="color4" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                                     Text="{Binding Source={x:Static properties:Settings.Default}, Path=color4, Mode=TwoWay}" >
-                                <materialDesign:HintAssist.Hint>Color 4</materialDesign:HintAssist.Hint>
-                            </TextBox>
                         </Grid>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Color 5"/>
-                            <TextBox TextChanged="Color_TextChanged" x:Name="color5" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                                     Text="{Binding Source={x:Static properties:Settings.Default}, Path=color5, Mode=TwoWay}" >
-                                <materialDesign:HintAssist.Hint>Color 5</materialDesign:HintAssist.Hint>
-                            </TextBox>
                         </Grid>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -486,13 +470,31 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}">
-                                Use single color
+                                Use Color Palette
                                 <LineBreak />
                                 <Run FontSize="9">Uses single color for each series.</Run>
                             </TextBlock>
                             <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" x:Name="singleColor" 
                                           IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=singleColor, Mode=TwoWay}" 
                                           Grid.Column="1"/>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}">
+                                Color Palette
+                                <LineBreak />
+                                <Run FontSize="9">Add colors by typing their hexadezimal value.</Run>
+                            </TextBlock>
+                            <DataGrid CanUserAddRows="True" x:Name="colorList" ItemsSource="{Binding ColorList}" Grid.Column="1" Height="200">
+
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Color" Binding="{Binding Title}"/>
+                                    <DataGridTextColumn Header="Color Value"  Binding="{Binding HexValue}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
                         </Grid>
                     </StackPanel>
                 </UniformGrid>
