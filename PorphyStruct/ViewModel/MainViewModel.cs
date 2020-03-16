@@ -223,11 +223,6 @@ namespace PorphyStruct.ViewModel
                         Cycle.DataProviders.Where(s => s.DataType == DataType.Simulation).FirstOrDefault() as SimulationData)
                     );
             }
-
-            //paint comparison
-            //if (!string.IsNullOrEmpty(comp1Path)) CompareWindow.GetData(comp1Path).Paint(Model, "Com1");
-            //if (!string.IsNullOrEmpty(comp2Path)) CompareWindow.GetData(comp2Path).Paint(Model, "Com2");
-            //paint exp
             Cycle.Paint(Model);
 
             //handle dont mark
@@ -235,7 +230,6 @@ namespace PorphyStruct.ViewModel
 
             Model.Scale(Model.yAxis, true, Normalize);
             Model.Scale(Model.xAxis);
-            Model.InvalidatePlot(true);
             //set properties
             UpdateProperties();
         }

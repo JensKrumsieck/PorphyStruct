@@ -218,7 +218,7 @@ namespace PorphyStruct.Chemistry
         public void GetDataPoints()
         {
             //delete provider
-            DataProviders?.RemoveAll(s => s.DataType == DataType.Experimental);
+            DataProviders.RemoveAll(s => s.DataType == DataType.Experimental);
 
             List<AtomDataPoint> data = CalculateDataPoints().ToList();
 

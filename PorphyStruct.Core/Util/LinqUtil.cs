@@ -33,7 +33,7 @@ namespace PorphyStruct.Util
         /// <param name="predicate"></param>
         public static void RemoveAll<T>(this ObservableCollection<T> collection, Func<T, bool> predicate)
         {
-            var i = collection.Count(predicate);
+            var i = collection.Count();
             while (--i >= 0)
             {
                 var element = collection.ElementAt(i);
