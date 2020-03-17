@@ -24,17 +24,14 @@ namespace PorphyStruct.Core.OxyPlot.Custom
         /// </summary>
         /// <param name="numberOfColors"></param>
         /// <returns></returns>
-        public static OxyPalette Vibrant(int numberOfColors) => OxyPalette.Interpolate(numberOfColors,
+        public static OxyPalette Bulma(int numberOfColors) => OxyPalette.Interpolate(numberOfColors,
             OxyColors.Black,
             OxyColor.Parse("#ff470f"), //orange
             OxyColor.Parse("#3273dc"), //blue
             OxyColor.Parse("#48c774"), //green
-            OxyColor.Parse("#3298dc"), //cyan
             OxyColor.Parse("#ffdd57"), //yellow
             OxyColor.Parse("#b86bff"), //purple
-            OxyColor.Parse("#f14668"), //red
-            OxyColor.Parse("#ffdd57"), //yellow
-            OxyColor.Parse("#00d1b2") //turqoise
+            OxyColor.Parse("#f14668") //red
             );
 
         /// <summary>
@@ -49,11 +46,7 @@ namespace PorphyStruct.Core.OxyPlot.Custom
             OxyColor.Parse("#28a745"), //green
             OxyColor.Parse("#6610f2"), //indigo
             OxyColor.Parse("#e83e8c"), //pink
-            OxyColor.Parse("#ffc107"), //yellow
-            OxyColor.Parse("#6f42c1"), //purple
-            OxyColor.Parse("#20c997"), //teal
-            OxyColor.Parse("#fd7e14"), //orange
-            OxyColor.Parse("#17a2b8") //cyan
+            OxyColor.Parse("#fd7e14") //orange
             );
 
         /// <summary>
@@ -98,11 +91,8 @@ namespace PorphyStruct.Core.OxyPlot.Custom
             OxyColor.Parse("#0B5345"), //darkgreen
             OxyColor.Parse("#4A235A"), //deeppurple
             OxyColor.Parse("#424949"), //gray
-            OxyColor.Parse("#154360"), //lighter blue
             OxyColor.Parse("#78281F"), //another dark red
-            OxyColor.Parse("#6E2C00"), //dark orange
-            OxyColor.Parse("#145A32"), //greenish
-            OxyColor.Parse("#1B2631") //dark blueisch
+            OxyColor.Parse("#6E2C00") //dark orange
             );
 
         /// <summary>
@@ -113,10 +103,11 @@ namespace PorphyStruct.Core.OxyPlot.Custom
         public static OxyPalette RoseMary(int numberOfColors) => OxyPalette.Interpolate(numberOfColors,
             OxyColors.Black,
             OxyColor.Parse("#ec466f"),
-            OxyColor.Parse("#63dbcb"),
             OxyColor.Parse("#4b4e76"),
+            OxyColor.Parse("#f67d49"),
             OxyColor.Parse("#aea82d"),
-            OxyColor.Parse("#f67d49")
+            OxyColor.Parse("#f67d49"),
+            OxyColor.Parse("#63dbcb")
             );
     }
 }
