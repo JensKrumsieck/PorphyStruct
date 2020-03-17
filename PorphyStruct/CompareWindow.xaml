@@ -48,13 +48,13 @@
                                 <Border x:Name="PART_Border" Padding="7">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="40"/>
                                             <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="40"/>
                                         </Grid.ColumnDefinitions>
-                                        <Button VerticalAlignment="Center" Width="30" Padding="0" Margin="0" Background="Transparent" Command="{Binding Remove}" CommandParameter="{Binding}">
-                                            <materialDesign:PackIcon Kind="Delete"/>
+                                        <Button Grid.Column="1" VerticalAlignment="Center" Width="30" Padding="0" Margin="0" Style="{StaticResource MaterialDesignFlatButton}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.DeleteCommand}" CommandParameter="{Binding}">
+                                            <materialDesign:PackIcon Kind="Delete" Foreground="{DynamicResource SecondaryAccentBrush}"/>
                                         </Button>
-                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
                                             <TextBlock Text="{Binding FileName}" />
                                         </StackPanel>
                                     </Grid>

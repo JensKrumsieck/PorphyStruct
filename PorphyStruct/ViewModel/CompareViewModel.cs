@@ -1,6 +1,7 @@
 ﻿using PorphyStruct.Chemistry;
 using PorphyStruct.Chemistry.Data;
 using PorphyStruct.OxyPlotOverride;
+using PorphyStruct.Windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -33,7 +34,20 @@ namespace PorphyStruct.ViewModel
         /// <summary>
         /// Delete Command
         /// </summary>
-        public ICommand DeleteItem { get; }
+        private ICommand deleteCommand;
+        public ICommand DeleteCommand { 
+            get
+            {
+                if (deleteCommand == null) deleteCommand = new RelayCommand(param => Delete((CompareData)param), param => true);
+                return deleteCommand;
+            }
+        }
+
+        /// <summary>
+        /// Delete Handler
+        /// </summary>
+        /// <param name="param"></param>
+        private void Delete(CompareData param) => Cycle.DataProviders.Remove(param);
 
         /// <summary>
         /// Loads Data into PlotModel
