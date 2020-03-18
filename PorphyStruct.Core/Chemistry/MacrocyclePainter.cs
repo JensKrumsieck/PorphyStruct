@@ -82,13 +82,13 @@ namespace PorphyStruct.Chemistry
         /// <returns></returns>
         public static OxyPalette CurrentPalette(int count)
         {
-            
-                var title = Core.Properties.Settings.Default.ColorPalette;
-                var palette = from MethodInfo method in typeof(CustomPalettes).GetMethods(BindingFlags.Public | BindingFlags.Static)
-                              where method.Name == title
-                              select method;
+
+            var title = Core.Properties.Settings.Default.ColorPalette;
+            var palette = from MethodInfo method in typeof(CustomPalettes).GetMethods(BindingFlags.Public | BindingFlags.Static)
+                          where method.Name == title
+                          select method;
             return palette.FirstOrDefault().Invoke(null, new object[] { count }) as OxyPalette;
-                
+
         }
 
     }

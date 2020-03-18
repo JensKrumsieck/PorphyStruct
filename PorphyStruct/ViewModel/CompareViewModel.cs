@@ -34,7 +34,8 @@ namespace PorphyStruct.ViewModel
         /// Delete Command
         /// </summary>
         private ICommand deleteCommand;
-        public ICommand DeleteCommand { 
+        public ICommand DeleteCommand
+        {
             get
             {
                 if (deleteCommand == null) deleteCommand = new RelayCommand(param => Delete((CompareData)param), param => true);

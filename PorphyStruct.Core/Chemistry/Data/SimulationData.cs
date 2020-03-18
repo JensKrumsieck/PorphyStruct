@@ -19,7 +19,7 @@ namespace PorphyStruct.Chemistry.Data
         /// The parameters when simulation is finalized
         /// </summary>
         public IEnumerable<SimParam> SimulationParameters { get; set; }
-               
+
         public override PropertyType Type => PropertyType.Simulation;
 
         public SimulationData(IEnumerable<AtomDataPoint> dataPoints) => DataPoints = dataPoints;
@@ -42,16 +42,16 @@ namespace PorphyStruct.Chemistry.Data
                 DataPoints = DataPoints.Normalize();
             }
             else DataPoints = DataPoints.Factor(1 / Factor);
-                
+
             Normalized = !Normalized;
         }
 
         public void Invert()
         {
-             DataPoints = DataPoints.Invert();
-             Inverted = !Inverted;
+            DataPoints = DataPoints.Invert();
+            Inverted = !Inverted;
         }
-               
+
         public int Priority => 1;
 
         /** DANGER ZONE**/

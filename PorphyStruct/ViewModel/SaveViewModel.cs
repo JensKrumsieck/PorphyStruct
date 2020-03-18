@@ -31,7 +31,7 @@ namespace PorphyStruct.ViewModel
         }
 
         //Export Filename
-        public string FileName { get => Get<string>() ; set => Set(value); }
+        public string FileName { get => Get<string>(); set => Set(value); }
         //Export Path
         public string Path { get => Get<string>(); set => Set(value); }
 
@@ -41,7 +41,7 @@ namespace PorphyStruct.ViewModel
         /// <param name="type"></param>
         public void Export(ExportFileType type)
         {
-            string path = Path + "/" + FileName + "_";
+            string path = $"{Path}/{FileName}_";
             var model = Application.Current.Windows.OfType<MainWindow>().First().viewModel.Model; //not beautiful but works
             foreach (var extension in type.Extension)
             {

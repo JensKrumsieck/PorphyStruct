@@ -46,7 +46,7 @@ namespace PorphyStruct.ViewModel
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnDataChanged(object sender, NotifyCollectionChangedEventArgs e) => HasComparison = Cycle.DataProviders.Where(s => s.DataType == DataType.Comparison).Count() > 0;
-     
+
         /// <summary>
         /// Is Valid? Redraw!
         /// </summary>
@@ -227,7 +227,7 @@ namespace PorphyStruct.ViewModel
             {
                 Cycle.DataProviders.Add(
                     new DifferenceData(
-                        Cycle.DataProviders.Where(s => s.DataType == DataType.Experimental).FirstOrDefault() as ExperimentalData, 
+                        Cycle.DataProviders.Where(s => s.DataType == DataType.Experimental).FirstOrDefault() as ExperimentalData,
                         Cycle.DataProviders.Where(s => s.DataType == DataType.Simulation).FirstOrDefault() as SimulationData)
                     );
             }

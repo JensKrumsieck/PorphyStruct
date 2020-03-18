@@ -23,10 +23,10 @@ namespace PorphyStruct
             InitializeComponent();
             DataContext = this;
 
-            var availableThemes = from MethodInfo method in typeof(CustomPalettes).GetMethods(BindingFlags.Public|BindingFlags.Static)
+            var availableThemes = from MethodInfo method in typeof(CustomPalettes).GetMethods(BindingFlags.Public | BindingFlags.Static)
                                   select new PaletteInfo(
                                       method.Name,
-                                      (OxyPalette)method.Invoke(null, new object[] { 7 } ));
+                                      (OxyPalette)method.Invoke(null, new object[] { 7 }));
             PaletteList = availableThemes;
         }
 
