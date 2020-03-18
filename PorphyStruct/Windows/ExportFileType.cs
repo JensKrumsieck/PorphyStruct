@@ -1,8 +1,4 @@
-﻿using MaterialDesignThemes.Wpf;
-using System.Linq;
-using System.Windows;
-
-namespace PorphyStruct.Windows
+﻿namespace PorphyStruct.Windows
 {
     /// <summary>
     /// Export File Type for SaveWindow
@@ -10,11 +6,10 @@ namespace PorphyStruct.Windows
     public class ExportFileType
     {
         public string Title { get; set; }
-        public PackIcon Icon { get; set; }
-        public PackIcon Secondary { get; set; }
-        public string Extension { get; set; }
+        public string Icon { get; set; }
+        public string[] Extension { get; set; }
 
-        public bool IsEnabled => Application.Current.Windows.OfType<SaveWindow>().First().HasData(Title);
+        public string Extensions => string.Join(", ", Extension);
 
         public override string ToString() => Title + "." + Extension;
     }

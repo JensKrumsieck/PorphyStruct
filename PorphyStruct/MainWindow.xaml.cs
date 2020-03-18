@@ -150,7 +150,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Save_Click(object sender, RoutedEventArgs e) { if (SaveButton.IsEnabled) new SaveWindow(viewModel.Cycle).ShowDialog(); }
+        private void Save_Click(object sender, RoutedEventArgs e) => new SaveWindow().ShowDialog();
 
         /// <summary>
         /// Handle Invert Button Click

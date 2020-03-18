@@ -1,9 +1,12 @@
 ﻿using OxyPlot;
-using OxyPlot.Reporting;
+using PorphyStruct.Chemistry.Properties;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml.Linq;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Unicode;
+using System.Xml.Serialization;
 
 namespace PorphyStruct.Chemistry
 {
@@ -18,9 +21,8 @@ namespace PorphyStruct.Chemistry
         /// <param name="filename"></param>
         /// <param name="exporter"></param>
         /// <param name="extension"></param>
-        public static void ExportGraph(this PlotModel pm, Macrocycle cycle, string filename, IExporter exporter, string extension = "png")
+        public static void ExportGraph(this PlotModel pm, string filename, IExporter exporter, string extension = "png")
         {
-            pm = ExportModel(pm, cycle.Bonds.Count);
             using var file = File.Create(filename + "Analysis." + extension);
             exporter.Export(pm, file);
         }
@@ -51,6 +53,43 @@ namespace PorphyStruct.Chemistry
                 line += export[0].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).X + ";";
                 for (int j = 0; j < export.Count; j++) line += export[j].ItemsSource.OfType<AtomDataPoint>().ElementAt(i).Y + ";";
                 sw.WriteLine(line);
+            }
+        }
+
+        /// <summary>
+        /// Saves Properties of given Macrocycle
+        /// </summary>
+        /// <param name="cycle"></param>
+        /// <param name="filename"></param>
+        /// <param name="extensionm"></param>
+        public static void SaveProperties(this Macrocycle cycle, string filename, string extension = "json")
+        {
+            var properties = cycle.Properties.ToLookup(x => x.Key, y => y.Value).ToDictionary(group => group.Key, group => group.SelectMany(value => value));
+            switch (extension)
+            {
+                case "json":
+                default:
+                    {
+                        var options = new JsonSerializerOptions()
+                        {
+                            WriteIndented = true,
+                            Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+                        };
+                        var json = JsonSerializer.Serialize(properties, typeof(Dictionary<string, IEnumerable<Property>>), options);
+                        using StreamWriter sw = new StreamWriter(filename + "Properties." + extension);
+                        sw.Write(json);
+                    }
+                    break;
+                case "txt":
+                    {
+                        using StreamWriter sw = new StreamWriter(filename + "Properties." + extension);
+                        foreach (var g in properties)
+                        {
+                            sw.WriteLine(g.Key + ":");
+                            foreach (var p in g.Value) sw.WriteLine("\t" + p.Name + ": " + p.Value);
+                        }
+                    }
+                    break;
             }
         }
 
@@ -100,40 +139,5 @@ namespace PorphyStruct.Chemistry
         //        );
         //    Molecule.Save(File.Create(filename + "Result.xml"));
         //}
-
-
-        /// <summary>
-        /// removes invisible series and returns model to export
-        /// </summary>
-        /// <param name="cycle"></param>
-        /// <param name="pm"></param>
-        /// <returns></returns>
-        public static PlotModel ExportModel(PlotModel pm, int bonds)
-        {
-            //remove bonds
-            List<OxyPlot.Annotations.Annotation> annotations = new List<OxyPlot.Annotations.Annotation>();
-            foreach (OxyPlot.Series.ScatterSeries s in pm.Series)
-            {
-                if (!s.IsVisible)
-                {
-                    int index = pm.Series.IndexOf(s);
-                    for (int i = index * bonds; i < (index * bonds) + bonds; i++) annotations.Add(pm.Annotations[i]);
-                }
-            }
-            foreach (OxyPlot.Annotations.Annotation a in annotations) pm.Annotations.Remove(a);
-            return pm;
-        }
-
-
-        ///<summary>
-        /// gets Reportstyle
-        /// </summary>
-        /// <param name="lang"></param>
-        /// <returns></returns>
-        public static ReportStyle ReportStyle => new ReportStyle(PorphyStruct.Core.Properties.Settings.Default.defaultFont, PorphyStruct.Core.Properties.Settings.Default.defaultFont, PorphyStruct.Core.Properties.Settings.Default.defaultFont)
-        {
-            FigureTextFormatString = "Figure {0}: {1}.",
-            TableCaptionFormatString = "Table {0}: {1}."
-        };
     }
 }
