@@ -31,7 +31,7 @@
             <RowDefinition Height="30" />
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
-        <oxy:PlotView x:Name="simView" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Model="{Binding Model}"></oxy:PlotView>
+        <oxy:PlotView x:Name="simView" Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" Model="{Binding Model}"></oxy:PlotView>
         <DataGrid x:Name="simGrid" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" ItemsSource="{Binding Parameters, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True, NotifyOnSourceUpdated=True}" IsSynchronizedWithCurrentItem="True" CanUserSortColumns="False" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Binding="{Binding Optimize}" Header="{x:Static lang:Sim.Use}" />
@@ -41,10 +41,7 @@
                 <DataGridTextColumn Binding="{Binding Best, StringFormat=N6}" Header="{x:Static lang:Sim.Best}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel Grid.Row="3" Orientation="Horizontal" >
-            <Label Content="{x:Static lang:Sim.Doop}" />
-            <Label x:Name="meanDisPar" Content="0" />
-        </StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" />
         <Label Grid.Row="1" Grid.Column="1"  Grid.ColumnSpan="2" Content="Min RMSD (Y, Deriv., Int.):"/>
         <Label Grid.Row="3" Grid.Column="1" Content="Fit Target: " VerticalAlignment="Top"/>
         <CheckBox Content="Data" Grid.Column="2" Grid.Row="3"  x:Name="fitDataCB" IsChecked="{Binding TargetData}"/>

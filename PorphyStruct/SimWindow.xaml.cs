@@ -10,9 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Threading;
 using System.Windows;
-using System.Xml;
 
 namespace PorphyStruct
 {
@@ -202,19 +202,31 @@ namespace PorphyStruct
         private void ReloadSimBtn_Click(object sender, RoutedEventArgs e)
         {
             //use save dir as default because there should be the results
-            var ofd = FileUtil.DefaultOpenFileDialog("Simulation File (*.xml)|*.xml", true);
+            var ofd = FileUtil.DefaultOpenFileDialog("Properties file (*.json)|*.json", true);
             bool? DialogResult = ofd.ShowDialog();
 
             if (DialogResult.HasValue && DialogResult.Value)
             {
                 string file = File.ReadAllText(ofd.FileName);
-                XmlDocument xmld = new XmlDocument();
-                xmld.Load(new StringReader(file));
-                var simul = xmld.SelectSingleNode("descendant::simulation");
-                viewModel.Parameters = new List<SimParam>();
-                foreach (XmlNode node in simul.SelectNodes("descendant::parameter"))
-                    viewModel.Parameters.Add(new SimParam(node.Attributes.GetNamedItem("name").InnerText, double.Parse(node.InnerText, System.Globalization.CultureInfo.InvariantCulture) / 100));
-                simGrid.ItemsSource = viewModel.Parameters;
+                var deserialized = JsonSerializer.Deserialize(file, typeof(Dictionary<string, IEnumerable<Property>>)) as Dictionary<string, IEnumerable<Property>>;
+                if (deserialized.ContainsKey("Simulation"))
+                {
+                    viewModel.Parameters.Clear();
+                    foreach (var item in deserialized["Simulation"])
+                    {
+                        if(item.Name.Contains("percentage")) //here are the actual values
+                        {
+                            viewModel.Parameters.Add(
+                                new SimParam(
+                                    item.Name.Split(' ')[0],
+                                    Convert.ToDouble(item.Value.Split(' ')[0]) / 100,
+                                    Convert.ToDouble(item.Value.Split(' ')[0]) / 100
+                                    )
+                                );
+                        }
+                     }
+                    simGrid.Items.Refresh();
+                }
             }
         }
     }

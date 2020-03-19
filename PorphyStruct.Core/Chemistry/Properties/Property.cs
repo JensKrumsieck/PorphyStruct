@@ -9,5 +9,10 @@
             Name = name;
             Value = value;
         }
+
+        /// <summary>
+        /// for json deserialization
+        /// </summary>
+        public Property() { }
     }
 }
