@@ -61,14 +61,10 @@ namespace PorphyStruct
                 case nameof(viewModel.IsRunning):
                     if (!viewModel.IsRunning)
                     {
-                        // set best to start
                         if (viewModel.KeepBest)
-                        {
                             for (int i = 0; i < viewModel.Parameters.Count; i++) viewModel.Parameters[i].Start = viewModel.Parameters[i].Best;
-                        }
                         synchronizationContext.Send(new SendOrPostCallback(o =>
                         {
-                            //after running reenable/disable gui elements
                             simGrid.Items.Refresh();
                             stopBtn.IsEnabled = false;
                             startBtn.IsEnabled = firstOnlyCB.IsEnabled = keepBestCB.IsEnabled = simGrid.IsEnabled = finishSimBtn.IsEnabled = fitDataCB.IsEnabled = fitIntCB.IsEnabled = fitDerivCB.IsEnabled = true;
@@ -78,19 +74,13 @@ namespace PorphyStruct
                     {
                         synchronizationContext.Send(new SendOrPostCallback(o =>
                         {
-                            //enable/disable gui elements while simulation
                             stopBtn.IsEnabled = true;
                             simGrid.IsEnabled = startBtn.IsEnabled = firstOnlyCB.IsEnabled = keepBestCB.IsEnabled = finishSimBtn.IsEnabled = fitDataCB.IsEnabled = fitIntCB.IsEnabled = fitDerivCB.IsEnabled = false;
                         }), 0);
                     }
                     break;
-                case nameof(viewModel.Best):
-                    SyncGUI(viewModel.Best, "Best");
-                    break;
-                case nameof(viewModel.Current):
-                    SyncGUI(viewModel.Current);
-
-                    break;
+                case nameof(viewModel.Best): SyncGUI(viewModel.Best, "Best"); break;
+                case nameof(viewModel.Current): SyncGUI(viewModel.Current); break;
             }
         }
 
@@ -215,7 +205,6 @@ namespace PorphyStruct
                     foreach (var item in deserialized["Simulation"])
                     {
                         if (item.Name.Contains("percentage")) //here are the actual values
-                        {
                             viewModel.Parameters.Add(
                                 new SimParam(
                                     item.Name.Split(' ')[0],
@@ -223,7 +212,6 @@ namespace PorphyStruct
                                     Convert.ToDouble(item.Value.Split(' ')[0]) / 100
                                     )
                                 );
-                        }
                     }
                     simGrid.Items.Refresh();
                 }

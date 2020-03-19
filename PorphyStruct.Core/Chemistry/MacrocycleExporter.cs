@@ -89,11 +89,7 @@ namespace PorphyStruct.Chemistry
                 case "json":
                 default:
                     {
-                        var options = new JsonSerializerOptions()
-                        {
-                            WriteIndented = true,
-                            Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
-                        };
+                        var options = new JsonSerializerOptions() { WriteIndented = true, Encoder = JavaScriptEncoder.Create(UnicodeRanges.All) };
                         var json = JsonSerializer.Serialize(properties, typeof(Dictionary<string, IEnumerable<Property>>), options);
                         using StreamWriter sw = new StreamWriter(filename + "Properties." + extension);
                         sw.Write(json);
