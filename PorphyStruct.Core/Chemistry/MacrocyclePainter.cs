@@ -33,7 +33,8 @@ namespace PorphyStruct.Chemistry
                 MarkerType = mType,
                 ItemsSource = data.DataPoints,
                 ColorAxisKey = Core.Properties.Settings.Default.singleColor ? null : "colors",
-                Title = data.DataType.ToString()
+                Title = data.DataType.ToString(),
+                MarkerSize = Core.Properties.Settings.Default.markerSize
             };
             //add series
             if (!Core.Properties.Settings.Default.singleColor) pm.Axes.Add(ColorAxis(data.DataPoints));

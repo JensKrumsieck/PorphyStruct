@@ -370,5 +370,17 @@ namespace PorphyStruct.Core.Properties {
                 this["ColorPalette"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        public double markerSize {
+            get {
+                return ((double)(this["markerSize"]));
+            }
+            set {
+                this["markerSize"] = value;
+            }
+        }
     }
 }

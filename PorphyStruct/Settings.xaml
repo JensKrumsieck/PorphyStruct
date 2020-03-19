@@ -146,6 +146,9 @@
                         <TextBox x:Name="lineThickness" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=lineThickness, Mode=TwoWay}">
                             <materialDesign:HintAssist.Hint>Line Thickness</materialDesign:HintAssist.Hint>
                         </TextBox>
+                        <TextBox x:Name="markerSize" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=markerSize, Mode=TwoWay}">
+                            <materialDesign:HintAssist.Hint>Marker Size</materialDesign:HintAssist.Hint>
+                        </TextBox>
                         <TextBox x:Name="fontSize" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=defaultFontSize, Mode=TwoWay}" >
                             <materialDesign:HintAssist.Hint>Font Size</materialDesign:HintAssist.Hint>
                         </TextBox>
@@ -309,7 +312,20 @@
                         <TextBox x:Name="pngRes" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=pngRes, Mode=TwoWay}">
                             <materialDesign:HintAssist.Hint>Resolution</materialDesign:HintAssist.Hint>
                         </TextBox>
-                    </StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">
+                                Use Background Color (PNG)
+                                <LineBreak />
+                                <Run FontSize="9">If this is set, a white background will be added to exported graphs.</Run>
+                            </TextBlock>
+                            <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" x:Name="backgroundColor" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=backgroundColor, Mode=TwoWay}"/>
+
+                        </Grid>
+                    </StackPanel>                    
                 </UniformGrid>
             </TabItem>
             <TabItem>
@@ -432,19 +448,7 @@
                                 <materialDesign:HintAssist.Hint>Bond Color (non Palette Mode)</materialDesign:HintAssist.Hint>
                             </TextBox>
                         </Grid>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">
-                                Use Background Color (Export)
-                                <LineBreak />
-                                <Run FontSize="9">If this is set, a white background will be added to exported graphs.</Run>
-                            </TextBlock>
-                            <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" x:Name="backgroundColor" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=backgroundColor, Mode=TwoWay}"/>
-
-                        </Grid>
+                        
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>

@@ -1,4 +1,6 @@
 ﻿using OxyPlot;
+using OxyPlot.Annotations;
+using OxyPlot.Series;
 using PorphyStruct.Chemistry.Properties;
 using System.Collections.Generic;
 using System.IO;
@@ -22,7 +24,26 @@ namespace PorphyStruct.Chemistry
         public static void ExportGraph(this PlotModel pm, string filename, IExporter exporter, string extension = "png")
         {
             using var file = File.Create(filename + "Analysis." + extension);
+            //for svg double sizes ;)
+            if (extension == "svg")
+            {
+                pm.DefaultFontSize *= 2;
+                foreach (var axis in pm.Axes) axis.AxislineThickness *= 2;
+                foreach(ScatterSeries series in pm.Series) series.MarkerSize *= 2;
+                foreach (ArrowAnnotation annotation in pm.Annotations.Where(s => s.GetType() == typeof(ArrowAnnotation))) annotation.StrokeThickness *= 2;
+                if(Core.Properties.Settings.Default.showBox) pm.PlotAreaBorderThickness = new OxyThickness(Core.Properties.Settings.Default.lineThickness * 2);
+            }
+
             exporter.Export(pm, file);
+
+            if (extension == "svg")
+            {
+                pm.DefaultFontSize /= 2;
+                foreach (var axis in pm.Axes) axis.AxislineThickness /= 2;
+                foreach (ScatterSeries series in pm.Series) series.MarkerSize /= 2;
+                foreach (ArrowAnnotation annotation in pm.Annotations.Where(s => s.GetType() == typeof(ArrowAnnotation))) annotation.StrokeThickness /= 2;
+                if (Core.Properties.Settings.Default.showBox) pm.PlotAreaBorderThickness = new OxyThickness(Core.Properties.Settings.Default.lineThickness);
+            }
         }
 
         /// <summary>
