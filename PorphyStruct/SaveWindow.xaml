@@ -5,33 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
-        xmlns:files="clr-namespace:PorphyStruct.Windows"
-        xmlns:sys="clr-namespace:System.Collections;assembly=System.Runtime.Extensions"
-        Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="Save File" Height="550" Width="880" ResizeMode="NoResize">
-    <Grid Margin="10">
+        FontFamily="Segoe UI"
+        Style="{DynamicResource DefaultWindowStyle}"
+        Title="Save Data" Height="550" Width="720" ResizeMode="NoResize">
+    <Grid Margin="10" HorizontalAlignment="Center">
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="13*" />
-            <RowDefinition Height="1.5*" />
-            <RowDefinition Height="1.5*" />
+            <RowDefinition Height="8*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
-        </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
-            <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}">Available FileTypes</TextBlock>
-            <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}">Based on present data!</TextBlock>
-        </StackPanel>
-
-        <ListBox SelectionMode="Extended" ItemsSource="{Binding AvailableFileTypes, Mode=OneWay}" x:Name="TypeList" Grid.Row="1" Grid.Column="0"
-                  materialDesign:ListBoxAssist.IsToggle="True" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignToolToggleFlatListBox}">
+        <ListBox SelectionMode="Extended" ItemsSource="{Binding AvailableFileTypes, Mode=OneWay}" x:Name="TypeList" Grid.Row="0"
+                  materialDesign:ListBoxAssist.IsToggle="True" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignToolToggleFlatListBox}" VerticalAlignment="Stretch">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -58,20 +45,20 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.ColumnSpan="3" Margin="166,0" >
+        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom">
             <TextBox Width="200" Margin="0,0,10,0" x:Name="PathTB" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Path}">
                 <materialDesign:HintAssist.Hint>
-                    <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
+                    <StackPanel  Orientation="Horizontal">
                         <TextBlock>Folder Path</TextBlock>
                     </StackPanel>
                 </materialDesign:HintAssist.Hint>
             </TextBox>
             <Button Content="Search" Width="75" Height="25" Click="SearchButton_Click" />
         </StackPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="166,0,166,-0.5">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="2">
             <TextBox Width="200" Margin="0,0,10,0" x:Name="NameTB" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding FileName}">
                 <materialDesign:HintAssist.Hint>
-                    <StackPanel  Orientation="Horizontal" Margin="-2 0 0 0">
+                    <StackPanel  Orientation="Horizontal">
                         <TextBlock>Filename</TextBlock>
                     </StackPanel>
                 </materialDesign:HintAssist.Hint>

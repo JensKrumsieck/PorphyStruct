@@ -16,7 +16,6 @@ namespace PorphyStruct.Chemistry
         /// neccessary becaus for quality reasons we need wpf exporters... :/
         /// </summary>
         /// <param name="pm"></param>
-        /// <param name="cycle"></param>
         /// <param name="filename"></param>
         /// <param name="exporter"></param>
         /// <param name="extension"></param>
@@ -60,7 +59,7 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         /// <param name="cycle"></param>
         /// <param name="filename"></param>
-        /// <param name="extensionm"></param>
+        /// <param name="extension"></param>
         public static void SaveProperties(this Macrocycle cycle, string filename, string extension = "json")
         {
             var properties = cycle.Properties.ToLookup(x => x.Key, y => y.Value).ToDictionary(group => group.Key, group => group.SelectMany(value => value));
