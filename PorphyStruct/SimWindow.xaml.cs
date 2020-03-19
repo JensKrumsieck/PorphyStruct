@@ -214,7 +214,7 @@ namespace PorphyStruct
                     viewModel.Parameters.Clear();
                     foreach (var item in deserialized["Simulation"])
                     {
-                        if(item.Name.Contains("percentage")) //here are the actual values
+                        if (item.Name.Contains("percentage")) //here are the actual values
                         {
                             viewModel.Parameters.Add(
                                 new SimParam(
@@ -224,7 +224,7 @@ namespace PorphyStruct
                                     )
                                 );
                         }
-                     }
+                    }
                     simGrid.Items.Refresh();
                 }
             }
