@@ -220,6 +220,7 @@ namespace PorphyStruct.Chemistry
         {
             //delete provider
             DataProviders.RemoveAll(s => s.DataType == DataType.Experimental);
+            PropertyProviders.RemoveAll(s => s.GetType() == typeof(ExperimentalData));
 
             List<AtomDataPoint> data = CalculateDataPoints().ToList();
 
@@ -228,7 +229,9 @@ namespace PorphyStruct.Chemistry
                     Metal.DistanceToPlane(GetMeanPlane()),
                     Metal));
 
-            DataProviders.Add(new ExperimentalData(data));
+            var provider = new ExperimentalData(data);
+            DataProviders.Add(provider);
+            PropertyProviders.Add(provider);
         }
 
 
