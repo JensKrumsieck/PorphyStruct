@@ -1,4 +1,7 @@
 ﻿using OxyPlot.Annotations;
+using PorphyStruct.Chemistry.Data;
+using PorphyStruct.Chemistry.Properties;
+using PorphyStruct.Core.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +10,10 @@ namespace PorphyStruct.Chemistry.Macrocycles
 {
     public class Porphyrin : Macrocycle
     {
-        public Porphyrin(List<Atom> Atoms) : base(Atoms) { }
+        public Porphyrin(AsyncObservableCollection<Atom> Atoms) : base(Atoms)
+        {
+            PropertyProviders.Add(new PorphyrinDihedrals(ByIdentifier));
+        }
 
         //assign type (legacy)
         public override Type type => Type.Porphyrin;
@@ -95,35 +101,21 @@ namespace PorphyStruct.Chemistry.Macrocycles
         public override Dictionary<string, double> Multiplier => _Multiplier;
 
         /// <summary>
-        /// Porphyrin Dihedrals
-        /// </summary>
-        internal static List<string[]> _Dihedrals => new List<string[]>(){
-            new string[] { "C2", "C1", "C19", "C18" },
-            new string[] { "C3", "C4", "C6", "C7" },
-            new string[] { "C8", "C9", "C11", "C12" },
-            new string[] { "C13", "C14", "C16", "C17" },
-            new string[] { "C9", "N2", "N4", "C16" },
-            new string[] { "C4", "N1", "N3", "C11" }
-        };
-        public override List<string[]> Dihedrals => _Dihedrals;
-
-
-        /// <summary>
         /// Overrides Macrocycle.DrawBonds
         /// because of special C1-C20 Bond.
         /// </summary>
         /// <returns>Annotation aka Bonds</returns>
-        public override IEnumerable<ArrowAnnotation> DrawBonds(int mode = 0) => base.DrawBonds(mode).Where(s => !((string)s.Tag).Contains("C20")).Concat(DrawPorphyrinBonds(mode));
+        public override IEnumerable<ArrowAnnotation> DrawBonds(IAtomDataPointProvider data) => base.DrawBonds(data).Where(s => !((string)s.Tag).Contains("C20")).Concat(DrawPorphyrinBonds(data));
 
         /// <summary>
         /// Draw Porphyrin specific Bonds
         /// </summary>
         /// <param name="mode"></param>
         /// <returns></returns>
-        private IEnumerable<ArrowAnnotation> DrawPorphyrinBonds(int mode = 0)
+        private IEnumerable<ArrowAnnotation> DrawPorphyrinBonds(IAtomDataPointProvider data)
         {
-            yield return DrawBond(dataPoints.OrderBy(s => s.X).First(), dataPoints.Where(s => s.atom.Identifier == "C1" && s.atom.IsMacrocycle).First(), mode);
-            yield return DrawBond(dataPoints.OrderBy(s => s.X).Last(), dataPoints.Where(s => s.atom.Identifier == "C19" && s.atom.IsMacrocycle).First(), mode);
+            yield return DrawBond(data.DataPoints.OrderBy(s => s.X).First(), data.DataPoints.Where(s => s.atom.Identifier == "C1" && s.atom.IsMacrocycle).First(), data);
+            yield return DrawBond(data.DataPoints.OrderBy(s => s.X).Last(), data.DataPoints.Where(s => s.atom.Identifier == "C19" && s.atom.IsMacrocycle).First(), data);
         }
 
         /// <summary>

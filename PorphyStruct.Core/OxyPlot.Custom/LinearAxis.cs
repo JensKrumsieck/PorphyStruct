@@ -10,9 +10,9 @@ namespace PorphyStruct.OxyPlotOverride
      /// </summary>
         public LinearAxis()
         {
-            this.FractionUnit = 1.0;
-            this.FractionUnitSymbol = null;
-            this.FormatAsFractions = false;
+            FractionUnit = 1.0;
+            FractionUnitSymbol = null;
+            FormatAsFractions = false;
         }
 
 
@@ -58,9 +58,9 @@ namespace PorphyStruct.OxyPlotOverride
         /// <returns>The formatted value.</returns>
         protected override string FormatValueOverride(double x)
         {
-            if (this.FormatAsFractions)
+            if (FormatAsFractions)
             {
-                return FractionHelper.ConvertToFractionString(x, this.FractionUnit, this.FractionUnitSymbol, 1e-6, this.ActualCulture, this.StringFormat);
+                return FractionHelper.ConvertToFractionString(x, FractionUnit, FractionUnitSymbol, 1e-6, ActualCulture, StringFormat);
             }
 
             return base.FormatValueOverride(x);

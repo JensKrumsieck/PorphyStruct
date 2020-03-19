@@ -70,36 +70,6 @@ namespace PorphyStruct.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap corr {
-            get {
-                object obj = ResourceManager.GetObject("corr", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap Corrole {
-            get {
-                object obj = ResourceManager.GetObject("Corrole", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap Corrphycene {
-            get {
-                object obj = ResourceManager.GetObject("Corrphycene", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die The following figure shows the conformational analysis of {0} displayed as displacement diagram. A middle plane was places through the {1}&apos;s ring atoms. The distance of the ring atoms to the mean plane is plotted against calculated circle coordinates. ähnelt.
         /// </summary>
         public static string ExplanationParagraph {
@@ -111,9 +81,9 @@ namespace PorphyStruct.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
         /// </summary>
-        public static System.Drawing.Icon favicon_7_ {
+        public static System.Drawing.Icon favicon {
             get {
-                object obj = ResourceManager.GetObject("favicon_7_", resourceCulture);
+                object obj = ResourceManager.GetObject("favicon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
@@ -121,29 +91,9 @@ namespace PorphyStruct.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap Norcorrole {
+        public static System.Drawing.Bitmap logo {
             get {
-                object obj = ResourceManager.GetObject("Norcorrole", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap Porphycene {
-            get {
-                object obj = ResourceManager.GetObject("Porphycene", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap Porphyrin {
-            get {
-                object obj = ResourceManager.GetObject("Porphyrin", resourceCulture);
+                object obj = ResourceManager.GetObject("logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

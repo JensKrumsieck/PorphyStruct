@@ -1,53 +1,48 @@
 ﻿using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+using PorphyStruct.Chemistry.Data;
+using PorphyStruct.Core.OxyPlot.Custom;
 using PorphyStruct.OxyPlotOverride;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace PorphyStruct.Chemistry
 {
     public static class MacrocyclePainter
     {
         /// <summary>
-        /// Paintmode Enum
-        /// </summary>
-        public enum PaintMode { Exp, Sim, Diff, Com1, Com2 };
-
-        /// <summary>
         /// Paints the Macrocycle object
         /// </summary>
         /// <param name="pm"></param>
         /// <param name="cycle"></param>
         /// <param name="mode"></param>
-        public static void Paint(this Macrocycle cycle, PlotModel pm, PaintMode mode)
+        public static void Paint(this Macrocycle cycle, PlotModel pm, IAtomDataPointProvider data)
         {
-            foreach (var dp in cycle.dataPoints) AssignValue(dp, mode);
+            foreach (var dp in data.DataPoints) AssignValue(dp, data.DataType);
             //read marker type
             MarkerType mType = MarkerType.Circle;
-            if (mode == PaintMode.Exp) mType = PorphyStruct.Core.Properties.Settings.Default.markerType;
-            if (mode == PaintMode.Sim || mode == PaintMode.Diff) mType = PorphyStruct.Core.Properties.Settings.Default.simMarkerType;
-            if (mode == PaintMode.Com1) mType = PorphyStruct.Core.Properties.Settings.Default.com1MarkerType;
-            if (mode == PaintMode.Com2) mType = PorphyStruct.Core.Properties.Settings.Default.com2MarkerType;
+            if (data.DataType == DataType.Experimental) mType = Core.Properties.Settings.Default.markerType;
+            if (data.DataType == DataType.Simulation || data.DataType == DataType.Difference) mType = Core.Properties.Settings.Default.simMarkerType;
+            if (data.DataType == DataType.Comparison) mType = Core.Properties.Settings.Default.comMarkerType;
 
             //build series
             ScatterSeries series = new ScatterSeries()
             {
                 MarkerType = mType,
-                ItemsSource = cycle.dataPoints,
-                ColorAxisKey = PorphyStruct.Core.Properties.Settings.Default.singleColor ? null : "colors",
-                Title = mode.ToString()
+                ItemsSource = data.DataPoints,
+                ColorAxisKey = Core.Properties.Settings.Default.singleColor ? null : "colors",
+                Title = data.DataType.ToString(),
+                MarkerSize = Core.Properties.Settings.Default.markerSize
             };
-            if (PorphyStruct.Core.Properties.Settings.Default.singleColor)
-                series.MarkerFill = Atom.modesSingleColor[(int)mode];
             //add series
-
-            if (!PorphyStruct.Core.Properties.Settings.Default.singleColor) pm.Axes.Add(ColorAxis(cycle.dataPoints));
-            else series.MarkerFill = Atom.modesSingleColor[(int)mode];
-
+            if (!Core.Properties.Settings.Default.singleColor) pm.Axes.Add(ColorAxis(data.DataPoints));
+            else series.MarkerFill = SingleColor(cycle.DataProviders.IndexOf(data), cycle.DataProviders.Count);
             pm.Series.Add(series);
 
             //draw bonds			
-            foreach (OxyPlot.Annotations.ArrowAnnotation a in cycle.DrawBonds((int)mode)) pm.Annotations.Add(a);
+            foreach (OxyPlot.Annotations.ArrowAnnotation a in cycle.DrawBonds(data)) pm.Annotations.Add(a);
         }
 
         /// <summary>
@@ -55,7 +50,7 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         /// <param name="dp"></param>
         /// <param name="value"></param>
-        private static void AssignValue(AtomDataPoint dp, PaintMode mode) => dp.Value = dp.atom.Type == "C" ? 1000d * (int)mode : dp.X + (1000 * ((int)mode));
+        private static void AssignValue(AtomDataPoint dp, DataType mode) => dp.Value = dp.atom.Type == "C" ? 1000d * (int)mode : dp.X + (1000 * ((int)mode));
 
         /// <summary>
         /// Builds RangeColorAxis
@@ -67,6 +62,35 @@ namespace PorphyStruct.Chemistry
             Position = AxisPosition.Bottom,
             IsAxisVisible = false
         };
+
+        /// <summary>
+        /// Get Palette Colors
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public static OxyColor SingleColor(int index, int count)
+        {
+            int min = 7;
+            if (Core.Properties.Settings.Default.ColorPalette.Contains("GrayScale")) min = 1;
+            var palette = CurrentPalette(count > min ? count : min);
+            return palette.Colors[index >= 0 ? index : 0];
+        }
+
+        /// <summary>
+        /// returns palette based on settings and reflection
+        /// </summary>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public static OxyPalette CurrentPalette(int count)
+        {
+
+            var title = Core.Properties.Settings.Default.ColorPalette;
+            var palette = from MethodInfo method in typeof(CustomPalettes).GetMethods(BindingFlags.Public | BindingFlags.Static)
+                          where method.Name == title
+                          select method;
+            return palette.FirstOrDefault().Invoke(null, new object[] { count }) as OxyPalette;
+
+        }
 
     }
 }

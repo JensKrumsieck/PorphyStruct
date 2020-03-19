@@ -1,5 +1,6 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 using MathNet.Spatial.Euclidean;
+using PorphyStruct.Core.Util;
 using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
@@ -7,16 +8,22 @@ using System.Linq;
 
 namespace PorphyStruct.Chemistry
 {
-    public class Molecule
+    public class Molecule : Bindable
     {
         public string Title = "";
-        //public List<Atom> Atoms = new List<Atom>();
-        public List<Atom> Atoms = new List<Atom>();
+
+        /// <summary>
+        /// The Molecules Atoms
+        /// </summary>
+        public AsyncObservableCollection<Atom> Atoms { get => Get<AsyncObservableCollection<Atom>>(); set => Set(value); }
 
         /// <summary>
         /// Construct Molecule
         /// </summary>
-        public Molecule() { }
+        public Molecule()
+        {
+            Atoms = new AsyncObservableCollection<Atom>();
+        }
 
         /// <summary>
         /// Construct Molecule with title
@@ -24,8 +31,9 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         /// <param name="title"></param>
         public Molecule(string title)
+            : this()
         {
-            this.Title = title;
+            Title = title;
         }
 
         /// <summary>
@@ -33,7 +41,7 @@ namespace PorphyStruct.Chemistry
         /// <seealso cref="Molecule"/>
         /// </summary>
         /// <param name="title"></param>
-        public Molecule(List<Atom> Atoms)
+        public Molecule(AsyncObservableCollection<Atom> Atoms)
             : this()
         {
             this.Atoms = Atoms;
@@ -82,7 +90,7 @@ namespace PorphyStruct.Chemistry
         /// Gets the mean plane of a list of atoms
         /// </summary>
         /// <returns>The Plane Object (Math.Net)</returns>
-        public Plane GetMeanPlane(IEnumerable<Atom> atoms)
+        public static Plane GetMeanPlane(IEnumerable<Atom> atoms)
         {
             //convert coordinates into Point3D because centroid method is only available in math net spatial
             List<Point3D> points = atoms.ToPoint3D().ToList();
@@ -121,6 +129,13 @@ namespace PorphyStruct.Chemistry
         public static IEnumerable<Atom> Neighbors(Atom A, IEnumerable<Atom> list) => list.Where(B => A.BondTo(B) && A != B);
 
         /// <summary>
+        /// Returns all Neighbors of an Atom
+        /// </summary>
+        /// <param name="A"></param>
+        /// <returns></returns>
+        public IEnumerable<Atom> Neighbors(Atom A) => Neighbors(A, Atoms);
+
+        /// <summary>
         /// Returns non metla neighbors of atom
         /// </summary>
         /// <param name="A"></param>
@@ -128,6 +143,12 @@ namespace PorphyStruct.Chemistry
         /// <returns></returns>
         public static IEnumerable<Atom> NonMetalNeighbors(Atom A, IEnumerable<Atom> list) => Neighbors(A, list).Where(s => !s.IsMetal);
 
+        /// <summary>
+        /// Returns non Metal Neighbors of an atom
+        /// </summary>
+        /// <param name="A"></param>
+        /// <returns></returns>
+        public IEnumerable<Atom> NonMetalNeighbors(Atom A) => NonMetalNeighbors(A, Atoms);
 
         /// <summary>
         /// Returns a collection of Atoms with VertexDegree of 3
@@ -142,7 +163,7 @@ namespace PorphyStruct.Chemistry
         /// Gets the first detected metal atom in molecule
         /// </summary>
         /// <returns></returns>
-        public Atom GetMetal() => Atoms.Where(s => s.IsMetal).FirstOrDefault();
+        public Atom Metal => Atoms.Where(s => s.IsMetal).FirstOrDefault();
 
         /// <summary>
         /// Centers the molecule by using lambda expression
@@ -158,6 +179,5 @@ namespace PorphyStruct.Chemistry
                 a.Z -= centroid.Z;
             }
         }
-
     }
 }

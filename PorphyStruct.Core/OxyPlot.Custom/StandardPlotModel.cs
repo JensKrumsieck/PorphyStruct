@@ -67,8 +67,8 @@ namespace PorphyStruct.OxyPlotOverride
                 x.AxislineThickness = PorphyStruct.Core.Properties.Settings.Default.lineThickness;
             }
 
-            this.Axes.Add(x);
-            this.Axes.Add(y);
+            Axes.Add(x);
+            Axes.Add(y);
 
             //make it accessible
             xAxis = x;
@@ -92,10 +92,10 @@ namespace PorphyStruct.OxyPlotOverride
             if ((!isY && PorphyStruct.Core.Properties.Settings.Default.autoscaleX) || (isY && PorphyStruct.Core.Properties.Settings.Default.autoscaleY))
             {
                 //find min & max automatically
-                foreach (ScatterSeries s in this.Series)
+                foreach (ScatterSeries s in Series)
                 {
-                    double series_min = ((List<AtomDataPoint>)s.ItemsSource).Min(dp => Convert.ToDouble(dp.GetType().GetProperty(val).GetValue(dp, null)));
-                    double series_max = ((List<AtomDataPoint>)s.ItemsSource).Max(dp => Convert.ToDouble(dp.GetType().GetProperty(val).GetValue(dp, null)));
+                    double series_min = ((IEnumerable<AtomDataPoint>)s.ItemsSource).Min(dp => Convert.ToDouble(dp.GetType().GetProperty(val).GetValue(dp, null)));
+                    double series_max = ((IEnumerable<AtomDataPoint>)s.ItemsSource).Max(dp => Convert.ToDouble(dp.GetType().GetProperty(val).GetValue(dp, null)));
                     min = Math.Min(series_min, min);
                     max = Math.Max(series_max, max);
                 }

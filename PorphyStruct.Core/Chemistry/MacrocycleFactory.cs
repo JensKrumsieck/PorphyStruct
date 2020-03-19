@@ -1,6 +1,6 @@
 ﻿using PorphyStruct.Chemistry.Macrocycles;
+using PorphyStruct.Core.Util;
 using PorphyStruct.Files;
-using System.Collections.Generic;
 using System.IO;
 
 namespace PorphyStruct.Chemistry
@@ -13,17 +13,17 @@ namespace PorphyStruct.Chemistry
         /// <param name="Atoms"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static Macrocycle Build(List<Atom> Atoms, Macrocycle.Type type)
+        public static Macrocycle Build(AsyncObservableCollection<Atom> Atoms, Macrocycle.Type type)
         {
-            switch (type)
+            return type switch
             {
-                case Macrocycle.Type.Corrole: return new Corrole(Atoms);
-                case Macrocycle.Type.Norcorrole: return new Norcorrole(Atoms);
-                case Macrocycle.Type.Porphyrin: return new Porphyrin(Atoms);
-                case Macrocycle.Type.Corrphycene: return new Corrphycene(Atoms);
-                case Macrocycle.Type.Porphycene: return new Porphycene(Atoms);
-                default: return null;
-            }
+                Macrocycle.Type.Corrole => new Corrole(Atoms),
+                Macrocycle.Type.Norcorrole => new Norcorrole(Atoms),
+                Macrocycle.Type.Porphyrin => new Porphyrin(Atoms),
+                Macrocycle.Type.Corrphycene => new Corrphycene(Atoms),
+                Macrocycle.Type.Porphycene => new Porphycene(Atoms),
+                _ => null,
+            };
         }
 
         /// <summary>
@@ -34,7 +34,21 @@ namespace PorphyStruct.Chemistry
         /// <returns></returns>
         public static Macrocycle Load(string path, Macrocycle.Type type)
         {
-            //handle file open
+            //get molecule
+            var molecule = Load(path);
+
+            Macrocycle cycle = Build(molecule.Atoms, type);
+            cycle.Title = Path.GetFileNameWithoutExtension(path);
+            return cycle;
+        }
+
+        /// <summary>
+        /// Loads Molecule
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static Molecule Load(string path)
+        {
             TextFile file;
             if (Path.GetExtension(path) == ".cif")
                 file = new CifFile(path);
@@ -45,12 +59,7 @@ namespace PorphyStruct.Chemistry
             else
                 file = new XYZFile(path);
             //get molecule
-            var molecule = file.GetMolecule();
-
-            Macrocycle cycle = Build(molecule.Atoms, type);
-            cycle.SetIsMacrocycle(type);
-            cycle.Title = Path.GetFileNameWithoutExtension(path);
-            return cycle;
+            return file.GetMolecule();
         }
     }
 }

@@ -73,7 +73,7 @@ namespace PorphyStruct.Core.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Segoe UI")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Arial")]
         public string defaultFont {
             get {
                 return ((string)(this["defaultFont"]));
@@ -241,7 +241,7 @@ namespace PorphyStruct.Core.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool showBox {
             get {
                 return ((bool)(this["showBox"]));
@@ -278,24 +278,12 @@ namespace PorphyStruct.Core.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Circle")]
-        public global::OxyPlot.MarkerType com1MarkerType {
+        public global::OxyPlot.MarkerType comMarkerType {
             get {
-                return ((global::OxyPlot.MarkerType)(this["com1MarkerType"]));
+                return ((global::OxyPlot.MarkerType)(this["comMarkerType"]));
             }
             set {
-                this["com1MarkerType"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Circle")]
-        public global::OxyPlot.MarkerType com2MarkerType {
-            get {
-                return ((global::OxyPlot.MarkerType)(this["com2MarkerType"]));
-            }
-            set {
-                this["com2MarkerType"] = value;
+                this["comMarkerType"] = value;
             }
         }
         
@@ -325,49 +313,13 @@ namespace PorphyStruct.Core.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#ff0000")]
-        public string color2 {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool backgroundColor {
             get {
-                return ((string)(this["color2"]));
+                return ((bool)(this["backgroundColor"]));
             }
             set {
-                this["color2"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#00ff40")]
-        public string color3 {
-            get {
-                return ((string)(this["color3"]));
-            }
-            set {
-                this["color3"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#0101DF")]
-        public string color4 {
-            get {
-                return ((string)(this["color4"]));
-            }
-            set {
-                this["color4"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#FF8000")]
-        public string color5 {
-            get {
-                return ((string)(this["color5"]));
-            }
-            set {
-                this["color5"] = value;
+                this["backgroundColor"] = value;
             }
         }
         
@@ -392,6 +344,42 @@ namespace PorphyStruct.Core.Properties {
             }
             set {
                 this["importPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool settingsCollapsed {
+            get {
+                return ((bool)(this["settingsCollapsed"]));
+            }
+            set {
+                this["settingsCollapsed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Default")]
+        public string ColorPalette {
+            get {
+                return ((string)(this["ColorPalette"]));
+            }
+            set {
+                this["ColorPalette"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        public double markerSize {
+            get {
+                return ((double)(this["markerSize"]));
+            }
+            set {
+                this["markerSize"] = value;
             }
         }
     }

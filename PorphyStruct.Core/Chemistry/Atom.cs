@@ -1,19 +1,20 @@
 ﻿using MathNet.Spatial.Euclidean;
 using OxyPlot;
+using PorphyStruct.Core.Util;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace PorphyStruct.Chemistry
 {
-    public class Atom : ICloneable
+    public class Atom : Bindable, ICloneable
     {
 
-        public string Identifier { get; set; }
-        public bool IsMacrocycle { get; set; }
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double Z { get; set; }
+        public string Identifier { get => Get<string>(); set => Set(value); }
+        public bool IsMacrocycle { get => Get<bool>(); set => Set(value); }
+        public double X { get => Get<double>(); set => Set(value); }
+        public double Y { get => Get<double>(); set => Set(value); }
+        public double Z { get => Get<double>(); set => Set(value); }
         public Element Element { get; set; }
 
         public string Type { get => Element.Symbol; }
@@ -27,11 +28,11 @@ namespace PorphyStruct.Chemistry
         /// <param name="z">Z Coordinate in Angstrom</param>
         public Atom(string identifier, double x, double y, double z)
         {
-            this.Identifier = identifier;
-            this.X = x;
-            this.Y = y;
-            this.Z = z;
-            this.Element = SetElement();
+            Identifier = identifier;
+            X = x;
+            Y = y;
+            Z = z;
+            Element = SetElement();
         }
 
         /// <summary>
@@ -48,10 +49,7 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         /// <param name="plane">Plane Object (MathNet.Spatial.Euclidean)</param>
         /// <returns>double</returns>
-        public double DistanceToPlane(Plane plane)
-        {
-            return plane.SignedDistanceTo(new Point3D(X, Y, Z));
-        }
+        public double DistanceToPlane(Plane plane) => plane.SignedDistanceTo(new Point3D(X, Y, Z));
 
         /// <summary>
         /// Calculates Distance between to atoms
@@ -59,28 +57,19 @@ namespace PorphyStruct.Chemistry
         /// <param name="a1"></param>
         /// <param name="a2"></param>
         /// <returns></returns>
-        public static double Distance(Atom a1, Atom a2)
-        {
-            return MathNet.Numerics.Distance.Euclidean(a1.XYZ(), a2.XYZ());
-        }
+        public static double Distance(Atom a1, Atom a2) => MathNet.Numerics.Distance.Euclidean(a1.XYZ(), a2.XYZ());
 
         /// <summary>
         /// get element by Identifier (C19 -> C)
         /// </summary>
         /// <returns>string</returns>
-        public Element SetElement()
-        {
-            return Element.Create(Regex.Match(Identifier, @"([A-Z][a-z]*)").Value);
-        }
+        public Element SetElement() => Element.Create(Regex.Match(Identifier, @"([A-Z][a-z]*)").Value);
 
         /// <summary>
         /// Indicates if this is a metal atom.
         /// </summary>
         /// <returns></returns>
-        public bool IsMetal
-        {
-            get => Metals.Contains(Type) || Identifier == "M";
-        }
+        public bool IsMetal => Metals.Contains(Type) || Identifier == "M";
 
         /// <summary>
         /// Indicates a bond
@@ -89,7 +78,7 @@ namespace PorphyStruct.Chemistry
         /// <returns></returns>
         public bool BondTo(Atom test)
         {
-            if (Atom.Distance(this, test) < (Element.Radius + test.Element.Radius) + 0.25)
+            if (Atom.Distance(this, test) < (Element.Radius + test.Element.Radius) + 0.25 && this != test)
                 return true;
             return false;
         }
@@ -113,16 +102,13 @@ namespace PorphyStruct.Chemistry
         /// get Color from  OxyAtomColor-Dictionary
         /// </summary>
         /// <returns>OxyPlot.OxyColor</returns>
-        public OxyColor OxyColor
-        {
-            get => this.Element.OxyColor;
-        }
+        public OxyColor OxyColor => Element.OxyColor;
 
 
         /// <summary>
         /// Radii of Atoms for 3D Visualisation
         /// </summary>
-        public double AtomRadius { get => Element.Radius; }
+        public double AtomRadius => Element.Radius;
 
         //colors for bonds
         public static OxyColor[] modesMultiColor = new OxyColor[]
@@ -133,32 +119,20 @@ namespace PorphyStruct.Chemistry
                 OxyColor.FromAColor(75, OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color1)),
                 OxyColor.FromAColor(75, OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color1)),
         };
-        public static OxyColor[] modesSingleColor = new OxyColor[]
-        {
-                OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color1),
-                OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color2),
-                OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color3),
-                OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color4),
-                OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color5),
-        };
 
         /// <summary>
         /// clones an atom
         /// </summary>
         /// <returns></returns>
-        public object Clone()
-        {
-            return new Atom(Identifier, X, Y, Z);
-
-        }
+        public object Clone() => new Atom(Identifier, X, Y, Z);
 
         /// <summary>
         /// creates export Text for Atom
         /// </summary>
-        public string ExportText
-        {
-            get => Identifier + "/" + Type + "\t" + X.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + Y.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" + Z.ToString("N8", System.Globalization.CultureInfo.InvariantCulture);
-        }
+        public string ExportText => Identifier + "/" + Type + "\t" +
+            X.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" +
+            Y.ToString("N8", System.Globalization.CultureInfo.InvariantCulture) + "\t" +
+            Z.ToString("N8", System.Globalization.CultureInfo.InvariantCulture);
 
         /// <summary>
         /// returns number of identifier
@@ -175,17 +149,13 @@ namespace PorphyStruct.Chemistry
         /// <summary>
         /// return Identifiers Suffix
         /// </summary>
-        public string Suffix
-        {
-            get => Regex.Match(Identifier, @"\D$").Value;
-        }
+        public string Suffix => Regex.Match(Identifier, @"\D$").Value;
 
         /// <summary>
         /// Prints Identifier
         /// </summary>
         /// <returns></returns>
         public override string ToString() => Identifier;
-
     }
 
 }

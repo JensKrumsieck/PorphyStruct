@@ -75,7 +75,7 @@ namespace PorphyStruct.Chemistry
         /// <summary>
         /// get Color for OxyPlot
         /// </summary>
-        public OxyColor OxyColor { get => OxyColor.Parse(this.Color); }
+        public OxyColor OxyColor { get => OxyColor.Parse(Color); }
 
     }
 }

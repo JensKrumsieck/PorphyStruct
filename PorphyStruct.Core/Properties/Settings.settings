@@ -15,7 +15,7 @@
       <Value Profile="(Default)">14</Value>
     </Setting>
     <Setting Name="defaultFont" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Segoe UI</Value>
+      <Value Profile="(Default)">Arial</Value>
     </Setting>
     <Setting Name="pngWidth" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">2000</Value>
@@ -57,7 +57,7 @@
       <Value Profile="(Default)">{0} [{1}]</Value>
     </Setting>
     <Setting Name="showBox" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="autoscaleX" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -65,10 +65,7 @@
     <Setting Name="dontMark" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="com1MarkerType" Type="OxyPlot.MarkerType" Scope="User">
-      <Value Profile="(Default)">Circle</Value>
-    </Setting>
-    <Setting Name="com2MarkerType" Type="OxyPlot.MarkerType" Scope="User">
+    <Setting Name="comMarkerType" Type="OxyPlot.MarkerType" Scope="User">
       <Value Profile="(Default)">Circle</Value>
     </Setting>
     <Setting Name="singleColor" Type="System.Boolean" Scope="User">
@@ -77,23 +74,23 @@
     <Setting Name="color1" Type="System.String" Scope="User">
       <Value Profile="(Default)">#000000</Value>
     </Setting>
-    <Setting Name="color2" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#ff0000</Value>
-    </Setting>
-    <Setting Name="color3" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#00ff40</Value>
-    </Setting>
-    <Setting Name="color4" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#0101DF</Value>
-    </Setting>
-    <Setting Name="color5" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#FF8000</Value>
+    <Setting Name="backgroundColor" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="useImportExportPath" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="importPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="settingsCollapsed" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ColorPalette" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Default</Value>
+    </Setting>
+    <Setting Name="markerSize" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">6</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -1,17 +1,17 @@
 ﻿using HelixToolkit.Wpf;
-using MaterialDesignThemes.Wpf;
 using MathNet.Spatial.Euclidean;
-using OxyPlot.Series;
 using PorphyStruct.Chemistry;
+using PorphyStruct.Chemistry.Data;
 using PorphyStruct.Util;
+using PorphyStruct.ViewModel;
 using PorphyStruct.Windows;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 
 namespace PorphyStruct
@@ -21,109 +21,39 @@ namespace PorphyStruct
     /// </summary>
     public partial class MainWindow : Window
     {
-        public Macrocycle cycle;
-        private Macrocycle old;
-        public double normFac = 0;
-        private int oldIndex = -1;
+        public MainViewModel viewModel;
 
-        public bool normalize, hasDifference, invert;
-
-        public Simulation simulation = null;
-        public Macrocycle.Type type = Macrocycle.Type.Corrole;
-
-        public string comp1Path, comp2Path, path;
-
-        public MainWindow() => InitializeComponent();
+        public MainWindow()
+        {
+            //CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
+            InitializeComponent();
+        }
 
         /// <summary>
         /// Analyze current Macrocycle and print result to PlotView
         /// </summary>
         public void Analyze()
         {
-            //set up default plot model
-            OxyPlotOverride.StandardPlotModel pm = new OxyPlotOverride.StandardPlotModel();
-
-            //do analysis
-            cycle.GetDataPoints();
-
-            //normalisation
-            if (normalize)
-            {
-                normFac = MathUtil.GetNormalizationFactor(cycle.dataPoints);
-                cycle.dataPoints = cycle.dataPoints.Normalize();
-            }
-            //invert
-            if (invert) cycle.dataPoints = cycle.dataPoints.Invert();
-
-            //handle sim
-            if (simulation != null)
-            {
-                simulation.Normalize(normalize, normFac);
-                simulation.Invert(invert);
-                simulation.Paint(pm);
-            }
-            //paint difference
-            if (hasDifference) cycle.GetDifference(simulation).Paint(pm, "Diff");
-            //paint comparison
-            if (!String.IsNullOrEmpty(comp1Path)) CompareWindow.GetData(comp1Path).Paint(pm, "Com1");
-            if (!String.IsNullOrEmpty(comp2Path)) CompareWindow.GetData(comp2Path).Paint(pm, "Com2");
-            //paint exp
-            cycle.Paint(pm, MacrocyclePainter.PaintMode.Exp);
-
-            //handle dont mark
-            foreach (ScatterSeries s in pm.Series) ((List<AtomDataPoint>)s.ItemsSource).Where(dp => Core.Properties.Settings.Default.dontMark.Split(',').Contains(dp.atom.Identifier) || Core.Properties.Settings.Default.dontMark.Split(',').Contains(dp.atom.Type)).ToList().ForEach(dp => dp.Size = 0);
-
-            displaceView.Model = pm;
-            pm.Scale(pm.yAxis, true, normalize);
-            pm.Scale(pm.xAxis);
-            //update simstack
-            UpdateStack();
+            //set readonly to get away from the add/edit error
+            coordGrid.IsReadOnly = !coordGrid.IsReadOnly;
+            viewModel.Analyze();
+            displaceView.Model = viewModel.Model;
+            //enable simulations
+            SimButton.IsEnabled = true;
+            coordGrid.IsReadOnly = !coordGrid.IsReadOnly;
         }
         /// <summary>
-        /// Update Sim WrapPanel
+        /// Update Properties
         /// </summary>
         public void UpdateStack()
         {
-            simStack.Children.Clear();
-            if (simulation != null)
-                foreach (string key in simulation.par.Keys) simStack.Children.Add(new Chip
-                {
-                    Content = key + ": " + simulation.par[key].ToString(System.Globalization.CultureInfo.InvariantCulture) + "%",
-                    Margin = new Thickness(0, 0, 4, 4),
-                    FontSize = 8
-                });
+            var flattened = viewModel.CycleProperties.SelectMany(x => x.Value?.Select(y => new { x.Key, y.Name, y.Value })).ToList();
+            Cycle_Properties.ItemsSource = flattened;
 
-            if (coordGrid.ItemsSource != null)
-            {
-                //update plane coordinates
-                Plane pl = cycle.GetMeanPlane();
-                UnitVecTB.Text = $"({pl.A.ToString("G3")}, {pl.B.ToString("G3")}, {pl.C.ToString("G3")})";
-                DistTB.Text = pl.D.ToString("G3");
-            }
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(Cycle_Properties.ItemsSource);
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("Key");
+            view.GroupDescriptions.Add(groupDescription);
         }
-
-
-        /// <summary>
-        /// Update 3D Model
-        /// </summary>
-        /// <param name="markSelection"></param>
-        /// <param name="force"></param>
-        private void UpdateMolView(bool markSelection = false, bool force = false)
-        {
-            if ((old != null && !cycle.Atoms.SequenceEqual(old.Atoms)) || (markSelection && oldIndex != coordGrid.SelectedIndex) || force)
-            {
-                old = cycle;
-                oldIndex = coordGrid.SelectedIndex;
-                MolViewer.Children.Clear();
-                MolViewer.Children.Add(new DefaultLights());
-                Atom selected = markSelection ? (Atom)coordGrid.SelectedItem : null;
-
-                //create 3d model
-                System.Windows.Media.Media3D.ModelVisual3D model = new System.Windows.Media.Media3D.ModelVisual3D() { Content = cycle.Paint3D(selected) };
-                MolViewer.Children.Add(model);
-            }
-        }
-
 
         /// <summary>
         /// Centers Molecule into origin and updates camera to bestview
@@ -131,48 +61,14 @@ namespace PorphyStruct
         public void Center()
         {
             //Center Molecule
-            cycle.Center(s => s.IsMacrocycle);
-
-            //update list
-            coordGrid.ItemsSource = cycle.Atoms.OrderByDescending(s => s.IsMacrocycle).ToList();
-            coordGrid.Items.Refresh();
-            //update 3d image
-            this.UpdateMolView(false, true);
+            viewModel.Cycle.Center(s => s.IsMacrocycle);
             //update camera
-            Plane pl = cycle.GetMeanPlane();
+            Plane pl = viewModel.Cycle.GetMeanPlane();
             var normal = new System.Windows.Media.Media3D.Point3D(pl.A, pl.B, pl.C);
             while (normal.DistanceTo(Win32Util.Origin) < 25) normal = normal.Multiply(1.1);
             MolViewer.CameraController.CameraPosition = normal;
             MolViewer.CameraController.CameraTarget = Win32Util.Origin;
         }
-
-        /// <summary>
-        /// Handle Updated Grid
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CoordGrid_Updated(object sender, EventArgs e) => this.UpdateMolView(true);
-
-
-        /// <summary>
-        /// Handle Window Loaded
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            //subscribe to event
-            var dpd = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(DataGrid));
-            if (dpd != null) dpd.AddValueChanged(coordGrid, CoordGrid_Updated);
-        }
-
-        /// <summary>
-        /// Handle Refresh Button Click
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Refresh_Click(object sender, RoutedEventArgs e) { if (InvertButton.IsEnabled) UpdateMolView(false, true); }
-
 
         /// <summary>
         /// Handle Open File Button Click
@@ -188,32 +84,37 @@ namespace PorphyStruct
             {
                 displaceView.Background = Brushes.White;
 
-                path = wi.FileName;
-                type = (Macrocycle.Type)wi.Type;
-                this.Title = "Structural Analysis of Porphyrinoids (PorphyStruct) - " + type.ToString() + " Mode";
+                //drive the reset train
+                foreach (var child in this.FindVisualChildren<Button>())
+                    child.IsEnabled = !child.Name.Contains("Sim");
 
-                //reset gui elements
-                AnalButton.IsEnabled = RefMolButton.IsEnabled = CenterMolButton.IsEnabled = DetectMolButton.IsEnabled = NormalizeButton.IsEnabled = InvertButton.IsEnabled = SaveButton.IsEnabled = SimButton.IsEnabled = CompButton.IsEnabled = true;
-                normalize = invert = hasDifference = DelSimButton.IsEnabled = DiffSimButton.IsEnabled = false;
-                NormalizeButton.Foreground = InvertButton.Foreground = DiffSimButton.Foreground = CompButton.Foreground = Brushes.Black;
+                viewModel = new MainViewModel(wi.FileName, (Macrocycle.Type)wi.Type);
+                DataContext = viewModel;
+                viewModel.PropertyChanged += ViewModel_PropertyChanged;
+
+                Title = $"Structural Analysis of Porphyrinoids (PorphyStruct) - {viewModel.Type} Mode";
 
                 //clear plotview
                 displaceView.Model = null;
                 displaceView.InvalidatePlot();
 
-                //clear sim
-                this.simulation = null;
-                //update simstack
-                UpdateStack();
+                //set properties initially
+                viewModel.UpdateProperties();
+            }
+        }
 
-                //reset values
-                normFac = 0;
-                oldIndex = -1;
-                comp1Path = comp2Path = "";
-
-                cycle = MacrocycleFactory.Load(path, type);
-                //add to grid
-                coordGrid.ItemsSource = cycle.Atoms.OrderByDescending(s => s.IsMacrocycle).ToList();
+        /// <summary>
+        /// Check for changed properties that are not tracked by bindings.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(viewModel.CycleProperties):
+                    UpdateStack();
+                    break;
             }
         }
 
@@ -222,22 +123,14 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Analyze_Click(object sender, RoutedEventArgs e)
-        {
-            if (!AnalButton.IsEnabled) return;
-            //get the current data from source
-            cycle.Atoms = ((List<Atom>)coordGrid.ItemsSource).OrderBy(s => s.IsMacrocycle).ToList();
-            //TODO: validate cycle here
-            //call analyze void
-            Analyze();
-        }
+        private void Analyze_Click(object sender, RoutedEventArgs e) => Analyze();
 
         /// <summary>
         /// Handle Center Button Click
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CenterMolButton_Click(object sender, RoutedEventArgs e) => this.Center();
+        private void CenterMolButton_Click(object sender, RoutedEventArgs e) => Center();
 
 
         /// <summary>
@@ -248,19 +141,8 @@ namespace PorphyStruct
         public void NormalizeButton_Click(object sender, RoutedEventArgs e)
         {
             if (!NormalizeButton.IsEnabled) return;
-            //set false
-            if (this.normalize)
-            {
-                this.normalize = false;
-                this.NormalizeButton.Foreground = Brushes.Black;
-            }
-            else
-            {
-                this.normalize = true;
-                this.NormalizeButton.Foreground = Brushes.CornflowerBlue;
-            }
-            //reanalyze
-            this.Analyze();
+            viewModel.Normalize = !viewModel.Normalize;
+            Analyze();
         }
 
         /// <summary>
@@ -268,7 +150,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Save_Click(object sender, RoutedEventArgs e) { if (SaveButton.IsEnabled) new SaveWindow(cycle, simulation).ShowDialog(); }
+        private void Save_Click(object sender, RoutedEventArgs e) => new SaveWindow().ShowDialog();
 
         /// <summary>
         /// Handle Invert Button Click
@@ -278,19 +160,8 @@ namespace PorphyStruct
         private void InvertButton_Click(object sender, RoutedEventArgs e)
         {
             if (!InvertButton.IsEnabled) return;
-            //set false
-            if (this.invert)
-            {
-                this.invert = false;
-                this.InvertButton.Foreground = Brushes.Black;
-            }
-            else
-            {
-                this.invert = true;
-                this.InvertButton.Foreground = Brushes.Magenta;
-            }
-            //reanalyze
-            this.Analyze();
+            viewModel.Invert = !viewModel.Invert;
+            Analyze();
         }
 
         /// <summary>
@@ -300,14 +171,14 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void SimButton_Click(object sender, RoutedEventArgs e)
         {
+            //drop metal data
+            if (viewModel.Cycle.HasMetal(true))
+                viewModel.Cycle.Atoms.Where(s => s.IsMacrocycle && s.IsMetal).ToList().ForEach(s => s.IsMacrocycle = false);
             //normalize if not done yet!
-            if (!normalize)
+            if (!viewModel.Normalize)
                 NormalizeButton_Click(sender, e);
-            if (simulation != null)
-            {
-                new SimWindow(cycle, displaceView, simulation).Show();
-            }
-            else new SimWindow(cycle, displaceView).Show();
+
+            new SimWindow().Show();
         }
 
         /// <summary>
@@ -324,14 +195,12 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void DelSimButton_Click(object sender, RoutedEventArgs e)
         {
-            this.simulation = null;
             DelSimButton.IsEnabled = false;
-            hasDifference = false;
+            viewModel.HasDifference = false;
             DiffSimButton.IsEnabled = false;
-            this.DiffSimButton.Foreground = Brushes.Black;
-            this.Analyze();
+            viewModel.Cycle.DataProviders.RemoveAll(s => s.DataType == DataType.Simulation);
+            Analyze();
         }
-
         /// <summary>
         /// Handle Diff Button Click
         /// </summary>
@@ -339,18 +208,8 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void DiffSimButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!hasDifference)
-            {
-                hasDifference = true;
-                this.Analyze();
-                this.DiffSimButton.Foreground = Brushes.IndianRed;
-            }
-            else
-            {
-                hasDifference = false;
-                this.Analyze();
-                this.DiffSimButton.Foreground = Brushes.Black;
-            }
+            viewModel.HasDifference = !viewModel.HasDifference;
+            Analyze();
         }
 
         /// <summary>
@@ -368,24 +227,8 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void CompButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Analyze();
             CompareWindow cw = new CompareWindow();
-            cw.comparison1Path.Text = comp1Path;
-            cw.comparison2Path.Text = comp2Path;
-            cw.ShowDialog();
-            if (cw.DialogResult.HasValue && cw.DialogResult.Value)
-            {
-                comp1Path = cw.comparison1Path.Text;
-                comp2Path = cw.comparison2Path.Text;
-                CompButton.Foreground = Brushes.CadetBlue;
-            }
-            else
-            {
-                comp1Path = "";
-                comp2Path = "";
-                CompButton.Foreground = Brushes.Black;
-            }
-            this.Analyze();
+            cw.Show();
         }
 
         /// <summary>
@@ -393,12 +236,12 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Detect_Click(object sender, RoutedEventArgs e)
+        private async void Detect_Click(object sender, RoutedEventArgs e)
         {
-            cycle.Detect();
-            //update 3d image
-            this.UpdateMolView();
-            coordGrid.Items.Refresh();
+            //Block UI Interaction during Detect
+            IsEnabled = false;
+            await Task.Run(viewModel.Cycle.Detect);
+            IsEnabled = true;
         }
     }
 }

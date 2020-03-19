@@ -11,20 +11,11 @@ namespace PorphyStruct.Util
     public static class MathUtil
     {
         /// <summary>
-        /// Converts the xyz into Point3D because some methods need math net spatial...
-        /// </summary>
-        /// <returns></returns>
-        public static IEnumerable<Point3D> ToPoint3D(this IEnumerable<Atom> Atoms)
-        {
-            foreach (Atom atom in Atoms) yield return new Point3D(atom.X, atom.Y, atom.Z);
-        }
-
-        /// <summary>
         /// gets highest Y Value (or lowest)
         /// </summary>
         /// <param name="data">AtomDataPoints</param>
         /// <returns>highest/lowest Y Value</returns>
-        public static double GetNormalizationFactor(List<AtomDataPoint> data)
+        public static double GetNormalizationFactor(this IEnumerable<AtomDataPoint> data)
         {
             //find min & max
             double min = 0;
@@ -54,7 +45,7 @@ namespace PorphyStruct.Util
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static List<AtomDataPoint> Normalize(this List<AtomDataPoint> data)
+        public static IEnumerable<AtomDataPoint> Normalize(this IEnumerable<AtomDataPoint> data)
         {
             double fac = GetNormalizationFactor(data);
             return Factor(data, fac).ToList();
@@ -65,7 +56,7 @@ namespace PorphyStruct.Util
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static List<AtomDataPoint> Invert(this List<AtomDataPoint> data) => Factor(data, -1).ToList();
+        public static IEnumerable<AtomDataPoint> Invert(this IEnumerable<AtomDataPoint> data) => Factor(data, -1).ToList();
 
         /// <summary>
         /// multiply by given factor
@@ -73,7 +64,7 @@ namespace PorphyStruct.Util
         /// <param name="data"></param>
         /// <param name="fac"></param>
         /// <returns></returns>
-        public static IEnumerable<AtomDataPoint> Factor(this List<AtomDataPoint> data, double fac)
+        public static IEnumerable<AtomDataPoint> Factor(this IEnumerable<AtomDataPoint> data, double fac)
         {
             foreach (AtomDataPoint dp in data) yield return new AtomDataPoint(dp.X, dp.Y / fac, dp.atom);
         }
@@ -92,6 +83,48 @@ namespace PorphyStruct.Util
             for (int i = 0; i < data2.Count(); i++) yield return new AtomDataPoint(data1.ElementAt(i).X, (data1.ElementAt(i).Y - data2.ElementAt(i).Y), data1.ElementAt(i).atom);
         }
 
+        /// <summary>
+        /// Mean Displacement
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static double MeanDisplacement(this IEnumerable<AtomDataPoint> data) => Math.Sqrt(data.Sum(s => Math.Pow(s.Y, 2)));
+
+        // <summary>
+        /// Calculate the Derivative of given DataPoints
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static double[] Derive(this List<AtomDataPoint> data)
+        {
+            double[] derivative = new double[data.Count];
+            for (int i = 0; i < data.Count; i++)
+            {
+                if (i != 0)
+                    derivative[i] = (data[i].Y - data[i - 1].Y) / (data[i].X - data[i - 1].X);
+                else
+                    derivative[i] = 0;
+            }
+            return derivative;
+        }
+
+        /// <summary>
+		/// Calculate the integral of given DataPoints
+		/// </summary>
+		/// <param name="data"></param>
+		/// <returns></returns>
+		public static double[] Integrate(this double[] data)
+        {
+            double[] integral = new double[data.Length];
+            for (int i = 0; i < data.Length; i++)
+            {
+                if (i != 0)
+                    integral[i] = integral[i - 1] + data[i];
+                else
+                    integral[i] = data[i];
+            }
+            return integral;
+        }
 
         /// <summary>
         /// Vector Crossproduct for MathNet Numerics
@@ -109,19 +142,6 @@ namespace PorphyStruct.Util
         }
 
         /// <summary>
-        /// returns difference between exp and sim
-        /// </summary>
-        /// <returns></returns>
-        public static Simulation GetDifference(this Macrocycle cycle, Simulation sim)
-        {
-            Macrocycle difference = (Macrocycle)cycle.Clone();
-            difference.dataPoints = cycle.dataPoints.Where(s => !s.atom.IsMetal).Difference(sim.cycle.dataPoints).ToList();
-            return new Simulation(difference);
-        }
-
-
-
-        /// <summary>
         /// calculates the absolute sum
         /// </summary>
         /// <param name="d"></param>
@@ -135,6 +155,75 @@ namespace PorphyStruct.Util
         public static IEnumerable<double> Normalize(this IEnumerable<double> input)
         {
             foreach (var d in input) yield return d / input.AbsSum();
+        }
+
+        /// <summary>
+        /// Calculates Dihedral
+        /// </summary>
+        /// <param name="atoms"></param>
+        /// <returns></returns>
+        public static double Dihedral(IList<Atom> atoms)
+        {
+            if (atoms.Count() != 4) return 0;
+            //build normalized vectors
+
+            Vector<double> b1 = (-(DenseVector.OfArray(atoms[0].XYZ()) - DenseVector.OfArray(atoms[1].XYZ()))).Normalize(2);
+            Vector<double> b2 = (DenseVector.OfArray(atoms[1].XYZ()) - DenseVector.OfArray(atoms[2].XYZ())).Normalize(2);
+            Vector<double> b3 = (DenseVector.OfArray(atoms[3].XYZ()) - DenseVector.OfArray(atoms[2].XYZ())).Normalize(2);
+
+            //calculate crossproducts
+            var c1 = MathUtil.CrossProduct(b1, b2);
+            var c2 = MathUtil.CrossProduct(b2, b3);
+            var c3 = MathUtil.CrossProduct(c1, b2);
+
+            //get x&y as dotproducts 
+            var x = c1.DotProduct(c2);
+            var y = c3.DotProduct(c2);
+
+            return 180.0 / Math.PI * Math.Atan2(y, x);
+        }
+
+
+        /// <summary>
+        /// Returns the Angle by Identifiers
+        /// </summary>
+        /// <param name="atoms"></param>
+        /// <returns></returns>
+        public static double Angle(IList<Atom> atoms)
+        {
+            if (atoms.Count() != 3) return 0;
+            Vector<double> b1 = (DenseVector.OfArray(atoms[0].XYZ()) - DenseVector.OfArray(atoms[1].XYZ())).Normalize(2);
+            Vector<double> b2 = (DenseVector.OfArray(atoms[2].XYZ()) - DenseVector.OfArray(atoms[1].XYZ())).Normalize(2);
+
+            var x = b1.DotProduct(b2);
+
+            return 180 / Math.PI * Math.Acos(x);
+        }
+
+        /// <summary>
+        /// Calculates an angle between two planes
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <returns></returns>
+        public static double Angle(Plane p1, Plane p2)
+        {
+            var d = Math.Abs((p1.A * p2.A) + (p1.B * p2.B) + (p1.C * p2.C));
+            var e1 = Math.Pow(p1.A, 2) + Math.Pow(p1.B, 2) + Math.Pow(p1.C, 2);
+            var e2 = Math.Pow(p2.A, 2) + Math.Pow(p2.B, 2) + Math.Pow(p2.C, 2);
+            var x = Math.Acos(d / (Math.Sqrt(e1) * Math.Sqrt(e2)));
+            return 180 / Math.PI * x;
+        }
+
+        /// <summary>
+        /// List Wrapper for Atom.Distance with IList to fit the delegate
+        /// </summary>
+        /// <param name="atoms"></param>
+        /// <returns></returns>
+        public static double Distance(IList<Atom> atoms)
+        {
+            if (atoms.Count() != 2) return 0;
+            return Atom.Distance(atoms[0], atoms[1]);
         }
     }
 }

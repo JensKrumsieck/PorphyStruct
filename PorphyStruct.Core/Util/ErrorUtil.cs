@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PorphyStruct.Simulations
+namespace PorphyStruct.Util
 {
-    public static class Error
+    public static class ErrorUtil
     {
 
         /// <summary>
@@ -13,7 +13,7 @@ namespace PorphyStruct.Simulations
         /// <param name="x1"></param>
         /// <param name="x2"></param>
         /// <returns></returns>
-        public static double FromDouble(double x1, double x2)
+        public static double ErrorFromDouble(double x1, double x2)
         {
             return Math.Pow(x1 - x2, 2);
         }
@@ -24,12 +24,12 @@ namespace PorphyStruct.Simulations
         /// <param name="arr1"></param>
         /// <param name="arr2"></param>
         /// <returns></returns>
-        public static double FromArray(IEnumerable<double> arr1, IEnumerable<double> arr2)
+        public static double ErrorFromArray(IEnumerable<double> arr1, IEnumerable<double> arr2)
         {
             //if unequal lenght->infinity
             if (arr1.Count() != arr2.Count())
                 return double.PositiveInfinity;
-            return Math.Sqrt(arr1.Zip(arr2, (a, b) => FromDouble(a, b)).Sum()) / arr1.Count();
+            return Math.Sqrt(arr1.Zip(arr2, (a, b) => ErrorFromDouble(a, b)).Sum()) / arr1.Count();
         }
     }
 }

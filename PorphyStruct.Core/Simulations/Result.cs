@@ -1,4 +1,7 @@
-﻿using System;
+﻿using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
+using PorphyStruct.Chemistry;
+using PorphyStruct.Util;
 
 namespace PorphyStruct.Simulations
 {
@@ -20,14 +23,26 @@ namespace PorphyStruct.Simulations
             this.Error = Error;
         }
 
-        internal double MeanDisplacement()
+        /// <summary>
+        /// Caclulate the resulting conformation from given parameters
+        /// </summary>
+        /// <param name="cycle"></param>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public static Result Calculate(Macrocycle cycle, double[] param)
         {
-            double sum = 0;
-            foreach (double d in Conformation)
-            {
-                sum += Math.Pow(d, 2);
-            }
-            return Math.Sqrt(sum);
+            Matrix<double> D = Displacements.DisplacementMatrix(cycle.type, param.Length);
+            Vector<double> C = D * DenseVector.OfArray(param);
+            //normalize conformation vector
+            var c = C.Normalize(double.PositiveInfinity).ToArray();
+
+            double[] data = cycle.DataPoints.ToDoubleArray();
+
+            return new Result(c, param, new double[] {
+                ErrorUtil.ErrorFromArray(data, c),
+                ErrorUtil.ErrorFromArray(cycle.DataPoints.Derive(), c.ToAtomDataPoints(cycle.DataPoints).Derive()),
+                ErrorUtil.ErrorFromArray(data.Integrate(), c.Integrate())
+                });
         }
     }
 }

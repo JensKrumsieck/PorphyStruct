@@ -1,23 +1,45 @@
-﻿using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.LinearAlgebra.Double;
-using MathNet.Spatial.Euclidean;
+﻿using MathNet.Spatial.Euclidean;
 using OxyPlot;
 using OxyPlot.Annotations;
+using PorphyStruct.Chemistry.Data;
+using PorphyStruct.Chemistry.Properties;
+using PorphyStruct.Core.Util;
 using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PorphyStruct.Chemistry
 {
     public abstract class Macrocycle : Molecule, ICloneable
     {
-        public Macrocycle(List<Atom> Atoms) : base(Atoms) { }
+        public Macrocycle(AsyncObservableCollection<Atom> Atoms) : base(Atoms)
+        {
+            if (!IsValid) SetIsMacrocycle(type);
+
+            if (HasMetal(false))
+            {
+                PropertyProviders.Add(new MetalAngles(ByIdentifier, Metal));
+                PropertyProviders.Add(new MetalDistances(Metal, Neighbors(Metal).ToList()));
+                PropertyProviders.Add(new PlaneDistances(Atoms));
+                PropertyProviders.Add(new InterplanarAngle(ByIdentifier, Metal));
+            }
+            PropertyProviders.Add(new DefaultDihedrals(ByIdentifier));
+            PropertyProviders.Add(new DefaultDistances(ByIdentifier));
+        }
 
         /// <summary>
-        /// Current Data Points
+        /// PropertyProviders
         /// </summary>
-        public List<AtomDataPoint> dataPoints = new List<AtomDataPoint>();
+        public List<IPropertyProvider> PropertyProviders { get; set; } = new List<IPropertyProvider>();
+
+        /// <summary>
+        /// The Datapoint providers
+        /// </summary>
+        public ObservableCollection<IAtomDataPointProvider> DataProviders { get; set; } = new ObservableCollection<IAtomDataPointProvider>();
+
         /// <summary>
         /// Bonds of Macrocycle by Identifiers
         /// </summary>
@@ -31,18 +53,62 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         public abstract string[] AlphaAtoms { get; }
 
+        public List<AtomDataPoint> DataPoints => DataProviders.Where(s => s.DataType == DataType.Experimental).FirstOrDefault()?.DataPoints.ToList();
+
         /// <summary>
         /// Multipliers for C-Atom positioning
         /// </summary>
         public abstract Dictionary<string, double> Multiplier { get; }
 
-        /// <summary>
-        /// Dihedrals of Macrocylce
-        /// </summary>
-        public abstract List<string[]> Dihedrals { get; }
-
         public enum Type { Corrole, Porphyrin, Norcorrole, Corrphycene, Porphycene };
-        public virtual Macrocycle.Type type { get; }
+        public virtual Type type { get; }
+
+        /// <summary>
+        /// Returns Cyclic Properties
+        /// </summary>
+        public IEnumerable<KeyValuePair<string, IEnumerable<Property>>> Properties
+        {
+            get
+            {
+                foreach (var propertyProvider in PropertyProviders)
+                    yield return new KeyValuePair<string, IEnumerable<Property>>(propertyProvider.Type.ToString(), propertyProvider.CalculateProperties());
+            }
+        }
+
+        /// <summary>
+        /// Paints all Data
+        /// </summary>
+        /// <param name="Model"></param>
+        public void Paint(PlotModel Model)
+        {
+            DataProviders.Sort(s => s.Priority);
+            foreach (var dataProvider in DataProviders)
+                MacrocyclePainter.Paint(this, Model, dataProvider);
+        }
+
+        /// <summary>
+        /// Normalizes all Data
+        /// </summary>
+        public void Normalize(bool normalize = true)
+        {
+            foreach (var dataProvider in DataProviders)
+            {
+                if (normalize && !dataProvider.Normalized || !normalize && dataProvider.Normalized)
+                    dataProvider.Normalize();
+            }
+        }
+
+        /// <summary>
+        /// Inverts all Data
+        /// </summary>
+        public void Invert(bool invert = true)
+        {
+            foreach (var dataProvider in DataProviders)
+            {
+                if (invert && !dataProvider.Inverted || !invert && dataProvider.Inverted)
+                    dataProvider.Invert();
+            }
+        }
 
         /// <summary>
         /// Gets the centroid of this Macrocycle
@@ -69,7 +135,7 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         /// <param name="a"></param>
         /// <returns>boolean</returns>
-        private bool isAlpha(Atom a) => AlphaAtoms.Contains(a.Identifier) ? true : false;
+        private bool IsAlpha(Atom a) => AlphaAtoms.Contains(a.Identifier) ? true : false;
 
         /// <summary>
         /// gets next alpha position for distance measuring
@@ -84,22 +150,46 @@ namespace PorphyStruct.Chemistry
         }
 
         /// <summary>
+        /// Validates Configuration
+        /// </summary>
+        private bool Validate
+        {
+            get
+            {
+                if (Atoms.Where(a => a.IsMacrocycle).Count() != RingAtoms.Count) return false; //count mismatch
+                foreach (string id in RingAtoms)
+                {
+                    if (Atoms.Where(a => a.IsMacrocycle && a.Identifier == id).Count() != 1)
+                        return false; //identifier missing
+                }
+                foreach (var b in Bonds)
+                {
+                    if (!IsValidBond(ByIdentifier(b.Item1, true), ByIdentifier(b.Item2, true)) || !ByIdentifier(b.Item1, true).BondTo(ByIdentifier(b.Item2, true)))
+                        return false; //Bond is missing
+                }
+                return true;
+            }
+        }
+        /// <summary>
+        /// public validation boolean
+        /// </summary>
+        public bool IsValid
+        {
+            get
+            {
+                Set(Validate);
+                return Get<bool>();
+            }
+        }
+
+        /// <summary>
         /// Method for Datapoint calculation //rewritten
         /// </summary>
         /// <returns></returns>
         public virtual IEnumerable<AtomDataPoint> CalculateDataPoints()
         {
-            //check if every atom is present in configuration
-            foreach (string id in RingAtoms)
-            {
-                if (Atoms.FindAll(s => s.Identifier == id && s.IsMacrocycle).Count != 1)
-                {
-                    //System.Windows.Forms.MessageBox.Show($"Found Issues with Atom {id}! Please check your configuration.");
-                    yield break;
-                }
-            }
             //reorder Atoms
-            Atoms = Atoms.OrderBy(s => RingAtoms.IndexOf(s.Identifier)).ToList();
+            Atoms = new AsyncObservableCollection<Atom>(Atoms.OrderBy(s => RingAtoms.IndexOf(s.Identifier)));
 
             //current alpha-alpha distance
             double distance = 0;
@@ -114,10 +204,10 @@ namespace PorphyStruct.Chemistry
                 if (a.Type == "N") xCoord = fixPoint + distance / 2;
 
                 //starts with C1 which is alpha per definition, so refresh distance every alpha atom.
-                if (isAlpha(a) && GetNextAlpha(a) != null) distance = Atom.Distance(a, GetNextAlpha(a));
+                if (IsAlpha(a) && GetNextAlpha(a) != null) distance = Atom.Distance(a, GetNextAlpha(a));
 
                 //alpha atoms are fixpoints
-                if (isAlpha(a)) fixPoint = xCoord;
+                if (IsAlpha(a)) fixPoint = xCoord;
 
                 yield return new AtomDataPoint(xCoord, a.DistanceToPlane(GetMeanPlane()), a);
             }
@@ -126,84 +216,47 @@ namespace PorphyStruct.Chemistry
         /// Return the cycle's datapoints
         /// </summary>
         /// <returns>AtomDataPoints</returns>
-        public List<AtomDataPoint> GetDataPoints()
+        public void GetDataPoints()
         {
-            dataPoints.Clear();
-            dataPoints.AddRange(CalculateDataPoints());
+            //delete provider
+            DataProviders.RemoveAll(s => s.DataType == DataType.Experimental);
+            PropertyProviders.RemoveAll(s => s.GetType() == typeof(ExperimentalData));
 
-            if (HasMetal) dataPoints.Add(new AtomDataPoint(
-                    (dataPoints.First().X + dataPoints.Last().X) / 2,
-                    GetMetal().DistanceToPlane(GetMeanPlane()),
-                    GetMetal()));
+            List<AtomDataPoint> data = CalculateDataPoints().ToList();
 
-            return dataPoints;
+            if (HasMetal()) data.Add(new AtomDataPoint(
+                    (data.Max(s => s.X) + data.Min(s => s.X)) / 2,
+                    Metal.DistanceToPlane(GetMeanPlane()),
+                    Metal));
+
+            var provider = new ExperimentalData(data);
+            DataProviders.Add(provider);
+            PropertyProviders.Add(provider);
         }
 
 
         /// <summary>
         /// Indicates if a Metal Atom is present
         /// </summary>
-        public bool HasMetal => Atoms.Where(s => s.IsMacrocycle && s.IsMetal).Count() > 0;
+        public bool HasMetal(bool isMacrocycle = true) => Atoms.Where(s => (isMacrocycle ? s.IsMacrocycle == isMacrocycle : true) && s.IsMetal).Count() > 0;
 
-        /// <summary>
-        /// Returns Bondlenghts, etc. for the cycles
-        /// </summary>
-        /// <returns></returns>
-        public Dictionary<string, double> Metrics()
-        {
-            Dictionary<string, double> MetricDict = new Dictionary<string, double>();
-            //N4 Lenghts
-            if (HasMetal)
-            {
-                for (int i = 1; i <= 4; i++) MetricDict.Add($"Bond_N{i},M", CalculateDistance($"N{i}", GetMetal().Identifier));
-                MetricDict.Add("Bond_M,msp", GetMetal().DistanceToPlane(GetMeanPlane()));
-            }
-            Dihedrals.ForEach(d => MetricDict.Add("Dihedral_" + string.Join(",", d), Dihedral(d)));
-
-            return MetricDict;
-        }
-
-        /// <summary>
-        /// calculates a dihedral
-        /// </summary>
-        /// <param name="Atoms"></param>
-        /// <returns></returns>
-        public double Dihedral(string[] Atoms)
-        {
-            if (Atoms.Length != 4) return 0;
-            //build normalized vectors
-            Vector<double> b1 = (-(DenseVector.OfArray(ByIdentifier(Atoms[0], true).XYZ()) - DenseVector.OfArray(ByIdentifier(Atoms[1], true).XYZ()))).Normalize(2);
-            Vector<double> b2 = (DenseVector.OfArray(ByIdentifier(Atoms[1], true).XYZ()) - DenseVector.OfArray(ByIdentifier(Atoms[2], true).XYZ())).Normalize(2);
-            Vector<double> b3 = (DenseVector.OfArray(ByIdentifier(Atoms[3], true).XYZ()) - DenseVector.OfArray(ByIdentifier(Atoms[2], true).XYZ())).Normalize(2);
-
-            //calculate crossproducts
-            var c1 = MathUtil.CrossProduct(b1, b2);
-            var c2 = MathUtil.CrossProduct(b2, b3);
-            var c3 = MathUtil.CrossProduct(c1, b2);
-
-            //get x&y as dotproducts 
-            var x = c1.DotProduct(c2);
-            var y = c3.DotProduct(c2);
-
-            return 180.0 / Math.PI * Math.Atan2(y, x);
-        }
 
         /// <summary>
         /// Draws a line between two points
         /// </summary>
         /// <param name="a1"></param>
         /// <param name="a2"></param>
-        /// <param name="sim">is Simulation</param>
+        /// <param name="type"></param>
         /// <returns>ArrowAnnotation aka Bond</returns>
-        public static ArrowAnnotation DrawBond(AtomDataPoint a1, AtomDataPoint a2, int mode = 0) => new ArrowAnnotation
+        public ArrowAnnotation DrawBond(AtomDataPoint a1, AtomDataPoint a2, IAtomDataPointProvider data) => new ArrowAnnotation
         {
             StartPoint = a1.GetDataPoint(),
             EndPoint = a2.GetDataPoint(),
             HeadWidth = 0,
             HeadLength = 0,
-            Color = PorphyStruct.Core.Properties.Settings.Default.singleColor ? Atom.modesSingleColor[mode] : Atom.modesMultiColor[mode],
+            Color = Core.Properties.Settings.Default.singleColor ? MacrocyclePainter.SingleColor(DataProviders.IndexOf(data), DataProviders.Count) : Atom.modesMultiColor[(int)data.DataType],
             Layer = AnnotationLayer.BelowSeries,
-            StrokeThickness = PorphyStruct.Core.Properties.Settings.Default.lineThickness,
+            StrokeThickness = Core.Properties.Settings.Default.lineThickness,
             Tag = a1.atom.Identifier + "," + a2.atom.Identifier
         };
 
@@ -211,21 +264,21 @@ namespace PorphyStruct.Chemistry
         /// Generates all Bonds as Annotations
         /// </summary
         /// <returns>Annotation aka Bonds</returns>
-        public virtual IEnumerable<ArrowAnnotation> DrawBonds(int mode = 0)
+        public virtual IEnumerable<ArrowAnnotation> DrawBonds(IAtomDataPointProvider data)
         {
-            dataPoints = dataPoints.OrderBy(s => s.X).ToList();
+            data.DataPoints = data.DataPoints.OrderBy(s => s.X).ToList();
 
             foreach (Tuple<string, string> t in Bonds)
-                yield return Macrocycle.DrawBond(
-                    dataPoints.Where(s => s.atom.Identifier == t.Item1 && s.atom.IsMacrocycle).First(),
-                    dataPoints.Where(s => s.atom.Identifier == t.Item2 && s.atom.IsMacrocycle).First(),
-                    mode);
+                yield return DrawBond(
+                    data.DataPoints.Where(s => s.atom.Identifier == t.Item1 && s.atom.IsMacrocycle).First(),
+                    data.DataPoints.Where(s => s.atom.Identifier == t.Item2 && s.atom.IsMacrocycle).First(),
+                    data);
 
             //add metal atoms
-            if (HasMetal)
-                foreach (AtomDataPoint n in dataPoints.Where(s => s.atom.Type == "N").ToList())
+            if (HasMetal())
+                foreach (AtomDataPoint n in data.DataPoints.Where(s => s.atom.Type == "N").ToList())
                 {
-                    ArrowAnnotation b = DrawBond(dataPoints.Where(s => s.atom == GetMetal()).FirstOrDefault(), n);
+                    ArrowAnnotation b = DrawBond(data.DataPoints.Where(s => s.atom == Metal).FirstOrDefault(), n, data);
                     b.LineStyle = LineStyle.Dash;
                     b.Color = OxyColor.FromAColor(75, b.Color);
                     b.Tag = "Metal";
@@ -239,28 +292,21 @@ namespace PorphyStruct.Chemistry
         /// <param name="id"></param>
         /// <param name="forceMacroCycle"></param>
         /// <returns>Atom</returns>
-        public Atom ByIdentifier(string id, bool forceMacroCycle = false) => Atoms.Where(s => s.Identifier == id && (forceMacroCycle ? s.IsMacrocycle == forceMacroCycle : true)).FirstOrDefault();
+        public Atom ByIdentifier(string id, bool forceMacroCycle) => Atoms.Where(s => s.Identifier == id && (forceMacroCycle ? s.IsMacrocycle == forceMacroCycle : true)).FirstOrDefault();
+
+        /// <summary>
+        /// Get Atom by Identifier
+        /// without IsMacrocycle needed to be true
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Atom ByIdentifier(string id) => ByIdentifier(id, false);
 
         /// <summary>
         /// Gets the absolute mean displacement over all atoms
         /// </summary>
         /// <returns></returns>
-        public double MeanDisplacement() => Math.Sqrt(dataPoints.Sum(s => Math.Pow(s.Y, 2)));
-
-        /// <summary>
-        /// Returns all Neighbors of an Atom
-        /// </summary>
-        /// <param name="A"></param>
-        /// <returns></returns>
-        public IEnumerable<Atom> Neighbors(Atom A) => Neighbors(A, Atoms);
-
-        /// <summary>
-        /// Returns non Metal Neighbors of an atom
-        /// </summary>
-        /// <param name="A"></param>
-        /// <returns></returns>
-        public IEnumerable<Atom> NonMetalNeighbors(Atom A) => NonMetalNeighbors(A, Atoms);
-
+        public double? MeanDisplacement() => DataPoints?.MeanDisplacement();
 
         /// <summary>
         /// Gets the 4 atoms of cavity by centroid method
@@ -270,7 +316,7 @@ namespace PorphyStruct.Chemistry
         internal List<Atom> N4Cavity(IEnumerable<Atom> mol)
         {
             //calculate centroid
-            var centroid = Molecule.GetCentroid(mol);
+            var centroid = GetCentroid(mol);
             //inject centroid into atoms as Lanthanium atom (because of big radius)
             //basically need a sphere where to catch atoms in to get N4 Cavity
             Atoms.Add(new Atom("La Centroid", centroid.X, centroid.Y, centroid.Z));
@@ -298,6 +344,22 @@ namespace PorphyStruct.Chemistry
 
             //get inner ring path
             var corpus = RingPath(cavity.First(), RingAtoms.Count() - 8);
+            if (corpus == null && HasMetal(false))
+            {
+                //use alternative cavity definition and try find again
+                cavity = NonMetalNeighbors(Metal, mol).ToList();
+                //iterate all combinations
+                foreach (var comb in cavity.GetCombinations(4).OrderBy(l => l.Sum(a => Atom.Distance(a, Metal))))
+                {
+                    var path = RingPath(comb.First(), RingAtoms.Count() - 8);
+                    if (path != null)
+                    {
+                        foreach (Atom N in comb) path.UnionWith(RingPath(N, 5).AsParallel());
+                        if (path.Count == RingAtoms.Count()) return path;
+                    }
+                }
+            }
+            if (corpus == null) return null;
 
             //just need to find beta atoms now to complete the cycle, luckily we can use the cavity to find five membered rings and combine with corpus, and distinct.
             foreach (Atom N in cavity) corpus.UnionWith(RingPath(N, 5));
@@ -320,7 +382,7 @@ namespace PorphyStruct.Chemistry
         /// An overrideable Method to get C1 Atom. 
         /// In a Porphyrin it does not care which alpha atom is C1, so return any of them...
         /// override this methode in any other class
-        /// TODO: Think of a switch for Isoporphyrins to return C10 as meso C.
+        /// TODO: Think of a switch for Isoporphyrins to return C10 as meso sp3 C.
         /// </summary>
         /// <returns></returns>
         public virtual Atom C1(IEnumerable<Atom> cycle) => Vertex3Atoms(cycle).First();
@@ -329,29 +391,28 @@ namespace PorphyStruct.Chemistry
         /// Detect the macrocyclic structure
         /// </summary>
         /// <returns></returns>
-        public void Detect()
+        public async Task Detect()
         {
             //find all connected structures
-            HashSet<HashSet<Atom>> connected = new HashSet<HashSet<Atom>>();
-            foreach (var atom in Atoms.Where(s => !s.IsMetal))
-                connected.Add(DFSUtil.DFS(atom, NonMetalNeighbors));
-            //and compare to get all distinct structures
-            //from the distinct structures select all that have more atoms than type's ringatoms 
-            var distinct = connected.Distinct(HashSet<Atom>.CreateSetComparer()).Where(s => s.Count() >= RingAtoms.Count);
+            //Note: the axial ligand is connected to the macrocycle
+            //it will lead to wrong mean planes and Centroid in N4Cavity() -> Cobalamins
+            List<IEnumerable<Atom>> figures = new List<IEnumerable<Atom>>();
+            await foreach (var fig in DFSUtil.ConnectedFigures(Atoms.Where(s => !s.IsMetal && NonMetalNeighbors(s).Count() >= 2), NonMetalNeighbors))
+                figures.Add(fig);
 
             var cycle = new HashSet<Atom>();
             //loop through all remaining connected figures
-            foreach (var mol in distinct)
+            foreach (var mol in figures.Where(s => s.Count() >= RingAtoms.Count))
             {
                 //get Corpus by Pathfinding Method
                 cycle = FindCorpus(mol);
 
                 //default to first macrocycle found for now
-                if (cycle.Count == RingAtoms.Count)
+                if (cycle != null && cycle.Count == RingAtoms.Count)
                     break;
             }
             //assign Identifiers
-            NameAtoms(cycle);
+            if (cycle != null) NameAtoms(cycle);
         }
 
         /// <summary>
@@ -366,24 +427,25 @@ namespace PorphyStruct.Chemistry
                 //set macrocycle flag
                 Atoms.Where(s => cycle.Contains(s)).ToList().ForEach(s => { s.IsMacrocycle = true; s.Identifier = s.Type + "M"; });
                 Atoms.Where(s => !cycle.Contains(s)).ToList().ForEach(s => { s.IsMacrocycle = false; s.Identifier = s.Type + "X"; });
-
                 //track visited atoms
                 HashSet<Atom> visited = new HashSet<Atom>();
 
                 //set Identifier for C1 Atom
                 C1(cycle).Identifier = "C1";
-
+                //get N4 Cavity, necessary for performance
+                var cavity = N4Cavity(cycle);
                 //force c2 to be first step
-                Atom current = Neighbors(C1(cycle), cycle).Where(s => !N4Cavity(cycle).Contains(s) && !RingPath(N4Cavity(cycle).First(), RingAtoms.Count() - 8).Contains(s)).FirstOrDefault();
+                Atom current = Neighbors(C1(cycle), cycle).Where(s => !cavity.Contains(s) && !RingPath(cavity.First(), RingAtoms.Count() - 8).Contains(s)).FirstOrDefault();
                 current.Identifier = "C2";
                 //add C1&C2 to visited
                 visited.UnionWith(new HashSet<Atom>() { current, C1(cycle) });
+                //get carbon atoms
                 var carbons = RingAtoms.Where(s => s.Contains("C")).OrderBy(s => int.Parse(s.Replace("C", ""))).ToList();
                 int i = 2;
                 //loop through atoms and name them
                 while (visited.Count() != carbons.Count())
                 {
-                    foreach (var neighbor in Neighbors(current, cycle).Where(s => !visited.Contains(s) && !N4Cavity(cycle).Contains(s)))
+                    foreach (var neighbor in Neighbors(current, cycle).Where(s => !visited.Contains(s) && !cavity.Contains(s)))
                     {
                         //add to visited and assign Identifier
                         neighbor.Identifier = carbons[i];
@@ -392,7 +454,7 @@ namespace PorphyStruct.Chemistry
                     }
                 }
                 //set up identifiers for nitrogens
-                for (int j = 1; j <= 4; j++) N4Cavity(cycle).Where(s => Neighbors(s).Contains(ByIdentifier(AlphaAtoms[2 * j - 1]))).FirstOrDefault().Identifier = "N" + j;
+                for (int j = 1; j <= 4; j++) cavity.Where(s => Neighbors(s).Contains(ByIdentifier(AlphaAtoms[2 * j - 1]))).FirstOrDefault().Identifier = "N" + j;
             }
         }
 
@@ -402,7 +464,15 @@ namespace PorphyStruct.Chemistry
         /// <param name="a1"></param>
         /// <param name="a2"></param>
         /// <returns></returns>
-        public bool IsValidBond(Atom a1, Atom a2) => a1.IsMacrocycle && a2.IsMacrocycle && (Bonds.Contains(new Tuple<string, string>(a1.Identifier, a2.Identifier)) || Bonds.Contains(new Tuple<string, string>(a2.Identifier, a1.Identifier)));
+        public bool IsValidBond(Atom a1, Atom a2) => a1.IsMacrocycle && a2.IsMacrocycle
+            && (
+                Bonds.Contains(new Tuple<string, string>(a1.Identifier, a2.Identifier))
+                || Bonds.Contains(new Tuple<string, string>(a2.Identifier, a1.Identifier)
+                )
+            || (
+                (a1.IsMetal || a2.IsMetal)
+                && HasMetal())
+            );
 
         /// <summary>
         /// Returns new Instance of this molecule

@@ -21,11 +21,11 @@ namespace PorphyStruct.Simulations
         /// <param name="current">Currentvalue</param>
         public SimParam(string title, double start, double best = 0, double current = 0, bool optimize = true)
         {
-            this.Title = title;
-            this.Current = current;
-            this.Best = best;
-            this.Start = start;
-            this.Optimize = optimize;
+            Title = title;
+            Current = current;
+            Best = best;
+            Start = start;
+            Optimize = optimize;
         }
 
         /// <summary>

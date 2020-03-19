@@ -18,7 +18,7 @@ namespace PorphyStruct.Files
         public override Molecule GetMolecule()
         {
             // read mol2 - File and get parameters & coordinate
-            string title = System.IO.Path.GetFileNameWithoutExtension(this.Path);
+            string title = System.IO.Path.GetFileNameWithoutExtension(Path);
             Molecule molecule = new Molecule(title);
             //get loop with coordinates
             string[] tripos = Content.Split(new[] { "@<TRIPOS>" }, StringSplitOptions.None);

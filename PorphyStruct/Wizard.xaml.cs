@@ -1,4 +1,6 @@
-﻿using PorphyStruct.Windows;
+﻿using HelixToolkit.Wpf;
+using PorphyStruct.Chemistry;
+using PorphyStruct.Windows;
 using System.IO;
 using System.Windows;
 
@@ -16,7 +18,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Cancel_Click(object sender, RoutedEventArgs e) => this.Close();
+        private void Cancel_Click(object sender, RoutedEventArgs e) => Close();
 
         /// <summary>
         /// Handle OK Button Click
@@ -27,7 +29,7 @@ namespace PorphyStruct
         {
             //check for file
             if (!string.IsNullOrWhiteSpace(pathTextBox.Text) && File.Exists(pathTextBox.Text) && TypeListBox.SelectedIndex != -1) DialogResult = true;
-            this.Close();
+            Close();
         }
 
         /// <summary>
@@ -45,11 +47,32 @@ namespace PorphyStruct
         /// <summary>
         /// Returns the filename
         /// </summary>
-        public string FileName => pathTextBox.Text;
+        public string FileName => pathTextBox?.Text;
 
         /// <summary>
         /// Return Macrocycle Type from ComboBox
         /// </summary>
         public int Type => TypeListBox.SelectedIndex;
+
+        private void PathTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => Refresh();
+
+        private void TypeListBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) => Refresh();
+
+        /// <summary>
+        /// Refresh GUI
+        /// </summary>
+        public void Refresh()
+        {
+            if (Type != -1 && !string.IsNullOrEmpty(FileName))
+            {
+                MolViewer.Children.Clear();
+                MolViewer.Items.Add(new DefaultLights());
+                Macrocycle.Type type = (Macrocycle.Type)TypeListBox.SelectedIndex;
+                var tmp = MacrocycleFactory.Load(pathTextBox.Text, type);
+                tmp.Center(s => true);
+                foreach (var obj in tmp.Paint3D()) MolViewer.Items.Add(obj);
+            }
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PorphyStruct.Util
 {
@@ -10,18 +11,34 @@ namespace PorphyStruct.Util
     public static class DFSUtil
     {
         /// <summary>
+        /// List all connected figures
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="vertex"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<IEnumerable<T>> ConnectedFigures<T>(IEnumerable<T> list, Func<T, IEnumerable<T>> func)
+        {
+            var visited = new HashSet<T>();
+            foreach (var item in list) if (!visited.Contains(item)) yield return await DFS(item, func, visited);
+        }
+
+        /// <summary>
         /// Implementation of recursive DFS
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="vertex"></param>
         /// <param name="func"></param>
-        /// <param name="length</param>
+        /// <param name="visited">Provide a Hashset if you need to track which figure already has been found</param>
         /// <returns></returns>
-        public static HashSet<T> DFS<T>(T vertex, Func<T, IEnumerable<T>> func)
+        public static async Task<HashSet<T>> DFS<T>(T vertex, Func<T, IEnumerable<T>> func, HashSet<T> visited = null)
         {
-            var visited = new HashSet<T>();
-            Traverse(vertex, visited, func);
-            return visited;
+            var results = new HashSet<T>();
+            await Traverse(vertex, results, func);
+
+            //add results to visited if exists
+            visited?.UnionWith(results);
+            return results;
         }
 
         /// <summary>
@@ -31,12 +48,11 @@ namespace PorphyStruct.Util
         /// <param name="vertex"></param>
         /// <param name="visited"></param>
         /// <param name="func"></param>
-        /// <param name="length</param>
-        public static void Traverse<T>(T vertex, HashSet<T> visited, Func<T, IEnumerable<T>> func)
+        public static async Task Traverse<T>(T vertex, HashSet<T> visited, Func<T, IEnumerable<T>> func)
         {
             visited.Add(vertex);
             foreach (var neighbor in func(vertex).Where(n => !visited.Contains(n)))
-                Traverse(neighbor, visited, func);
+                await Traverse(neighbor, visited, func);
         }
 
         /// <summary>
@@ -53,7 +69,7 @@ namespace PorphyStruct.Util
             var visited = new HashSet<T>();
             var localPaths = new HashSet<T>();
             var output = new HashSet<HashSet<T>>();
-            output = AllPaths(start, end, visited, localPaths, func, output, length);
+            output = AllPaths(start, end, visited, localPaths, func, output, length).AsParallel().ToHashSet();
             return output;
         }
 
@@ -74,16 +90,13 @@ namespace PorphyStruct.Util
             visited.Add(start);
             if (localPaths.Count == 0) localPaths.Add(start);
             if (start.Equals(end) && localPaths.Count() == length) BuildPath(localPaths, output);
-
-            foreach (var node in func(start))
+            foreach (var node in func(start).Where(node => !visited.Contains(node)).Select(node => node).AsParallel())
             {
-                if (!visited.Contains(node))
-                {
-                    localPaths.Add(node);
-                    AllPaths(node, end, visited, localPaths, func, output, length);
-                    localPaths.Remove(node);
-                }
+                localPaths.Add(node);
+                AllPaths(node, end, visited, localPaths, func, output, length).AsParallel();
+                localPaths.Remove(node);
             }
+
             visited.Remove(start);
             return output;
         }

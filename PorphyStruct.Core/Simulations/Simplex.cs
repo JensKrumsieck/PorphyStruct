@@ -189,7 +189,7 @@ namespace PorphyStruct.Simulations
         private void Build(int N)
         {
             //build montecarlo instance
-            MonteCarlo mc = new MonteCarlo(Conformation.Calculate, Parameters, cycle)
+            MonteCarlo mc = new MonteCarlo(Result.Calculate, Parameters, cycle)
             {
                 Indices = Indices
             };

@@ -8,62 +8,146 @@
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
+        FontFamily="Segoe UI"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
-        Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}"
+        Style="{DynamicResource DefaultWindowStyle}"
         Title="Settings" Height="650" Width="1000" ResizeMode="NoResize" Closing="Window_Closing">
+    <Window.Resources>
+        <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#f8263238" />
+    </Window.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="50" />            
-        </Grid.RowDefinitions>
         <TabControl TabStripPlacement="Left" Padding="10">
+            <TabControl.Style>
+                <Style TargetType="TabControl">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type TabControl}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="37"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.Effect>
+                                            <BlurEffect Radius="0.5"/>
+                                        </Grid.Effect>
+                                        <TabPanel IsItemsHost="True" DockPanel.Dock="Left" x:Name="PART_Host" Grid.Row="1">
+                                            <TabPanel.Style>
+                                                <Style TargetType="{x:Type TabPanel}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=settingsCollapsed, Mode=OneTime}" Value="False">
+                                                            <Setter Property="Width" Value="40"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=settingsCollapsed, Mode=OneTime}" Value="True">
+                                                            <Setter Property="Width" Value="250"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TabPanel.Style>
+                                        </TabPanel>
+                                        <ToggleButton Width="40" Height="35" Padding="0" HorizontalAlignment="Left" BorderThickness="0" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=settingsCollapsed, Mode=TwoWay}" x:Name="XToggle">
+                                            <materialDesign:PackIcon Kind="HamburgerMenu" Foreground="#ccc" />
+                                            <ToggleButton.Triggers>
+                                                <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation From="250" To="40" Duration="0:0:.2" Storyboard.TargetProperty="Width" Storyboard.TargetName="PART_Host"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </EventTrigger>
+                                                <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation From="40" To="250" Duration="0:0:.2" Storyboard.TargetProperty="Width" Storyboard.TargetName="PART_Host"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </EventTrigger>
+                                            </ToggleButton.Triggers>
+                                            <ToggleButton.Style>
+                                                <Style TargetType="{x:Type ToggleButton}">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                                <Border Background="Transparent" x:Name="PART_Border" HorizontalAlignment="Stretch">
+                                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsChecked" Value="True">
+                                                                        <Setter TargetName="PART_Border" Property="Background" Value="{DynamicResource SecondaryHueMidBrush}"/>
+                                                                    </Trigger>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter TargetName="PART_Border" Property="BorderBrush" Value="{StaticResource TitleBackgroundBrushInactive}"/>
+                                                                        <Setter TargetName="PART_Border" Property="BorderThickness" Value="1"/>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </ToggleButton.Style>
+                                        </ToggleButton>
+                                    </Grid>
+                                    <ContentPresenter Name="PART_SelectedContentHost" ContentSource="SelectedContent" Grid.Column="1"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Style>
             <TabControl.ItemContainerStyle>
                 <Style TargetType="{x:Type TabItem}">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type TabItem}">
-                                <Border Margin="15" x:Name="Border" Padding="5">
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <Polygon x:Name="Trian" Points="0,0 8,5, 0,10" Stroke="{DynamicResource SecondaryHueMidBrush}" Fill="{DynamicResource SecondaryHueMidBrush}" Margin="-20,6,0,0" Visibility="Hidden"/>
-                                        <ContentPresenter ContentSource="Header" x:Name="Content"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type TabItem}">
+                                <TextBlock Padding="4 10 10 10" x:Name="headBorder" Width="250">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                        <Rectangle x:Name="Trian" Width="2" Stroke="{DynamicResource SecondaryHueMidBrush}" Fill="{DynamicResource SecondaryHueMidBrush}" Margin="0,0,3,0" Visibility="Hidden"/>
+                                        <ContentPresenter ContentSource="Header" x:Name="Content" RecognizesAccessKey="True"  HorizontalAlignment="Stretch"/>
                                     </StackPanel>
-                                </Border>
+                                </TextBlock>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="True">
                                         <Setter TargetName="Trian" Property="Visibility" Value="Visible"/>
                                     </Trigger>
+                                    <Trigger SourceName="headBorder" Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="headBorder" Property="Background" Value="{StaticResource TitleBackgroundBrushInactive}" />
+                                    </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
             </TabControl.ItemContainerStyle>
-            <TabItem>
+            <TabItem IsSelected="True">
                 <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" local:MarginSetter.Margin="5,0,0,0">
-                        <materialDesign:PackIcon Kind="ChartScatterPlotHexbin" Width="24" Height="24"/>
-                        <TextBlock Text="Graph &amp; Axis" Style="{StaticResource MaterialDesignSubtitle1TextBlock}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="ChartScatterPlotHexbin" Width="24" Height="24" Margin="0 0 7 0" Foreground="#ccc"/>
+                        <TextBlock Text="Graph &amp; Axis" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="#ccc"/>
                     </StackPanel>
                 </TabItem.Header>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Orientation="Vertical" local:MarginSetter.Margin="0,10,0,0">
+                <UniformGrid Columns="2" Margin="0" Background="#fcfcfc">
+                    <StackPanel Orientation="Vertical" Margin="10">
                         <!--Graph Settings-->
-                        <TextBlock Text="Graph Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Bold"/>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ChartScatterPlotHexbin" Width="28" Height="28" Foreground="{DynamicResource SecondaryHueMidBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="Graph Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Light" />
+                        </StackPanel>
                         <!--Appearance-->
                         <TextBlock Text="Appearance" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
-                        <TextBox  x:Name="defaultFont" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=defaultFont, Mode=TwoWay}" >
+                        <TextBox x:Name="defaultFont" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=defaultFont, Mode=TwoWay}" >
                             <materialDesign:HintAssist.Hint>Default Font</materialDesign:HintAssist.Hint>
                         </TextBox>
                         <TextBox x:Name="lineThickness" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=lineThickness, Mode=TwoWay}">
                             <materialDesign:HintAssist.Hint>Line Thickness</materialDesign:HintAssist.Hint>
+                        </TextBox>
+                        <TextBox x:Name="markerSize" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=markerSize, Mode=TwoWay}">
+                            <materialDesign:HintAssist.Hint>Marker Size</materialDesign:HintAssist.Hint>
                         </TextBox>
                         <TextBox x:Name="fontSize" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=defaultFontSize, Mode=TwoWay}" >
                             <materialDesign:HintAssist.Hint>Font Size</materialDesign:HintAssist.Hint>
@@ -73,21 +157,21 @@
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Show Plot Area Border" />
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Text="Show Plot Area Border" />
                             <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" x:Name="showBox" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=showBox, Mode=TwoWay}"/>
-                        </Grid>                        
+                        </Grid>
                     </StackPanel>
-                    <StackPanel Grid.Column="1" Orientation="Vertical">
+                    <StackPanel Orientation="Vertical" Margin="10">
                         <!--Axis Settings-->
-                        <TextBlock Text="Axis Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Bold"/>
+                        <TextBlock Text="Axis Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Light"/>
                         <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text=""></TextBlock>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Show X Axis"  Grid.Column="0"/>
-                            
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Text="Show X Axis"  Grid.Column="0"/>
+
                             <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" x:Name="xAxis" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=xAxis, Mode=TwoWay}" Grid.Column="1"/>
                         </Grid>
                         <Grid>
@@ -96,7 +180,7 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel>
-                                <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Autoscale X"/>
+                                <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Text="Autoscale X"/>
                                 <TextBlock FontSize="10">(ignores min/max)</TextBlock>
                             </StackPanel>
                             <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" x:Name="autoscaleX" 
@@ -109,7 +193,7 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel>
-                                <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Autoscale Y"/>
+                                <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Text="Autoscale Y"/>
                                 <TextBlock FontSize="10">(ignores min/max)</TextBlock>
                             </StackPanel>
                             <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"  
@@ -117,7 +201,7 @@
                                           Grid.Column="1"/>
                         </Grid>
 
-                        <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="X-Axis Scale" Margin="0 15 0 0"  />
+                        <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Text="X-Axis Scale" Margin="0 15 0 0"  />
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
@@ -130,7 +214,7 @@
                                 <materialDesign:HintAssist.Hint>X-Axis Maximum</materialDesign:HintAssist.Hint>
                             </TextBox>
                         </Grid>
-                        <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Y-Axis Scale" Margin="0 15 0 0" />
+                        <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Text="Y-Axis Scale" Margin="0 15 0 0" />
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
@@ -148,7 +232,7 @@
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Y-Axis Title is Horizontal"/>
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Text="Y-Axis Title is Horizontal"/>
                             <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"  x:Name="rotateTitle" 
                                           IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=rotateTitle, Mode=TwoWay}" 
                                           Grid.Column="1"/>
@@ -158,33 +242,32 @@
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Show Zero"/>
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Text="Show Zero"/>
                             <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"  x:Name="zero" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=zero, Mode=TwoWay}" Grid.Column="1"/>
                         </Grid>
-                        <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Set Axis Title" />
+                        <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Text="Set Axis Title" />
                         <TextBox x:Name="titleFormat" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=titleFormat, Mode=TwoWay}">
                             <materialDesign:HintAssist.Hint>Axis Title Format ({0} = Title, {1} = Unit)</materialDesign:HintAssist.Hint>
                         </TextBox>
                     </StackPanel>
-                </Grid>
+                </UniformGrid>
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" local:MarginSetter.Margin="5,0,0,0">
-                        <materialDesign:PackIcon Kind="ImportExport" Width="24" Height="24"/>
-                        <TextBlock Text="Import &amp; Export" Style="{StaticResource MaterialDesignSubtitle1TextBlock}"/>
-
+                    <StackPanel Orientation="Horizontal" >
+                        <materialDesign:PackIcon Kind="ImportExport" Width="24" Height="24"  Margin="0 0 7 0" Foreground="#ccc"/>
+                        <TextBlock Text="Import &amp; Export" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="#ccc"/>
                     </StackPanel>
                 </TabItem.Header>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Orientation="Vertical" local:MarginSetter.Margin="0,10,0,0">
-                        <TextBlock Text="Import Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Bold"/>
+                <UniformGrid Columns="2" Margin="0" Background="#fcfcfc">
+
+                    <StackPanel Grid.Column="0" Orientation="Vertical"  Margin="10">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ImportExport" Width="28" Height="28" Foreground="{DynamicResource SecondaryHueMidBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="Import Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Light" />
+                        </StackPanel>
                         <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text=""></TextBlock>
-                        <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Default Import Directory"/>
+                        <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Text="Default Import Directory"/>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBox x:Name="importPath" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                                  Text="{Binding Source={x:Static properties:Settings.Default}, Path=importPath, Mode=TwoWay}"
@@ -199,18 +282,18 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}">
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">
                                 Use Same Folder for <LineBreak/>Import &amp; Export<LineBreak/>
                                 <Run FontSize="10" Foreground="{DynamicResource SecondaryHueMidBrush}">Ignores Export Directory Setting</Run>
                             </TextBlock>
                             <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" x:Name="useImportExportPath" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=useImportExportPath, Mode=TwoWay}"/>
                         </Grid>
                     </StackPanel>
-                    <StackPanel Grid.Column="1" Orientation="Vertical" local:MarginSetter.Margin="0,10,0,0">
-                        <TextBlock Text="Export Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Bold"/>
+                    <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10">
+                        <TextBlock Text="Export Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Light"/>
                         <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text=""></TextBlock>
                         <!--Export Settings-->
-                        <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Default Export Directory"/>
+                        <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Text="Default Export Directory"/>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBox x:Name="savePath" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                                  Text="{Binding Source={x:Static properties:Settings.Default}, Path=savePath, Mode=TwoWay}"
@@ -219,7 +302,7 @@
                             </TextBox>
                             <Button x:Name="folderBtn" Content="Search" Click="FolderBtn_Click" Margin="10 0" Tag="save"/>
                         </StackPanel>
-                        <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Image Size" Margin="0 25 0 0"/>
+                        <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Text="Image Size" Margin="0 25 0 0"/>
                         <TextBox x:Name="pngWidth" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=pngWidth, Mode=TwoWay}">
                             <materialDesign:HintAssist.Hint>Width (px)</materialDesign:HintAssist.Hint>
                         </TextBox>
@@ -229,25 +312,36 @@
                         <TextBox x:Name="pngRes" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=pngRes, Mode=TwoWay}">
                             <materialDesign:HintAssist.Hint>Resolution</materialDesign:HintAssist.Hint>
                         </TextBox>
-                    </StackPanel>
-                </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">
+                                Use Background Color (PNG)
+                                <LineBreak />
+                                <Run FontSize="9">If this is set, a white background will be added to exported graphs.</Run>
+                            </TextBlock>
+                            <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" x:Name="backgroundColor" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=backgroundColor, Mode=TwoWay}"/>
+
+                        </Grid>
+                    </StackPanel>                    
+                </UniformGrid>
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" local:MarginSetter.Margin="5,0,0,0">
-                        <materialDesign:PackIcon Kind="FileTableOutline" Width="24" Height="24"/>
-                        <TextBlock Text="Data" Style="{StaticResource MaterialDesignSubtitle1TextBlock}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="FileTableOutline" Width="24" Height="24" Margin="0 0 7 0" Foreground="#ccc"/>
+                        <TextBlock Text="Data" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="#ccc"/>
                     </StackPanel>
                 </TabItem.Header>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel local:MarginSetter.Margin="0,10,0,0">
-
+                <UniformGrid Columns="2" Margin="0" Background="#fcfcfc">
+                    <StackPanel  Margin="10">
                         <!--Data Settings-->
-                        <TextBlock Text="Data Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Bold"/>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="FileTableOutline" Width="28" Height="28" VerticalAlignment="Center" Foreground="{DynamicResource SecondaryHueMidBrush}"/>
+                            <TextBlock Text="Data Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Light"/>
+                        </StackPanel>
                         <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text="Marker Settings" />
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -255,7 +349,7 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}"  Text="Exp. Marker-Type"/>
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}"  Text="Exp. Marker-Type"/>
                             <ComboBox x:Name="markerType" Grid.Column="2" Height="30" SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=markerType, Mode=TwoWay}" SelectedValuePath="Content">
                                 <ComboBoxItem>None</ComboBoxItem>
                                 <ComboBoxItem>Circle</ComboBoxItem>
@@ -273,7 +367,7 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}"  Text="Sim. Marker-Type" />
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}"  Text="Sim. Marker-Type" />
                             <ComboBox x:Name="simMarkerType" Grid.Column="1" Height="30" SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=simMarkerType, Mode=TwoWay}" SelectedValuePath="Content">
                                 <ComboBoxItem>None</ComboBoxItem>
                                 <ComboBoxItem>Circle</ComboBoxItem>
@@ -291,8 +385,8 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}"  Text="Comparison Marker 1" />
-                            <ComboBox x:Name="com1MarkerType" Grid.Column="1" Height="30" SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=com1MarkerType, Mode=TwoWay}" SelectedValuePath="Content">
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}"  Text="Comparison Marker" />
+                            <ComboBox x:Name="comMarkerType" Grid.Column="1" Height="30" SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=comMarkerType, Mode=TwoWay}" SelectedValuePath="Content">
                                 <ComboBoxItem>None</ComboBoxItem>
                                 <ComboBoxItem>Circle</ComboBoxItem>
                                 <ComboBoxItem>Square</ComboBoxItem>
@@ -309,25 +403,7 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}"  Text="Comparison Marker 2" />
-                            <ComboBox x:Name="com2MarkerType" Grid.Column="1" Height="30" SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=com2MarkerType, Mode=TwoWay}" SelectedValuePath="Content">
-                                <ComboBoxItem>None</ComboBoxItem>
-                                <ComboBoxItem>Circle</ComboBoxItem>
-                                <ComboBoxItem>Square</ComboBoxItem>
-                                <ComboBoxItem>Diamond</ComboBoxItem>
-                                <ComboBoxItem>Triangle</ComboBoxItem>
-                                <ComboBoxItem>Cross</ComboBoxItem>
-                                <ComboBoxItem>Plus</ComboBoxItem>
-                                <ComboBoxItem>Star</ComboBoxItem>
-                            </ComboBox>
-                        </Grid>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}">
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">
                                 Do not show Marker
                                 <LineBreak/>
                                  <Run FontSize="10">
@@ -340,86 +416,46 @@
                             </TextBox>
                         </Grid>
                     </StackPanel>
-                </Grid>
+                </UniformGrid>
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" local:MarginSetter.Margin="5,0,0,0">
-                        <materialDesign:PackIcon Kind="ColorLens" Width="24" Height="24"/>
-                        <TextBlock Text="Color" Style="{StaticResource MaterialDesignSubtitle1TextBlock}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="ColorLens" Width="24" Height="24" Margin="0 0 7 0" Foreground="#ccc"/>
+                        <TextBlock Text="Color" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="#ccc"/>
                     </StackPanel>
                 </TabItem.Header>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel local:MarginSetter.Margin="0,10,0,0">
+                <UniformGrid Columns="1" Margin="0" Background="#fcfcfc">
+                    <StackPanel Margin="10">
                         <!--Color Settings-->
-                        <TextBlock Text="Color Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Bold"/>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ColorLens" Width="30" Height="30" Foreground="{DynamicResource SecondaryHueMidBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="Color Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Light"/>
+                        </StackPanel>
                         <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text=""></TextBlock>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Color 1"/>
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">
+                                Bond Color
+                                <LineBreak />
+                                <Run FontSize="9">The color used for Bonds if Palette Mode is disabled.</Run>
+                            </TextBlock>
                             <TextBox TextChanged="Color_TextChanged" x:Name="color1" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                                      Text="{Binding Source={x:Static properties:Settings.Default}, Path=color1, Mode=TwoWay}" >
-                                <materialDesign:HintAssist.Hint>Color 1</materialDesign:HintAssist.Hint>
+                                <materialDesign:HintAssist.Hint>Bond Color (non Palette Mode)</materialDesign:HintAssist.Hint>
                             </TextBox>
                         </Grid>
+                        
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Color 2"/>
-                            <TextBox TextChanged="Color_TextChanged" x:Name="color2" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                                     Text="{Binding Source={x:Static properties:Settings.Default}, Path=color2, Mode=TwoWay}" >
-                                <materialDesign:HintAssist.Hint>Color 2</materialDesign:HintAssist.Hint>
-                            </TextBox>
-                        </Grid>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Color 3"/>
-                            <TextBox TextChanged="Color_TextChanged" x:Name="color3" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                                     Text="{Binding Source={x:Static properties:Settings.Default}, Path=color3, Mode=TwoWay}" >
-                                <materialDesign:HintAssist.Hint>Color 3</materialDesign:HintAssist.Hint>
-                            </TextBox>
-                        </Grid>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Color 4"/>
-                            <TextBox TextChanged="Color_TextChanged" x:Name="color4" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                                     Text="{Binding Source={x:Static properties:Settings.Default}, Path=color4, Mode=TwoWay}" >
-                                <materialDesign:HintAssist.Hint>Color 4</materialDesign:HintAssist.Hint>
-                            </TextBox>
-                        </Grid>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Color 5"/>
-                            <TextBox TextChanged="Color_TextChanged" x:Name="color5" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                                     Text="{Binding Source={x:Static properties:Settings.Default}, Path=color5, Mode=TwoWay}" >
-                                <materialDesign:HintAssist.Hint>Color 5</materialDesign:HintAssist.Hint>
-                            </TextBox>
-                        </Grid>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}">
-                                Use single color
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">
+                                Use Color Palette
                                 <LineBreak />
                                 <Run FontSize="9">Uses single color for each series.</Run>
                             </TextBlock>
@@ -427,11 +463,43 @@
                                           IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=singleColor, Mode=TwoWay}" 
                                           Grid.Column="1"/>
                         </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">
+                                Color Palette
+                                <LineBreak />
+                                <Run FontSize="9">Select a Color Palette from the Dropdown.</Run>
+                                <LineBreak />
+                                <Run FontSize="9">The Preview shows some colors of the Palette. Other Colors will be interpolated upon need.</Run>
+                            </TextBlock>
+                            <ComboBox x:Name="palette" Grid.Column="1" SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=ColorPalette, Mode=TwoWay}" SelectedValuePath="Title" ItemsSource="{Binding PaletteList}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <UniformGrid Columns="2">
+                                            <TextBlock Text="{Binding Title}" Style="{StaticResource MaterialDesignBody2TextBlock}" FontSize="16" FontWeight="Light" VerticalAlignment="Center"/>
+                                            <ItemsControl ItemsSource="{Binding Brushes}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <WrapPanel IsItemsHost="True"/>
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Rectangle Fill="{Binding}" Width="20" Height="20" Margin="5"/>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </UniformGrid>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </Grid>
                     </StackPanel>
-                </Grid>
+                </UniformGrid>
             </TabItem>
         </TabControl>
-        <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" x:Name="saveBtn" Content="Save" Click="SaveBtn_Click" Grid.Row="1" Width="200"/>     
-        
     </Grid>
 </Window>
