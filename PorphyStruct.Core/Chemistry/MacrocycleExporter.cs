@@ -29,9 +29,9 @@ namespace PorphyStruct.Chemistry
             {
                 pm.DefaultFontSize *= 2;
                 foreach (var axis in pm.Axes) axis.AxislineThickness *= 2;
-                foreach(ScatterSeries series in pm.Series) series.MarkerSize *= 2;
+                foreach (ScatterSeries series in pm.Series) series.MarkerSize *= 2;
                 foreach (ArrowAnnotation annotation in pm.Annotations.Where(s => s.GetType() == typeof(ArrowAnnotation))) annotation.StrokeThickness *= 2;
-                if(Core.Properties.Settings.Default.showBox) pm.PlotAreaBorderThickness = new OxyThickness(Core.Properties.Settings.Default.lineThickness * 2);
+                if (Core.Properties.Settings.Default.showBox) pm.PlotAreaBorderThickness = new OxyThickness(Core.Properties.Settings.Default.lineThickness * 2);
             }
 
             exporter.Export(pm, file);

@@ -53,7 +53,7 @@ namespace PorphyStruct.ViewModel
                     case "Molecule": Cycle.SaveIXYZ(path); break;
                     case "Graph":
                         {
-                            if(extension == "png")
+                            if (extension == "png")
                                 model.ExportGraph(path,
                                   new PngExporter()
                                   {
