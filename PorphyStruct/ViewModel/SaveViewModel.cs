@@ -5,6 +5,7 @@ using PorphyStruct.Windows;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace PorphyStruct.ViewModel
 {
@@ -51,15 +52,27 @@ namespace PorphyStruct.ViewModel
                     case "Macrocycle": Cycle.SaveIXYZ(path, true); break;
                     case "Molecule": Cycle.SaveIXYZ(path); break;
                     case "Graph":
-                        model.ExportGraph(path,
-                          new PngExporter()
-                          {
-                              Height = Core.Properties.Settings.Default.pngHeight,
-                              Width = Core.Properties.Settings.Default.pngWidth,
-                              Resolution = Core.Properties.Settings.Default.pngRes,
-                              Background = OxyColors.Transparent
-                          });
-                        break;
+                        {
+                            if(extension == "png")
+                                model.ExportGraph(path,
+                                  new PngExporter()
+                                  {
+                                      Height = Core.Properties.Settings.Default.pngHeight,
+                                      Width = Core.Properties.Settings.Default.pngWidth,
+                                      Resolution = Core.Properties.Settings.Default.pngRes,
+                                      Background = Core.Properties.Settings.Default.backgroundColor ? OxyColors.White : OxyColors.Transparent
+                                  });
+                            if (extension == "svg")
+                                model.ExportGraph(path,
+                                    new OxyPlot.Wpf.SvgExporter()
+                                    {
+                                        Height = Core.Properties.Settings.Default.pngHeight,
+                                        Width = Core.Properties.Settings.Default.pngWidth,
+                                        TextMeasurer = new CanvasRenderContext(new Canvas()),
+                                        IsDocument = true
+                                    }, extension);
+                            break;
+                        }
                     case "ASCII": model.SaveASCII(path); break;
                 }
             }
@@ -74,6 +87,7 @@ namespace PorphyStruct.ViewModel
             if (Cycle.DataProviders.Count != 0)
             {
                 yield return new ExportFileType() { Title = "Graph", Extension = new[] { "png" }, Icon = "ChartScatterPlotHexbin" };
+                yield return new ExportFileType() { Title = "Graph", Extension = new[] { "svg" }, Icon = "ChartScatterPlot" };
                 yield return new ExportFileType() { Title = "ASCII", Extension = new[] { "dat" }, Icon = "TableLarge" };
             }
             //Save xml, json and txt every time!

@@ -74,17 +74,8 @@
     <Setting Name="color1" Type="System.String" Scope="User">
       <Value Profile="(Default)">#000000</Value>
     </Setting>
-    <Setting Name="color2" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#ff0000</Value>
-    </Setting>
-    <Setting Name="color3" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#00ff40</Value>
-    </Setting>
-    <Setting Name="color4" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#0101DF</Value>
-    </Setting>
-    <Setting Name="color5" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#FF8000</Value>
+    <Setting Name="backgroundColor" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="useImportExportPath" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

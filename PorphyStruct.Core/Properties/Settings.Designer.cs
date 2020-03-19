@@ -313,49 +313,13 @@ namespace PorphyStruct.Core.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#ff0000")]
-        public string color2 {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool backgroundColor {
             get {
-                return ((string)(this["color2"]));
+                return ((bool)(this["backgroundColor"]));
             }
             set {
-                this["color2"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#00ff40")]
-        public string color3 {
-            get {
-                return ((string)(this["color3"]));
-            }
-            set {
-                this["color3"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#0101DF")]
-        public string color4 {
-            get {
-                return ((string)(this["color4"]));
-            }
-            set {
-                this["color4"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#FF8000")]
-        public string color5 {
-            get {
-                return ((string)(this["color5"]));
-            }
-            set {
-                this["color5"] = value;
+                this["backgroundColor"] = value;
             }
         }
         

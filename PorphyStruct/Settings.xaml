@@ -438,6 +438,19 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">
+                                Use Background Color (Export)
+                                <LineBreak />
+                                <Run FontSize="9">If this is set, a white background will be added to exported graphs.</Run>
+                            </TextBlock>
+                            <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" x:Name="backgroundColor" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=backgroundColor, Mode=TwoWay}"/>
+
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">
                                 Use Color Palette
                                 <LineBreak />
                                 <Run FontSize="9">Uses single color for each series.</Run>
