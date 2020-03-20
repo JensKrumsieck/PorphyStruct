@@ -166,8 +166,9 @@
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">
-                                Force UserInterface to be in English
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" TextWrapping="Wrap">
+                                Force UserInterface 
+                                to be in English
                                 <LineBreak />
                                 <Run FontSize="9">Restart required!</Run>
                             </TextBlock>
@@ -295,8 +296,9 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">
-                                Use Same Folder for <LineBreak/>Import &amp; Export<LineBreak/>
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" TextWrapping="Wrap">
+                                Use Same Folder for Import &amp; Export
+                                <LineBreak/>
                                 <Run FontSize="10" Foreground="{DynamicResource SecondaryHueMidBrush}">Ignores Export Directory Setting</Run>
                             </TextBlock>
                             <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" x:Name="useImportExportPath" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=useImportExportPath, Mode=TwoWay}"/>
@@ -330,10 +332,10 @@
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" TextWrapping="Wrap">
                                 Use Background Color (PNG)
                                 <LineBreak />
-                                <Run FontSize="9">If this is set, a white background will be added to exported graphs.</Run>
+                                <TextBlock FontSize="9" TextWrapping="Wrap">If this is set, a white background will be added to exported graphs.</TextBlock>
                             </TextBlock>
                             <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" x:Name="backgroundColor" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=backgroundColor, Mode=TwoWay}"/>
 
