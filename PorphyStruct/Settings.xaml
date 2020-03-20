@@ -160,6 +160,19 @@
                             <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Text="Show Plot Area Border" />
                             <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" x:Name="showBox" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=showBox, Mode=TwoWay}"/>
                         </Grid>
+                        <TextBlock Text="UI Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Light" Margin="0 10 0 0" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">
+                                Force UserInterface to be in English
+                                <LineBreak />
+                                <Run FontSize="9">Restart required!</Run>
+                            </TextBlock>
+                            <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" x:Name="forceEn" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=forceEn, Mode=TwoWay}"/>
+                        </Grid>
                     </StackPanel>
                     <StackPanel Orientation="Vertical" Margin="10">
                         <!--Axis Settings-->

@@ -7,6 +7,7 @@ using PorphyStruct.ViewModel;
 using PorphyStruct.Windows;
 using System.ComponentModel;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,7 +26,7 @@ namespace PorphyStruct
 
         public MainWindow()
         {
-            //CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
+            if(Core.Properties.Settings.Default.forceEn) CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
             InitializeComponent();
         }
 
