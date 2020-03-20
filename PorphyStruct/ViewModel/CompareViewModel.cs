@@ -65,7 +65,7 @@ namespace PorphyStruct.ViewModel
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public IEnumerable<AtomDataPoint> OpenFile(string path)
+        public static IEnumerable<AtomDataPoint> OpenFile(string path)
         {
             string file = File.ReadAllText(path);
             string[] lines = file.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None);
