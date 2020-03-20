@@ -382,5 +382,17 @@ namespace PorphyStruct.Core.Properties {
                 this["markerSize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool forceEn {
+            get {
+                return ((bool)(this["forceEn"]));
+            }
+            set {
+                this["forceEn"] = value;
+            }
+        }
     }
 }

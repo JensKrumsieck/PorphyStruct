@@ -92,5 +92,8 @@
     <Setting Name="markerSize" Type="System.Double" Scope="User">
       <Value Profile="(Default)">6</Value>
     </Setting>
+    <Setting Name="forceEn" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
