@@ -50,17 +50,15 @@ namespace PorphyStruct
             string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (!String.IsNullOrEmpty(Core.Properties.Settings.Default.savePath))
                 initialDir = Core.Properties.Settings.Default.savePath;
-            using (winforms.FolderBrowserDialog fbd = new winforms.FolderBrowserDialog
+            using winforms.FolderBrowserDialog fbd = new winforms.FolderBrowserDialog
             {
                 SelectedPath = initialDir
-            })
+            };
+            if (fbd.ShowDialog() == winforms.DialogResult.OK)
             {
-                if (fbd.ShowDialog() == winforms.DialogResult.OK)
-                {
-                    var textBox = (FindName($"{btn}Path") as TextBox);
-                    textBox.Text = fbd.SelectedPath;
-                    textBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-                }
+                var textBox = (FindName($"{btn}Path") as TextBox);
+                textBox.Text = fbd.SelectedPath;
+                textBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             }
         }
 
