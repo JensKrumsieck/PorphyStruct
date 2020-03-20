@@ -119,14 +119,11 @@ namespace PorphyStruct
         /// Synchronize Error Textbox
         /// </summary>
         /// <param name="result"></param>
-        internal void SynchronizeErrors(Result result)
-        {
-            synchronizationContext.Send(new SendOrPostCallback(o =>
-            {
-                double[] error = (double[])o;
-                ErrTB.Text = string.Join(";", error.Select(s => s.ToString("N6", System.Globalization.CultureInfo.InvariantCulture)));
-            }), result.Error);
-        }
+        internal void SynchronizeErrors(Result result) => synchronizationContext.Send(new SendOrPostCallback(o =>
+                                                        {
+                                                            double[] error = (double[])o;
+                                                            ErrTB.Text = string.Join(";", error.Select(s => s.ToString("N6", System.Globalization.CultureInfo.InvariantCulture)));
+                                                        }), result.Error);
 
         /// <summary>
         /// Handle Start Button Click
@@ -155,10 +152,12 @@ namespace PorphyStruct
                 viewModel.Cycle.DataProviders.RemoveAll(s => s.DataType == DataType.Simulation);
                 viewModel.Cycle.PropertyProviders.RemoveAll(s => s.Type == PropertyType.Simulation);
 
-                ScatterSeries sim = (ScatterSeries)simView.Model.Series.FirstOrDefault(s => s.Title == "Best");
-                var simObj = new SimulationData((IEnumerable<AtomDataPoint>)sim.ItemsSource);
-                simObj.SimulationParameters = viewModel.Parameters;
-                simObj.Inverted = MainVM.Invert;
+                var sim = (ScatterSeries)simView.Model.Series.FirstOrDefault(s => s.Title == "Best");
+                var simObj = new SimulationData((IEnumerable<AtomDataPoint>)sim.ItemsSource)
+                {
+                    SimulationParameters = viewModel.Parameters,
+                    Inverted = MainVM.Invert
+                };
 
                 //Le sim is property and data provider
                 viewModel.Cycle.PropertyProviders.Add(simObj);
@@ -192,7 +191,7 @@ namespace PorphyStruct
         private void ReloadSimBtn_Click(object sender, RoutedEventArgs e)
         {
             //use save dir as default because there should be the results
-            var ofd = FileUtil.DefaultOpenFileDialog("Properties file (*.json)|*.json", true);
+            Microsoft.Win32.OpenFileDialog ofd = FileUtil.DefaultOpenFileDialog("Properties file (*.json)|*.json", true);
             bool? DialogResult = ofd.ShowDialog();
 
             if (DialogResult.HasValue && DialogResult.Value)
@@ -202,7 +201,7 @@ namespace PorphyStruct
                 if (deserialized.ContainsKey("Simulation"))
                 {
                     viewModel.Parameters.Clear();
-                    foreach (var item in deserialized["Simulation"])
+                    foreach (Property item in deserialized["Simulation"])
                     {
                         if (item.Name.Contains("percentage")) //here are the actual values
                             viewModel.Parameters.Add(

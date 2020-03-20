@@ -10,10 +10,7 @@ namespace PorphyStruct.Chemistry.Properties
         /// </summary>
         /// <param name="function"></param>
         /// <param name="Metal"></param>
-        public MetalAngles(Func<string, Atom> function, Atom Metal) : this(function)
-        {
-            this.Metal = Metal;
-        }
+        public MetalAngles(Func<string, Atom> function, Atom Metal) : this(function) => this.Metal = Metal;
 
         public MetalAngles(Func<string, Atom> function) : base(function) { }
 

@@ -6,7 +6,7 @@ namespace PorphyStruct.Core.Util
 {
     public abstract class Bindable : INotifyPropertyChanged
     {
-        private Dictionary<string, object> _properties = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> _properties = new Dictionary<string, object>();
 
         /// <summary>
         /// Gets the Value of a Property

@@ -75,7 +75,7 @@ namespace PorphyStruct.ViewModel
             string[] dataA = new string[lines.Length - 1]; // first line is bs
             int index = 0;
 
-            foreach (var line in lines.Where(s => !string.IsNullOrEmpty(s) && !s.StartsWith("A;")))
+            foreach (string line in lines.Where(s => !string.IsNullOrEmpty(s) && !s.StartsWith("A;")))
             {
                 dataA[index] = line.Split(';')[0]; //atom identifier
                 dataX[index] = Convert.ToDouble(line.Split(';')[1]);
@@ -91,11 +91,11 @@ namespace PorphyStruct.ViewModel
 
             Array.Sort(dataX.ToArray(), dataY);
             Array.Sort(dataX, dataA);
-            List<Atom> atoms = new List<Atom>();
+            var atoms = new List<Atom>();
             for (int i = 0; i < dataX.Length; i++)
             {
                 //add datapoint with dummy atom only having identifier
-                Atom A = new Atom(dataA[i], 0, 0, 0) { IsMacrocycle = true };
+                var A = new Atom(dataA[i], 0, 0, 0) { IsMacrocycle = true };
                 atoms.Add(A);
                 yield return new AtomDataPoint(dataX[i], dataY[i], A);
             }

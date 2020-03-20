@@ -154,7 +154,7 @@ namespace PorphyStruct.Util
         /// <returns></returns>
         public static IEnumerable<double> Normalize(this IEnumerable<double> input)
         {
-            foreach (var d in input) yield return d / input.AbsSum();
+            foreach (double d in input) yield return d / input.AbsSum();
         }
 
         /// <summary>
@@ -172,13 +172,13 @@ namespace PorphyStruct.Util
             Vector<double> b3 = (DenseVector.OfArray(atoms[3].XYZ()) - DenseVector.OfArray(atoms[2].XYZ())).Normalize(2);
 
             //calculate crossproducts
-            var c1 = MathUtil.CrossProduct(b1, b2);
-            var c2 = MathUtil.CrossProduct(b2, b3);
-            var c3 = MathUtil.CrossProduct(c1, b2);
+            Vector<double> c1 = MathUtil.CrossProduct(b1, b2);
+            Vector<double> c2 = MathUtil.CrossProduct(b2, b3);
+            Vector<double> c3 = MathUtil.CrossProduct(c1, b2);
 
             //get x&y as dotproducts 
-            var x = c1.DotProduct(c2);
-            var y = c3.DotProduct(c2);
+            double x = c1.DotProduct(c2);
+            double y = c3.DotProduct(c2);
 
             return 180.0 / Math.PI * Math.Atan2(y, x);
         }
@@ -195,7 +195,7 @@ namespace PorphyStruct.Util
             Vector<double> b1 = (DenseVector.OfArray(atoms[0].XYZ()) - DenseVector.OfArray(atoms[1].XYZ())).Normalize(2);
             Vector<double> b2 = (DenseVector.OfArray(atoms[2].XYZ()) - DenseVector.OfArray(atoms[1].XYZ())).Normalize(2);
 
-            var x = b1.DotProduct(b2);
+            double x = b1.DotProduct(b2);
 
             return 180 / Math.PI * Math.Acos(x);
         }
@@ -208,10 +208,10 @@ namespace PorphyStruct.Util
         /// <returns></returns>
         public static double Angle(Plane p1, Plane p2)
         {
-            var d = Math.Abs((p1.A * p2.A) + (p1.B * p2.B) + (p1.C * p2.C));
-            var e1 = Math.Pow(p1.A, 2) + Math.Pow(p1.B, 2) + Math.Pow(p1.C, 2);
-            var e2 = Math.Pow(p2.A, 2) + Math.Pow(p2.B, 2) + Math.Pow(p2.C, 2);
-            var x = Math.Acos(d / (Math.Sqrt(e1) * Math.Sqrt(e2)));
+            double d = Math.Abs((p1.A * p2.A) + (p1.B * p2.B) + (p1.C * p2.C));
+            double e1 = Math.Pow(p1.A, 2) + Math.Pow(p1.B, 2) + Math.Pow(p1.C, 2);
+            double e2 = Math.Pow(p2.A, 2) + Math.Pow(p2.B, 2) + Math.Pow(p2.C, 2);
+            double x = Math.Acos(d / (Math.Sqrt(e1) * Math.Sqrt(e2)));
             return 180 / Math.PI * x;
         }
 

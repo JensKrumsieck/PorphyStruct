@@ -23,13 +23,13 @@ namespace PorphyStruct.Chemistry
         /// <param name="extension"></param>
         public static void ExportGraph(this PlotModel pm, string filename, IExporter exporter, string extension = "png")
         {
-            using var file = File.Create(filename + "Analysis." + extension);
+            using FileStream file = File.Create(filename + "Analysis." + extension);
             //for svg double sizes ;)
             if (extension == "svg")
             {
                 pm.DefaultFontSize *= 2;
                 pm.Padding = new OxyThickness(pm.Padding.Left * 2.5);
-                foreach (var axis in pm.Axes) axis.AxislineThickness *= 2;
+                foreach (OxyPlot.Axes.Axis axis in pm.Axes) axis.AxislineThickness *= 2;
                 foreach (ScatterSeries series in pm.Series) series.MarkerSize *= 2;
                 foreach (ArrowAnnotation annotation in pm.Annotations.Where(s => s.GetType() == typeof(ArrowAnnotation))) annotation.StrokeThickness *= 2;
                 if (Core.Properties.Settings.Default.showBox) pm.PlotAreaBorderThickness = new OxyThickness(Core.Properties.Settings.Default.lineThickness * 2);
@@ -40,7 +40,7 @@ namespace PorphyStruct.Chemistry
             if (extension == "svg")
             {
                 pm.DefaultFontSize /= 2;
-                foreach (var axis in pm.Axes) axis.AxislineThickness /= 2;
+                foreach (OxyPlot.Axes.Axis axis in pm.Axes) axis.AxislineThickness /= 2;
                 foreach (ScatterSeries series in pm.Series) series.MarkerSize /= 2;
                 foreach (ArrowAnnotation annotation in pm.Annotations.Where(s => s.GetType() == typeof(ArrowAnnotation))) annotation.StrokeThickness /= 2;
                 if (Core.Properties.Settings.Default.showBox) pm.PlotAreaBorderThickness = new OxyThickness(Core.Properties.Settings.Default.lineThickness);
@@ -64,7 +64,7 @@ namespace PorphyStruct.Chemistry
             foreach (OxyPlot.Series.Series s in export) title += s.Title + ";";
 
             //write data
-            using StreamWriter sw = new StreamWriter(filename + "Data." + extension);
+            using var sw = new StreamWriter(filename + "Data." + extension);
             sw.WriteLine(title);
 
             //write data
@@ -92,18 +92,18 @@ namespace PorphyStruct.Chemistry
                 default:
                     {
                         var options = new JsonSerializerOptions() { WriteIndented = true, Encoder = JavaScriptEncoder.Create(UnicodeRanges.All) };
-                        var json = JsonSerializer.Serialize(properties, typeof(Dictionary<string, IEnumerable<Property>>), options);
-                        using StreamWriter sw = new StreamWriter(filename + "Properties." + extension);
+                        string json = JsonSerializer.Serialize(properties, typeof(Dictionary<string, IEnumerable<Property>>), options);
+                        using var sw = new StreamWriter(filename + "Properties." + extension);
                         sw.Write(json);
                     }
                     break;
                 case "txt":
                     {
-                        using StreamWriter sw = new StreamWriter(filename + "Properties." + extension);
-                        foreach (var g in properties)
+                        using var sw = new StreamWriter(filename + "Properties." + extension);
+                        foreach (KeyValuePair<string, IEnumerable<Property>> g in properties)
                         {
                             sw.WriteLine(g.Key + ":");
-                            foreach (var p in g.Value) sw.WriteLine("\t" + p.Name + ": " + p.Value);
+                            foreach (Property p in g.Value) sw.WriteLine("\t" + p.Name + ": " + p.Value);
                         }
                     }
                     break;
@@ -119,10 +119,10 @@ namespace PorphyStruct.Chemistry
         public static void SaveIXYZ(this Macrocycle cycle, string filename, bool CycleOnly = false)
         {
             filename += (CycleOnly ? "Macrocycle" : "Molecule") + ".ixyz";
-            var export = cycle.Atoms.AsEnumerable();
+            IEnumerable<Atom> export = cycle.Atoms.AsEnumerable();
             if (CycleOnly) export = cycle.Atoms.Where(s => s.IsMacrocycle);
 
-            using StreamWriter sw = new StreamWriter(filename);
+            using var sw = new StreamWriter(filename);
             sw.WriteLine(export.Count());
             sw.WriteLine(filename);
             foreach (Atom a in export) sw.WriteLine(a.ExportText);

@@ -34,7 +34,7 @@ namespace PorphyStruct.Simulations
             Matrix<double> D = Displacements.DisplacementMatrix(cycle.type, param.Length);
             Vector<double> C = D * DenseVector.OfArray(param);
             //normalize conformation vector
-            var c = C.Normalize(double.PositiveInfinity).ToArray();
+            double[] c = C.Normalize(double.PositiveInfinity).ToArray();
 
             double[] data = cycle.DataPoints.ToDoubleArray();
 

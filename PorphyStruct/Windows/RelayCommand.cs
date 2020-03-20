@@ -15,8 +15,8 @@ namespace PorphyStruct.Windows
     {
         #region Fields
 
-        readonly Action<object> _execute;
-        readonly Predicate<object> _canExecute;
+        private readonly Action<object> _execute;
+        private readonly Predicate<object> _canExecute;
 
         #endregion // Fields
 
@@ -50,10 +50,7 @@ namespace PorphyStruct.Windows
         #region ICommand Members
 
         [DebuggerStepThrough]
-        public bool CanExecute(object parameter)
-        {
-            return _canExecute == null ? true : _canExecute(parameter);
-        }
+        public bool CanExecute(object parameter) => _canExecute == null ? true : _canExecute(parameter);
 
         public event EventHandler CanExecuteChanged
         {
@@ -61,10 +58,7 @@ namespace PorphyStruct.Windows
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public void Execute(object parameter)
-        {
-            _execute(parameter);
-        }
+        public void Execute(object parameter) => _execute(parameter);
 
         #endregion // ICommand Members
     }

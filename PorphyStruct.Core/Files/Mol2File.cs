@@ -19,7 +19,7 @@ namespace PorphyStruct.Files
         {
             // read mol2 - File and get parameters & coordinate
             string title = System.IO.Path.GetFileNameWithoutExtension(Path);
-            Molecule molecule = new Molecule(title);
+            var molecule = new Molecule(title);
             //get loop with coordinates
             string[] tripos = Content.Split(new[] { "@<TRIPOS>" }, StringSplitOptions.None);
             string atomTripos = tripos.FirstOrDefault(s => s.StartsWith("ATOM"));
@@ -40,8 +40,7 @@ namespace PorphyStruct.Files
                     double y = Convert.ToDouble(columns[3], CultureInfo.InvariantCulture);
                     double z = Convert.ToDouble(columns[4], CultureInfo.InvariantCulture);
 
-                    int id = 0;
-                    int.TryParse(Regex.Match(identifier, @"\d+").Value, out id);
+                    int.TryParse(Regex.Match(identifier, @"\d+").Value, out int id);
                     //no id, so set one.
                     if (id == 0)
                     {

@@ -46,11 +46,7 @@ namespace PorphyStruct.Chemistry.Macrocycles
         /// <summary>
         /// Multiplier of X-Coordinate
         /// </summary>
-        internal static Dictionary<string, double> _Multiplier
-        {
-            get
-            {
-                return new Dictionary<string, double>
+        internal static Dictionary<string, double> _Multiplier => new Dictionary<string, double>
                 {
                     { "C1", 0d },
                     { "C2", 1 / 3d },
@@ -73,8 +69,6 @@ namespace PorphyStruct.Chemistry.Macrocycles
                     { "C19",  2 / 3d },
                     { "C20",  1d  }
                 };
-            }
-        }
         public override Dictionary<string, double> Multiplier => _Multiplier;
 
         /// <summary>

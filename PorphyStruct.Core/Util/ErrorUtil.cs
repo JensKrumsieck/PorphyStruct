@@ -13,10 +13,7 @@ namespace PorphyStruct.Util
         /// <param name="x1"></param>
         /// <param name="x2"></param>
         /// <returns></returns>
-        public static double ErrorFromDouble(double x1, double x2)
-        {
-            return Math.Pow(x1 - x2, 2);
-        }
+        public static double ErrorFromDouble(double x1, double x2) => Math.Pow(x1 - x2, 2);
 
         /// <summary>
         /// returns the error of two IEnumerable<double>s

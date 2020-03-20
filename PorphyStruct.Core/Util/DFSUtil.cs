@@ -20,7 +20,7 @@ namespace PorphyStruct.Util
         public static async IAsyncEnumerable<IEnumerable<T>> ConnectedFigures<T>(IEnumerable<T> list, Func<T, IEnumerable<T>> func)
         {
             var visited = new HashSet<T>();
-            foreach (var item in list) if (!visited.Contains(item)) yield return await DFS(item, func, visited);
+            foreach (T item in list) if (!visited.Contains(item)) yield return await DFS(item, func, visited);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace PorphyStruct.Util
         public static async Task Traverse<T>(T vertex, HashSet<T> visited, Func<T, IEnumerable<T>> func)
         {
             visited.Add(vertex);
-            foreach (var neighbor in func(vertex).Where(n => !visited.Contains(n)))
+            foreach (T neighbor in func(vertex).Where(n => !visited.Contains(n)))
                 await Traverse(neighbor, visited, func);
         }
 
@@ -90,7 +90,7 @@ namespace PorphyStruct.Util
             visited.Add(start);
             if (localPaths.Count == 0) localPaths.Add(start);
             if (start.Equals(end) && localPaths.Count() == length) BuildPath(localPaths, output);
-            foreach (var node in func(start).Where(node => !visited.Contains(node)).Select(node => node).AsParallel())
+            foreach (T node in func(start).Where(node => !visited.Contains(node)).Select(node => node).AsParallel())
             {
                 localPaths.Add(node);
                 AllPaths(node, end, visited, localPaths, func, output, length).AsParallel();
@@ -110,7 +110,7 @@ namespace PorphyStruct.Util
         private static void BuildPath<T>(HashSet<T> localPath, HashSet<HashSet<T>> output)
         {
             var BuildPath = new HashSet<T>();
-            foreach (var node in localPath) BuildPath.Add(node);
+            foreach (T node in localPath) BuildPath.Add(node);
             output.Add(BuildPath);
         }
 

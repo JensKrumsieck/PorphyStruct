@@ -21,12 +21,12 @@ namespace PorphyStruct.Windows
         {
             yield return new DefaultLights();
             //loop atoms
-            foreach (var atom in cycle.Atoms)
+            foreach (Atom atom in cycle.Atoms)
                 yield return Atom3D(atom);
             //loop bonds
-            foreach (var a1 in cycle.Atoms)
+            foreach (Atom a1 in cycle.Atoms)
             {
-                foreach (var a2 in cycle.Atoms)
+                foreach (Atom a2 in cycle.Atoms)
                 {
                     if (a1.BondTo(a2))
                     {
@@ -48,9 +48,11 @@ namespace PorphyStruct.Windows
             builder.AddSphere(atom.ToPoint3D(), atom.AtomRadius / 2);
             Brush brush = atom.Brush();
             if (selected) brush = Brushes.LightGoldenrodYellow;
-            var vis = new AtomModelVisual3D();
-            vis.Content = new GeometryModel3D(builder.ToMesh(), MaterialHelper.CreateMaterial(brush));
-            vis.Atom = atom;
+            var vis = new AtomModelVisual3D
+            {
+                Content = new GeometryModel3D(builder.ToMesh(), MaterialHelper.CreateMaterial(brush)),
+                Atom = atom
+            };
             return vis;
         }
 
@@ -63,12 +65,14 @@ namespace PorphyStruct.Windows
         /// <returns></returns>
         public static BondModelVisual3D Bond3D(this Atom a1, Atom a2, Macrocycle cycle)
         {
-            var valid = cycle.IsValid;
+            bool valid = cycle.IsValid;
             var builder = new MeshBuilder(true, true);
             builder.AddCylinder(a1.ToPoint3D(), a2.ToPoint3D(), cycle.IsValidBond(a1, a2) ? 0.2 : 0.075, 10);//add only to selection if both are macrocycle marked
-            var vis = new BondModelVisual3D();
-            vis.Atoms = new[] { a1, a2 };
-            var material = Materials.Gray;
+            var vis = new BondModelVisual3D
+            {
+                Atoms = new[] { a1, a2 }
+            };
+            Material material = Materials.Gray;
             if (cycle.IsValidBond(a1, a2))
                 material = (valid ? Materials.Green : Materials.Red);
             vis.Content = new GeometryModel3D(builder.ToMesh(), material);

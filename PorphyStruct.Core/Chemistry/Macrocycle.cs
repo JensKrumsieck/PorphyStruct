@@ -70,7 +70,7 @@ namespace PorphyStruct.Chemistry
         {
             get
             {
-                foreach (var propertyProvider in PropertyProviders)
+                foreach (IPropertyProvider propertyProvider in PropertyProviders)
                     yield return new KeyValuePair<string, IEnumerable<Property>>(propertyProvider.Type.ToString(), propertyProvider.CalculateProperties());
             }
         }
@@ -82,7 +82,7 @@ namespace PorphyStruct.Chemistry
         public void Paint(PlotModel Model)
         {
             DataProviders.Sort(s => s.Priority);
-            foreach (var dataProvider in DataProviders)
+            foreach (IAtomDataPointProvider dataProvider in DataProviders)
                 MacrocyclePainter.Paint(this, Model, dataProvider);
         }
 
@@ -91,7 +91,7 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         public void Normalize(bool normalize = true)
         {
-            foreach (var dataProvider in DataProviders)
+            foreach (IAtomDataPointProvider dataProvider in DataProviders)
             {
                 if (normalize && !dataProvider.Normalized || !normalize && dataProvider.Normalized)
                     dataProvider.Normalize();
@@ -103,7 +103,7 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         public void Invert(bool invert = true)
         {
-            foreach (var dataProvider in DataProviders)
+            foreach (IAtomDataPointProvider dataProvider in DataProviders)
             {
                 if (invert && !dataProvider.Inverted || !invert && dataProvider.Inverted)
                     dataProvider.Invert();
@@ -162,7 +162,7 @@ namespace PorphyStruct.Chemistry
                     if (Atoms.Where(a => a.IsMacrocycle && a.Identifier == id).Count() != 1)
                         return false; //identifier missing
                 }
-                foreach (var b in Bonds)
+                foreach (Tuple<string, string> b in Bonds)
                 {
                     if (!IsValidBond(ByIdentifier(b.Item1, true), ByIdentifier(b.Item2, true)) || !ByIdentifier(b.Item1, true).BondTo(ByIdentifier(b.Item2, true)))
                         return false; //Bond is missing
@@ -222,7 +222,7 @@ namespace PorphyStruct.Chemistry
             DataProviders.RemoveAll(s => s.DataType == DataType.Experimental);
             PropertyProviders.RemoveAll(s => s.GetType() == typeof(ExperimentalData));
 
-            List<AtomDataPoint> data = CalculateDataPoints().ToList();
+            var data = CalculateDataPoints().ToList();
 
             if (HasMetal()) data.Add(new AtomDataPoint(
                     (data.Max(s => s.X) + data.Min(s => s.X)) / 2,
@@ -316,12 +316,12 @@ namespace PorphyStruct.Chemistry
         internal List<Atom> N4Cavity(IEnumerable<Atom> mol)
         {
             //calculate centroid
-            var centroid = GetCentroid(mol);
+            Vector3D centroid = GetCentroid(mol);
             //inject centroid into atoms as Lanthanium atom (because of big radius)
             //basically need a sphere where to catch atoms in to get N4 Cavity
             Atoms.Add(new Atom("La Centroid", centroid.X, centroid.Y, centroid.Z));
             //find neighbors which have more neighbors that are non metal nor hydrogen (NH) and belong to current figure
-            var neighbors = NonMetalNeighbors(ByIdentifier("La Centroid"), mol).Where(s => NonMetalNeighbors(s, mol).Where(n => n.Type != "H").Count() == 2 && mol.Contains(s));
+            IEnumerable<Atom> neighbors = NonMetalNeighbors(ByIdentifier("La Centroid"), mol).Where(s => NonMetalNeighbors(s, mol).Where(n => n.Type != "H").Count() == 2 && mol.Contains(s));
 
             //use the nearest 4 neighbors by mean plane and centroid distance to get cavity atoms
             var cavity = neighbors.OrderBy(n => Atom.Distance(ByIdentifier("La Centroid"), n) + Math.Abs(n.DistanceToPlane(GetMeanPlane(mol)))).Take(4).ToList();
@@ -340,18 +340,18 @@ namespace PorphyStruct.Chemistry
         internal HashSet<Atom> FindCorpus(IEnumerable<Atom> mol)
         {
             //get N4 Cavity
-            var cavity = N4Cavity(mol);
+            List<Atom> cavity = N4Cavity(mol);
 
             //get inner ring path
-            var corpus = RingPath(cavity.First(), RingAtoms.Count() - 8);
+            HashSet<Atom> corpus = RingPath(cavity.First(), RingAtoms.Count() - 8);
             if (corpus == null && HasMetal(false))
             {
                 //use alternative cavity definition and try find again
                 cavity = NonMetalNeighbors(Metal, mol).ToList();
                 //iterate all combinations
-                foreach (var comb in cavity.GetCombinations(4).OrderBy(l => l.Sum(a => Atom.Distance(a, Metal))))
+                foreach (IEnumerable<Atom> comb in cavity.GetCombinations(4).OrderBy(l => l.Sum(a => Atom.Distance(a, Metal))))
                 {
-                    var path = RingPath(comb.First(), RingAtoms.Count() - 8);
+                    HashSet<Atom> path = RingPath(comb.First(), RingAtoms.Count() - 8);
                     if (path != null)
                     {
                         foreach (Atom N in comb) path.UnionWith(RingPath(N, 5).AsParallel());
@@ -396,13 +396,13 @@ namespace PorphyStruct.Chemistry
             //find all connected structures
             //Note: the axial ligand is connected to the macrocycle
             //it will lead to wrong mean planes and Centroid in N4Cavity() -> Cobalamins
-            List<IEnumerable<Atom>> figures = new List<IEnumerable<Atom>>();
-            await foreach (var fig in DFSUtil.ConnectedFigures(Atoms.Where(s => !s.IsMetal && NonMetalNeighbors(s).Count() >= 2), NonMetalNeighbors))
+            var figures = new List<IEnumerable<Atom>>();
+            await foreach (IEnumerable<Atom> fig in DFSUtil.ConnectedFigures(Atoms.Where(s => !s.IsMetal && NonMetalNeighbors(s).Count() >= 2), NonMetalNeighbors))
                 figures.Add(fig);
 
             var cycle = new HashSet<Atom>();
             //loop through all remaining connected figures
-            foreach (var mol in figures.Where(s => s.Count() >= RingAtoms.Count))
+            foreach (IEnumerable<Atom> mol in figures.Where(s => s.Count() >= RingAtoms.Count))
             {
                 //get Corpus by Pathfinding Method
                 cycle = FindCorpus(mol);
@@ -428,12 +428,12 @@ namespace PorphyStruct.Chemistry
                 Atoms.Where(s => cycle.Contains(s)).ToList().ForEach(s => { s.IsMacrocycle = true; s.Identifier = s.Type + "M"; });
                 Atoms.Where(s => !cycle.Contains(s)).ToList().ForEach(s => { s.IsMacrocycle = false; s.Identifier = s.Type + "X"; });
                 //track visited atoms
-                HashSet<Atom> visited = new HashSet<Atom>();
+                var visited = new HashSet<Atom>();
 
                 //set Identifier for C1 Atom
                 C1(cycle).Identifier = "C1";
                 //get N4 Cavity, necessary for performance
-                var cavity = N4Cavity(cycle);
+                List<Atom> cavity = N4Cavity(cycle);
                 //force c2 to be first step
                 Atom current = Neighbors(C1(cycle), cycle).Where(s => !cavity.Contains(s) && !RingPath(cavity.First(), RingAtoms.Count() - 8).Contains(s)).FirstOrDefault();
                 current.Identifier = "C2";
@@ -445,7 +445,7 @@ namespace PorphyStruct.Chemistry
                 //loop through atoms and name them
                 while (visited.Count() != carbons.Count())
                 {
-                    foreach (var neighbor in Neighbors(current, cycle).Where(s => !visited.Contains(s) && !cavity.Contains(s)))
+                    foreach (Atom neighbor in Neighbors(current, cycle).Where(s => !visited.Contains(s) && !cavity.Contains(s)))
                     {
                         //add to visited and assign Identifier
                         neighbor.Identifier = carbons[i];

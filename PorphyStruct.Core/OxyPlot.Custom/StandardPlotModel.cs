@@ -27,7 +27,7 @@ namespace PorphyStruct.OxyPlotOverride
             PlotAreaBorderThickness = new OxyThickness(Core.Properties.Settings.Default.lineThickness);
             TitleFontWeight = 200;
 
-            OxyPlot.Axes.LinearAxis x = new OxyPlot.Axes.LinearAxis
+            var x = new OxyPlot.Axes.LinearAxis
             {
                 Title = "X",
                 Unit = "Å",
@@ -42,7 +42,7 @@ namespace PorphyStruct.OxyPlotOverride
             };
 
             //use my override for title rotation :) works unexpectedly good :D
-            LinearAxis y = new LinearAxis
+            var y = new LinearAxis
             {
                 Title = "Δ_{msp}",
                 Unit = "Å",
@@ -128,7 +128,7 @@ namespace PorphyStruct.OxyPlotOverride
             if (Core.Properties.Settings.Default.zero)
             {
                 //show zero
-                OxyPlot.Annotations.LineAnnotation zero = new OxyPlot.Annotations.LineAnnotation()
+                var zero = new OxyPlot.Annotations.LineAnnotation()
                 {
                     Color = OxyColor.FromAColor(40, OxyColors.Gray),
                     StrokeThickness = Core.Properties.Settings.Default.lineThickness,

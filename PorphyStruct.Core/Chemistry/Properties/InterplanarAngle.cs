@@ -13,10 +13,7 @@ namespace PorphyStruct.Chemistry.Properties
         /// </summary>
         /// <param name="function"></param>
         /// <param name="Metal"></param>
-        public InterplanarAngle(Func<string, Atom> function, Atom Metal) : base(function)
-        {
-            this.Metal = Metal;
-        }
+        public InterplanarAngle(Func<string, Atom> function, Atom Metal) : base(function) => this.Metal = Metal;
 
         public InterplanarAngle(Func<string, Atom> function) : base(function) { }
 
@@ -38,7 +35,7 @@ namespace PorphyStruct.Chemistry.Properties
         public override IEnumerable<Property> CalculateProperties()
         {
             IList<Plane> planes = new List<Plane>();
-            foreach (var selector in Selectors)
+            foreach (string[] selector in Selectors)
                 //validate AtomFunction first
                 if (selector.Select(identifier => AtomFunction(identifier)).Count(atom => atom == null) == 0)
                     planes.Add(Plane.FromPoints(AtomFunction(selector[0]).ToPoint3D(), AtomFunction(selector[1]).ToPoint3D(), AtomFunction(selector[2]).ToPoint3D()));

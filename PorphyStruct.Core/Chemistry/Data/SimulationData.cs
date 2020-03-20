@@ -26,7 +26,7 @@ namespace PorphyStruct.Chemistry.Data
 
         public override IEnumerable<Property> CalculateProperties()
         {
-            foreach (var param in SimulationParameters)
+            foreach (SimParam param in SimulationParameters)
             {
                 yield return new Property(param.Title + " (percentage)", (param.Best * 100).ToString("N2") + " %");
                 yield return new Property(param.Title + " (absolute)", (param.Best * DataPoints.MeanDisplacement()).ToString("N4") + " Å");

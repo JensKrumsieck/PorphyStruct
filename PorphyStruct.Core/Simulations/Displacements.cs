@@ -17,7 +17,7 @@ namespace PorphyStruct.Simulations
         /// <returns></returns>
         public static Matrix<double> DisplacementMatrix(Macrocycle.Type type, int size)
         {
-            var M = Matrix<double>.Build;
+            MatrixBuilder<double> M = Matrix<double>.Build;
             Matrix<double> D = M.Dense(1, size);
             //set displacementmatrix
             if (type == Macrocycle.Type.Corrole)

@@ -20,7 +20,7 @@ namespace PorphyStruct.Chemistry
         /// <param name="mode"></param>
         public static void Paint(this Macrocycle cycle, PlotModel pm, IAtomDataPointProvider data)
         {
-            foreach (var dp in data.DataPoints) AssignValue(dp, data.DataType);
+            foreach (AtomDataPoint dp in data.DataPoints) AssignValue(dp, data.DataType);
             //read marker type
             MarkerType mType = MarkerType.Circle;
             if (data.DataType == DataType.Experimental) mType = Core.Properties.Settings.Default.markerType;
@@ -28,7 +28,7 @@ namespace PorphyStruct.Chemistry
             if (data.DataType == DataType.Comparison) mType = Core.Properties.Settings.Default.comMarkerType;
 
             //build series
-            ScatterSeries series = new ScatterSeries()
+            var series = new ScatterSeries()
             {
                 MarkerType = mType,
                 ItemsSource = data.DataPoints,
@@ -72,7 +72,7 @@ namespace PorphyStruct.Chemistry
         {
             int min = 7;
             if (Core.Properties.Settings.Default.ColorPalette.Contains("GrayScale")) min = 1;
-            var palette = CurrentPalette(count > min ? count : min);
+            OxyPalette palette = CurrentPalette(count > min ? count : min);
             return palette.Colors[index >= 0 ? index : 0];
         }
 
@@ -84,10 +84,10 @@ namespace PorphyStruct.Chemistry
         public static OxyPalette CurrentPalette(int count)
         {
 
-            var title = Core.Properties.Settings.Default.ColorPalette;
-            var palette = from MethodInfo method in typeof(CustomPalettes).GetMethods(BindingFlags.Public | BindingFlags.Static)
-                          where method.Name == title
-                          select method;
+            string title = Core.Properties.Settings.Default.ColorPalette;
+            IEnumerable<MethodInfo> palette = from MethodInfo method in typeof(CustomPalettes).GetMethods(BindingFlags.Public | BindingFlags.Static)
+                                              where method.Name == title
+                                              select method;
             return palette.FirstOrDefault().Invoke(null, new object[] { count }) as OxyPalette;
 
         }

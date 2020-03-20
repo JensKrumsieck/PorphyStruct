@@ -8,10 +8,7 @@ namespace PorphyStruct.Chemistry.Macrocycles
 {
     public class Corrole : Macrocycle
     {
-        public Corrole(AsyncObservableCollection<Atom> Atoms) : base(Atoms)
-        {
-            PropertyProviders.Add(new PorphyrinDihedrals(ByIdentifier));
-        }
+        public Corrole(AsyncObservableCollection<Atom> Atoms) : base(Atoms) => PropertyProviders.Add(new PorphyrinDihedrals(ByIdentifier));
 
         //assign type (legacy)
         public override Type type => Type.Corrole;
@@ -51,7 +48,7 @@ namespace PorphyStruct.Chemistry.Macrocycles
         {
             Atom C1 = null;
             //loop alpha atoms
-            foreach (var atom in Vertex3Atoms(cycle))
+            foreach (Atom atom in Vertex3Atoms(cycle))
             {
                 if (Neighbors(atom, cycle).Where(l => Vertex3Atoms(cycle).Contains(l)).Count() != 0) C1 = atom;
             }

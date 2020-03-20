@@ -31,7 +31,7 @@ namespace PorphyStruct.Util
         /// <returns></returns>
         public static List<AtomDataPoint> ToAtomDataPoints(this double[] data, IList<AtomDataPoint> datapoints)
         {
-            List<AtomDataPoint> list = new List<AtomDataPoint>();
+            var list = new List<AtomDataPoint>();
             for (int i = 0; i < data.Length; i++) list.Add(new AtomDataPoint(datapoints[i].X, data[i], datapoints[i].atom));
             return list;
         }

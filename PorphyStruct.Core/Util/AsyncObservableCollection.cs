@@ -34,29 +34,14 @@ namespace PorphyStruct.Core.Util
             }
         }
 
-        protected override void InsertItem(int index, T item)
-        {
-            ExecuteOnSyncContext(() => base.InsertItem(index, item));
-        }
+        protected override void InsertItem(int index, T item) => ExecuteOnSyncContext(() => base.InsertItem(index, item));
 
-        protected override void RemoveItem(int index)
-        {
-            ExecuteOnSyncContext(() => base.RemoveItem(index));
-        }
+        protected override void RemoveItem(int index) => ExecuteOnSyncContext(() => base.RemoveItem(index));
 
-        protected override void SetItem(int index, T item)
-        {
-            ExecuteOnSyncContext(() => base.SetItem(index, item));
-        }
+        protected override void SetItem(int index, T item) => ExecuteOnSyncContext(() => base.SetItem(index, item));
 
-        protected override void MoveItem(int oldIndex, int newIndex)
-        {
-            ExecuteOnSyncContext(() => base.MoveItem(oldIndex, newIndex));
-        }
+        protected override void MoveItem(int oldIndex, int newIndex) => ExecuteOnSyncContext(() => base.MoveItem(oldIndex, newIndex));
 
-        protected override void ClearItems()
-        {
-            ExecuteOnSyncContext(() => base.ClearItems());
-        }
+        protected override void ClearItems() => ExecuteOnSyncContext(() => base.ClearItems());
     }
 }

@@ -3,7 +3,7 @@ using System;
 
 namespace PorphyStruct.Simulations
 {
-    interface IParameterProvider
+    internal interface IParameterProvider
     {
         /// <summary>
         /// gets or sets the parameters

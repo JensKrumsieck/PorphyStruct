@@ -17,7 +17,7 @@ namespace PorphyStruct.Windows
 
         public IEnumerable<Brush> GetBrushes()
         {
-            foreach (var color in Colors) yield return new OxyColorConverter().Convert(color, typeof(Brush), null, null) as Brush;
+            foreach (OxyColor color in Colors) yield return new OxyColorConverter().Convert(color, typeof(Brush), null, null) as Brush;
         }
 
         public PaletteInfo(string title, OxyPalette palette)

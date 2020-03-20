@@ -11,7 +11,7 @@ namespace PorphyStruct.OxyPlotOverride
 
         public AtomRangeColorAxis(IEnumerable<AtomDataPoint> datapoints) : base()
         {
-            foreach (var dp in datapoints) AddAtom(dp);
+            foreach (AtomDataPoint dp in datapoints) AddAtom(dp);
         }
 
         /// <summary>

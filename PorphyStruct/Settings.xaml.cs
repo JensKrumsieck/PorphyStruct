@@ -23,10 +23,10 @@ namespace PorphyStruct
             InitializeComponent();
             DataContext = this;
 
-            var availableThemes = from MethodInfo method in typeof(CustomPalettes).GetMethods(BindingFlags.Public | BindingFlags.Static)
-                                  select new PaletteInfo(
-                                      method.Name,
-                                      (OxyPalette)method.Invoke(null, new object[] { 7 }));
+            IEnumerable<PaletteInfo> availableThemes = from MethodInfo method in typeof(CustomPalettes).GetMethods(BindingFlags.Public | BindingFlags.Static)
+                                                       select new PaletteInfo(
+                                                           method.Name,
+                                                           (OxyPalette)method.Invoke(null, new object[] { 7 }));
             PaletteList = availableThemes;
         }
 
@@ -48,9 +48,9 @@ namespace PorphyStruct
         {
             string btn = (sender as Button).Tag.ToString();
             string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            if (!String.IsNullOrEmpty(Core.Properties.Settings.Default.savePath))
+            if (!string.IsNullOrEmpty(Core.Properties.Settings.Default.savePath))
                 initialDir = Core.Properties.Settings.Default.savePath;
-            using winforms.FolderBrowserDialog fbd = new winforms.FolderBrowserDialog
+            using var fbd = new winforms.FolderBrowserDialog
             {
                 SelectedPath = initialDir
             };
@@ -69,7 +69,7 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void Color_TextChanged(object sender, TextChangedEventArgs e)
         {
-            TextBox tb = (TextBox)sender;
+            var tb = (TextBox)sender;
             if (!CheckColor(tb.Text))
                 tb.BorderBrush = Brushes.Red;
             else
@@ -88,7 +88,7 @@ namespace PorphyStruct
 
         private Brush GetColor(string hex)
         {
-            BrushConverter con = new BrushConverter();
+            var con = new BrushConverter();
             return (Brush)con.ConvertFromString(hex);
         }
     }

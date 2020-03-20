@@ -40,8 +40,8 @@ namespace PorphyStruct.ViewModel
         public void Export(ExportFileType type)
         {
             string path = $"{Path}/{FileName}_";
-            var model = Application.Current.Windows.OfType<MainWindow>().First().viewModel.Model; //not beautiful but works
-            foreach (var extension in type.Extension)
+            OxyPlotOverride.StandardPlotModel model = Application.Current.Windows.OfType<MainWindow>().First().viewModel.Model; //not beautiful but works
+            foreach (string extension in type.Extension)
             {
                 switch (type.Title)
                 {

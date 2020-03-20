@@ -36,7 +36,7 @@ namespace PorphyStruct
         /// <returns></returns>
         private bool ComparisonFilter(object item)
         {
-            IAtomDataPointProvider provider = item as IAtomDataPointProvider;
+            var provider = item as IAtomDataPointProvider;
             if (provider.DataType == DataType.Comparison) return true;
             return false;
         }
@@ -48,8 +48,8 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void Open_Click(object sender, RoutedEventArgs e)
         {
-            var ofd = FileUtil.DefaultOpenFileDialog("ASCII Files(DAT)(*.dat) | *.dat", true);
-            var DialogResult = ofd.ShowDialog();
+            Microsoft.Win32.OpenFileDialog ofd = FileUtil.DefaultOpenFileDialog("ASCII Files(DAT)(*.dat) | *.dat", true);
+            bool? DialogResult = ofd.ShowDialog();
 
             if (DialogResult.HasValue && DialogResult.Value)
             {

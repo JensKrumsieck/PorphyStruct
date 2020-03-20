@@ -13,18 +13,15 @@ namespace PorphyStruct.Chemistry
         /// <param name="Atoms"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static Macrocycle Build(AsyncObservableCollection<Atom> Atoms, Macrocycle.Type type)
+        public static Macrocycle Build(AsyncObservableCollection<Atom> Atoms, Macrocycle.Type type) => type switch
         {
-            return type switch
-            {
-                Macrocycle.Type.Corrole => new Corrole(Atoms),
-                Macrocycle.Type.Norcorrole => new Norcorrole(Atoms),
-                Macrocycle.Type.Porphyrin => new Porphyrin(Atoms),
-                Macrocycle.Type.Corrphycene => new Corrphycene(Atoms),
-                Macrocycle.Type.Porphycene => new Porphycene(Atoms),
-                _ => null,
-            };
-        }
+            Macrocycle.Type.Corrole => new Corrole(Atoms),
+            Macrocycle.Type.Norcorrole => new Norcorrole(Atoms),
+            Macrocycle.Type.Porphyrin => new Porphyrin(Atoms),
+            Macrocycle.Type.Corrphycene => new Corrphycene(Atoms),
+            Macrocycle.Type.Porphycene => new Porphycene(Atoms),
+            _ => null,
+        };
 
         /// <summary>
         /// Loads Macrocycle Object by path
@@ -35,7 +32,7 @@ namespace PorphyStruct.Chemistry
         public static Macrocycle Load(string path, Macrocycle.Type type)
         {
             //get molecule
-            var molecule = Load(path);
+            Molecule molecule = Load(path);
 
             Macrocycle cycle = Build(molecule.Atoms, type);
             cycle.Title = Path.GetFileNameWithoutExtension(path);

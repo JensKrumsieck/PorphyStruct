@@ -16,23 +16,14 @@ namespace PorphyStruct
         /// <summary>
         /// gets current software version
         /// </summary>
-        public string AssemblyVersion
-        {
-            get
-            {
-                return System.Diagnostics.FileVersionInfo.GetVersionInfo(Application.ResourceAssembly.Location).ProductVersion;
-            }
-        }
+        public string AssemblyVersion => System.Diagnostics.FileVersionInfo.GetVersionInfo(Application.ResourceAssembly.Location).ProductVersion;
 
         /// <summary>
         /// navigates browser to URI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
-        {
-            System.Diagnostics.Process.Start(e.Uri.ToString());
-        }
+        private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e) => System.Diagnostics.Process.Start(e.Uri.ToString());
 
     }
 }

@@ -98,7 +98,7 @@ namespace PorphyStruct.ViewModel
         {
             //update param
             double[] coeff = Parameters.Select(p => p.Start).ToArray();
-            List<int> indices = new List<int>();
+            var indices = new List<int>();
             simplex = new Simplex(Result.Calculate, coeff, Cycle);
             //set start values
             for (int i = 0; i < Parameters.Count; i++) if (!Parameters[i].Optimize) indices.Add(i);
@@ -112,7 +112,7 @@ namespace PorphyStruct.ViewModel
                 {
                     if (Mode == SimulationMode.MonteCarlo)
                     {
-                        MonteCarlo mc = new MonteCarlo(Result.Calculate, coeff, Cycle) { Indices = indices };
+                        var mc = new MonteCarlo(Result.Calculate, coeff, Cycle) { Indices = indices };
                         result = mc.Next();
                     }
                     else //simplex
@@ -154,7 +154,7 @@ namespace PorphyStruct.ViewModel
             double intErr = result.Error[2];
 
             //check targets
-            List<Tuple<double, double>> errorTargets = new List<Tuple<double, double>>();
+            var errorTargets = new List<Tuple<double, double>>();
             if (TargetData) errorTargets.Add(new Tuple<double, double>(error, currentErr[0]));
             if (TargetDerivative) errorTargets.Add(new Tuple<double, double>(derErr, currentErr[1]));
             if (TargetIntegral) errorTargets.Add(new Tuple<double, double>(intErr, currentErr[2]));

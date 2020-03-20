@@ -8,10 +8,7 @@ namespace PorphyStruct.Chemistry.Macrocycles
 {
     public class Norcorrole : Macrocycle
     {
-        public Norcorrole(AsyncObservableCollection<Atom> Atoms) : base(Atoms)
-        {
-            PropertyProviders.Add(new PorphyrinDihedrals(ByIdentifier));
-        }
+        public Norcorrole(AsyncObservableCollection<Atom> Atoms) : base(Atoms) => PropertyProviders.Add(new PorphyrinDihedrals(ByIdentifier));
 
         //assign type (legacy)
         public override Type type => Type.Norcorrole;

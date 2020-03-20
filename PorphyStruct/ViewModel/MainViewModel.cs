@@ -33,7 +33,7 @@ namespace PorphyStruct.ViewModel
             Cycle.PropertyChanged += Cycle_PropertyChanged;
             Cycle.Atoms.CollectionChanged += OnCollectionChanged;
             Cycle.DataProviders.CollectionChanged += OnDataChanged;
-            foreach (var atom in Cycle.Atoms) atom.PropertyChanged += Atom_PropertyChanged;
+            foreach (Atom atom in Cycle.Atoms) atom.PropertyChanged += Atom_PropertyChanged;
             //fill molecule 3D
             Molecule3D = new ObservableCollection<ModelVisual3D>();
             Cycle.Paint3D().ToList().ForEach(s => Molecule3D.Add(s));
@@ -58,7 +58,7 @@ namespace PorphyStruct.ViewModel
             {
                 case nameof(Cycle.IsValid):
                     //atoms all changed!
-                    foreach (var a in Cycle.Atoms.Where(s => s.IsMacrocycle))
+                    foreach (Atom a in Cycle.Atoms.Where(s => s.IsMacrocycle))
                         Atom_PropertyChanged(a, e);
                     break;
             }
@@ -123,7 +123,7 @@ namespace PorphyStruct.ViewModel
         {
             //read selected index of coordgrid
             Atom selected = SelectedItem ?? null;
-            Atom atom = (Atom)sender;
+            var atom = (Atom)sender;
 
             //remove atom and bonds
             //Invoke to not run into object ownership issues
@@ -131,11 +131,11 @@ namespace PorphyStruct.ViewModel
             {
                 Molecule3D.Remove(ModelByAtom(atom));
                 var models = Molecule3D.Where(s => (s as BondModelVisual3D)?.Atoms.Contains(atom) ?? false).ToList();
-                foreach (var m in models) Molecule3D.Remove(m);
+                foreach (ModelVisual3D m in models) Molecule3D.Remove(m);
 
                 //add atom and bonds
                 Molecule3D.Add(atom.Atom3D(atom == selected));
-                foreach (var a2 in Cycle.Neighbors(atom)) Molecule3D.Add(a2.Bond3D(atom, Cycle));
+                foreach (Atom a2 in Cycle.Neighbors(atom)) Molecule3D.Add(a2.Bond3D(atom, Cycle));
             });
         }
 
@@ -186,12 +186,12 @@ namespace PorphyStruct.ViewModel
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.OldItems != null)
                 foreach (Atom item in e.OldItems)
                 {
-                    var removedItem = ModelByAtom(item);
+                    ModelVisual3D removedItem = ModelByAtom(item);
                     if (removedItem != null) Molecule3D.Remove(removedItem);
                     item.PropertyChanged -= Atom_PropertyChanged;
                 }
@@ -248,7 +248,7 @@ namespace PorphyStruct.ViewModel
             if (Cycle != null)
             {
                 CycleProperties = Cycle.Properties.ToLookup(x => x.Key, y => y.Value).ToDictionary(group => group.Key, group => group.SelectMany(value => value));
-                var msp = Cycle.GetMeanPlane();
+                MathNet.Spatial.Euclidean.Plane msp = Cycle.GetMeanPlane();
                 CycleProperties["Mean Plane"] = new List<Property>()
                 {
                     new Property("Unit Vector", $"({msp.A.ToString("G3")}, {msp.B.ToString("G3")}, {msp.C.ToString("G3")})"),

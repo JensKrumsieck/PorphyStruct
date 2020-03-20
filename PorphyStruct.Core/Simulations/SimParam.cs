@@ -35,7 +35,7 @@ namespace PorphyStruct.Simulations
         /// <returns></returns>
         public static List<SimParam> ListParameters(Macrocycle.Type type)
         {
-            List<SimParam> param = new List<SimParam>
+            var param = new List<SimParam>
             {
                 new SimParam("Doming", 0),
                 new SimParam("Ruffling", 0),

@@ -17,7 +17,7 @@ namespace PorphyStruct.Chemistry
         public double Z { get => Get<double>(); set => Set(value); }
         public Element Element { get; set; }
 
-        public string Type { get => Element.Symbol; }
+        public string Type => Element.Symbol;
 
         /// <summary>
         /// Constructs a new Atom object
@@ -39,10 +39,7 @@ namespace PorphyStruct.Chemistry
         /// XYZ Coordinates as array
         /// </summary>
         /// <returns>double[]</returns>
-        public double[] XYZ()
-        {
-            return new double[] { X, Y, Z };
-        }
+        public double[] XYZ() => new double[] { X, Y, Z };
 
         /// <summary>
         /// Get the Atoms distance to a given Plane

@@ -20,10 +20,7 @@ namespace PorphyStruct.Chemistry
         /// <summary>
         /// Construct Molecule
         /// </summary>
-        public Molecule()
-        {
-            Atoms = new AsyncObservableCollection<Atom>();
-        }
+        public Molecule() => Atoms = new AsyncObservableCollection<Atom>();
 
         /// <summary>
         /// Construct Molecule with title
@@ -31,10 +28,7 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         /// <param name="title"></param>
         public Molecule(string title)
-            : this()
-        {
-            Title = title;
-        }
+            : this() => Title = title;
 
         /// <summary>
         /// Construct Molecule with AtomList
@@ -42,10 +36,7 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         /// <param name="title"></param>
         public Molecule(AsyncObservableCollection<Atom> Atoms)
-            : this()
-        {
-            this.Atoms = Atoms;
-        }
+            : this() => this.Atoms = Atoms;
 
         /// <summary>
         /// Set Is Macrocycle for Atoms
@@ -93,7 +84,7 @@ namespace PorphyStruct.Chemistry
         public static Plane GetMeanPlane(IEnumerable<Atom> atoms)
         {
             //convert coordinates into Point3D because centroid method is only available in math net spatial
-            List<Point3D> points = atoms.ToPoint3D().ToList();
+            var points = atoms.ToPoint3D().ToList();
             //calculate Centroid first
             //get the centroid
             Vector3D centroid = GetCentroid(atoms);
@@ -108,7 +99,7 @@ namespace PorphyStruct.Chemistry
             }
 
             //get svd
-            var svd = A.Svd(true);
+            MathNet.Numerics.LinearAlgebra.Factorization.Svd<double> svd = A.Svd(true);
 
             //get plane unit vector
             double a = svd.U[0, 2];
@@ -171,7 +162,7 @@ namespace PorphyStruct.Chemistry
         /// <param name="predicate"></param>
         public void Center(Func<Atom, bool> predicate)
         {
-            var centroid = GetCentroid(Atoms.Where(predicate));
+            Vector3D centroid = GetCentroid(Atoms.Where(predicate));
             foreach (Atom a in Atoms)
             {
                 a.X -= centroid.X;

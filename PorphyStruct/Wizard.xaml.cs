@@ -39,8 +39,8 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void FileOpen_Click(object sender, RoutedEventArgs e)
         {
-            var ofd = FileUtil.DefaultOpenFileDialog("Supported Files(*.cif, *.xyz, *.mol2/*.mol, *.ixyz)|*.cif;*.xyz;*.mol2;*.mol;*.ixyz|Crystallographic Information Files (*.cif)|*.cif|Cartesian Coordinate Files (*.xyz)|*.xyz|Mol2 Files (*.mol2, *.mol)|*.mol2;*.mol|XYZ with Identifier (by PorphyStruct) (*.ixyz)|*.ixyz");
-            var DialogResult = ofd.ShowDialog();
+            Microsoft.Win32.OpenFileDialog ofd = FileUtil.DefaultOpenFileDialog("Supported Files(*.cif, *.xyz, *.mol2/*.mol, *.ixyz)|*.cif;*.xyz;*.mol2;*.mol;*.ixyz|Crystallographic Information Files (*.cif)|*.cif|Cartesian Coordinate Files (*.xyz)|*.xyz|Mol2 Files (*.mol2, *.mol)|*.mol2;*.mol|XYZ with Identifier (by PorphyStruct) (*.ixyz)|*.ixyz");
+            bool? DialogResult = ofd.ShowDialog();
             if (DialogResult.HasValue && DialogResult.Value) pathTextBox.Text = ofd.FileName;
         }
 
@@ -67,10 +67,10 @@ namespace PorphyStruct
             {
                 MolViewer.Children.Clear();
                 MolViewer.Items.Add(new DefaultLights());
-                Macrocycle.Type type = (Macrocycle.Type)TypeListBox.SelectedIndex;
-                var tmp = MacrocycleFactory.Load(pathTextBox.Text, type);
+                var type = (Macrocycle.Type)TypeListBox.SelectedIndex;
+                Macrocycle tmp = MacrocycleFactory.Load(pathTextBox.Text, type);
                 tmp.Center(s => true);
-                foreach (var obj in tmp.Paint3D()) MolViewer.Items.Add(obj);
+                foreach (System.Windows.Media.Media3D.ModelVisual3D obj in tmp.Paint3D()) MolViewer.Items.Add(obj);
             }
         }
 

@@ -17,10 +17,10 @@ namespace PorphyStruct.Util
         public static IEnumerable<IEnumerable<T>> GetCombinations<T>(this IEnumerable<T> list, int length)
         {
             int i = 0;
-            foreach (var item in list)
+            foreach (T item in list)
             {
                 if (length == 1) yield return new T[] { item };
-                else foreach (var result in GetCombinations(list.Skip(i + 1), length - 1)) yield return new T[] { item }.Concat(result);
+                else foreach (IEnumerable<T> result in GetCombinations(list.Skip(i + 1), length - 1)) yield return new T[] { item }.Concat(result);
                 ++i;
             }
         }
@@ -33,10 +33,10 @@ namespace PorphyStruct.Util
         /// <param name="predicate"></param>
         public static void RemoveAll<T>(this ObservableCollection<T> collection, Func<T, bool> predicate)
         {
-            var i = collection.Count();
+            int i = collection.Count();
             while (--i >= 0)
             {
-                var element = collection.ElementAt(i);
+                T element = collection.ElementAt(i);
                 if (predicate(element))
                 {
                     collection.Remove(element);
@@ -60,7 +60,7 @@ namespace PorphyStruct.Util
             else
                 sortedList = source.OrderBy(keySelector, comparer).ToArray();
             source.Clear();
-            foreach (var item in sortedList)
+            foreach (TSource item in sortedList)
                 source.Add(item);
         }
     }

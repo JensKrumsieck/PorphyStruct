@@ -10,10 +10,7 @@ namespace PorphyStruct.Chemistry.Macrocycles
 {
     public class Porphyrin : Macrocycle
     {
-        public Porphyrin(AsyncObservableCollection<Atom> Atoms) : base(Atoms)
-        {
-            PropertyProviders.Add(new PorphyrinDihedrals(ByIdentifier));
-        }
+        public Porphyrin(AsyncObservableCollection<Atom> Atoms) : base(Atoms) => PropertyProviders.Add(new PorphyrinDihedrals(ByIdentifier));
 
         //assign type (legacy)
         public override Type type => Type.Porphyrin;
@@ -69,11 +66,7 @@ namespace PorphyStruct.Chemistry.Macrocycles
         /// <summary>
         /// Multipliers for C-Atom positioning
         /// </summary>
-        internal static Dictionary<string, double> _Multiplier
-        {
-            get
-            {
-                return new Dictionary<string, double>
+        internal static Dictionary<string, double> _Multiplier => new Dictionary<string, double>
                 {
                     { "C1", 0d },
                     { "C2", 1 / 3d },
@@ -96,8 +89,6 @@ namespace PorphyStruct.Chemistry.Macrocycles
                     { "C19", 1d },
                     { "C20", 1 / 2d }
                 };
-            }
-        }
         public override Dictionary<string, double> Multiplier => _Multiplier;
 
         /// <summary>

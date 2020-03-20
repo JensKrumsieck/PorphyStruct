@@ -67,11 +67,11 @@ namespace PorphyStruct
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            if (!String.IsNullOrEmpty(PorphyStruct.Core.Properties.Settings.Default.savePath) && !PorphyStruct.Core.Properties.Settings.Default.useImportExportPath)
+            if (!string.IsNullOrEmpty(PorphyStruct.Core.Properties.Settings.Default.savePath) && !PorphyStruct.Core.Properties.Settings.Default.useImportExportPath)
                 initialDir = PorphyStruct.Core.Properties.Settings.Default.savePath;
-            else if (!String.IsNullOrEmpty(PorphyStruct.Core.Properties.Settings.Default.importPath))
+            else if (!string.IsNullOrEmpty(PorphyStruct.Core.Properties.Settings.Default.importPath))
                 initialDir = PorphyStruct.Core.Properties.Settings.Default.importPath;
-            using (winforms.FolderBrowserDialog fbd = new winforms.FolderBrowserDialog
+            using (var fbd = new winforms.FolderBrowserDialog
             {
                 SelectedPath = initialDir
             })

@@ -51,8 +51,8 @@ namespace PorphyStruct
             var flattened = viewModel.CycleProperties.SelectMany(x => x.Value?.Select(y => new { x.Key, y.Name, y.Value })).ToList();
             Cycle_Properties.ItemsSource = flattened;
 
-            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(Cycle_Properties.ItemsSource);
-            PropertyGroupDescription groupDescription = new PropertyGroupDescription("Key");
+            var view = (CollectionView)CollectionViewSource.GetDefaultView(Cycle_Properties.ItemsSource);
+            var groupDescription = new PropertyGroupDescription("Key");
             view.GroupDescriptions.Add(groupDescription);
         }
 
@@ -79,14 +79,14 @@ namespace PorphyStruct
         private void Open_Click(object sender, RoutedEventArgs e)
         {
             //open new wizard window
-            Wizard wi = new Wizard();
+            var wi = new Wizard();
             wi.ShowDialog();
             if (wi.DialogResult.HasValue && wi.DialogResult.Value)
             {
                 displaceView.Background = Brushes.White;
 
                 //drive the reset train
-                foreach (var child in this.FindVisualChildren<Button>())
+                foreach (Button child in this.FindVisualChildren<Button>())
                     child.IsEnabled = !child.Name.Contains("Sim");
 
                 viewModel = new MainViewModel(wi.FileName, (Macrocycle.Type)wi.Type);
@@ -228,7 +228,7 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void CompButton_Click(object sender, RoutedEventArgs e)
         {
-            CompareWindow cw = new CompareWindow();
+            var cw = new CompareWindow();
             cw.Show();
         }
 

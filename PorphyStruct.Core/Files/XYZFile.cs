@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace PorphyStruct.Files
 {
-    class XYZFile : TextFile
+    internal class XYZFile : TextFile
     {
         /// <summary>
         /// is ixyz format used?
@@ -24,14 +24,14 @@ namespace PorphyStruct.Files
         {
             //PLEASE DO NOT USE XYZ Files with non cartesian coordinates
             string title = System.IO.Path.GetFileNameWithoutExtension(Path);
-            Molecule molecule = new Molecule(title);
+            var molecule = new Molecule(title);
 
             for (int i = 0; i <= Lines.Count() - 1; i++)
             {
-                if (i > 1 && !String.IsNullOrEmpty(Lines[i]))
+                if (i > 1 && !string.IsNullOrEmpty(Lines[i]))
                 {
                     string[] xyzLine = Lines[i].Split(new[] { " ", "\t" }, StringSplitOptions.None).Where(j => !string.IsNullOrEmpty(j)).ToArray();
-                    Atom a = new Atom((IXYZ ? xyzLine[0].Split('/')[0] : xyzLine[0]),
+                    var a = new Atom((IXYZ ? xyzLine[0].Split('/')[0] : xyzLine[0]),
                         Convert.ToDouble(xyzLine[1], CultureInfo.InvariantCulture),
                         Convert.ToDouble(xyzLine[2], CultureInfo.InvariantCulture),
                         Convert.ToDouble(xyzLine[3], CultureInfo.InvariantCulture));

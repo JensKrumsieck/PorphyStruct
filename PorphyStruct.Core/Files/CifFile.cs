@@ -31,7 +31,7 @@ namespace PorphyStruct.Files
             //this loop contains molecule!
             string moleculeLoop = Array.Find(loops, s => s.Contains("_atom_site_label"));
 
-            List<string[]> data = new List<string[]>();
+            var data = new List<string[]>();
             int headers = moleculeLoop.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None).Count(s => s.Trim().StartsWith("_"));
             //loop through lines
             foreach (string line in moleculeLoop.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None))
@@ -40,7 +40,7 @@ namespace PorphyStruct.Files
             }
 
             //build returning object
-            Crystal crystal = new Crystal(System.IO.Path.GetFileNameWithoutExtension(Path),
+            var crystal = new Crystal(System.IO.Path.GetFileNameWithoutExtension(Path),
                 cellLenghts, cellAngles, data, headers);
 
             return crystal.ToMolecule();

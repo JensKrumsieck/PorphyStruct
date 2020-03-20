@@ -11,10 +11,7 @@ namespace PorphyStruct.Chemistry.Properties
         /// </summary>
         /// <param name="function"></param>
         /// <param name="Metal"></param>
-        public PlaneDistances(IEnumerable<Atom> Atoms) : base()
-        {
-            this.Atoms = Atoms;
-        }
+        public PlaneDistances(IEnumerable<Atom> Atoms) : base() => this.Atoms = Atoms;
         public IEnumerable<Atom> Atoms { get; set; }
 
         public override PropertyType Type => PropertyType.Distance;
@@ -25,7 +22,7 @@ namespace PorphyStruct.Chemistry.Properties
         /// <returns></returns>
         public override IEnumerable<Property> CalculateProperties()
         {
-            var Metal = Atoms.Where(s => s.IsMetal).FirstOrDefault();
+            Atom Metal = Atoms.Where(s => s.IsMetal).FirstOrDefault();
             yield return new Property($"{Metal.Identifier} - Mean Plane", Metal.DistanceToPlane(Molecule.GetMeanPlane(Atoms.Where(s => s.IsMacrocycle))).ToString("G4") + " Å");
             yield return new Property($"{Metal.Identifier} - Mean N4 Plane", Metal.DistanceToPlane(Molecule.GetMeanPlane(Atoms.Where(s => s.IsMacrocycle && s.Identifier.Contains("N")))).ToString("G4") + " Å");
         }

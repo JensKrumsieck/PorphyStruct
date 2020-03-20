@@ -37,19 +37,13 @@ namespace PorphyStruct.OxyPlotOverride
         /// Determines whether the axis is used for X/Y values.
         /// </summary>
         /// <returns><c>true</c> if it is an XY axis; otherwise, <c>false</c> .</returns>
-        public override bool IsXyAxis()
-        {
-            return true;
-        }
+        public override bool IsXyAxis() => true;
 
         /// <summary>
         /// Determines whether the axis is logarithmic.
         /// </summary>
         /// <returns><c>true</c> if it is a logarithmic axis; otherwise, <c>false</c> .</returns>
-        public override bool IsLogarithmic()
-        {
-            return false;
-        }
+        public override bool IsLogarithmic() => false;
 
         /// <summary>
         /// Formats the value to be used on the axis.

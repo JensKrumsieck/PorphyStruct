@@ -15,7 +15,7 @@ namespace PorphyStruct.Styles
 
         public static IntPtr GetWindowHandle(this Window window)
         {
-            WindowInteropHelper helper = new WindowInteropHelper(window);
+            var helper = new WindowInteropHelper(window);
             return helper.Handle;
         }
 
@@ -64,10 +64,10 @@ namespace PorphyStruct.Styles
         /// <param name="e"></param>
         public void Window_Loaded(object sender, RoutedEventArgs e) => ((Window)sender).StateChanged += WindowStateChanged;
 
-        void WindowStateChanged(object sender, EventArgs e)
+        private void WindowStateChanged(object sender, EventArgs e)
         {
             var w = ((Window)sender);
-            var handle = w.GetWindowHandle();
+            IntPtr handle = w.GetWindowHandle();
             var containerBorder = (Border)w.Template.FindName("Container", w);
 
             if (w.WindowState == WindowState.Maximized)
@@ -89,17 +89,14 @@ namespace PorphyStruct.Styles
             }
         }
 
-        void CloseButtonClick(object sender, RoutedEventArgs e) => sender.ForWindowFromTemplate(w => SystemCommands.CloseWindow(w));
+        private void CloseButtonClick(object sender, RoutedEventArgs e) => sender.ForWindowFromTemplate(w => SystemCommands.CloseWindow(w));
 
-        void MinimizeButtonClick(object sender, RoutedEventArgs e) => sender.ForWindowFromTemplate(w => SystemCommands.MinimizeWindow(w));
+        private void MinimizeButtonClick(object sender, RoutedEventArgs e) => sender.ForWindowFromTemplate(w => SystemCommands.MinimizeWindow(w));
 
-        void MaximizeButtonClick(object sender, RoutedEventArgs e)
-        {
-            sender.ForWindowFromTemplate(w =>
-            {
-                if (w.WindowState == WindowState.Maximized) SystemCommands.RestoreWindow(w);
-                else SystemCommands.MaximizeWindow(w);
-            });
-        }
+        private void MaximizeButtonClick(object sender, RoutedEventArgs e) => sender.ForWindowFromTemplate(w =>
+                                                                            {
+                                                                                if (w.WindowState == WindowState.Maximized) SystemCommands.RestoreWindow(w);
+                                                                                else SystemCommands.MaximizeWindow(w);
+                                                                            });
     }
 }
