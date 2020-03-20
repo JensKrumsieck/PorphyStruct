@@ -26,7 +26,7 @@ namespace PorphyStruct
 
         public MainWindow()
         {
-            if(Core.Properties.Settings.Default.forceEn) CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
+            if (Core.Properties.Settings.Default.forceEn) CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
             InitializeComponent();
         }
 
