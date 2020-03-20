@@ -214,6 +214,7 @@ namespace PorphyStruct.ViewModel
         public void Analyze()
         {
             Model = new StandardPlotModel();
+            if (Core.Properties.Settings.Default.plotTitle) Model.Title = Cycle.Title;
             //calculate Data
             Cycle.GetDataPoints();
 

@@ -6,13 +6,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
          xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        TextElement.FontWeight="Regular"
-        TextElement.FontSize="13"
+        TextElement.FontSize="14"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
-        Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}"
+        FontFamily="Segoe UI"
+        Style="{DynamicResource DefaultWindowStyle}"
         Title="Compare Data" Height="500" Width="700" ResizeMode="NoResize">
     <DockPanel>
         <TextBlock TextWrapping="Wrap" DockPanel.Dock="Top" Padding="10" TextAlignment="Justify" FontWeight="Light">

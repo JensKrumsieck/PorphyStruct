@@ -152,13 +152,24 @@
                         <TextBox x:Name="fontSize" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=defaultFontSize, Mode=TwoWay}" >
                             <materialDesign:HintAssist.Hint>Font Size</materialDesign:HintAssist.Hint>
                         </TextBox>
-                        <Grid>
+                        <Grid Margin="0 10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Text="Show Plot Area Border" />
                             <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" x:Name="showBox" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=showBox, Mode=TwoWay}"/>
+                        </Grid>
+                        <TextBox x:Name="padding" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=plotPadding, Mode=TwoWay}" >
+                            <materialDesign:HintAssist.Hint>Plot Area Padding</materialDesign:HintAssist.Hint>
+                        </TextBox>
+                        <Grid Margin="0 10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Text="Show Plot Title" />
+                            <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" x:Name="plotTitle" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=plotTitle, Mode=TwoWay}"/>
                         </Grid>
                         <TextBlock Text="UI Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Light" Margin="0 10 0 0" />
                         <Grid>
@@ -179,7 +190,7 @@
                         <!--Axis Settings-->
                         <TextBlock Text="Axis Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Light"/>
                         <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text=""></TextBlock>
-                        <Grid>
+                        <Grid Margin="0 10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
@@ -188,7 +199,7 @@
 
                             <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" x:Name="xAxis" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=xAxis, Mode=TwoWay}" Grid.Column="1"/>
                         </Grid>
-                        <Grid>
+                        <Grid Margin="0 10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
@@ -201,7 +212,7 @@
                                   IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=autoscaleX, Mode=TwoWay}" 
                                   Grid.Column="1"/>
                         </Grid>
-                        <Grid>
+                        <Grid Margin="0 10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
@@ -241,7 +252,7 @@
                                 <materialDesign:HintAssist.Hint>Y-Axis Maximum</materialDesign:HintAssist.Hint>
                             </TextBox>
                         </Grid>
-                        <Grid>
+                        <Grid Margin="0 10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
@@ -251,7 +262,7 @@
                                           IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=rotateTitle, Mode=TwoWay}" 
                                           Grid.Column="1"/>
                         </Grid>
-                        <Grid>
+                        <Grid Margin="0 10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
@@ -290,18 +301,22 @@
                             </TextBox>
                             <Button x:Name="folderImportBtn" Content="Search" Click="FolderBtn_Click" Margin="10 0" Tag="import"/>
                         </StackPanel>
-                        <Grid>
+                        <Grid Margin="0 10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" TextWrapping="Wrap">
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" TextWrapping="Wrap" Grid.RowSpan="2">
                                 Use Same Folder for Import &amp; Export
                                 <LineBreak/>
                                 <Run FontSize="10" Foreground="{DynamicResource SecondaryHueMidBrush}">Ignores Export Directory Setting</Run>
                             </TextBlock>
-                            <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" x:Name="useImportExportPath" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=useImportExportPath, Mode=TwoWay}"/>
+                            <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" x:Name="useImportExportPath" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=useImportExportPath, Mode=TwoWay}" Grid.RowSpan="2"/>
                         </Grid>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10">
@@ -327,7 +342,7 @@
                         <TextBox x:Name="pngRes" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Source={x:Static properties:Settings.Default}, Path=pngRes, Mode=TwoWay}">
                             <materialDesign:HintAssist.Hint>Resolution</materialDesign:HintAssist.Hint>
                         </TextBox>
-                        <Grid>
+                        <Grid Margin="0 10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
@@ -340,7 +355,7 @@
                             <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" x:Name="backgroundColor" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=backgroundColor, Mode=TwoWay}"/>
 
                         </Grid>
-                    </StackPanel>                    
+                    </StackPanel>
                 </UniformGrid>
             </TabItem>
             <TabItem>
@@ -463,8 +478,8 @@
                                 <materialDesign:HintAssist.Hint>Bond Color (non Palette Mode)</materialDesign:HintAssist.Hint>
                             </TextBox>
                         </Grid>
-                        
-                        <Grid>
+
+                        <Grid Margin="0 10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>

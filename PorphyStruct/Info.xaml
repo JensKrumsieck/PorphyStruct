@@ -29,14 +29,14 @@
         </Grid.RowDefinitions>
         <Image  Grid.Row="0"  Grid.Column="0" Grid.ColumnSpan="2" Source="/PorphyStruct;component/Resources/porphystructlogo.png"/>
         <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" TextAlignment="Center">
-            <Run FontSize="50" FontWeight="Medium" FontFamily="Berlin Sans FB">PorphyStruct { }</Run><LineBreak/>
-            <Run FontWeight="ExtraLight" FontSize="20">Structural Analysis of Porphyrinoids</Run><LineBreak/>
-            <Run FontWeight="ExtraLight" FontSize="10" Text="Version: " />
-            <TextBlock FontWeight="ExtraLight" FontSize="10" Text="{Binding AssemblyVersion}" />
+            <Run FontSize="50" FontWeight="Light" FontFamily="Segoe UI">PorphyStruct { }</Run><LineBreak/>
+            <Run FontWeight="Light" FontSize="20">Structural Analysis of Porphyrinoids</Run><LineBreak/>
+            <Run FontWeight="Light" FontSize="10" Text="Version: " />
+            <TextBlock FontWeight="Light" FontSize="10" Text="{Binding AssemblyVersion}" />
         </TextBlock>
         <Label Content="Developed by:" Grid.Row="2" Grid.Column="0"/>
         <TextBlock Grid.Row="2" Grid.Column="1">
-            <Hyperlink NavigateUri="https://jenskrumsieck.github.io" RequestNavigate="Hyperlink_RequestNavigate" >Jens Krumsieck</Hyperlink>
+            <Hyperlink NavigateUri="https://jenskrumsieck.github.io" RequestNavigate="Hyperlink_RequestNavigate">Jens Krumsieck</Hyperlink>
         </TextBlock>
         <TextBlock Grid.Column="1" Grid.Row="3">
             Institut für Anorganische und Analytische Chemie<LineBreak/>

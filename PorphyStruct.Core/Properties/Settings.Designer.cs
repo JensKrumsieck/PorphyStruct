@@ -394,5 +394,29 @@ namespace PorphyStruct.Core.Properties {
                 this["forceEn"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public double plotPadding {
+            get {
+                return ((double)(this["plotPadding"]));
+            }
+            set {
+                this["plotPadding"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool plotTitle {
+            get {
+                return ((bool)(this["plotTitle"]));
+            }
+            set {
+                this["plotTitle"] = value;
+            }
+        }
     }
 }

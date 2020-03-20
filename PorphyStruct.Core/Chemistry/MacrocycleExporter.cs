@@ -28,6 +28,7 @@ namespace PorphyStruct.Chemistry
             if (extension == "svg")
             {
                 pm.DefaultFontSize *= 2;
+                pm.Padding = new OxyThickness(pm.Padding.Left * 2.5);
                 foreach (var axis in pm.Axes) axis.AxislineThickness *= 2;
                 foreach (ScatterSeries series in pm.Series) series.MarkerSize *= 2;
                 foreach (ArrowAnnotation annotation in pm.Annotations.Where(s => s.GetType() == typeof(ArrowAnnotation))) annotation.StrokeThickness *= 2;
@@ -43,6 +44,7 @@ namespace PorphyStruct.Chemistry
                 foreach (ScatterSeries series in pm.Series) series.MarkerSize /= 2;
                 foreach (ArrowAnnotation annotation in pm.Annotations.Where(s => s.GetType() == typeof(ArrowAnnotation))) annotation.StrokeThickness /= 2;
                 if (Core.Properties.Settings.Default.showBox) pm.PlotAreaBorderThickness = new OxyThickness(Core.Properties.Settings.Default.lineThickness);
+                pm.Padding = new OxyThickness(pm.Padding.Left / 2.5);
             }
         }
 

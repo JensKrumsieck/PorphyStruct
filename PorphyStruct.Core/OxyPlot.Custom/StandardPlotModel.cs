@@ -18,12 +18,14 @@ namespace PorphyStruct.OxyPlotOverride
         public StandardPlotModel()
             : base()
         {
+            Padding = new OxyThickness(Core.Properties.Settings.Default.plotPadding);
             IsLegendVisible = false;
             LegendPosition = LegendPosition.RightTop;
-            DefaultFontSize = PorphyStruct.Core.Properties.Settings.Default.defaultFontSize;
-            LegendFontSize = PorphyStruct.Core.Properties.Settings.Default.defaultFontSize;
-            DefaultFont = PorphyStruct.Core.Properties.Settings.Default.defaultFont;
-            PlotAreaBorderThickness = new OxyThickness(PorphyStruct.Core.Properties.Settings.Default.lineThickness);
+            DefaultFontSize = Core.Properties.Settings.Default.defaultFontSize;
+            LegendFontSize = Core.Properties.Settings.Default.defaultFontSize;
+            DefaultFont = Core.Properties.Settings.Default.defaultFont;
+            PlotAreaBorderThickness = new OxyThickness(Core.Properties.Settings.Default.lineThickness);
+            TitleFontWeight = 200;
 
             OxyPlot.Axes.LinearAxis x = new OxyPlot.Axes.LinearAxis
             {
@@ -31,11 +33,11 @@ namespace PorphyStruct.OxyPlotOverride
                 Unit = "Å",
                 Position = AxisPosition.Bottom,
                 Key = "X",
-                IsAxisVisible = PorphyStruct.Core.Properties.Settings.Default.xAxis,
-                MajorGridlineThickness = PorphyStruct.Core.Properties.Settings.Default.lineThickness,
-                AbsoluteMinimum = PorphyStruct.Core.Properties.Settings.Default.minX,
-                AbsoluteMaximum = PorphyStruct.Core.Properties.Settings.Default.maxX,
-                TitleFormatString = PorphyStruct.Core.Properties.Settings.Default.titleFormat,
+                IsAxisVisible = Core.Properties.Settings.Default.xAxis,
+                MajorGridlineThickness = Core.Properties.Settings.Default.lineThickness,
+                AbsoluteMinimum = Core.Properties.Settings.Default.minX,
+                AbsoluteMaximum = Core.Properties.Settings.Default.maxX,
+                TitleFormatString = Core.Properties.Settings.Default.titleFormat,
                 LabelFormatter = OxyUtils._axisFormatter
             };
 
@@ -47,24 +49,21 @@ namespace PorphyStruct.OxyPlotOverride
                 Position = AxisPosition.Left,
                 Key = "Y",
                 IsAxisVisible = true,
-                MajorGridlineThickness = PorphyStruct.Core.Properties.Settings.Default.lineThickness,
-                TitleFormatString = PorphyStruct.Core.Properties.Settings.Default.titleFormat,
+                MajorGridlineThickness = Core.Properties.Settings.Default.lineThickness,
+                TitleFormatString = Core.Properties.Settings.Default.titleFormat,
                 LabelFormatter = OxyUtils._axisFormatter
             };
 
             //handle settings
-            if (PorphyStruct.Core.Properties.Settings.Default.rotateTitle)
-            {
-                y.AxisTitleDistance = 15;
-            }
+            if (Core.Properties.Settings.Default.rotateTitle) y.AxisTitleDistance = 20;
 
-            if (!PorphyStruct.Core.Properties.Settings.Default.showBox)
+            if (!Core.Properties.Settings.Default.showBox)
             {
                 PlotAreaBorderThickness = new OxyThickness(0);
                 y.AxislineStyle = LineStyle.Solid;
-                y.AxislineThickness = PorphyStruct.Core.Properties.Settings.Default.lineThickness;
+                y.AxislineThickness = Core.Properties.Settings.Default.lineThickness;
                 x.AxislineStyle = LineStyle.Solid;
-                x.AxislineThickness = PorphyStruct.Core.Properties.Settings.Default.lineThickness;
+                x.AxislineThickness = Core.Properties.Settings.Default.lineThickness;
             }
 
             Axes.Add(x);
@@ -89,7 +88,7 @@ namespace PorphyStruct.OxyPlotOverride
             double min, max;
             min = double.PositiveInfinity;
             max = double.NegativeInfinity;
-            if ((!isY && PorphyStruct.Core.Properties.Settings.Default.autoscaleX) || (isY && PorphyStruct.Core.Properties.Settings.Default.autoscaleY))
+            if ((!isY && Core.Properties.Settings.Default.autoscaleX) || (isY && Core.Properties.Settings.Default.autoscaleY))
             {
                 //find min & max automatically
                 foreach (ScatterSeries s in Series)
@@ -105,8 +104,8 @@ namespace PorphyStruct.OxyPlotOverride
             else
             {
                 //set min & max manually
-                min = (isY ? PorphyStruct.Core.Properties.Settings.Default.minY : PorphyStruct.Core.Properties.Settings.Default.minX);
-                max = (isY ? PorphyStruct.Core.Properties.Settings.Default.maxY : PorphyStruct.Core.Properties.Settings.Default.maxX);
+                min = (isY ? Core.Properties.Settings.Default.minY : Core.Properties.Settings.Default.minX);
+                max = (isY ? Core.Properties.Settings.Default.maxY : Core.Properties.Settings.Default.maxX);
             }
 
             //normalize?
@@ -126,13 +125,13 @@ namespace PorphyStruct.OxyPlotOverride
         public void AddZero()
         {
             //add zero
-            if (PorphyStruct.Core.Properties.Settings.Default.zero)
+            if (Core.Properties.Settings.Default.zero)
             {
                 //show zero
                 OxyPlot.Annotations.LineAnnotation zero = new OxyPlot.Annotations.LineAnnotation()
                 {
                     Color = OxyColor.FromAColor(40, OxyColors.Gray),
-                    StrokeThickness = PorphyStruct.Core.Properties.Settings.Default.lineThickness,
+                    StrokeThickness = Core.Properties.Settings.Default.lineThickness,
                     Intercept = 0,
                     Slope = 0
                 };
