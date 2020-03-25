@@ -56,12 +56,12 @@ namespace PorphyStruct.Chemistry
         /// <param name="extension"></param>
         public static void SaveASCII(this PlotModel pm, string filename, string extension = "dat")
         {
-            var export = new List<OxyPlot.Series.ScatterSeries>();
-            foreach (OxyPlot.Series.ScatterSeries s in pm.Series) export.Add(s);
+            var export = (from ScatterSeries s in pm.Series
+                          select s).ToList();
 
             //make title string
             string title = "A;X;";
-            foreach (OxyPlot.Series.Series s in export) title += s.Title + ";";
+            foreach (Series s in export) title += s.Title + ";";
 
             //write data
             using var sw = new StreamWriter(filename + "Data." + extension);
