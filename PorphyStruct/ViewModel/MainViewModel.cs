@@ -248,12 +248,16 @@ namespace PorphyStruct.ViewModel
             if (Cycle != null)
             {
                 CycleProperties = Cycle.Properties.ToLookup(x => x.Key, y => y.Value).ToDictionary(group => group.Key, group => group.SelectMany(value => value));
-                MathNet.Spatial.Euclidean.Plane msp = Cycle.GetMeanPlane();
-                CycleProperties["Mean Plane"] = new List<Property>()
+
+                if (Cycle.Atoms.Where(s => s.IsMacrocycle).Count() != 0)
                 {
-                    new Property("Unit Vector", $"({msp.A.ToString("G3")}, {msp.B.ToString("G3")}, {msp.C.ToString("G3")})"),
-                    new Property("Distance", msp.D.ToString("G3"))
-                };
+                    MathNet.Spatial.Euclidean.Plane msp = Cycle.GetMeanPlane();
+                    CycleProperties["Mean Plane"] = new List<Property>()
+                    {
+                        new Property("Unit Vector", $"({msp.A:G3}, {msp.B:G3}, {msp.C.ToString("G3")})"),
+                        new Property("Distance", msp.D.ToString("G3"))
+                    };
+                }
             }
             OnPropertyChanged(nameof(CycleProperties));
         }
