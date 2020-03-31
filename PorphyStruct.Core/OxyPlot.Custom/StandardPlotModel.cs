@@ -38,7 +38,7 @@ namespace PorphyStruct.OxyPlotOverride
                 AbsoluteMinimum = Core.Properties.Settings.Default.minX,
                 AbsoluteMaximum = Core.Properties.Settings.Default.maxX,
                 TitleFormatString = Core.Properties.Settings.Default.titleFormat,
-                LabelFormatter = OxyUtils._axisFormatter
+                LabelFormatter = OxyUtils.xFormatter
             };
 
             //use my override for title rotation :) works unexpectedly good :D
@@ -51,7 +51,7 @@ namespace PorphyStruct.OxyPlotOverride
                 IsAxisVisible = true,
                 MajorGridlineThickness = Core.Properties.Settings.Default.lineThickness,
                 TitleFormatString = Core.Properties.Settings.Default.titleFormat,
-                LabelFormatter = OxyUtils._axisFormatter
+                LabelFormatter = OxyUtils.yFormatter
             };
 
             //handle settings
