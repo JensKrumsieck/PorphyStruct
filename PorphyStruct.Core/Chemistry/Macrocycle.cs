@@ -333,6 +333,28 @@ namespace PorphyStruct.Chemistry
         }
 
         /// <summary>
+        /// Fallback if cavity detection does not work
+        /// </summary>
+        /// <param name="mol"></param>
+        /// <returns></returns>
+        internal HashSet<Atom> UseAlternativeCavity(IEnumerable<Atom> mol)
+        {
+            //use alternative cavity definition and try find again
+            List<Atom> cavity = NonMetalNeighbors(Metal, mol).ToList();
+            //iterate all combinations
+            foreach (IEnumerable<Atom> comb in cavity.GetCombinations(4).OrderBy(l => l.Sum(a => Atom.Distance(a, Metal))))
+            {
+                HashSet<Atom> path = RingPath(comb.First(), RingAtoms.Count() - 8);
+                if (path != null)
+                {
+                    foreach (Atom N in comb) path.UnionWith(RingPath(N, 5).AsParallel());
+                    if (path.Count == RingAtoms.Count()) return path;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Find Corpus of Macrocyle
         /// </summary>
         /// <param name="mol"></param>
@@ -342,27 +364,16 @@ namespace PorphyStruct.Chemistry
             //get N4 Cavity
             List<Atom> cavity = N4Cavity(mol);
 
-            //get inner ring path
-            HashSet<Atom> corpus = RingPath(cavity.First(), RingAtoms.Count() - 8);
-            if (corpus == null && HasMetal(false))
-            {
-                //use alternative cavity definition and try find again
-                cavity = NonMetalNeighbors(Metal, mol).ToList();
-                //iterate all combinations
-                foreach (IEnumerable<Atom> comb in cavity.GetCombinations(4).OrderBy(l => l.Sum(a => Atom.Distance(a, Metal))))
-                {
-                    HashSet<Atom> path = RingPath(comb.First(), RingAtoms.Count() - 8);
-                    if (path != null)
-                    {
-                        foreach (Atom N in comb) path.UnionWith(RingPath(N, 5).AsParallel());
-                        if (path.Count == RingAtoms.Count()) return path;
-                    }
-                }
-            }
-            if (corpus == null) return null;
+            //get inner ring path 
+            HashSet<Atom> corpus = new HashSet<Atom>(); ;
+            if (cavity.Count != 0) corpus = RingPath(cavity.First(), RingAtoms.Count() - 8);
+            if (corpus?.Count == 0 && HasMetal(false)) corpus = UseAlternativeCavity(mol);
 
             //just need to find beta atoms now to complete the cycle, luckily we can use the cavity to find five membered rings and combine with corpus, and distinct.
-            foreach (Atom N in cavity) corpus.UnionWith(RingPath(N, 5));
+            foreach (Atom N in cavity) corpus?.UnionWith(RingPath(N, 5));
+
+            //try to use other method
+            if (corpus?.Count != RingAtoms.Count && HasMetal(false)) return UseAlternativeCavity(mol);
 
             return corpus;
         }

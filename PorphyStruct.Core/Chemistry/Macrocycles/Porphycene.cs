@@ -1,4 +1,5 @@
-﻿using PorphyStruct.Core.Util;
+﻿using PorphyStruct.Chemistry.Properties;
+using PorphyStruct.Core.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ namespace PorphyStruct.Chemistry.Macrocycles
 {
     public class Porphycene : Macrocycle
     {
-        public Porphycene(AsyncObservableCollection<Atom> Atoms) : base(Atoms) { }
+        public Porphycene(AsyncObservableCollection<Atom> Atoms) : base(Atoms) => PropertyProviders.Add(new PorphyceneDihedrals(ByIdentifier));
 
         //assign type (legacy)
         public override Type type => Type.Porphycene;

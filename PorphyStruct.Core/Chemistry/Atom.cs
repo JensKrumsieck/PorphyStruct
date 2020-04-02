@@ -73,16 +73,12 @@ namespace PorphyStruct.Chemistry
         /// </summary>
         /// <param name="test"></param>
         /// <returns></returns>
-        public bool BondTo(Atom test)
-        {
-            if (Atom.Distance(this, test) < (Element.Radius + test.Element.Radius) + 0.25 && this != test)
-                return true;
-            return false;
-        }
+        public bool BondTo(Atom test) => Distance(this, test) < (Element.Radius + test.Element.Radius) + 0.25 && this != test;
 
         /// <summary>
         /// some common metals in coord. chem.
         /// may be completed soon
+        /// Some may are not metals but are able to be complexed like phosphorus...
         /// </summary>
         public static List<string> Metals = new List<string>()
         {
@@ -92,7 +88,7 @@ namespace PorphyStruct.Chemistry
             "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd",
             "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg",
             "La", "U",
-            "Ga", "Sn", "Sb","Tl", "Pb"
+            "Ga", "Sn", "Sb","Tl", "Pb", "Bi", "Ge", "P"
         };
 
         /// <summary>
