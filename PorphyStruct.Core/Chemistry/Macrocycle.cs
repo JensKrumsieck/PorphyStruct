@@ -278,7 +278,7 @@ namespace PorphyStruct.Chemistry
             if (HasMetal())
                 foreach (AtomDataPoint n in data.DataPoints.Where(s => s.atom.Type == "N").ToList())
                 {
-                    ArrowAnnotation b = DrawBond(data.DataPoints.Where(s => s.atom == Metal).FirstOrDefault(), n, data);
+                    ArrowAnnotation b = DrawBond(data.DataPoints.Where(s => s.atom.IsMetal).FirstOrDefault(), n, data);
                     b.LineStyle = LineStyle.Dash;
                     b.Color = OxyColor.FromAColor(75, b.Color);
                     b.Tag = "Metal";
