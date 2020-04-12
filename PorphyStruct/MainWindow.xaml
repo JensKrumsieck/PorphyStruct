@@ -47,7 +47,7 @@
     </Window.InputBindings>
     <!--/Shortcut section-->
 
-    <DockPanel>        
+    <DockPanel x:Name="root">        
         <ToolBarTray Grid.ColumnSpan="4" Grid.Row="0" Style="{DynamicResource MaterialDesignToolBarTray}" Background="{DynamicResource TitleBackgroundBrush}" DockPanel.Dock="Top">
             <ToolBar Style="{DynamicResource MaterialDesignToolBar}" HorizontalAlignment="Stretch" Background="{DynamicResource TitleBackgroundBrush}">
                 <Button ToolTip="{x:Static lang:Main.OpenToolTip}" Click="Open_Click" Style="{StaticResource ToolbarButton}">

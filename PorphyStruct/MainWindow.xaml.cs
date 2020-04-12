@@ -240,9 +240,9 @@ namespace PorphyStruct
         private async void Detect_Click(object sender, RoutedEventArgs e)
         {
             //Block UI Interaction during Detect
-            IsEnabled = false;
+            root.IsEnabled = false;
             await Task.Run(viewModel.Cycle.Detect);
-            IsEnabled = true;
+            root.IsEnabled = true;
         }
     }
 }
