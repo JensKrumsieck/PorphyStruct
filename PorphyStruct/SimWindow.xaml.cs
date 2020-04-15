@@ -166,11 +166,8 @@ namespace PorphyStruct
                 //Denormalize Sim
                 simObj.DataPoints = simObj.DataPoints.Factor(1 / viewModel.Cycle.CalculateDataPoints().GetNormalizationFactor());
 
-                //////set true if exp has been inverted
-                //if (MainVM.Invert) simObj.isInverted = true;
                 Application.Current.Windows.OfType<MainWindow>().First().DelSimButton.IsEnabled = true;
                 Application.Current.Windows.OfType<MainWindow>().First().DiffSimButton.IsEnabled = true;
-                //MainVM.simulation = simObj;
                 MainVM.Normalize = false;
                 Application.Current.Windows.OfType<MainWindow>().First().Analyze();
             }
