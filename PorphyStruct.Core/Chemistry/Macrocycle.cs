@@ -200,8 +200,8 @@ namespace PorphyStruct.Chemistry
             foreach (Atom a in Atoms.Where(s => s.IsMacrocycle && !s.IsMetal))
             {
                 double xCoord = 1;
-                if (a.Type == "C") xCoord = fixPoint + distance * Multiplier[a.Identifier];
-                if (a.Type == "N") xCoord = fixPoint + distance / 2;
+                if (a.Identifier.Contains("C")) xCoord = fixPoint + distance * Multiplier[a.Identifier];
+                if (a.Identifier.Contains("N")) xCoord = fixPoint + distance / 2;
 
                 //starts with C1 which is alpha per definition, so refresh distance every alpha atom.
                 if (IsAlpha(a) && GetNextAlpha(a) != null) distance = Atom.Distance(a, GetNextAlpha(a));
