@@ -430,5 +430,29 @@ namespace PorphyStruct.Core.Properties {
                 this["IgnoreDisorder"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ExtendMetalDefinition {
+            get {
+                return ((bool)(this["ExtendMetalDefinition"]));
+            }
+            set {
+                this["ExtendMetalDefinition"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DisplayTypeColumn {
+            get {
+                return ((bool)(this["DisplayTypeColumn"]));
+            }
+            set {
+                this["DisplayTypeColumn"] = value;
+            }
+        }
     }
 }

@@ -254,7 +254,7 @@ namespace PorphyStruct.ViewModel
                     MathNet.Spatial.Euclidean.Plane msp = Cycle.GetMeanPlane();
                     CycleProperties["Mean Plane"] = new List<Property>()
                     {
-                        new Property("Unit Vector", $"({msp.A:G3}, {msp.B:G3}, {msp.C.ToString("G3")})"),
+                        new Property("Unit Vector", $"({msp.A:G3}, {msp.B:G3}, {msp.C:G3})"),
                         new Property("Distance", msp.D.ToString("G3"))
                     };
                 }

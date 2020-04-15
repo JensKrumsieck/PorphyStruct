@@ -340,7 +340,7 @@ namespace PorphyStruct.Chemistry
         internal HashSet<Atom> UseAlternativeCavity(IEnumerable<Atom> mol)
         {
             //use alternative cavity definition and try find again
-            List<Atom> cavity = NonMetalNeighbors(Metal, mol).ToList();
+            var cavity = NonMetalNeighbors(Metal, mol).ToList();
             //iterate all combinations
             foreach (IEnumerable<Atom> comb in cavity.GetCombinations(4).OrderBy(l => l.Sum(a => Atom.Distance(a, Metal))))
             {
@@ -365,7 +365,7 @@ namespace PorphyStruct.Chemistry
             List<Atom> cavity = N4Cavity(mol);
 
             //get inner ring path 
-            HashSet<Atom> corpus = new HashSet<Atom>(); ;
+            var corpus = new HashSet<Atom>(); ;
             if (cavity.Count != 0) corpus = RingPath(cavity.First(), RingAtoms.Count() - 8);
             if (corpus?.Count == 0 && HasMetal(false)) corpus = UseAlternativeCavity(mol);
 

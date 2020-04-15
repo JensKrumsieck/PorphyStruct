@@ -14,6 +14,7 @@
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         FontFamily="Segoe UI"
+        xmlns:properties="clr-namespace:PorphyStruct.Core.Properties;assembly=PorphyStruct.Core"
         Style="{DynamicResource DefaultWindowStyle}"
         styles:DefaultWindow.FileName="{Binding Cycle.Title}"
         Title="Structural Analysis of Porphyrinoids (PorphyStruct)" Height="780" Width="1230">
@@ -165,6 +166,7 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Binding="{Binding Identifier, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="{x:Static lang:Main.Identifier}"/>
                                 <DataGridCheckBoxColumn Binding="{Binding IsMacrocycle, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="{x:Static lang:Main.IsMacrocycle}" SortDirection="Descending"/>
+                                <DataGridTextColumn Binding="{Binding Type, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" Header="Type" IsReadOnly="True" Visibility="{Binding Source={x:Static properties:Settings.Default}, Path=DisplayTypeColumn, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                 <DataGridTextColumn Binding="{Binding X, StringFormat=N4, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="X" IsReadOnly="True"/>
                                 <DataGridTextColumn Binding="{Binding Y, StringFormat=N4, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Y" IsReadOnly="True"/>
                                 <DataGridTextColumn Binding="{Binding Z, StringFormat=N4, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Z" IsReadOnly="True"/>

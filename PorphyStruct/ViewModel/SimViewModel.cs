@@ -15,6 +15,7 @@ namespace PorphyStruct.ViewModel
             Model = new StandardPlotModel();
             this.Cycle = Cycle;
             Cycle.Paint(Model);
+            Model.Scale(Model.xAxis);
             Parameters = SimParam.ListParameters(Cycle.type);
             Mode = SimulationMode.Simplex;
 

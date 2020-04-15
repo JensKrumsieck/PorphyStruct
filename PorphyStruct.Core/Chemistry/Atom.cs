@@ -3,6 +3,7 @@ using OxyPlot;
 using PorphyStruct.Core.Util;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace PorphyStruct.Chemistry
@@ -76,11 +77,21 @@ namespace PorphyStruct.Chemistry
         public bool BondTo(Atom test) => Distance(this, test) < (Element.Radius + test.Element.Radius) + 0.25 && this != test;
 
         /// <summary>
-        /// some common metals in coord. chem.
-        /// may be completed soon
-        /// Some may are not metals but are able to be complexed like phosphorus...
+        /// returns Metal Atoms
         /// </summary>
-        public static List<string> Metals = new List<string>()
+        public static List<string> Metals
+        {
+            get
+            {
+                if (Core.Properties.Settings.Default.ExtendMetalDefinition) return UsualCentralAtoms.Concat(OtherCentralAtoms).ToList();
+                return UsualCentralAtoms;
+            }
+        }
+
+        /// <summary>
+        /// some common metals in coord. chem.
+        /// </summary>
+        public static List<string> UsualCentralAtoms = new List<string>()
         {
             "Li",
             "Mg",
@@ -88,7 +99,15 @@ namespace PorphyStruct.Chemistry
             "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd",
             "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg",
             "La", "U",
-            "Ga", "Sn", "Sb","Tl", "Pb", "Bi", "Ge", "P", "Al"
+            "Ga", "Sn", "Sb","Tl", "Pb", "Bi", "Ge", "Al"
+        };
+
+        /// <summary>
+        /// Atoms which can be part of the ring but also stick in Cavity.
+        /// </summary>
+        public static List<string> OtherCentralAtoms = new List<string>()
+        {
+            "P", "B"
         };
 
         /// <summary>
