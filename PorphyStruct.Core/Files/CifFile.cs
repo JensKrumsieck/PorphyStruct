@@ -32,16 +32,23 @@ namespace PorphyStruct.Files
             string moleculeLoop = Array.Find(loops, s => s.Contains("_atom_site_label"));
 
             var data = new List<string[]>();
-            int headers = moleculeLoop.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None).Count(s => s.Trim().StartsWith("_"));
+            var headers = moleculeLoop.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None).Where(s => s.Trim().StartsWith("_")).ToArray();
+            int disorderGroupIndex = Array.IndexOf(headers, "_atom_site_disorder_group");
             //loop through lines
-            foreach (string line in moleculeLoop.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None))
+            foreach (string line in moleculeLoop.Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None).Where(s => !s.StartsWith("_")))
             {
-                if (!line.TrimStart().StartsWith("_")) data.Add(line.Split(' '));
+                var raw_data = line.Split(' ');
+                if (Core.Properties.Settings.Default.IgnoreDisorder
+                    && disorderGroupIndex >= 0
+                    && disorderGroupIndex < raw_data.Count()
+                    && raw_data[disorderGroupIndex] == "2") continue;  //checks if disorderGroupIndex is equal to 2 which is not the "main" molecule
+
+                data.Add(raw_data);
             }
 
             //build returning object
             var crystal = new Crystal(System.IO.Path.GetFileNameWithoutExtension(Path),
-                cellLenghts, cellAngles, data, headers);
+                cellLenghts, cellAngles, data, headers.Count());
 
             return crystal.ToMolecule();
         }

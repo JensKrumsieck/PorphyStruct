@@ -446,6 +446,26 @@
                             </TextBox>
                         </Grid>
                     </StackPanel>
+                    <StackPanel>
+
+                        <Grid Margin="0 50 10 0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" TextWrapping="Wrap" Grid.RowSpan="2">
+                                Ignore Disorder
+                                <LineBreak/>
+                                <Run FontSize="10" Foreground="{DynamicResource SecondaryHueMidBrush}">Ignores all disorderd molecule parts by checking _atom_site_disorder_group for a value of 2.</Run>
+                            </TextBlock>
+                            <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" x:Name="ignoreDisorder" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=IgnoreDisorder, Mode=TwoWay}" Grid.RowSpan="2"/>
+                        </Grid>
+                    </StackPanel>
                 </UniformGrid>
             </TabItem>
             <TabItem>
