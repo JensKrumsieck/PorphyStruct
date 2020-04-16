@@ -110,5 +110,8 @@
     <Setting Name="DisplayTypeColumn" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="PaintNonMacrocyclicAtoms" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -454,5 +454,17 @@ namespace PorphyStruct.Core.Properties {
                 this["DisplayTypeColumn"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool PaintNonMacrocyclicAtoms {
+            get {
+                return ((bool)(this["PaintNonMacrocyclicAtoms"]));
+            }
+            set {
+                this["PaintNonMacrocyclicAtoms"] = value;
+            }
+        }
     }
 }
