@@ -29,10 +29,7 @@ namespace PorphyStruct.Simulations
             this.cycle = cycle;
             rnd = new Random();
             error = new double[Parameters.Length + 1];
-            for (int i = 0; i < Parameters.Length; i++)
-            {
-                error[i] = double.PositiveInfinity;
-            }
+            for (int i = 0; i < Parameters.Length; i++) error[i] = double.PositiveInfinity;
             Indices = new List<int>();
 
         }
@@ -65,10 +62,7 @@ namespace PorphyStruct.Simulations
         {
             if (parameters.AbsSum() != 1)
             {
-                for (int i = 0; i < parameters.Length; i++)
-                {
-                    parameters[i] /= parameters.AbsSum();
-                }
+                for (int i = 0; i < parameters.Length; i++) parameters[i] /= parameters.AbsSum();
             }
             return Function(cycle, parameters);
         }
@@ -112,8 +106,7 @@ namespace PorphyStruct.Simulations
                 return Evaluate();
             }
 
-            if (lastCurrent != null && Math.Abs(lastCurrent.Sum() - error.Sum()) < 5e-8)
-                count++;
+            if (lastCurrent != null && Math.Abs(lastCurrent.Sum() - error.Sum()) < 5e-8) count++;
             else count = 0;
             lastCurrent = (double[])error.Clone();
 
@@ -135,14 +128,9 @@ namespace PorphyStruct.Simulations
 
                 //expansion is better than relfection
                 if (expansionRes.Error[0] < reflectionRes.Error[0] && expansionRes.Error[1] < reflectionRes.Error[1] && expansionRes.Error[2] < reflectionRes.Error[2])
-                {
                     simplex[indices[N]] = expansion;
-                }
-                else
-                {
-                    //reflection is better
+                else //reflection is better
                     simplex[indices[N]] = reflection;
-                }
 
                 //reorder and return best
                 Array.Sort(error, simplex);
@@ -189,10 +177,7 @@ namespace PorphyStruct.Simulations
         private void Build(int N)
         {
             //build montecarlo instance
-            var mc = new MonteCarlo(Result.Calculate, Parameters, cycle)
-            {
-                Indices = Indices
-            };
+            var mc = new MonteCarlo(Result.Calculate, Parameters, cycle) { Indices = Indices };
             //step 1:
             //build initial simplex with N+1 points
 
@@ -227,9 +212,7 @@ namespace PorphyStruct.Simulations
                 for (int ie = 0; ie <= N; ie++)
                 {
                     if (ie != indices[N] && !Indices.Contains(il))
-                    {
                         centroid[il] += simplex[ie][il] / N;
-                    }
                     else if (Indices.Contains(il))
                         centroid[il] = 0;
                 }
