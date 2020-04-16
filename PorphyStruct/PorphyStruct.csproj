@@ -5,7 +5,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
-    <Version>1.0.0-beta6</Version>
+    <Version>1.0.0-beta9</Version>
     <Authors>Jens Krumsieck</Authors>
     <Company>Jens Krumsieck</Company>
     <Copyright>2019-2020 Jens Krumsieck</Copyright>
@@ -13,7 +13,7 @@
     <PackageIcon>porphystructlogo.png</PackageIcon>
     <PackageIconUrl />
     <RepositoryUrl>https://github.com/JensKrumsieck/PorphyStruct</RepositoryUrl>
-    <FileVersion>1.0.0.6</FileVersion>
+    <FileVersion>1.0.0.9</FileVersion>
     <ApplicationIcon>Resources\favicon.ico</ApplicationIcon>
   </PropertyGroup>
 
