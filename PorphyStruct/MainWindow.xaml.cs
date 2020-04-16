@@ -244,5 +244,23 @@ namespace PorphyStruct
             await Task.Run(viewModel.Cycle.Detect);
             root.IsEnabled = true;
         }
+        
+        /// <summary>
+        /// Provides click selection
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MolViewer_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var hits = Viewport3DHelper.FindHits(MolViewer.Viewport, e.GetPosition(MolViewer));
+            foreach (var hit in hits.OrderBy(s => s.Distance))
+            {
+                if (hit.Visual.GetType() != typeof(AtomModelVisual3D)) continue;
+
+                var amv3d = hit.Visual as AtomModelVisual3D;
+                viewModel.SelectedItem = amv3d.Atom;
+                coordGrid.ScrollIntoView(viewModel.SelectedItem);
+            }
+        }
     }
 }
