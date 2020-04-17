@@ -44,7 +44,7 @@ namespace PorphyStruct.Windows
         /// <returns></returns>
         public static AtomModelVisual3D Atom3D(this Atom atom, bool selected = false)
         {
-            var builder = new MeshBuilder(true, true);
+            var builder = new MeshBuilder();
             builder.AddSphere(atom.ToPoint3D(), atom.AtomRadius / 2);
             Brush brush = atom.Brush();
             if (Core.Properties.Settings.Default.PaintNonMacrocyclicAtoms && !atom.IsMacrocycle) brush.Opacity = 1 - (Core.Properties.Settings.Default.StrengthNonMacrocyclicAtoms / 100d);
@@ -67,7 +67,7 @@ namespace PorphyStruct.Windows
         public static BondModelVisual3D Bond3D(this Atom a1, Atom a2, Macrocycle cycle)
         {
             bool valid = cycle.IsValid;
-            var builder = new MeshBuilder(true, true);
+            var builder = new MeshBuilder();
             builder.AddCylinder(a1.ToPoint3D(), a2.ToPoint3D(), cycle.IsValidBond(a1, a2) ? 0.2 : 0.075, 10);//add only to selection if both are macrocycle marked
             var vis = new BondModelVisual3D { Atoms = new[] { a1, a2 } };
             Brush brush = Brushes.Gray.Clone();
