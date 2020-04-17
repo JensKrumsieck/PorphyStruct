@@ -28,6 +28,19 @@ namespace PorphyStruct
         {
             if (Core.Properties.Settings.Default.forceEn) CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
             InitializeComponent();
+            MolViewer.Camera.Changed += Camera_Changed;
+        }
+
+        /// <summary>
+        /// Add Light
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Camera_Changed(object sender, System.EventArgs e)
+        {
+            var light = MolViewer.Children.OfType<DirectionalHeadLight>().FirstOrDefault();
+            if (light == null)  MolViewer.Children.Add(light = new DirectionalHeadLight());
+            if(light.Position != MolViewer.Camera.Position) light.Position = MolViewer.Camera.Position;
         }
 
         /// <summary>
