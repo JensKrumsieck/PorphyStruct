@@ -39,8 +39,8 @@ namespace PorphyStruct
         private void Camera_Changed(object sender, System.EventArgs e)
         {
             var light = MolViewer.Children.OfType<DirectionalHeadLight>().FirstOrDefault();
-            if (light == null)  MolViewer.Children.Add(light = new DirectionalHeadLight());
-            if(light.Position != MolViewer.Camera.Position) light.Position = MolViewer.Camera.Position;
+            if (light == null) MolViewer.Children.Add(light = new DirectionalHeadLight());
+            if (light.Position != MolViewer.Camera.Position) light.Position = MolViewer.Camera.Position;
         }
 
         /// <summary>
@@ -257,7 +257,7 @@ namespace PorphyStruct
             await Task.Run(viewModel.Cycle.Detect);
             root.IsEnabled = true;
         }
-        
+
         /// <summary>
         /// Provides click selection
         /// </summary>
