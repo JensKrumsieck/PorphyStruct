@@ -47,7 +47,7 @@ namespace PorphyStruct.Windows
             var builder = new MeshBuilder(true, true);
             builder.AddSphere(atom.ToPoint3D(), atom.AtomRadius / 2);
             Brush brush = atom.Brush();
-            if (Core.Properties.Settings.Default.PaintNonMacrocyclicAtoms && !atom.IsMacrocycle) brush.Opacity = 0.1;
+            if (Core.Properties.Settings.Default.PaintNonMacrocyclicAtoms && !atom.IsMacrocycle) brush.Opacity = 1 - (Core.Properties.Settings.Default.StrengthNonMacrocyclicAtoms / 100d);
             if (selected) brush = Brushes.LightGoldenrodYellow;
             var vis = new AtomModelVisual3D
             {
@@ -72,7 +72,7 @@ namespace PorphyStruct.Windows
             var vis = new BondModelVisual3D { Atoms = new[] { a1, a2 } };
             Brush brush = Brushes.Gray.Clone();
             if (cycle.IsValidBond(a1, a2)) brush = (valid ? Brushes.Green.Clone() : Brushes.Red.Clone());
-            else if (Core.Properties.Settings.Default.PaintNonMacrocyclicAtoms) brush.Opacity = 0.1;
+            else if (Core.Properties.Settings.Default.PaintNonMacrocyclicAtoms) brush.Opacity = 1 - (Core.Properties.Settings.Default.StrengthNonMacrocyclicAtoms / 100d);
             vis.Content = new GeometryModel3D(builder.ToMesh(), MaterialHelper.CreateMaterial(brush, 0, 0));
             return vis;
         }

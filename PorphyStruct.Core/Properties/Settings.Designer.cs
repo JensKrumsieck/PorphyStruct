@@ -466,5 +466,17 @@ namespace PorphyStruct.Core.Properties {
                 this["PaintNonMacrocyclicAtoms"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("70")]
+        public int StrengthNonMacrocyclicAtoms {
+            get {
+                return ((int)(this["StrengthNonMacrocyclicAtoms"]));
+            }
+            set {
+                this["StrengthNonMacrocyclicAtoms"] = value;
+            }
+        }
     }
 }

@@ -228,6 +228,15 @@
 
                         <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Text="X-Axis Scale" Margin="0 15 0 0"  />
                         <Grid>
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=(properties:Settings.Default).autoscaleX}" Value="True">
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
@@ -241,6 +250,15 @@
                         </Grid>
                         <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Text="Y-Axis Scale" Margin="0 15 0 0" />
                         <Grid>
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=(properties:Settings.Default).autoscaleY}" Value="True">
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
@@ -325,6 +343,15 @@
                         <!--Export Settings-->
                         <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Text="Default Export Directory"/>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <StackPanel.Style>
+                                <Style TargetType="{x:Type StackPanel}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=(properties:Settings.Default).useImportExportPath}" Value="True">
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
                             <TextBox x:Name="savePath" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                                  Text="{Binding Source={x:Static properties:Settings.Default}, Path=savePath, Mode=TwoWay}"
                                  Width="250">
@@ -515,6 +542,32 @@
                             </TextBlock>
                             <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" x:Name="paintNonCyclic" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=PaintNonMacrocyclicAtoms, Mode=TwoWay}" Grid.RowSpan="2"/>
                         </Grid>
+                        <Grid Margin="0 10">
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=(properties:Settings.Default).PaintNonMacrocyclicAtoms}" Value="False">
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" TextWrapping="Wrap" Grid.RowSpan="2">
+                                Strength of Effect
+                                <LineBreak/>
+                                <Run FontSize="10">Defines the strength of the opacity effect. Value between 0 and 100%.</Run>
+                            </TextBlock>
+                            <Slider VerticalAlignment="Bottom" Grid.Column="1" Minimum="0" Maximum="100" Style="{StaticResource MaterialDesignDiscreteSlider}"  Value="{Binding Source={x:Static properties:Settings.Default}, Path=StrengthNonMacrocyclicAtoms, Mode=TwoWay}" Width="180"/>
+                        </Grid>
                     </StackPanel>
                 </UniformGrid>
             </TabItem>
@@ -534,6 +587,15 @@
                         </StackPanel>
                         <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text=""></TextBlock>
                         <Grid>
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=(properties:Settings.Default).singleColor}" Value="True">
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
@@ -564,18 +626,31 @@
                                           Grid.Column="1"/>
                         </Grid>
                         <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="42*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=(properties:Settings.Default).singleColor}" Value="False">
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Grid.RowSpan="2">
                                 Color Palette
                                 <LineBreak />
                                 <Run FontSize="9">Select a Color Palette from the Dropdown.</Run>
                                 <LineBreak />
                                 <Run FontSize="9">The Preview shows some colors of the Palette. Other Colors will be interpolated upon need.</Run>
                             </TextBlock>
-                            <ComboBox x:Name="palette" Grid.Column="1" SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=ColorPalette, Mode=TwoWay}" SelectedValuePath="Title" ItemsSource="{Binding PaletteList}">
+                            <ComboBox x:Name="palette" Grid.Column="1" SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=ColorPalette, Mode=TwoWay}" SelectedValuePath="Title" ItemsSource="{Binding PaletteList}" Grid.Row="1">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <UniformGrid Columns="2">
