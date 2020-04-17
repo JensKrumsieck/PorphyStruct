@@ -62,7 +62,7 @@
         </StackPanel>
         <StackPanel Grid.Column="1" Background="#FFF" Margin="10">
             <TextBlock Text="Preview" Style="{StaticResource MaterialDesignHeadline6TextBlock}" FontWeight="Light" HorizontalAlignment="Center"/>
-            <h:HelixViewport3D x:Name="MolViewer" ShowViewCube="False" ShowCoordinateSystem="True" ZoomExtentsWhenLoaded="True" Background="#FFFAFAFA" Height="350" Margin="0 10 0 0">
+            <h:HelixViewport3D x:Name="MolViewer" ShowViewCube="False" ShowCoordinateSystem="True" ZoomExtentsWhenLoaded="True" Background="#FFFAFAFA" Height="350" Margin="0 10 0 0" Orthographic="True">
                 <h:DefaultLights/>
             </h:HelixViewport3D>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20 0 20">

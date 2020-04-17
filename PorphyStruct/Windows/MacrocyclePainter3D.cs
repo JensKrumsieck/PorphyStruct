@@ -20,6 +20,7 @@ namespace PorphyStruct.Windows
         public static IEnumerable<ModelVisual3D> Paint3D(this Macrocycle cycle)
         {
             yield return new DefaultLights();
+            yield return new SunLight();
             //loop atoms
             foreach (Atom atom in cycle.Atoms) yield return Atom3D(atom);
             //loop bonds
@@ -47,7 +48,7 @@ namespace PorphyStruct.Windows
             if (selected) brush = Brushes.LightGoldenrodYellow;
             return new AtomModelVisual3D
             {
-                Content = new GeometryModel3D(builder.ToMesh(), MaterialHelper.CreateMaterial(brush, 0, 0)) { BackMaterial = MaterialHelper.CreateMaterial(brush, 0, 0) },
+                Content = new GeometryModel3D(builder.ToMesh(), MaterialHelper.CreateMaterial(brush, 0, 0)),
                 Atom = atom
             };
         }
@@ -70,7 +71,7 @@ namespace PorphyStruct.Windows
             return new BondModelVisual3D
             {
                 Atoms = new[] { a1, a2 },
-                Content = new GeometryModel3D(builder.ToMesh(), MaterialHelper.CreateMaterial(brush, 0, 0)) { BackMaterial = MaterialHelper.CreateMaterial(brush, 0, 0) }
+                Content = new GeometryModel3D(builder.ToMesh(), MaterialHelper.CreateMaterial(brush, 0, 0))
             };
         }
     }
