@@ -21,17 +21,13 @@ namespace PorphyStruct.Windows
         {
             yield return new DefaultLights();
             //loop atoms
-            foreach (Atom atom in cycle.Atoms)
-                yield return Atom3D(atom);
+            foreach (Atom atom in cycle.Atoms) yield return Atom3D(atom);
             //loop bonds
             foreach (Atom a1 in cycle.Atoms)
             {
                 foreach (Atom a2 in cycle.Atoms)
                 {
-                    if (a1.BondTo(a2))
-                    {
-                        yield return a1.Bond3D(a2, cycle);
-                    }
+                    if (a1.BondTo(a2)) yield return a1.Bond3D(a2, cycle);
                 }
             }
         }
