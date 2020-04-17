@@ -49,12 +49,11 @@ namespace PorphyStruct.Windows
             Brush brush = atom.Brush();
             if (Core.Properties.Settings.Default.PaintNonMacrocyclicAtoms && !atom.IsMacrocycle) brush.Opacity = 1 - (Core.Properties.Settings.Default.StrengthNonMacrocyclicAtoms / 100d);
             if (selected) brush = Brushes.LightGoldenrodYellow;
-            var vis = new AtomModelVisual3D
+            return new AtomModelVisual3D
             {
-                Content = new GeometryModel3D(builder.ToMesh(), MaterialHelper.CreateMaterial(brush, 0, 0)),
+                Content = new GeometryModel3D(builder.ToMesh(), MaterialHelper.CreateMaterial(brush, 0, 0)) { BackMaterial = MaterialHelper.CreateMaterial(brush, 0, 0) },
                 Atom = atom
             };
-            return vis;
         }
 
         /// <summary>
@@ -69,12 +68,14 @@ namespace PorphyStruct.Windows
             bool valid = cycle.IsValid;
             var builder = new MeshBuilder();
             builder.AddCylinder(a1.ToPoint3D(), a2.ToPoint3D(), cycle.IsValidBond(a1, a2) ? 0.2 : 0.075, 10);//add only to selection if both are macrocycle marked
-            var vis = new BondModelVisual3D { Atoms = new[] { a1, a2 } };
             Brush brush = Brushes.Gray.Clone();
             if (cycle.IsValidBond(a1, a2)) brush = (valid ? Brushes.Green.Clone() : Brushes.Red.Clone());
             else if (Core.Properties.Settings.Default.PaintNonMacrocyclicAtoms) brush.Opacity = 1 - (Core.Properties.Settings.Default.StrengthNonMacrocyclicAtoms / 100d);
-            vis.Content = new GeometryModel3D(builder.ToMesh(), MaterialHelper.CreateMaterial(brush, 0, 0));
-            return vis;
+            return new BondModelVisual3D
+            {
+                Atoms = new[] { a1, a2 },
+                Content = new GeometryModel3D(builder.ToMesh(), MaterialHelper.CreateMaterial(brush, 0, 0)) { BackMaterial = MaterialHelper.CreateMaterial(brush, 0, 0) }
+            };
         }
     }
 }
