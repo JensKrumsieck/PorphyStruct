@@ -29,6 +29,7 @@ namespace PorphyStruct.ViewModel
 
             //Load cycle
             Cycle = MacrocycleFactory.Load(Path, Type);
+            Cycle.Center(s => true);
             //Bind Events
             Cycle.PropertyChanged += Cycle_PropertyChanged;
             Cycle.Atoms.CollectionChanged += OnCollectionChanged;

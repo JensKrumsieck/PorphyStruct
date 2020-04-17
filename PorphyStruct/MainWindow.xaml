@@ -158,7 +158,7 @@
             <UniformGrid Rows="2" Grid.Column="1">
                 <h:HelixViewport3D x:Name="MolViewer" ShowViewCube="False" ShowCoordinateSystem="True" ZoomExtentsWhenLoaded="True" 
                                    Background="#FFFAFAFA" ItemsSource="{Binding Molecule3D}" MouseLeftButtonDown="MolViewer_MouseLeftButtonDown" 
-                                   IsHeadLightEnabled="True" Orthographic="True" />
+                                   IsHeadLightEnabled="True" Orthographic="{Binding Path=(properties:Settings.Default).CameraMode}" />
                 <TabControl BorderBrush="{x:Null}" Background="Transparent">
                     <TabItem Header="{x:Static lang:Main.Coordinates}">
                         <DataGrid IsSynchronizedWithCurrentItem="True" x:Name="coordGrid" CanUserSortColumns="True" CanUserAddRows="False" ItemsSource="{Binding Cycle.Atoms}" 

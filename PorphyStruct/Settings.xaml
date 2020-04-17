@@ -536,6 +536,23 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" TextWrapping="Wrap" Grid.RowSpan="2">
+                                Use Orthographic Camera
+                                <LineBreak/>
+                                <Run FontSize="10">Opt-In to Use Orthographic Camera instead of Perspective Camera.</Run>
+                            </TextBlock>
+                            <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" x:Name="orthographic" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=CameraMode, Mode=TwoWay}" Grid.RowSpan="2"/>
+                        </Grid>
+                        <Grid Margin="0 10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" TextWrapping="Wrap" Grid.RowSpan="2">
                                 Mark non Macrocyclic Atoms
                                 <LineBreak/>
                                 <Run FontSize="10" Foreground="{DynamicResource SecondaryHueMidBrush}">Marks all Atoms and Bonds that are not belonging to the cyclic core with lower opacity. Helps to see whats going on some times. Click Detect or Center to see the Effect</Run>

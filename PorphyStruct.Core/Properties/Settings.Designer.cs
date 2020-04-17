@@ -478,5 +478,17 @@ namespace PorphyStruct.Core.Properties {
                 this["StrengthNonMacrocyclicAtoms"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CameraMode {
+            get {
+                return ((bool)(this["CameraMode"]));
+            }
+            set {
+                this["CameraMode"] = value;
+            }
+        }
     }
 }
