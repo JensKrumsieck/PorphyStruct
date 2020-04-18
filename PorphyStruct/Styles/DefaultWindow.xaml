@@ -2,10 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:PorphyStruct.Styles"
                     x:Class="PorphyStruct.Styles.DefaultWindow">
-    <SolidColorBrush x:Key="TitleBackgroundBrush" Color="#263238" />
+    <SolidColorBrush x:Key="TitleBackgroundBrush" Color="#1D2530" />
     <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#FFFFFF" />
     <SolidColorBrush x:Key="BorderBrush" Color="#898989" />
-    <SolidColorBrush x:Key="TitleBackgroundBrushInactive" Color="#1c2429" />
+    <SolidColorBrush x:Key="TitleBackgroundBrushInactive" Color="#0E1621" />
     <SolidColorBrush x:Key="TitleForegroundBrush" Color="#ffffff" />
     <SolidColorBrush x:Key="SecondaryColorHue" Color="#B71C1C" />
     <SolidColorBrush x:Key="SecondaryAccentBrush" Color="#B71C1C"/>
