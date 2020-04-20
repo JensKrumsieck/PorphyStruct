@@ -13,7 +13,7 @@ namespace PorphyStruct.Util
         /// <param name="x1"></param>
         /// <param name="x2"></param>
         /// <returns></returns>
-        public static double ErrorFromDouble(double x1, double x2) => Math.Pow(x1 - x2, 2);
+        public static double Error(double x1, double x2) => Math.Pow(x1 - x2, 2);
 
         /// <summary>
         /// returns the error of two IEnumerable<double>s
@@ -21,12 +21,12 @@ namespace PorphyStruct.Util
         /// <param name="arr1"></param>
         /// <param name="arr2"></param>
         /// <returns></returns>
-        public static double ErrorFromArray(IEnumerable<double> arr1, IEnumerable<double> arr2)
+        public static double Error(IEnumerable<double> arr1, IEnumerable<double> arr2)
         {
             //if unequal lenght->infinity
             if (arr1.Count() != arr2.Count())
                 return double.PositiveInfinity;
-            return Math.Sqrt(arr1.Zip(arr2, (a, b) => ErrorFromDouble(a, b)).Sum()) / arr1.Count();
+            return Math.Sqrt(arr1.Zip(arr2, (a, b) => Error(a, b)).Sum()) / arr1.Count();
         }
     }
 }

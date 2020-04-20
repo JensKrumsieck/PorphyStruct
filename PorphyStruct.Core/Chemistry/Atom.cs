@@ -1,4 +1,6 @@
-﻿using MathNet.Spatial.Euclidean;
+﻿using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
+using MathNet.Spatial.Euclidean;
 using OxyPlot;
 using PorphyStruct.Core.Util;
 using System;
@@ -40,7 +42,12 @@ namespace PorphyStruct.Chemistry
         /// XYZ Coordinates as array
         /// </summary>
         /// <returns>double[]</returns>
-        public double[] XYZ() => new double[] { X, Y, Z };
+        public double[] XYZ => new double[] { X, Y, Z };
+
+        /// <summary>
+        /// Get Coordinates as Vector
+        /// </summary>
+        public Vector<double> Vector => DenseVector.OfArray(XYZ);
 
         /// <summary>
         /// Get the Atoms distance to a given Plane
@@ -55,7 +62,7 @@ namespace PorphyStruct.Chemistry
         /// <param name="a1"></param>
         /// <param name="a2"></param>
         /// <returns></returns>
-        public static double Distance(Atom a1, Atom a2) => MathNet.Numerics.Distance.Euclidean(a1.XYZ(), a2.XYZ());
+        public static double Distance(Atom a1, Atom a2) => MathNet.Numerics.Distance.Euclidean(a1.Vector, a2.Vector);
 
         /// <summary>
         /// get element by Identifier (C19 -> C)

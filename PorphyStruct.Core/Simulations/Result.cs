@@ -5,6 +5,7 @@ using PorphyStruct.Util;
 
 namespace PorphyStruct.Simulations
 {
+    using static ErrorUtil;
     public class Result
     {
         public double[] Conformation, Coefficients;
@@ -39,9 +40,9 @@ namespace PorphyStruct.Simulations
             double[] data = cycle.DataPoints.ToDoubleArray();
 
             return new Result(c, param, new double[] {
-                ErrorUtil.ErrorFromArray(data, c),
-                ErrorUtil.ErrorFromArray(cycle.DataPoints.Derive(), c.ToAtomDataPoints(cycle.DataPoints).Derive()),
-                ErrorUtil.ErrorFromArray(data.Integrate(), c.Integrate())
+                Error(data, c),
+                Error(cycle.DataPoints.Derive(), c.ToAtomDataPoints(cycle.DataPoints).Derive()),
+                Error(data.Integrate(), c.Integrate())
                 });
         }
     }
