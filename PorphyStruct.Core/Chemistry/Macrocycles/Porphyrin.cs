@@ -2,7 +2,6 @@
 using PorphyStruct.Chemistry.Data;
 using PorphyStruct.Chemistry.Properties;
 using PorphyStruct.Core.Util;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,38 +17,38 @@ namespace PorphyStruct.Chemistry.Macrocycles
         /// <summary>
         /// Porphyrins Bonds by Identifiers
         /// </summary>
-        public static List<Tuple<string, string>> _Bonds => new List<Tuple<string, string>>()
+        public static List<(string Atom1, string Atom2)> _Bonds => new List<(string Atom1, string Atom2)>()
         {
-            new Tuple<string, string>("C1", "C2"),
-            new Tuple<string, string>("C1", "N1"),
-            new Tuple<string, string>("C2", "C3"),
-            new Tuple<string, string>("C3", "C4"),
-            new Tuple<string, string>("N1", "C4"),
-            new Tuple<string, string>("C5", "C4"),
-            new Tuple<string, string>("C5", "C6"),
-            new Tuple<string, string>("C6", "N2"),
-            new Tuple<string, string>("C6", "C7"),
-            new Tuple<string, string>("C8", "C7"),
-            new Tuple<string, string>("C8", "C9"),
-            new Tuple<string, string>("C9", "C10"),
-            new Tuple<string, string>("C9", "N2"),
-            new Tuple<string, string>("C11", "C10"),
-            new Tuple<string, string>("C11", "N3"),
-            new Tuple<string, string>("C11", "C12"),
-            new Tuple<string, string>("C12", "C13"),
-            new Tuple<string, string>("C13", "C14"),
-            new Tuple<string, string>("N3", "C14"),
-            new Tuple<string, string>("C14", "C15"),
-            new Tuple<string, string>("C15", "C16"),
-            new Tuple<string, string>("C16", "C17"),
-            new Tuple<string, string>("C17", "C18"),
-            new Tuple<string, string>("C18", "C19"),
-            new Tuple<string, string>("N4", "C19"),
-            new Tuple<string, string>("N4", "C16"),
-            new Tuple<string, string>("C19", "C20"),
-            new Tuple<string, string>("C20", "C1")
+            ("C1", "C2"),
+            ("C1", "N1"),
+            ("C2", "C3"),
+            ("C3", "C4"),
+            ("N1", "C4"),
+            ("C5", "C4"),
+            ("C5", "C6"),
+            ("C6", "N2"),
+            ("C6", "C7"),
+            ("C8", "C7"),
+            ("C8", "C9"),
+            ("C9", "C10"),
+            ("C9", "N2"),
+            ("C11", "C10"),
+            ("C11", "N3"),
+            ("C11", "C12"),
+            ("C12", "C13"),
+            ("C13", "C14"),
+            ("N3", "C14"),
+            ("C14", "C15"),
+            ("C15", "C16"),
+            ("C16", "C17"),
+            ("C17", "C18"),
+            ("C18", "C19"),
+            ("N4", "C19"),
+            ("N4", "C16"),
+            ("C19", "C20"),
+            ("C20", "C1")
          };
-        public override List<Tuple<string, string>> Bonds => _Bonds;
+        public override List<(string Atom1, string Atom2)> Bonds => _Bonds;
 
         /// <summary>
         /// Porphyrins Ring Atoms by Identifier

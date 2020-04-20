@@ -1,6 +1,5 @@
 ﻿using PorphyStruct.Chemistry.Properties;
 using PorphyStruct.Core.Util;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,21 +16,21 @@ namespace PorphyStruct.Chemistry.Macrocycles
         /// <summary>
         /// Corroles Bonds by Identifiers
         /// </summary>
-        public static List<Tuple<string, string>> _Bonds => Porphyrin._Bonds.Except(new List<Tuple<string, string>>()
+        public static List<(string Atom1, string Atom2)> _Bonds => Porphyrin._Bonds.Except(new List<(string Atom1, string Atom2)>()
         {
-            new Tuple<string, string>("C11", "N3"),
-            new Tuple<string, string>("N3", "C14"),
-            new Tuple<string, string>("N4", "C16"),
-            new Tuple<string, string>("N4", "C19"),
-            new Tuple<string, string>("C20", "C1")
-        }).Concat(new List<Tuple<string, string>>()
+            ("C11", "N3"),
+            ("N3", "C14"),
+            ("N4", "C16"),
+            ("N4", "C19"),
+            ("C20", "C1")
+        }).Concat(new List<(string Atom1, string Atom2)>()
         {
-            new Tuple<string, string>("C12", "N3"),
-            new Tuple<string, string>("C15", "N3"),
-            new Tuple<string, string>("C17", "N4"),
-            new Tuple<string, string>("C20", "N4")
+            ("C12", "N3"),
+            ("C15", "N3"),
+            ("C17", "N4"),
+            ("C20", "N4")
         }).ToList();
-        public override List<Tuple<string, string>> Bonds => _Bonds;
+        public override List<(string Atom1, string Atom2)> Bonds => _Bonds;
 
         /// <summary>
         /// Porphyrins Ring Atoms by Identifier

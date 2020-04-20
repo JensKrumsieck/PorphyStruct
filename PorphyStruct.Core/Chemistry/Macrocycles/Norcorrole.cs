@@ -1,6 +1,5 @@
 ﻿using PorphyStruct.Chemistry.Properties;
 using PorphyStruct.Core.Util;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,15 +15,15 @@ namespace PorphyStruct.Chemistry.Macrocycles
         /// <summary>
         /// Corroles Bonds by Identifiers
         /// </summary>
-        public static List<Tuple<string, string>> _Bonds => Corrole._Bonds.Except(new List<Tuple<string, string>>()
+        public static List<(string Atom1, string Atom2)> _Bonds => Corrole._Bonds.Except(new List<(string Atom1, string Atom2)>()
         {
-            new Tuple<string, string>("C9", "C10"),
-            new Tuple<string, string>("C11", "C10")
-        }).Concat(new List<Tuple<string, string>>()
+            ("C9", "C10"),
+            ("C11", "C10")
+        }).Concat(new List<(string Atom1, string Atom2)>()
         {
-            new Tuple<string, string>("C9", "C11")
+            ("C9", "C11")
         }).ToList();
-        public override List<Tuple<string, string>> Bonds => _Bonds;
+        public override List<(string Atom1, string Atom2)> Bonds => _Bonds;
 
         /// <summary>
         /// Porphyrins Ring Atoms by Identifier

@@ -43,7 +43,7 @@ namespace PorphyStruct.Chemistry
         /// <summary>
         /// Bonds of Macrocycle by Identifiers
         /// </summary>
-        public abstract List<Tuple<string, string>> Bonds { get; }
+        public abstract List<(string Atom1, string Atom2)> Bonds { get; }
         /// <summary>
         /// Ringatoms of Macrocycle by Identifiers
         /// </summary>
@@ -162,9 +162,9 @@ namespace PorphyStruct.Chemistry
                     if (Atoms.Where(a => a.IsMacrocycle && a.Identifier == id).Count() != 1)
                         return false; //identifier missing
                 }
-                foreach (Tuple<string, string> b in Bonds)
+                foreach ((string Atom1, string Atom2) in Bonds)
                 {
-                    if (!IsValidBond(ByIdentifier(b.Item1, true), ByIdentifier(b.Item2, true)) || !ByIdentifier(b.Item1, true).BondTo(ByIdentifier(b.Item2, true)))
+                    if (!IsValidBond(ByIdentifier(Atom1, true), ByIdentifier(Atom2, true)) || !ByIdentifier(Atom1, true).BondTo(ByIdentifier(Atom2, true)))
                         return false; //Bond is missing
                 }
                 return true;
@@ -268,10 +268,10 @@ namespace PorphyStruct.Chemistry
         {
             data.DataPoints = data.DataPoints.OrderBy(s => s.X).ToList();
 
-            foreach (Tuple<string, string> t in Bonds)
+            foreach ((string Atom1, string Atom2) in Bonds)
                 yield return DrawBond(
-                    data.DataPoints.Where(s => s.atom.Identifier == t.Item1 && s.atom.IsMacrocycle).First(),
-                    data.DataPoints.Where(s => s.atom.Identifier == t.Item2 && s.atom.IsMacrocycle).First(),
+                    data.DataPoints.Where(s => s.atom.Identifier == Atom1 && s.atom.IsMacrocycle).First(),
+                    data.DataPoints.Where(s => s.atom.Identifier == Atom2 && s.atom.IsMacrocycle).First(),
                     data);
 
             //add metal atoms
@@ -477,8 +477,8 @@ namespace PorphyStruct.Chemistry
         /// <returns></returns>
         public bool IsValidBond(Atom a1, Atom a2) => a1.IsMacrocycle && a2.IsMacrocycle
             && (
-                Bonds.Contains(new Tuple<string, string>(a1.Identifier, a2.Identifier))
-                || Bonds.Contains(new Tuple<string, string>(a2.Identifier, a1.Identifier)
+                Bonds.Contains((a1.Identifier, a2.Identifier))
+                || Bonds.Contains((a2.Identifier, a1.Identifier)
                 )
             || (
                 (a1.IsMetal || a2.IsMetal)
