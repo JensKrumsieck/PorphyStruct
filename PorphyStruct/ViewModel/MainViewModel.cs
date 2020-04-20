@@ -212,6 +212,10 @@ namespace PorphyStruct.ViewModel
         /// <returns></returns>
         private ModelVisual3D ModelByAtom(Atom a) => Molecule3D.Where(s => (s as AtomModelVisual3D)?.Atom == a).FirstOrDefault();
 
+
+        /// <summary>
+        /// Analyzes the current macrocycle
+        /// </summary>
         public void Analyze()
         {
             Model = new StandardPlotModel();
@@ -244,6 +248,9 @@ namespace PorphyStruct.ViewModel
             UpdateProperties();
         }
 
+        /// <summary>
+        /// Updates cyclic properties based on new data
+        /// </summary>
         public void UpdateProperties()
         {
             if (Cycle != null)
