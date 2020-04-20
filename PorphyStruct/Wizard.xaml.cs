@@ -11,7 +11,11 @@ namespace PorphyStruct
     /// </summary>
     public partial class Wizard : Window
     {
-        public Wizard() => InitializeComponent();
+        public Wizard()
+        {
+            InitializeComponent();
+            TypeListBox.SelectedIndex = (int)Core.Properties.Settings.Default.DefaultType;
+        }
 
         /// <summary>
         /// Handle Cancel Button Click

@@ -336,6 +336,26 @@
                             </TextBlock>
                             <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" x:Name="useImportExportPath" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=useImportExportPath, Mode=TwoWay}" Grid.RowSpan="2"/>
                         </Grid>
+
+                        <Grid Margin="0 10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" TextWrapping="Wrap" Grid.RowSpan="2">
+                                Default Macrocyclic Type
+                                <LineBreak/>
+                                <Run FontSize="10">The Type which is preselected when opening files.</Run>
+                            </TextBlock>
+
+                            <ComboBox x:Name="defaultType" Grid.Column="2" Height="30" SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=DefaultType, Mode=TwoWay}" SelectedValuePath="Content">
+                                <ComboBoxItem>Corrole</ComboBoxItem>
+                                <ComboBoxItem>Porphyrin</ComboBoxItem>
+                                <ComboBoxItem>Norcorrole</ComboBoxItem>
+                                <ComboBoxItem>Corrphycene</ComboBoxItem>
+                                <ComboBoxItem>Porphycene</ComboBoxItem>
+                            </ComboBox>
+                        </Grid>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10">
                         <TextBlock Text="Export Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}" FontWeight="Light"/>

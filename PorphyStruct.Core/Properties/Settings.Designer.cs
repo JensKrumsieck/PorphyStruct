@@ -493,7 +493,7 @@ namespace PorphyStruct.Core.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Type.Corrole")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Corrole")]
         public global::PorphyStruct.Chemistry.Macrocycle.Type DefaultType {
             get {
                 return ((global::PorphyStruct.Chemistry.Macrocycle.Type)(this["DefaultType"]));
