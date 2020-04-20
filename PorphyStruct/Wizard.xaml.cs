@@ -28,7 +28,7 @@ namespace PorphyStruct
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
             //check for file
-            if (!string.IsNullOrWhiteSpace(pathTextBox.Text) && File.Exists(pathTextBox.Text) && TypeListBox.SelectedIndex != -1) DialogResult = true;
+            DialogResult = !string.IsNullOrWhiteSpace(pathTextBox.Text) && File.Exists(pathTextBox.Text) && TypeListBox.SelectedIndex != -1;
             Close();
         }
 
