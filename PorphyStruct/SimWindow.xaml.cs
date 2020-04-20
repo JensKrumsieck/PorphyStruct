@@ -164,7 +164,7 @@ namespace PorphyStruct
                 viewModel.Cycle.DataProviders.Add(simObj);
 
                 //Denormalize Sim
-                simObj.DataPoints = simObj.DataPoints.Factor(1 / viewModel.Cycle.CalculateDataPoints().GetNormalizationFactor());
+                simObj.DataPoints = simObj.DataPoints.Factor(1 / viewModel.Cycle.CalculateDataPoints().GetNormalizationFactor()).ToList();
 
                 Application.Current.Windows.OfType<MainWindow>().First().DelSimButton.IsEnabled = true;
                 Application.Current.Windows.OfType<MainWindow>().First().DiffSimButton.IsEnabled = true;
