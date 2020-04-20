@@ -490,5 +490,17 @@ namespace PorphyStruct.Core.Properties {
                 this["CameraMode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Type.Corrole")]
+        public global::PorphyStruct.Chemistry.Macrocycle.Type DefaultType {
+            get {
+                return ((global::PorphyStruct.Chemistry.Macrocycle.Type)(this["DefaultType"]));
+            }
+            set {
+                this["DefaultType"] = value;
+            }
+        }
     }
 }

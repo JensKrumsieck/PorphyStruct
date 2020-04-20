@@ -119,5 +119,8 @@
     <Setting Name="CameraMode" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="DefaultType" Type="PorphyStruct.Chemistry.Macrocycle.Type" Scope="User">
+      <Value Profile="(Default)">Type.Corrole</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
