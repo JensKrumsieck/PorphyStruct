@@ -23,10 +23,10 @@ namespace PorphyStruct.Chemistry.Properties
         public override IEnumerable<Property> CalculateProperties()
         {
             Atom Metal = Atoms.Where(s => s.IsMetal).FirstOrDefault();
-            if (Atoms.Where(s => s.IsMacrocycle).Count() != 0)
+            if (Atoms.Count(s => s.IsMacrocycle && s.Identifier.Contains("N")) != 0 && Metal != null)
             {
-                yield return new Property($"{Metal.Identifier} - Mean Plane", Metal.DistanceToPlane(Molecule.GetMeanPlane(Atoms.Where(s => s.IsMacrocycle))).ToString("G4") + " Å");
-                yield return new Property($"{Metal.Identifier} - Mean N4 Plane", Metal.DistanceToPlane(Molecule.GetMeanPlane(Atoms.Where(s => s.IsMacrocycle && s.Identifier.Contains("N")))).ToString("G4") + " Å");
+                yield return new Property($"{Metal.Identifier} - Mean Plane", $"{Metal.DistanceToPlane(Molecule.GetMeanPlane(Atoms.Where(s => s.IsMacrocycle))):G4} Å");
+                yield return new Property($"{Metal.Identifier} - Mean N4 Plane", $"{Metal.DistanceToPlane(Molecule.GetMeanPlane(Atoms.Where(s => s.IsMacrocycle && s.Identifier.Contains("N")))):G4} Å");
             }
         }
 
