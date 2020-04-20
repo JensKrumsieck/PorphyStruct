@@ -1,7 +1,6 @@
 ﻿using PorphyStruct.Chemistry;
 using PorphyStruct.OxyPlotOverride;
 using PorphyStruct.Simulations;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -155,10 +154,10 @@ namespace PorphyStruct.ViewModel
             double intErr = result.Error[2];
 
             //check targets
-            var errorTargets = new List<Tuple<double, double>>();
-            if (TargetData) errorTargets.Add(new Tuple<double, double>(error, currentErr[0]));
-            if (TargetDerivative) errorTargets.Add(new Tuple<double, double>(derErr, currentErr[1]));
-            if (TargetIntegral) errorTargets.Add(new Tuple<double, double>(intErr, currentErr[2]));
+            var errorTargets = new List<(double, double)>();
+            if (TargetData) errorTargets.Add((error, currentErr[0]));
+            if (TargetDerivative) errorTargets.Add((derErr, currentErr[1]));
+            if (TargetIntegral) errorTargets.Add((intErr, currentErr[2]));
 
             double targetSum = 0, lsSum = 0;
             bool[] isBest = new bool[errorTargets.Count];
