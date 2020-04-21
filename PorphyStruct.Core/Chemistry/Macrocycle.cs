@@ -275,7 +275,7 @@ namespace PorphyStruct.Chemistry
                     data);
 
             //add metal atoms
-            if (HasMetal())
+            if (HasMetal() && data.DataPoints.Count(s => s.atom.IsMetal) != 0)
                 foreach (AtomDataPoint n in data.DataPoints.Where(s => s.atom.Type == "N").ToList())
                 {
                     ArrowAnnotation b = DrawBond(data.DataPoints.Where(s => s.atom.IsMetal).FirstOrDefault(), n, data);
