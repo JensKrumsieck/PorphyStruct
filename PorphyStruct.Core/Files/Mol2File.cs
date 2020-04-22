@@ -10,6 +10,7 @@ namespace PorphyStruct.Files
     {
 
         public Mol2File(string path) : base(path) { }
+        public Mol2File() : base() { }
 
         /// <summary>
         /// Gets Molecule from Mol2 File

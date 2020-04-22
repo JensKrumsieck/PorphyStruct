@@ -15,6 +15,9 @@ namespace PorphyStruct.Files
         public CifFile(string path)
             : base(path) { }
 
+        public CifFile()
+            : base() { }
+
         /// <summary>
         /// Builds a Molecule/Crystal Object out of raw data
         /// </summary>

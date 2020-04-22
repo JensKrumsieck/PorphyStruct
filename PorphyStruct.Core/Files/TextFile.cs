@@ -32,6 +32,11 @@ namespace PorphyStruct.Files
         }
 
         /// <summary>
+        /// Empty Constructor
+        /// </summary>
+        public TextFile() { }
+
+        /// <summary>
         /// returns a molecule from file
         /// </summary>
         /// <returns></returns>
