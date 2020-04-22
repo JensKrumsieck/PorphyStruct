@@ -8,6 +8,7 @@ using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 
 namespace PorphyStruct.Test
 {
@@ -76,6 +77,37 @@ namespace PorphyStruct.Test
             //tested with Mercury
             var interplanar = 46.22;
             Assert.AreEqual(interplanar, Convert.ToDouble(result[0].Value.Trim('°')), 0.01);
+        }
+
+        /// <summary>
+        /// Checks validity of Mean Plane Method
+        /// </summary>
+        [TestMethod]
+        public void TestPlane()
+        {
+            //tested with Mercury
+            var a = -0.072;
+            var b = -0.686;
+            var c = 0.724;
+            var d = 2.80762;
+
+            var pl = corrole.GetMeanPlane();
+
+            Assert.AreEqual(a, pl.A, 0.001);
+            Assert.AreEqual(b, pl.B, 0.001);
+            Assert.AreEqual(c, pl.C, 0.001);
+            Assert.AreEqual(d, pl.D, 0.001);
+        }
+
+        /// <summary>
+        /// Tests whether signed distance is correct
+        /// </summary>
+        [TestMethod] 
+        public void DistanceToMeanPlane()
+        {
+            //tested with mercury
+            var d = 0.594;
+            Assert.AreEqual(d, corrole.Metal.DistanceToPlane(corrole.GetMeanPlane()), 0.0005);
         }
     }
 }
