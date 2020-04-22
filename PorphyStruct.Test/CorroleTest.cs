@@ -7,13 +7,7 @@ namespace PorphyStruct.Test
     [TestClass]
     public class CorroleTest
     {
-        private Corrole corrole { get; set; }
-
-        /// <summary>
-        /// Loads Corrole
-        /// </summary>
-        [TestInitialize]
-        public void Initialize() => corrole = MacrocycleSetup.CreateTestCorroleCIF();
+        private Corrole corrole { get; set; } = MacrocycleSetup.CreateTestCorroleCIF();
 
         /// <summary>
         /// Checks validity 
