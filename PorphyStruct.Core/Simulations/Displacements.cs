@@ -222,7 +222,7 @@ namespace PorphyStruct.Simulations
             1,
             -0.83387,
             0.27601,
-            0.11699,
+            0.11699
         });
 
         public static Vector<double> PropelleringPorphyrin = DenseVector.OfArray(new double[] {
@@ -250,7 +250,7 @@ namespace PorphyStruct.Simulations
             0,
             -0.96015,
             -0.90979,
-            0,
+            0
         });
 
         public static Vector<double> RufflingPorphyrin = DenseVector.OfArray(new double[] {
@@ -278,7 +278,7 @@ namespace PorphyStruct.Simulations
             0,
             0.39884,
             0.57656,
-            1,
+            1
         });
 
         public static Vector<double> SaddlingPorphyrin = DenseVector.OfArray(new double[]
@@ -307,7 +307,7 @@ namespace PorphyStruct.Simulations
 			-0.28256, //N
 			-1,//beta
 			-0.48248, //alpha
-			0, //meso
+			0 //meso
 		});
 
         /// <summary>
@@ -338,7 +338,7 @@ namespace PorphyStruct.Simulations
             0,
             0.54714,
             0.68258,
-            0.80859,
+            0.80859
         });
 
         public static Vector<double> Waving1bPorphyrin = DenseVector.OfArray(new double[]
@@ -367,7 +367,7 @@ namespace PorphyStruct.Simulations
 			0.62314,
             -1,
             0.16605,
-            0.80859,
+            0.80859
         });
 
         /// <summary>
@@ -399,7 +399,7 @@ namespace PorphyStruct.Simulations
 			-1, //N
 			0.54917, //beta
 			0, //alpha
- 			0.53259, //meso
+ 			0.53259 //meso
 		});
 
         public static Vector<double> Waving2bPorphyrin = DenseVector.OfArray(new double[] {
@@ -427,7 +427,7 @@ namespace PorphyStruct.Simulations
 			-1, //N
 			-0.14371, //beta
 			-0.73868, //alpha
-			0, //meso
+			0 //meso
 		});
         #endregion
         #region Norcorrole
