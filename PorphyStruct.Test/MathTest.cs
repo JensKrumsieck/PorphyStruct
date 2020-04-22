@@ -51,10 +51,7 @@ namespace PorphyStruct.Test
             var result = new PorphyrinDihedrals(corrole.ByIdentifier).CalculateProperties().ToArray();
 
             //tested with Mercury
-            var chi2 = -0.30;
-            var chi1 = 14.51;
-            var chi4 = -4.92;
-            var chi3 = 0.01;
+            (double chi1, double chi2, double chi3, double chi4) = (14.51, -0.30, 0.01, -4.92);
             var helicity = 1.68;
 
             Assert.AreEqual(chi2, Convert.ToDouble(result[0].Value.Trim('°')), 0.01);
@@ -85,10 +82,7 @@ namespace PorphyStruct.Test
         public void TestPlane()
         {
             //tested with Mercury
-            var a = -0.072;
-            var b = -0.686;
-            var c = 0.724;
-            var d = 2.80762;
+            (double a, double b, double c, double d) = (-0.072, -0.686, 0.724, 2.80762);
 
             var pl = corrole.GetMeanPlane();
 
