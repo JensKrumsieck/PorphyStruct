@@ -48,18 +48,34 @@ namespace PorphyStruct.Test
         [TestMethod]
         public void TestDihedral()
         {
-            var provider = new PorphyrinDihedrals(corrole.ByIdentifier);
-            var result = provider.CalculateProperties().ToArray();
+            var result = new PorphyrinDihedrals(corrole.ByIdentifier).CalculateProperties().ToArray();
 
+            //tested with Mercury
             var chi2 = -0.30;
             var chi1 = 14.51;
-            var chi4 = -4.92; 
-            var chi3 = 0.01; 
+            var chi4 = -4.92;
+            var chi3 = 0.01;
+            var helicity = 1.68;
 
             Assert.AreEqual(chi2, Convert.ToDouble(result[0].Value.Trim('°')), 0.01);
             Assert.AreEqual(chi1, Convert.ToDouble(result[1].Value.Trim('°')), 0.01);
             Assert.AreEqual(chi4, Convert.ToDouble(result[2].Value.Trim('°')), 0.01);
             Assert.AreEqual(chi3, Convert.ToDouble(result[3].Value.Trim('°')), 0.01);
+
+            result = new DefaultDihedrals(corrole.ByIdentifier).CalculateProperties().ToArray();
+            Assert.AreEqual(helicity, Convert.ToDouble(result[0].Value.Trim('°')), 0.01);
+        }
+
+        /// <summary>
+        /// Tests Interplanarangle
+        /// </summary>
+        [TestMethod]
+        public void TestInterplanarAngle()
+        {
+            var result = new InterplanarAngle(corrole.ByIdentifier, corrole.Metal).CalculateProperties().ToArray();
+            //tested with Mercury
+            var interplanar = 46.22;
+            Assert.AreEqual(interplanar, Convert.ToDouble(result[0].Value.Trim('°')), 0.01);
         }
     }
 }
