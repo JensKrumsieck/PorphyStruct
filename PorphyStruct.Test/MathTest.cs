@@ -1,0 +1,65 @@
+﻿using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PorphyStruct.Chemistry;
+using PorphyStruct.Chemistry.Macrocycles;
+using PorphyStruct.Chemistry.Properties;
+using PorphyStruct.Util;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace PorphyStruct.Test
+{
+    [TestClass]
+    public class MathTest
+    {
+        private Corrole corrole { get; set; } = MacrocycleSetup.CreateTestCorroleCIF();
+
+        /// <summary>
+        /// Double checks Crossproduct with wikipedia
+        /// </summary>
+        [TestMethod]
+        public void TestCrossProduct()
+        {
+            //check result: https://de.wikipedia.org/wiki/Kreuzprodukt
+            Vector<double> v1 = DenseVector.OfArray(new[] { 1d, 2d, 3d });
+            Vector<double> v2 = DenseVector.OfArray(new[] { -7d, 8d, 9d });
+            Assert.AreEqual(MathUtil.CrossProduct(v1, v2), DenseVector.OfArray(new[] { -6d, -30d, 22d }));
+        }
+
+        /// <summary>
+        /// Tests Metal Angles
+        /// Checked wih Mercury
+        /// </summary>
+        [TestMethod]
+        public void TestAngle()
+        {
+            var N1CrN4 = MathUtil.Angle(new List<Atom> { corrole.ByIdentifier("N1"), corrole.Metal, corrole.ByIdentifier("N4") });
+            var N2CrN3 = MathUtil.Angle(new List<Atom> { corrole.ByIdentifier("N2"), corrole.Metal, corrole.ByIdentifier("N3") });
+            //Tested with Mercury 4
+            Assert.AreEqual(78.04, N1CrN4, 0.005);
+            Assert.AreEqual(92.5, N2CrN3, 0.005);
+        }
+
+        /// <summary>
+        /// Tests Dihedral Calculation
+        /// </summary>
+        [TestMethod]
+        public void TestDihedral()
+        {
+            var provider = new PorphyrinDihedrals(corrole.ByIdentifier);
+            var result = provider.CalculateProperties().ToArray();
+
+            var chi2 = -0.30;
+            var chi1 = 14.51;
+            var chi4 = -4.92; 
+            var chi3 = 0.01; 
+
+            Assert.AreEqual(chi2, Convert.ToDouble(result[0].Value.Trim('°')), 0.01);
+            Assert.AreEqual(chi1, Convert.ToDouble(result[1].Value.Trim('°')), 0.01);
+            Assert.AreEqual(chi4, Convert.ToDouble(result[2].Value.Trim('°')), 0.01);
+            Assert.AreEqual(chi3, Convert.ToDouble(result[3].Value.Trim('°')), 0.01);
+        }
+    }
+}

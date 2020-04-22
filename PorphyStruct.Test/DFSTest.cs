@@ -39,6 +39,5 @@ namespace PorphyStruct.Test
             //if the detect runs completely only the macrocylic atoms have no X appended to identifier!
             Assert.IsTrue(Corrole.Atoms.Count(s => !s.Identifier.Contains("X")) == Corrole.RingAtoms.Count);
         }
-
     }
 }

@@ -5,6 +5,7 @@ using PorphyStruct.Chemistry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace PorphyStruct.Util
 {
@@ -146,18 +147,17 @@ namespace PorphyStruct.Util
         {
             if (atoms.Count() != 4) return 0;
             //build normalized vectors
-            Vector<double> b1 = (-atoms[0].Vector - atoms[1].Vector).Normalize(2);
-            Vector<double> b2 = (atoms[1].Vector - atoms[2].Vector).Normalize(2);
-            Vector<double> b3 = (atoms[3].Vector - atoms[2].Vector).Normalize(2);
+            Vector<double> b1 = -(atoms[0].Vector - atoms[1].Vector);
+            Vector<double> b2 = (atoms[1].Vector - atoms[2].Vector);
+            Vector<double> b3 = (atoms[3].Vector - atoms[2].Vector);
 
             //calculate crossproducts
-            Vector<double> c1 = CrossProduct(b1, b2);
-            Vector<double> c2 = CrossProduct(b2, b3);
-            Vector<double> c3 = CrossProduct(c1, b2);
+            Vector<double> c1 = CrossProduct(b1, b2).Normalize(2);
+            Vector<double> c2 = CrossProduct(b2, b3).Normalize(2);
+            Vector<double> c3 = CrossProduct(c1, b2.Normalize(2));
 
             return 180.0 / Math.PI * Math.Atan2(c3.DotProduct(c2), c1.DotProduct(c2));
         }
-
 
         /// <summary>
         /// Returns the Angle by Identifiers
@@ -170,7 +170,7 @@ namespace PorphyStruct.Util
             Vector<double> b1 = (atoms[0].Vector - atoms[1].Vector).Normalize(2);
             Vector<double> b2 = (atoms[2].Vector - atoms[1].Vector).Normalize(2);
 
-            return 180 / Math.PI * Math.Acos(b1.DotProduct(b2));
+            return (180 / Math.PI) * Math.Acos(b1.DotProduct(b2));
         }
 
         /// <summary>
