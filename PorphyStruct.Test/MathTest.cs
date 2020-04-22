@@ -8,7 +8,6 @@ using PorphyStruct.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Intrinsics.X86;
 
 namespace PorphyStruct.Test
 {
@@ -102,7 +101,7 @@ namespace PorphyStruct.Test
         /// <summary>
         /// Tests whether signed distance is correct
         /// </summary>
-        [TestMethod] 
+        [TestMethod]
         public void DistanceToMeanPlane()
         {
             //tested with mercury
