@@ -193,7 +193,7 @@ namespace PorphyStruct.Simulations
             0.61169,
             -0.583,
             -1,
-            -0,70391
+            -0.70391
         });
         #endregion
         #region Porphyrin
