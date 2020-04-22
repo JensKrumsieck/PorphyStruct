@@ -14,7 +14,7 @@ namespace PorphyStruct.Test
         /// </summary>
         [TestMethod]
         public void TestValidity() => Assert.IsTrue(corrole.IsValid);
-        
+
         /// <summary>
         /// Checks if Chromium is detected
         /// </summary>
@@ -25,7 +25,9 @@ namespace PorphyStruct.Test
         /// Tests datapoint related stuff
         /// </summary>
         [TestMethod]
-        public void TestDataPoints() { Assert.IsNull(corrole.DataPoints);
+        public void TestDataPoints()
+        {
+            Assert.IsNull(corrole.DataPoints);
             corrole.GetDataPoints();
             Assert.IsNotNull(corrole.DataPoints);
             Assert.AreEqual(corrole.RingAtoms.Count, corrole.DataPoints.Count);
