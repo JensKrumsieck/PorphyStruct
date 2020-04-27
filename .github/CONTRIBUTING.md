@@ -20,7 +20,7 @@ You can also provide the feature yourself via Pull-Requests!
 ## Create a Pull Request
 ### Create a Fork
 Log in to GitHub and open the PorphyStruct repository. Click the "Fork" button to create your own fork of the repository.
-Create a clone on your local system: git clone https://github.com/yourusername/PorphyStruct.git
+Create a clone on your local system: `git clone https://github.com/yourusername/PorphyStruct.git`
 
 ### Commit
 Apply your changes in commits and include the issuenumbers for reference with a leading #-sign.
