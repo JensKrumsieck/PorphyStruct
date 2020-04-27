@@ -34,6 +34,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Properties\Language\Save.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Save.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Language\Sim.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -52,6 +57,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Properties\Language\Save.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Language\Save.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Save.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Properties\Language\Sim.de.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>

@@ -3,14 +3,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
+        mc:Ignorable="d"  
+        xmlns:local ="clr-namespace:PorphyStruct"
+        xmlns:lang="clr-namespace:PorphyStruct.Properties.Language"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         FontFamily="Segoe UI"
         Style="{DynamicResource DefaultWindowStyle}"
-        Title="Save Data" Height="550" Width="720" ResizeMode="NoResize">
+        Title="{x:Static lang:Save.title}" Height="550" Width="720" ResizeMode="NoResize">
+    <Window.Resources>
+        <local:TitleToLangConverter x:Key="LangUtil"/>
+    </Window.Resources>
     <Grid Margin="10" HorizontalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition Height="8*" />
@@ -30,7 +35,7 @@
                         <StackPanel Orientation="Horizontal" Margin="7">
                             <materialDesign:PackIcon Kind="{Binding Icon}" x:Name="PART_Icon" HorizontalAlignment="Center" Width="40" Height="40" Foreground="{DynamicResource TitleBackgroundBrush}"/>
                             <StackPanel Margin="5 0">
-                                <TextBlock Text="{Binding Title}" FontWeight="Light" FontSize="18" Foreground="{DynamicResource TitleBackgroundBrush}"/>
+                                <TextBlock Text="{Binding Title, Converter={StaticResource LangUtil}}" FontWeight="Light" FontSize="18" Foreground="{DynamicResource TitleBackgroundBrush}"/>
                                 <TextBlock><Run FontStyle="Italic" Text=" ("/><Run FontStyle="Italic" Text="{Binding Extensions, Mode=OneWay}" /><Run FontStyle="Italic" Text=")"/></TextBlock>
                             </StackPanel>
                             <materialDesign:PackIcon Kind="Check" Width="20" Height="20" x:Name="PART_CHECK" Visibility="Hidden" Foreground="Green"/>
@@ -49,21 +54,21 @@
             <TextBox Width="200" Margin="0,0,10,0" x:Name="PathTB" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Path}">
                 <materialDesign:HintAssist.Hint>
                     <StackPanel  Orientation="Horizontal">
-                        <TextBlock>Folder Path</TextBlock>
+                        <TextBlock Text="{x:Static lang:Save.folder}" />
                     </StackPanel>
                 </materialDesign:HintAssist.Hint>
             </TextBox>
-            <Button Content="Search" Width="75" Height="25" Click="SearchButton_Click" />
+            <Button Content="{x:Static lang:Save.search}" Height="25" Click="SearchButton_Click" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="2">
             <TextBox Width="200" Margin="0,0,10,0" x:Name="NameTB" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding FileName}">
                 <materialDesign:HintAssist.Hint>
                     <StackPanel  Orientation="Horizontal">
-                        <TextBlock>Filename</TextBlock>
+                        <TextBlock Text="{x:Static lang:Save.filename}"/>
                     </StackPanel>
                 </materialDesign:HintAssist.Hint>
             </TextBox>
-            <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" Content="Save" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="75" Height="25"  Click="SaveButton_Click"/>
+            <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" Content="{x:Static lang:Save.save}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="25"  Click="SaveButton_Click"/>
         </StackPanel>
 
     </Grid>
