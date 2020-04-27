@@ -40,7 +40,7 @@
             </StackPanel>
             <StackPanel Margin="10" Grid.Column="1">
                 <TextBlock Text="{x:Static lang:Compare.Data}" FontWeight="Light" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="0 15"/>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Height="320">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Height="250">
                     <ItemsControl x:Name="CompList">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
