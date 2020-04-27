@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:lang="clr-namespace:PorphyStruct.Properties.Language"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
          xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -11,34 +12,34 @@
         TextOptions.TextRenderingMode="Auto"
         FontFamily="Segoe UI"
         Style="{DynamicResource DefaultWindowStyle}"
-        Title="Compare Data" Height="500" Width="700" ResizeMode="NoResize">
+        Title="{x:Static lang:Compare.Title}" Height="500" Width="750" ResizeMode="NoResize">
     <DockPanel>
         <TextBlock TextWrapping="Wrap" DockPanel.Dock="Top" Padding="10" TextAlignment="Justify" FontWeight="Light">
-            <Run Text="Comparison of your current loaded Data with some already processed data is possible. Please load .DAT/.dat files from a past analysis. The macrocyclic type must be the same and will be choosen automatically based on your current loaded data."/>
-            <Bold>Note:</Bold> Only the first y data in a DAT file can be extracted!.
+            <Run Text="{x:Static lang:Compare.Info}"/>
+             <Run FontSize="10" Text="{x:Static lang:Compare.Note}"/>
         </TextBlock>
        
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center">
             <!--ok/reset-->
-            <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" Content="Add Comparison" x:Name="Add" Click="Add_Click" Margin="5"/>
-            <Button Style="{StaticResource MaterialDesignRaisedLightButton}"  Content="Remove All" x:Name="RemoveAll" Click="RemoveAll_Click" Margin="5"/>
+            <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" Content="{x:Static lang:Compare.Add}" x:Name="Add" Click="Add_Click" Margin="5"/>
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}"  Content="{x:Static lang:Compare.Remove}" x:Name="RemoveAll" Click="RemoveAll_Click" Margin="5"/>
         </StackPanel>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="250" />
             </Grid.ColumnDefinitions>
             <StackPanel Margin="10" Grid.Column="0">
-                <TextBlock Text="Add Comparison" FontWeight="Light" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="0 15"/>
+                <TextBlock Text="{x:Static lang:Compare.Add}" FontWeight="Light" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="0 15"/>
                 <StackPanel Orientation="Horizontal">
-                    <TextBox IsReadOnly="True" x:Name="comparisonPath" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Select a file" Width="250"/>
-                    <Button Content="Search" x:Name="openBtn" Click="Open_Click" />
+                    <TextBox IsReadOnly="True" x:Name="comparisonPath" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="{x:Static lang:Compare.File}" Width="250"/>
+                    <Button Content="{x:Static lang:Compare.Search}" x:Name="openBtn" Click="Open_Click" />
                 </StackPanel>
-                <TextBlock Text="Preview" FontWeight="Light" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="0 15"/>
+                <TextBlock Text="{x:Static lang:Compare.Preview}" FontWeight="Light" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="0 15"/>
                 <oxy:PlotView x:Name="CompPlot" Height="200" Model="{Binding Model}"/>
             </StackPanel>
             <StackPanel Margin="10" Grid.Column="1">
-                <TextBlock Text="Current Data" FontWeight="Light" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="0 15"/>
+                <TextBlock Text="{x:Static lang:Compare.Data}" FontWeight="Light" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="0 15"/>
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Height="320">
                     <ItemsControl x:Name="CompList">
                         <ItemsControl.ItemTemplate>
