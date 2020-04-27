@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:h="http://helix-toolkit.org/wpf"
+        xmlns:lang="clr-namespace:PorphyStruct.Properties.Language"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -12,14 +13,14 @@
         TextOptions.TextRenderingMode="Auto"
         FontFamily="Segoe UI"
         Style="{DynamicResource DefaultWindowStyle}"
-        Title="Open File" Height="625" Width="800" ResizeMode="NoResize">
+        Title="{x:Static lang:Wizard.Title}" Height="625" Width="800" ResizeMode="NoResize">
     <Grid Margin="0,0,0,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="325" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Vertical" Margin="10">
-            <TextBlock Text="Select a Framework" Style="{StaticResource MaterialDesignHeadline6TextBlock}" FontWeight="Light" HorizontalAlignment="Center"/>
+            <TextBlock Text="{x:Static lang:Wizard.Framework}" Style="{StaticResource MaterialDesignHeadline6TextBlock}" FontWeight="Light" HorizontalAlignment="Center"/>
             <ListBox Style="{StaticResource MaterialDesignToolToggleListBox}"
                  HorizontalAlignment="Center"
                  x:Name="TypeListBox" Margin="0 10 0 0"
@@ -61,23 +62,23 @@
         </ListBox>
         </StackPanel>
         <StackPanel Grid.Column="1" Background="#FFF" Margin="10">
-            <TextBlock Text="Preview" Style="{StaticResource MaterialDesignHeadline6TextBlock}" FontWeight="Light" HorizontalAlignment="Center"/>
+            <TextBlock Text="{x:Static lang:Wizard.Preview}" Style="{StaticResource MaterialDesignHeadline6TextBlock}" FontWeight="Light" HorizontalAlignment="Center"/>
             <h:HelixViewport3D x:Name="MolViewer" ShowViewCube="False" ShowCoordinateSystem="True" ZoomExtentsWhenLoaded="True" Background="#FFFAFAFA" Height="350" Margin="0 10 0 0" Orthographic="True">
                 <h:DefaultLights/>
             </h:HelixViewport3D>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20 0 20">
-                <TextBox x:Name="pathTextBox" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="" Height="45" Width="300" TextChanged="PathTextBox_TextChanged">
+                <TextBox x:Name="pathTextBox" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="" Height="45" MinWidth="250" TextChanged="PathTextBox_TextChanged">
                     <materialDesign:HintAssist.Hint>
                         <StackPanel  Orientation="Horizontal">
-                            <TextBlock>Please choose a file...</TextBlock>
+                            <TextBlock Text="{x:Static lang:Wizard.Fileselect}" />
                         </StackPanel>
                     </materialDesign:HintAssist.Hint>
                 </TextBox>
-                <Button  Content="Select File" Width="100" Click="FileOpen_Click" Margin="20,0,0,0"/>
+                <Button  Content="{x:Static lang:Wizard.Fileselect}" Click="FileOpen_Click" Margin="20,0,0,0"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" Content="Ok" Grid.Row="2" Grid.Column="0" Width="100" Click="Ok_Click" IsDefault="True" Margin="5"/>
-                <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Content="Cancel" Grid.Row="2" Grid.Column="1"  Width="100" Click="Cancel_Click" IsCancel="True" Margin="5"/>
+                <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" Content="{x:Static lang:Wizard.Ok}" Grid.Row="2" Grid.Column="0" Width="100" Click="Ok_Click" IsDefault="True" Margin="5"/>
+                <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Content="{x:Static lang:Wizard.Cancel}" Grid.Row="2" Grid.Column="1"  Width="100" Click="Cancel_Click" IsCancel="True" Margin="5"/>
             </StackPanel>
         </StackPanel>
     </Grid>
