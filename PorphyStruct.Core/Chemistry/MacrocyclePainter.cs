@@ -83,7 +83,6 @@ namespace PorphyStruct.Chemistry
         /// <returns></returns>
         public static OxyPalette CurrentPalette(int count)
         {
-
             string title = Core.Properties.Settings.Default.ColorPalette;
             IEnumerable<MethodInfo> palette = from MethodInfo method in typeof(CustomPalettes).GetMethods(BindingFlags.Public | BindingFlags.Static)
                                               where method.Name == title

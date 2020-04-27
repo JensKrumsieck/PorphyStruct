@@ -1,5 +1,6 @@
 ﻿using OxyPlot;
 using OxyPlot.Axes;
+using PorphyStruct.Chemistry;
 using System.Collections.Generic;
 
 namespace PorphyStruct.OxyPlotOverride
@@ -31,7 +32,7 @@ namespace PorphyStruct.OxyPlotOverride
         /// <param name="mode"></param>
         private void AddAtomRange(AtomDataPoint dp, double value, int mode)
         {
-            byte alpha = (byte)((mode == 0) ? byte.MaxValue : (mode == 2) ? 50 : 75);
+            byte alpha = Atom.GetAlpha(mode);
             AddRange(
                 (value + (1000 * mode)) - min,
                 (value + (1000 * mode)) + max,

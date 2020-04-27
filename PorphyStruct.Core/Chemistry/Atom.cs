@@ -130,15 +130,7 @@ namespace PorphyStruct.Chemistry
         public double AtomRadius => Element.Radius;
 
         //colors for bonds
-        public static OxyColor[] modesMultiColor = new OxyColor[]
-        {
-                OxyColor.Parse(Core.Properties.Settings.Default.color1),
-                OxyColor.FromAColor(75, OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color1)),
-                OxyColor.FromAColor(50, OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color1)),
-                OxyColor.FromAColor(75, OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color1)),
-                OxyColor.FromAColor(75, OxyColor.Parse(PorphyStruct.Core.Properties.Settings.Default.color1)),
-        };
-
+        public static byte GetAlpha(int mode) => (byte)(byte.MaxValue - (mode != 0 ? (100 + (mode * 25)) : 0));
         /// <summary>
         /// clones an atom
         /// </summary>
