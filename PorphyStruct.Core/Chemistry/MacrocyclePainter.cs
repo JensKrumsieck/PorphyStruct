@@ -33,7 +33,7 @@ namespace PorphyStruct.Chemistry
                 MarkerType = mType,
                 ItemsSource = data.DataPoints,
                 ColorAxisKey = Core.Properties.Settings.Default.singleColor ? null : "colors",
-                Title = data.DataType.ToString(),
+                Title = $"{(data.DataType == DataType.Comparison ? $"{((CompareData)data).FileName} " : "")}{data.DataType}",
                 MarkerSize = Core.Properties.Settings.Default.markerSize
             };
             //add series
