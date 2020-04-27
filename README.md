@@ -32,9 +32,14 @@ Due to the large number of correlations found for porphyrins, a transfer of this
 * Comparison of Structures and further structural analysis.
 * Ablility to import and export various file types
 
+### System requirements
+Windows 10 (since official Window 7 EOL was 14th Jan. 2020)
+
 ### Used Libraries
 * [OxyPlot](https://github.com/oxyplot/oxyplot) by Oystein Bjorke (MIT License)
 * [Math.NET](https://www.mathdotnet.com/)(Numerics/Spatial) (MIT/X11 License)
 * [Helix Toolkit](http://helix-toolkit.github.io/) (MIT License)
 * [Material Design in XAML Toolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit) (MIT License)
 
+- [Contribution guidelines for this project](.github/CONTRIBUTING.md)
+- [Contributors](CONTRIBUTORS)
