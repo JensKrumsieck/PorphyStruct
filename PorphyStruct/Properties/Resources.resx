@@ -117,14 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CompositionParagraph" xml:space="preserve">
-    <value>The final composition of normal modes is {0} as also listed in the table below. The mean displacement parameter is {1}. The absolute composition therefore is {2}.</value>
-    <comment>{0} compositon, {1} mean displacement, {2} abscomposition</comment>
-  </data>
-  <data name="ExplanationParagraph" xml:space="preserve">
-    <value>The following figure shows the conformational analysis of {0} displayed as displacement diagram. A middle plane was places through the {1}'s ring atoms. The distance of the ring atoms to the mean plane is plotted against calculated circle coordinates.</value>
-    <comment>{0} Cycle.Title; {1} type</comment>
-  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="favicon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\favicon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -134,9 +126,5 @@
   </data>
   <data name="porphystructlogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\porphystructlogo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SimDetailsParagraph" xml:space="preserve">
-    <value>A Simulation has been done using the least squares methode. The conformation of the {0} was traced back to the vibration normal modes of metallo{0}s. The standard vibration modes were obtained by DFT analysis of a metallo{0} at B3LYP/Def2-SVP level of theory. The Simulated conformation was calculated with an error of {1} as root of the sum of the squared errors per atom. For the derivates the error is {2} and for the integrals the following error was measured {3}.</value>
-    <comment>{0} type, rest errors</comment>
   </data>
 </root>

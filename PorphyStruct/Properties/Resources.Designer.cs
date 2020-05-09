@@ -61,24 +61,6 @@ namespace PorphyStruct.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die The final composition of normal modes is {0} as also listed in the table below. The mean displacement parameter is {1}. The absolute composition therefore is {2}. ähnelt.
-        /// </summary>
-        public static string CompositionParagraph {
-            get {
-                return ResourceManager.GetString("CompositionParagraph", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die The following figure shows the conformational analysis of {0} displayed as displacement diagram. A middle plane was places through the {1}&apos;s ring atoms. The distance of the ring atoms to the mean plane is plotted against calculated circle coordinates. ähnelt.
-        /// </summary>
-        public static string ExplanationParagraph {
-            get {
-                return ResourceManager.GetString("ExplanationParagraph", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
         /// </summary>
         public static System.Drawing.Icon favicon {
@@ -105,15 +87,6 @@ namespace PorphyStruct.Properties {
             get {
                 object obj = ResourceManager.GetObject("porphystructlogo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die A Simulation has been done using the least squares methode. The conformation of the {0} was traced back to the vibration normal modes of metallo{0}s. The standard vibration modes were obtained by DFT analysis of a metallo{0} at B3LYP/Def2-SVP level of theory. The Simulated conformation was calculated with an error of {1} as root of the sum of the squared errors per atom. For the derivates the error is {2} and for the integrals the following error was measured {3}. ähnelt.
-        /// </summary>
-        public static string SimDetailsParagraph {
-            get {
-                return ResourceManager.GetString("SimDetailsParagraph", resourceCulture);
             }
         }
     }
