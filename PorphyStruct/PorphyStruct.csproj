@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+	  <LangVersion>Latest</LangVersion>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <Version>1.0.0-beta9</Version>
@@ -15,6 +16,7 @@
     <RepositoryUrl>https://github.com/JensKrumsieck/PorphyStruct</RepositoryUrl>
     <FileVersion>1.0.0.9</FileVersion>
     <ApplicationIcon>Resources\favicon.ico</ApplicationIcon>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

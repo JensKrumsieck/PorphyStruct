@@ -37,8 +37,7 @@ namespace PorphyStruct
         private bool ComparisonFilter(object item)
         {
             var provider = item as IAtomDataPointProvider;
-            if (provider.DataType == DataType.Comparison) return true;
-            return false;
+            return provider.DataType == DataType.Comparison;
         }
 
         /// <summary>
