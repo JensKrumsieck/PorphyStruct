@@ -64,10 +64,10 @@ namespace PorphyStruct.Styles
         /// <param name="e"></param>
         public void Window_Loaded(object sender, RoutedEventArgs e) => ((Window)sender).StateChanged += WindowStateChanged;
 
-        private void WindowStateChanged(object sender, EventArgs e)
+        private static void WindowStateChanged(object? sender, EventArgs e)
         {
-            var w = ((Window)sender);
-            IntPtr handle = w.GetWindowHandle();
+            var w = ((Window)sender!);
+            var handle = w.GetWindowHandle();
             var containerBorder = (Border)w.Template.FindName("Container", w);
 
             if (w.WindowState == WindowState.Maximized)
@@ -89,9 +89,9 @@ namespace PorphyStruct.Styles
             }
         }
 
-        private void CloseButtonClick(object sender, RoutedEventArgs e) => sender.ForWindowFromTemplate(w => SystemCommands.CloseWindow(w));
+        private void CloseButtonClick(object sender, RoutedEventArgs e) => sender.ForWindowFromTemplate(SystemCommands.CloseWindow);
 
-        private void MinimizeButtonClick(object sender, RoutedEventArgs e) => sender.ForWindowFromTemplate(w => SystemCommands.MinimizeWindow(w));
+        private void MinimizeButtonClick(object sender, RoutedEventArgs e) => sender.ForWindowFromTemplate(SystemCommands.MinimizeWindow);
 
         private void MaximizeButtonClick(object sender, RoutedEventArgs e) => sender.ForWindowFromTemplate(w =>
                                                                             {

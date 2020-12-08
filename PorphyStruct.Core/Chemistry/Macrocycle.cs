@@ -255,7 +255,7 @@ namespace PorphyStruct.Chemistry
             HeadWidth = 0,
             HeadLength = 0,
             Color = Core.Properties.Settings.Default.singleColor
-                    ? MacrocyclePainter.SingleColor(DataProviders.IndexOf(data), DataProviders.Count) 
+                    ? MacrocyclePainter.SingleColor(DataProviders.IndexOf(data), DataProviders.Count)
                     : OxyColor.FromAColor(Atom.GetAlpha((int)data.DataType), OxyColor.Parse(Core.Properties.Settings.Default.color1)),
             Layer = AnnotationLayer.BelowSeries,
             StrokeThickness = Core.Properties.Settings.Default.lineThickness,

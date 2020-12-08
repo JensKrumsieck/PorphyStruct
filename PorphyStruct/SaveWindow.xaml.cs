@@ -14,27 +14,22 @@ namespace PorphyStruct
     /// </summary>
     public partial class SaveWindow : Window
     {
-        public MainViewModel MainVM { get; set; }
+        public MainViewModel MainVm { get; set; }
 
-        public SaveViewModel viewModel { get; set; }
+        public SaveViewModel ViewModel { get; set; }
 
         public SaveWindow()
         {
             InitializeComponent();
-            MainVM = Application.Current.Windows.OfType<MainWindow>().First().viewModel;
-            viewModel = new SaveViewModel(MainVM.Cycle);
-            DataContext = viewModel;
+            MainVm = Application.Current.Windows.OfType<MainWindow>().First().viewModel;
+            ViewModel = new SaveViewModel(MainVm.Cycle);
+            DataContext = ViewModel;
         }
 
-        public bool Validate
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(viewModel.Path) || !Directory.Exists(viewModel.Path)) return false;
-                if (TypeList.SelectedItems.Count == 0) return false;
-                return true;
-            }
-        }
+        public bool Validate =>
+            !string.IsNullOrEmpty(ViewModel.Path) && Directory.Exists(ViewModel.Path) &&
+            TypeList.SelectedItems != null &&
+            TypeList.SelectedItems.Count != 0;
 
         /// <summary>
         /// Handles file saving
@@ -43,15 +38,16 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!Validate) MessageBox.Show("Validation failed. Check whether data is present, a path is given or a export routine is selected.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            if (!Validate)
+                MessageBox.Show("Validation failed. Check whether data is present, a path is given or a export routine is selected.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
-            foreach (ExportFileType t in TypeList.SelectedItems) viewModel.Export(t);
+            foreach (ExportFileType t in (ExportFileType[])TypeList.SelectedItems) ViewModel.Export(t);
 
             //open folder
             var info = new ProcessStartInfo()
             {
                 FileName = "explorer.exe",
-                Arguments = viewModel.Path
+                Arguments = ViewModel.Path
             };
             Process.Start(info);
 
@@ -71,13 +67,11 @@ namespace PorphyStruct
                 initialDir = Core.Properties.Settings.Default.savePath;
             else if (!string.IsNullOrEmpty(Core.Properties.Settings.Default.importPath))
                 initialDir = Core.Properties.Settings.Default.importPath;
-            using (var fbd = new winforms.FolderBrowserDialog
+            using var fbd = new winforms.FolderBrowserDialog
             {
                 SelectedPath = initialDir
-            })
-            {
-                if (fbd.ShowDialog() == winforms.DialogResult.OK) viewModel.Path = fbd.SelectedPath;
-            }
+            };
+            if (fbd.ShowDialog() == winforms.DialogResult.OK) ViewModel.Path = fbd.SelectedPath;
         }
     }
 }

@@ -11,11 +11,11 @@ namespace PorphyStruct.Windows
         /// <summary>
         /// The Atom
         /// </summary>
-        public Atom Atom { get; set; }
+        public Atom Atom { get; set; } = null!;
     }
 
     public class BondModelVisual3D : ModelVisual3D
     {
-        public Atom[] Atoms { get; set; }
+        public Atom[] Atoms { get; set; } = null!;
     }
 }

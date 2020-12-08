@@ -12,6 +12,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Media.Media3D;
 
 namespace PorphyStruct.ViewModel
@@ -19,9 +20,9 @@ namespace PorphyStruct.ViewModel
     public class MainViewModel : AbstractViewModel
     {
 
-        public MainViewModel(string path, Macrocycle.Type type)
+        public MainViewModel(string? path, Macrocycle.Type type)
         {
-            Path = path;
+            Path = path ?? throw new ArgumentNullException(nameof(path));
             Type = type;
 
             //init properties
@@ -46,7 +47,8 @@ namespace PorphyStruct.ViewModel
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnDataChanged(object sender, NotifyCollectionChangedEventArgs e) => HasComparison = Cycle.DataProviders.Where(s => s.DataType == DataType.Comparison).Count() > 0;
+        private void OnDataChanged(object sender, NotifyCollectionChangedEventArgs e) =>
+            HasComparison = Cycle.DataProviders.Any(s => s.DataType == DataType.Comparison);
 
         /// <summary>
         /// Is Valid? Redraw!
@@ -65,9 +67,8 @@ namespace PorphyStruct.ViewModel
             }
         }
 
-        public Macrocycle.Type Type = Macrocycle.Type.Corrole;
+        public Macrocycle.Type Type;
         public string Path;
-        public double normFac = 0;
 
         /// <summary>
         /// The Macrocycle
@@ -123,12 +124,12 @@ namespace PorphyStruct.ViewModel
         private void Atom_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             //read selected index of coordgrid
-            Atom selected = SelectedItem ?? null;
+            var selected = SelectedItem ?? null;
             var atom = (Atom)sender;
 
             //remove atom and bonds
             //Invoke to not run into object ownership issues
-            App.Current.Dispatcher.Invoke(() =>
+            Application.Current.Dispatcher.Invoke(() =>
             {
                 Molecule3D.Remove(ModelByAtom(atom));
                 var models = Molecule3D.Where(s => (s as BondModelVisual3D)?.Atoms.Contains(atom) ?? false).ToList();
@@ -144,8 +145,9 @@ namespace PorphyStruct.ViewModel
         /// check if selected item changes
         /// </summary>
         /// <param name="name"></param>
-        protected override void OnPropertyChanged([CallerMemberName] string name = null)
+        protected override void OnPropertyChanged([CallerMemberName] string? name = null)
         {
+            if (name == null) throw new ArgumentNullException(nameof(name));
             base.OnPropertyChanged(name);
             switch (name)
             {
@@ -169,8 +171,9 @@ namespace PorphyStruct.ViewModel
         /// Fires before selection changed
         /// </summary>
         /// <param name="name"></param>
-        protected override void OnPropertyChanging([CallerMemberName] string name = null)
+        protected override void OnPropertyChanging([CallerMemberName] string? name = null)
         {
+            if (name == null) throw new ArgumentNullException(nameof(name));
             base.OnPropertyChanging(name);
 
             if (name == "SelectedItem" && SelectedItem != null)
@@ -190,15 +193,18 @@ namespace PorphyStruct.ViewModel
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.OldItems != null)
-                foreach (Atom item in e.OldItems)
+                foreach (var (item, removedItem) in from Atom item in e.OldItems
+                                                    let removedItem = ModelByAtom(item)
+                                                    select (item, removedItem))
                 {
-                    ModelVisual3D removedItem = ModelByAtom(item);
                     if (removedItem != null) Molecule3D.Remove(removedItem);
                     item.PropertyChanged -= Atom_PropertyChanged;
                 }
+
             if (e.NewItems != null)
-                foreach (Atom item in e.NewItems)
+                foreach (Atom? item in e.NewItems)
                 {
+                    if (item == null) continue;
                     Molecule3D.Add(item.Atom3D());
                     item.PropertyChanged += Atom_PropertyChanged;
                 }
@@ -210,7 +216,7 @@ namespace PorphyStruct.ViewModel
         /// </summary>
         /// <param name="a"></param>
         /// <returns></returns>
-        private ModelVisual3D ModelByAtom(Atom a) => Molecule3D.Where(s => (s as AtomModelVisual3D)?.Atom == a).FirstOrDefault();
+        private ModelVisual3D ModelByAtom(Atom a) => Molecule3D.FirstOrDefault(s => (s as AtomModelVisual3D)?.Atom == a);
 
 
         /// <summary>
@@ -233,14 +239,21 @@ namespace PorphyStruct.ViewModel
             {
                 Cycle.DataProviders.Add(
                     new DifferenceData(
-                        Cycle.DataProviders.Where(s => s.DataType == DataType.Experimental).FirstOrDefault() as ExperimentalData,
-                        Cycle.DataProviders.Where(s => s.DataType == DataType.Simulation).FirstOrDefault() as SimulationData)
+                        Cycle.DataProviders.FirstOrDefault(s => s.DataType == DataType.Experimental) as ExperimentalData,
+                        Cycle.DataProviders.FirstOrDefault(s => s.DataType == DataType.Simulation) as SimulationData)
                     );
             }
             Cycle.Paint(Model);
 
             //handle dont mark
-            foreach (ScatterSeries s in Model.Series) ((IEnumerable<AtomDataPoint>)s.ItemsSource).Where(dp => Core.Properties.Settings.Default.dontMark.Split(',').Contains(dp.atom.Identifier) || Core.Properties.Settings.Default.dontMark.Split(',').Contains(dp.atom.Type)).ToList().ForEach(dp => dp.Size = 0);
+            foreach (var series in Model.Series)
+            {
+                var s = (ScatterSeries)series;
+                ((IEnumerable<AtomDataPoint>)s.ItemsSource).Where(dp =>
+                       Core.Properties.Settings.Default.dontMark.Split(',').Contains(dp.atom.Identifier) ||
+                       Core.Properties.Settings.Default.dontMark.Split(',').Contains(dp.atom.Type)).ToList()
+                    .ForEach(dp => dp.Size = 0);
+            }
 
             Model.Scale(Model.yAxis, true, Normalize);
             Model.Scale(Model.xAxis);
@@ -257,7 +270,7 @@ namespace PorphyStruct.ViewModel
             {
                 CycleProperties = Cycle.Properties.ToLookup(x => x.Key, y => y.Value).ToDictionary(group => group.Key, group => group.SelectMany(value => value));
 
-                if (Cycle.Atoms.Where(s => s.IsMacrocycle).Count() != 0)
+                if (Cycle.Atoms.Count(s => s.IsMacrocycle) != 0)
                 {
                     MathNet.Spatial.Euclidean.Plane msp = Cycle.GetMeanPlane();
                     CycleProperties["Mean Plane"] = new List<Property>()

@@ -5,6 +5,13 @@
     /// </summary>
     public class ExportFileType
     {
+        public ExportFileType(string title, string icon, string[] extension)
+        {
+            Title = title;
+            Icon = icon;
+            Extension = extension;
+        }
+
         public string Title { get; set; }
         public string Icon { get; set; }
         public string[] Extension { get; set; }

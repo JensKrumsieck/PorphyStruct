@@ -24,7 +24,7 @@ namespace PorphyStruct
         /// <summary>
         /// Form Parameters
         /// </summary>
-        private readonly SynchronizationContext synchronizationContext;
+        private readonly SynchronizationContext? synchronizationContext;
 
         private readonly MainViewModel MainVM;
 
@@ -63,7 +63,7 @@ namespace PorphyStruct
                     {
                         if (viewModel.KeepBest)
                             for (int i = 0; i < viewModel.Parameters.Count; i++) viewModel.Parameters[i].Start = viewModel.Parameters[i].Best;
-                        synchronizationContext.Send(new SendOrPostCallback(o =>
+                        synchronizationContext?.Send(new SendOrPostCallback(o =>
                         {
                             simGrid.Items.Refresh();
                             stopBtn.IsEnabled = false;
@@ -72,7 +72,7 @@ namespace PorphyStruct
                     }
                     else
                     {
-                        synchronizationContext.Send(new SendOrPostCallback(o =>
+                        synchronizationContext?.Send(new SendOrPostCallback(o =>
                         {
                             stopBtn.IsEnabled = true;
                             simGrid.IsEnabled = startBtn.IsEnabled = firstOnlyCB.IsEnabled = keepBestCB.IsEnabled = finishSimBtn.IsEnabled = fitDataCB.IsEnabled = fitIntCB.IsEnabled = fitDerivCB.IsEnabled = false;
@@ -106,11 +106,11 @@ namespace PorphyStruct
         {
             //also update current if best is updated ;)
             if (target == "Best") SynchronizeDiagram(data, "Current");
-            synchronizationContext.Send(new SendOrPostCallback(o =>
+            synchronizationContext?.Send(new SendOrPostCallback(o =>
             {
                 simGrid.Items.Refresh();
-                if (simView.Model.Series.Where(s => s.Title == target).Count() != 0) simView.Model.Series.Remove(simView.Model.Series.Where(s => s.Title == target).FirstOrDefault());
-                simView.Model.Series.Add(new ScatterSeries() { ItemsSource = (List<AtomDataPoint>)o, Title = target, MarkerFill = target == "Current" ? OxyColors.PaleVioletRed : OxyColors.LawnGreen, MarkerType = PorphyStruct.Core.Properties.Settings.Default.simMarkerType });
+                if (simView.Model.Series.Count(s => s.Title == target) != 0) simView.Model.Series.Remove(simView.Model.Series.FirstOrDefault(s => s.Title == target));
+                simView.Model.Series.Add(new ScatterSeries() { ItemsSource = (List<AtomDataPoint>)o!, Title = target, MarkerFill = target == "Current" ? OxyColors.PaleVioletRed : OxyColors.LawnGreen, MarkerType = PorphyStruct.Core.Properties.Settings.Default.simMarkerType });
                 simView.InvalidatePlot();
             }), data);
         }
@@ -119,9 +119,9 @@ namespace PorphyStruct
         /// Synchronize Error Textbox
         /// </summary>
         /// <param name="result"></param>
-        internal void SynchronizeErrors(Result result) => synchronizationContext.Send(new SendOrPostCallback(o =>
+        internal void SynchronizeErrors(Result result) => synchronizationContext?.Send(new SendOrPostCallback(o =>
                                                         {
-                                                            double[] error = (double[])o;
+                                                            double[] error = (double[])o!;
                                                             ErrTB.Text = string.Join(";", error.Select(s => s.ToString("N6", System.Globalization.CultureInfo.InvariantCulture)));
                                                         }), result.Error);
 
@@ -189,29 +189,27 @@ namespace PorphyStruct
         {
             //use save dir as default because there should be the results
             Microsoft.Win32.OpenFileDialog ofd = FileUtil.DefaultOpenFileDialog("Properties file (*.json)|*.json", true);
-            bool? DialogResult = ofd.ShowDialog();
+            bool? dialogResult = ofd.ShowDialog();
 
-            if (DialogResult.HasValue && DialogResult.Value)
+            if (!dialogResult.HasValue || !dialogResult.Value) return;
+
+            string file = File.ReadAllText(ofd.FileName);
+            if (!(JsonSerializer.Deserialize(file, typeof(Dictionary<string, IEnumerable<Property>>)) is Dictionary<string, IEnumerable<Property>> deserialized)) return;
+            if (!deserialized.ContainsKey("Simulation")) return;
+            viewModel.Parameters.Clear();
+            foreach (Property item in deserialized["Simulation"])
             {
-                string file = File.ReadAllText(ofd.FileName);
-                var deserialized = JsonSerializer.Deserialize(file, typeof(Dictionary<string, IEnumerable<Property>>)) as Dictionary<string, IEnumerable<Property>>;
-                if (deserialized.ContainsKey("Simulation"))
-                {
-                    viewModel.Parameters.Clear();
-                    foreach (Property item in deserialized["Simulation"])
-                    {
-                        if (item.Name.Contains("percentage")) //here are the actual values
-                            viewModel.Parameters.Add(
-                                new SimParam(
-                                    item.Name.Split(' ')[0],
-                                    Convert.ToDouble(item.Value.Split(' ')[0]) / 100,
-                                    Convert.ToDouble(item.Value.Split(' ')[0]) / 100
-                                    )
-                                );
-                    }
-                    simGrid.Items.Refresh();
-                }
+                if (!item.Name.Contains("percentage")) continue;
+                viewModel.Parameters.Add(
+                    new SimParam(
+                        item.Name.Split(' ')[0],
+                        Convert.ToDouble(item.Value.Split(' ')[0]) / 100,
+                        Convert.ToDouble(item.Value.Split(' ')[0]) / 100
+                    )
+                );
             }
+
+            simGrid.Items.Refresh();
         }
     }
 }

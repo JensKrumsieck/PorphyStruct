@@ -22,7 +22,7 @@ namespace PorphyStruct
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainViewModel viewModel;
+        public MainViewModel viewModel = null!;
 
         public MainWindow()
         {
@@ -36,7 +36,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Camera_Changed(object sender, System.EventArgs e)
+        private void Camera_Changed(object? sender, System.EventArgs e)
         {
             var light = MolViewer.Children.OfType<DirectionalHeadLight>().FirstOrDefault();
             if (light == null) MolViewer.Children.Add(light = new DirectionalHeadLight());
@@ -94,27 +94,25 @@ namespace PorphyStruct
             //open new wizard window
             var wi = new Wizard();
             wi.ShowDialog();
-            if (wi.DialogResult.HasValue && wi.DialogResult.Value)
-            {
-                displaceView.Background = Brushes.White;
+            if (!wi.DialogResult.HasValue || !wi.DialogResult.Value) return;
+            displaceView.Background = Brushes.White;
 
-                //drive the reset train
-                foreach (Button child in this.FindVisualChildren<Button>())
-                    child.IsEnabled = !child.Name.Contains("Sim");
+            //drive the reset train
+            foreach (Button child in this.FindVisualChildren<Button>())
+                child.IsEnabled = !child.Name.Contains("Sim");
 
-                viewModel = new MainViewModel(wi.FileName, (Macrocycle.Type)wi.Type);
-                DataContext = viewModel;
-                viewModel.PropertyChanged += ViewModel_PropertyChanged;
+            viewModel = new MainViewModel(wi.FileName, (Macrocycle.Type)wi.Type);
+            DataContext = viewModel;
+            viewModel.PropertyChanged += ViewModel_PropertyChanged;
 
-                Title = $"Structural Analysis of Porphyrinoids (PorphyStruct) - {viewModel.Type} Mode";
+            Title = $"Structural Analysis of Porphyrinoids (PorphyStruct) - {viewModel.Type} Mode";
 
-                //clear plotview
-                displaceView.Model = null;
-                displaceView.InvalidatePlot();
+            //clear plotview
+            displaceView.Model = null;
+            displaceView.InvalidatePlot();
 
-                //set properties initially
-                viewModel.UpdateProperties();
-            }
+            //set properties initially
+            viewModel.UpdateProperties();
         }
 
         /// <summary>
@@ -265,13 +263,13 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void MolViewer_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var hits = Viewport3DHelper.FindHits(MolViewer.Viewport, e.GetPosition(MolViewer));
+            var hits = MolViewer.Viewport.FindHits(e.GetPosition(MolViewer));
             foreach (var hit in hits.OrderBy(s => s.Distance))
             {
                 if (hit.Visual.GetType() != typeof(AtomModelVisual3D)) continue;
 
                 var amv3d = hit.Visual as AtomModelVisual3D;
-                viewModel.SelectedItem = amv3d.Atom;
+                viewModel.SelectedItem = amv3d!.Atom;
                 coordGrid.ScrollIntoView(viewModel.SelectedItem);
             }
         }

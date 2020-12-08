@@ -82,7 +82,7 @@ namespace PorphyStruct.ViewModel
         /// <summary>
         /// Simulation Parameters
         /// </summary>
-        private Simplex simplex = null; //simplex matrix
+        private Simplex? simplex = null!; //simplex matrix
 
         //error array
         private double[] currentErr = new double[] { double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity };

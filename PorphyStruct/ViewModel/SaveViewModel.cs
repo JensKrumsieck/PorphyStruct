@@ -19,14 +19,7 @@ namespace PorphyStruct.ViewModel
         /// <summary>
         /// returns the default save directory
         /// </summary>
-        public string DefaultPath
-        {
-            get
-            {
-                if (Core.Properties.Settings.Default.useImportExportPath) return Core.Properties.Settings.Default.importPath;
-                else return Core.Properties.Settings.Default.savePath;
-            }
-        }
+        public string DefaultPath => Core.Properties.Settings.Default.useImportExportPath ? Core.Properties.Settings.Default.importPath : Core.Properties.Settings.Default.savePath;
 
         //Export Filename
         public string FileName { get => Get<string>(); set => Set(value); }
@@ -67,15 +60,15 @@ namespace PorphyStruct.ViewModel
         {
             if (Cycle.DataProviders.Count != 0)
             {
-                yield return new ExportFileType() { Title = "Graph", Extension = new[] { "png" }, Icon = "ChartScatterPlotHexbin" };
-                yield return new ExportFileType() { Title = "Graph", Extension = new[] { "svg" }, Icon = "ChartScatterPlot" };
-                yield return new ExportFileType() { Title = "ASCII", Extension = new[] { "dat" }, Icon = "TableLarge" };
+                yield return new ExportFileType("Graph", "ChartScatterPlotHexbin", new[] { "png" });
+                yield return new ExportFileType("Graph", "ChartScatterPlot", new[] { "svg" });
+                yield return new ExportFileType("ASCII", "TableLarge", new[] { "dat" });
             }
             //Save xml, json and txt every time!
-            yield return new ExportFileType() { Title = "Properties", Extension = new[] { "json", "txt" }, Icon = "AtomVariant" };
+            yield return new ExportFileType("Properties", "AtomVariant", new[] { "json", "txt" });
             //Molecule based
-            yield return new ExportFileType() { Title = "Molecule", Extension = new[] { "ixyz" }, Icon = "Molecule" };
-            yield return new ExportFileType() { Title = "Macrocycle", Extension = new[] { "ixyz" }, Icon = "Molecule" };
+            yield return new ExportFileType("Molecule", "Molecule", new[] { "ixyz" });
+            yield return new ExportFileType("Macrocycle", "Molecule", new[] { "ixyz" });
 
         }
         /// <summary>

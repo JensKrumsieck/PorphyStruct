@@ -1,6 +1,7 @@
 ﻿using OxyPlot;
 using OxyPlot.Wpf;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Media;
 
 namespace PorphyStruct.Windows
@@ -15,10 +16,7 @@ namespace PorphyStruct.Windows
 
         public IEnumerable<Brush> Brushes => GetBrushes();
 
-        public IEnumerable<Brush> GetBrushes()
-        {
-            foreach (OxyColor color in Colors) yield return new OxyColorConverter().Convert(color, typeof(Brush), null, null) as Brush;
-        }
+        public IEnumerable<Brush> GetBrushes() => Colors.Select(color => new OxyColorConverter().Convert(color, typeof(Brush), null, null) as Brush ?? System.Windows.Media.Brushes.White);
 
         public PaletteInfo(string title, OxyPalette palette)
         {

@@ -21,19 +21,19 @@ namespace PorphyStruct.ViewModel
         /// <summary>
         /// Currently loaded & previewed Data
         /// </summary>
-        public CompareData Current { get; set; }
+        public CompareData Current { get; set; } = null!;
 
         /// <summary>
         /// The Previews PlotModel
         /// </summary>
-        public StandardPlotModel Model { get; set; }
+        public StandardPlotModel Model { get; set; } = null!;
 
         public CompareViewModel(Macrocycle cycle) : base() => Cycle = cycle;
 
         /// <summary>
         /// Delete Command
         /// </summary>
-        private ICommand deleteCommand;
+        private ICommand deleteCommand = null!;
         public ICommand DeleteCommand
         {
             get
@@ -57,7 +57,7 @@ namespace PorphyStruct.ViewModel
         {
             Model = new StandardPlotModel();
             Current = new CompareData(OpenFile(path), Path.GetFileNameWithoutExtension(path));
-            MacrocyclePainter.Paint(Cycle, Model, Current);
+            Cycle.Paint(Model, Current);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace PorphyStruct.ViewModel
             double[] dataX = new double[lines.Length - 1]; // first line is bs
             double[] dataY = new double[lines.Length - 1]; // first line is bs
             string[] dataA = new string[lines.Length - 1]; // first line is bs
-            int index = 0;
+            var index = 0;
 
             foreach (string line in lines.Where(s => !string.IsNullOrEmpty(s) && !s.StartsWith("A;")))
             {
@@ -85,19 +85,19 @@ namespace PorphyStruct.ViewModel
 
             dataX = dataX.Where(s => s != 0).ToArray();
             //protect against y = 0
-            if (dataY.Where(s => s != 0).ToArray().Length == dataX.Length)
-                dataY = dataY.Where(s => s != 0).ToArray();
-            else dataY = dataY.Where(s => s != dataY.Last()).ToArray(); //remove last because it's may a newline at the end
+            dataY = dataY.Where(s => s != 0).ToArray().Length == dataX.Length
+                ? dataY.Where(s => s != 0).ToArray()
+                : dataY.Where(s => s != dataY.Last()).ToArray();
 
             Array.Sort(dataX.ToArray(), dataY);
             Array.Sort(dataX, dataA);
             var atoms = new List<Atom>();
-            for (int i = 0; i < dataX.Length; i++)
+            for (var i = 0; i < dataX.Length; i++)
             {
                 //add datapoint with dummy atom only having identifier
-                var A = new Atom(dataA[i], 0, 0, 0) { IsMacrocycle = true };
-                atoms.Add(A);
-                yield return new AtomDataPoint(dataX[i], dataY[i], A);
+                var a = new Atom(dataA[i], 0, 0, 0) { IsMacrocycle = true };
+                atoms.Add(a);
+                yield return new AtomDataPoint(dataX[i], dataY[i], a);
             }
         }
     }

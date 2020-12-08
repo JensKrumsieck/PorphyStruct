@@ -45,14 +45,12 @@ namespace PorphyStruct.Windows
         /// <returns></returns>
         public static IEnumerable<T> FindVisualChildren<T>(this DependencyObject depObj) where T : DependencyObject
         {
-            if (depObj != null)
+            if (depObj == null) yield break;
+            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
             {
-                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
-                {
-                    DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
-                    if (child != null && child is T) yield return (T)child;
-                    foreach (T childOfChild in FindVisualChildren<T>(child)) yield return childOfChild;
-                }
+                DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
+                if (child is T dependencyObject) yield return dependencyObject;
+                foreach (T childOfChild in FindVisualChildren<T>(child)) yield return childOfChild;
             }
         }
     }

@@ -44,14 +44,14 @@ namespace PorphyStruct
         private void FileOpen_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog ofd = FileUtil.DefaultOpenFileDialog("Supported Files(*.cif, *.xyz, *.mol2/*.mol, *.ixyz)|*.cif;*.xyz;*.mol2;*.mol;*.ixyz|Crystallographic Information Files (*.cif)|*.cif|Cartesian Coordinate Files (*.xyz)|*.xyz|Mol2 Files (*.mol2, *.mol)|*.mol2;*.mol|XYZ with Identifier (by PorphyStruct) (*.ixyz)|*.ixyz");
-            bool? DialogResult = ofd.ShowDialog();
-            if (DialogResult.HasValue && DialogResult.Value) pathTextBox.Text = ofd.FileName;
+            bool? dialogResult = ofd.ShowDialog();
+            if (dialogResult.HasValue && dialogResult.Value) pathTextBox.Text = ofd.FileName;
         }
 
         /// <summary>
         /// Returns the filename
         /// </summary>
-        public string FileName => pathTextBox?.Text;
+        public string? FileName => pathTextBox?.Text;
 
         /// <summary>
         /// Return Macrocycle Type from ComboBox
@@ -67,15 +67,13 @@ namespace PorphyStruct
         /// </summary>
         public void Refresh()
         {
-            if (Type != -1 && !string.IsNullOrEmpty(FileName))
-            {
-                MolViewer.Children.Clear();
-                MolViewer.Items.Add(new DefaultLights());
-                var type = (Macrocycle.Type)TypeListBox.SelectedIndex;
-                Macrocycle tmp = MacrocycleFactory.Load(pathTextBox.Text, type);
-                tmp.Center(s => true);
-                foreach (System.Windows.Media.Media3D.ModelVisual3D obj in tmp.Paint3D()) MolViewer.Items.Add(obj);
-            }
+            if (Type == -1 || string.IsNullOrEmpty(FileName)) return;
+            MolViewer.Children.Clear();
+            MolViewer.Items.Add(new DefaultLights());
+            var type = (Macrocycle.Type)TypeListBox.SelectedIndex;
+            Macrocycle tmp = MacrocycleFactory.Load(pathTextBox.Text, type);
+            tmp.Center(s => true);
+            foreach (System.Windows.Media.Media3D.ModelVisual3D obj in tmp.Paint3D()) MolViewer.Items.Add(obj);
         }
 
     }

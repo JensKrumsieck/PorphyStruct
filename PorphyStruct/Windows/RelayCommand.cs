@@ -16,7 +16,7 @@ namespace PorphyStruct.Windows
         #region Fields
 
         private readonly Action<object> _execute;
-        private readonly Predicate<object> _canExecute;
+        private readonly Predicate<object>? _canExecute;
 
         #endregion // Fields
 
@@ -36,12 +36,9 @@ namespace PorphyStruct.Windows
         /// </summary>
         /// <param name="execute">The execution logic.</param>
         /// <param name="canExecute">The execution status logic.</param>
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+        public RelayCommand(Action<object> execute, Predicate<object>? canExecute)
         {
-            if (execute == null)
-                throw new ArgumentNullException("execute");
-
-            _execute = execute;
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = canExecute;
         }
 
@@ -50,12 +47,12 @@ namespace PorphyStruct.Windows
         #region ICommand Members
 
         [DebuggerStepThrough]
-        public bool CanExecute(object parameter) => _canExecute == null ? true : _canExecute(parameter);
+        public bool CanExecute(object parameter) => _canExecute?.Invoke(parameter) ?? true;
 
         public event EventHandler CanExecuteChanged
         {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
         }
 
         public void Execute(object parameter) => _execute(parameter);

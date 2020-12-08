@@ -26,7 +26,7 @@ namespace PorphyStruct
             IEnumerable<PaletteInfo> availableThemes = from MethodInfo method in typeof(CustomPalettes).GetMethods(BindingFlags.Public | BindingFlags.Static)
                                                        select new PaletteInfo(
                                                            method.Name,
-                                                           (OxyPalette)method.Invoke(null, new object[] { 7 }));
+                                                           (OxyPalette)method.Invoke(null, new object[] { 7 })!);
             PaletteList = availableThemes;
         }
 
@@ -46,7 +46,7 @@ namespace PorphyStruct
         /// <param name="e"></param>
         private void FolderBtn_Click(object sender, RoutedEventArgs e)
         {
-            string btn = (sender as Button).Tag.ToString();
+            var btn = (sender as Button)?.Tag.ToString()!;
             string initialDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (!string.IsNullOrEmpty(Core.Properties.Settings.Default.savePath))
                 initialDir = Core.Properties.Settings.Default.savePath;
@@ -54,12 +54,10 @@ namespace PorphyStruct
             {
                 SelectedPath = initialDir
             };
-            if (fbd.ShowDialog() == winforms.DialogResult.OK)
-            {
-                var textBox = (FindName($"{btn}Path") as TextBox);
-                textBox.Text = fbd.SelectedPath;
-                textBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-            }
+            if (fbd.ShowDialog() != winforms.DialogResult.OK) return;
+            var textBox = (FindName($"{btn}Path") as TextBox);
+            textBox!.Text = fbd.SelectedPath;
+            textBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
         }
 
         /// <summary>
@@ -81,9 +79,8 @@ namespace PorphyStruct
 
         private bool CheckColor(string hex)
         {
-            if (!hex.StartsWith("#")) return false;
-            if (Regex.IsMatch(hex, @"^#([0-9a-fA-F]{6})$")) return true;
-            return false;
+            if (hex != null && !hex.StartsWith("#")) return false;
+            return Regex.IsMatch(hex, @"^#([0-9a-fA-F]{6})$");
         }
 
         private Brush GetColor(string hex)

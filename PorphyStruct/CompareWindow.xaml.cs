@@ -34,11 +34,7 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        private bool ComparisonFilter(object item)
-        {
-            var provider = item as IAtomDataPointProvider;
-            return provider.DataType == DataType.Comparison;
-        }
+        private static bool ComparisonFilter(object item) => item is IAtomDataPointProvider provider && provider.DataType == DataType.Comparison;
 
         /// <summary>
         /// Handles Button click
@@ -48,15 +44,13 @@ namespace PorphyStruct
         private void Open_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog ofd = FileUtil.DefaultOpenFileDialog("ASCII Files(DAT)(*.dat) | *.dat", true);
-            bool? DialogResult = ofd.ShowDialog();
+            bool? dialogResult = ofd.ShowDialog();
 
-            if (DialogResult.HasValue && DialogResult.Value)
-            {
-                comparisonPath.Text = ofd.FileName;
-                viewModel.LoadData(ofd.FileName);
+            if (!dialogResult.HasValue || !dialogResult.Value) return;
+            comparisonPath.Text = ofd.FileName;
+            viewModel.LoadData(ofd.FileName);
 
-                CompPlot.Model = viewModel.Model;
-            }
+            CompPlot.Model = viewModel.Model;
 
         }
 
