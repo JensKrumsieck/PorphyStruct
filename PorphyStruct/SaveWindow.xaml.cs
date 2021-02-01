@@ -41,7 +41,7 @@ namespace PorphyStruct
             if (!Validate)
                 MessageBox.Show("Validation failed. Check whether data is present, a path is given or a export routine is selected.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
-            foreach (ExportFileType t in (ExportFileType[])TypeList.SelectedItems) ViewModel.Export(t);
+            foreach (ExportFileType t in TypeList.SelectedItems) ViewModel.Export(t);
 
             //open folder
             var info = new ProcessStartInfo()
