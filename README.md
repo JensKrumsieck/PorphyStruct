@@ -11,6 +11,16 @@ With **PorphyStruct{ }** displacement diagrams can be generated and simulated to
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/JensKrumsieck/PorphyStruct)
 ![GitHub Pre-Releases](https://img.shields.io/github/downloads-pre/JensKrumsieck/PorphyStruct/latest/total)
 
+<p align="center">
+<img src="https://github.com/JensKrumsieck/PorphyStruct/blob/master/.github/porphystruct.gif" alt="Screenshot" width="480"/>
+</p>
+
+## Features 
+* Generation of Displacement Diagrams for various (**Porphyrin**, **Corrole**, **Norcorrole**, **Porphycene**, **Corrphycene** and related) tetrapyrrolic macrocycles.
+* Simulation of the generated diagrams by linear combination of standard structures based on the vibration standard modes obtained by DFT calculations (B3LYP/def2-SVP).
+* Comparison of Structures and further structural analysis.
+* Ablility to import and export various file types
+
 ## Abstract
 While the conformational features of porphyrins have been extensively investigated in recent years using J.A. Shelnutt's NSD method <sup>[1]</sup>, the limitations of this method have left other macrocycles such as Corrole far behind. Studies have shown correlations of conformation with photophysical and chemical properties such as reactivity. <sup>[2]</sup> For example, the metallation rates of porphyrins with large amounts of saddling are several orders of magnitude higher than for their planar counterparts. <sup>[2b]</sup> 
 
@@ -26,14 +36,8 @@ Due to the large number of correlations found for porphyrins, a transfer of this
 
 [3] P. Schweyen, Ch. Kleeberg, D. Körner, A. Thüsing, R. Wicht, M.-K. Zaretzke, M. Bröring, _J. Porphyrins Phtalocyanines_, **2019**, _23_, 1-11.
 
-## Features 
-* Generation of Displacement Diagrams for various (**Porphyrin**, **Corrole**, **Norcorrole**, **Porphycene**, **Corrphycene** and related) tetrapyrrolic macrocycles.
-* Simulation of the generated diagrams by linear combination of standard structures based on the vibration standard modes obtained by DFT calculations (B3LYP/def2-SVP).
-* Comparison of Structures and further structural analysis.
-* Ablility to import and export various file types
-
 ### System requirements
-Windows 10 (since official Window 7 EOL was 14th Jan. 2020)
+Windows 10
 
 ### Used Libraries
 * [OxyPlot](https://github.com/oxyplot/oxyplot) by Oystein Bjorke (MIT License)
