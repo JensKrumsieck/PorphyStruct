@@ -1,0 +1,21 @@
+﻿<Application x:Class="PorphyStruct.WPF.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:PorphyStruct.WPF"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="TitleBar" Color="{DynamicResource DarkColor}" Opacity="0.80"/>
+            <SolidColorBrush x:Key="MaterialDesignBody" Color="{StaticResource DarkColor}"/>
+            <SolidColorBrush x:Key="MaterialDesignToolBarBackground" Color="Transparent"/>
+            <SolidColorBrush x:Key="Background" Color="{DynamicResource LightColor}" Opacity="0.50"/>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/ThemeCommons;component/Styles/Colors.xaml"/>
+                <materialDesign:CustomColorTheme BaseTheme="Light" PrimaryColor="{StaticResource OrangeColor}" SecondaryColor="{StaticResource GreenColor}"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/ThemeCommons.MaterialDesign;component/Themes/Generic.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PorphyStruct", "PorphyStruct\PorphyStruct.csproj", "{C00515E1-56E8-4457-AE6F-EA82254DF746}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PorphyStruct.WPF", "PorphyStruct.WPF\PorphyStruct.WPF.csproj", "{E1D5395E-F1B1-4507-A12A-20F26AE5279E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PorphyStruct.Core", "PorphyStruct.Core\PorphyStruct.Core.csproj", "{3C7049CE-F4D8-448B-87B9-0D0865DCFC5B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PorphyStruct.ViewModel", "PorphyStruct.ViewModel\PorphyStruct.ViewModel.csproj", "{EF00F37C-98D1-4E0F-B00A-6F3EF899D01A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PorphyStruct.Test", "PorphyStruct.Test\PorphyStruct.Test.csproj", "{7966424C-3FBF-4EE2-9D6F-9A3AD3AEEEDD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PorphyStruct", "PorphyStruct\PorphyStruct.csproj", "{25132EE8-000D-4A77-9B3C-B2B65D561259}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,18 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C00515E1-56E8-4457-AE6F-EA82254DF746}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C00515E1-56E8-4457-AE6F-EA82254DF746}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C00515E1-56E8-4457-AE6F-EA82254DF746}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C00515E1-56E8-4457-AE6F-EA82254DF746}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3C7049CE-F4D8-448B-87B9-0D0865DCFC5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3C7049CE-F4D8-448B-87B9-0D0865DCFC5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3C7049CE-F4D8-448B-87B9-0D0865DCFC5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3C7049CE-F4D8-448B-87B9-0D0865DCFC5B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7966424C-3FBF-4EE2-9D6F-9A3AD3AEEEDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7966424C-3FBF-4EE2-9D6F-9A3AD3AEEEDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7966424C-3FBF-4EE2-9D6F-9A3AD3AEEEDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7966424C-3FBF-4EE2-9D6F-9A3AD3AEEEDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1D5395E-F1B1-4507-A12A-20F26AE5279E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1D5395E-F1B1-4507-A12A-20F26AE5279E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1D5395E-F1B1-4507-A12A-20F26AE5279E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1D5395E-F1B1-4507-A12A-20F26AE5279E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF00F37C-98D1-4E0F-B00A-6F3EF899D01A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF00F37C-98D1-4E0F-B00A-6F3EF899D01A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF00F37C-98D1-4E0F-B00A-6F3EF899D01A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF00F37C-98D1-4E0F-B00A-6F3EF899D01A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25132EE8-000D-4A77-9B3C-B2B65D561259}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25132EE8-000D-4A77-9B3C-B2B65D561259}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25132EE8-000D-4A77-9B3C-B2B65D561259}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25132EE8-000D-4A77-9B3C-B2B65D561259}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

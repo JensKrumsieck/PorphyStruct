@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\porphystruct.ico</ApplicationIcon>
+    <PackageIcon>Resources\porphystruct.ico</PackageIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\porphystruct.ico" />
+    <None Remove="Resources\porphystruct.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\porphystruct.ico" />
+    <Resource Include="Resources\porphystruct.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HelixToolkit.Core.Wpf" Version="2.14.0" />
+    <PackageReference Include="JensKrumsieck.ThemeCommons.MaterialDesign" Version="1.0.0-beta1" />
+    <PackageReference Include="OxyPlot.SkiaSharp.Wpf" Version="2.1.0-Preview1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PorphyStruct.ViewModel\PorphyStruct.ViewModel.csproj" />
+  </ItemGroup>
+
+</Project>

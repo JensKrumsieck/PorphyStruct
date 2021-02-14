@@ -1,0 +1,79 @@
+﻿<commons:DefaultWindow x:Class="PorphyStruct.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PorphyStruct.WPF"
+        xmlns:commons="clr-namespace:ThemeCommons.Controls;assembly=ThemeCommons"
+        xmlns:wpf="http://oxyplot.org/skiawpf"
+        xmlns:h="http://helix-toolkit.org/wpf"
+        xmlns:viewModel="clr-namespace:PorphyStruct.ViewModel;assembly=PorphyStruct.ViewModel"
+        xmlns:controls="clr-namespace:PorphyStruct.WPF.Controls"
+        xmlns:extension="clr-namespace:ThemeCommons.MaterialDesign.Extension;assembly=ThemeCommons.MaterialDesign"
+        xmlns:commonsEx="clr-namespace:ThemeCommons.Extension;assembly=ThemeCommons"
+        d:DataContext="{d:DesignInstance Type=viewModel:MacrocycleViewModel}"
+        mc:Ignorable="d"
+        TitlebarHeight="40"
+        IconSize="35"
+        Background="{DynamicResource Background}"
+        Icon="Resources/porphystruct.ico"
+        TitlebarBackground="{DynamicResource TitleBar}" Height="750" Width="1200">
+    <commons:DefaultWindow.TitlebarContent>
+        <Grid VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="275"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock FontSize="14" VerticalAlignment="Center">
+                PorphyStruct
+                <LineBreak/>
+                <Run FontSize="9">Structural Analysis of Porphyrinoids</Run>
+            </TextBlock>
+            <StackPanel Orientation="Horizontal" Grid.Column="1">
+                <ToolBarTray WindowChrome.IsHitTestVisibleInChrome="True">
+                    <ToolBar>
+                        <Button extension:ControlExtension.AttachedIcon="Folder" commonsEx:ControlExtension.StackPanelOrientation="Vertical" FontSize="9" Content="Open" ToolTip="Open" />
+                        <Button extension:ControlExtension.AttachedIcon="ContentSave" Content="Save" ToolTip="Save"/>
+                    </ToolBar>
+                </ToolBarTray>
+            </StackPanel>
+        </Grid>
+    </commons:DefaultWindow.TitlebarContent>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <wpf:PlotView Grid.RowSpan="2">
+            <wpf:PlotView.Background>
+                <ImageBrush ImageSource="/Resources/porphystruct.png" Stretch="None"/>
+            </wpf:PlotView.Background>
+        </wpf:PlotView>
+        <h:HelixViewport3D Grid.Column="1" Grid.Row="0" x:Name="Viewport3D"
+                           MouseLeftButtonDown="Viewport3D_OnMouseLeftButtonDown"
+                           ShowViewCube="False" ShowCoordinateSystem="True" 
+                           ZoomExtentsWhenLoaded="True" IsHeadLightEnabled="True" >
+            <h:DefaultLights/>
+            <h:DirectionalHeadLight/>
+            <controls:ItemsVisual3D ItemsSource="{Binding Atoms3D}"/>
+            <controls:ItemsVisual3D ItemsSource="{Binding Bonds3D}"/>
+        </h:HelixViewport3D>
+        <TabControl Grid.Row="1" Grid.Column="1" Background="Transparent">
+            <TabItem Header="Coordinates">
+                <DataGrid IsSynchronizedWithCurrentItem="True" x:Name="CoordinateGrid" CanUserSortColumns="True" CanUserAddRows="False" AutoGenerateColumns="False"
+                         SelectedItem="{Binding SelectedItem}"
+                          ItemsSource="{Binding Macrocycle.Atoms}" Foreground="{DynamicResource Dark}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding Title}" Header="Identifier"/>
+                        <DataGridTextColumn IsReadOnly="True" Binding="{Binding Symbol}" Header="Symbol"/>
+                        <DataGridTextColumn IsReadOnly="True" Binding="{Binding Location, StringFormat=N4}" Header="Location"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</commons:DefaultWindow>
