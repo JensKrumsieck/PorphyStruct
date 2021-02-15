@@ -1,0 +1,192 @@
+﻿using ChemSharp.Molecules;
+using PorphyStruct.Extension;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using ChemSharp.Extensions;
+using ChemSharp.Mathematics;
+using ChemSharp.Molecules.Extensions;
+using OxyPlot.Series;
+
+namespace PorphyStruct.Analysis
+{
+    public abstract class MacrocycleAnalysis
+    {
+        /// <summary>
+        /// Selected Atoms for Analysis
+        /// </summary>
+        public List<Atom> Atoms { get; set; }
+
+        /// <summary>
+        /// Selected Bonds for Analysis
+        /// </summary>
+        public IEnumerable<Bond> Bonds { get; set; }
+
+        private readonly Guid _guid;
+
+        /// <summary>
+        /// Color Representation for Analysis to use as indicator
+        /// </summary>
+        public string AnalysisColor => _guid.HexStringFromGuid();
+
+        protected MacrocycleAnalysis(List<Atom> atoms, IEnumerable<Bond> bonds)
+        {
+            Atoms = atoms;
+            Bonds = bonds;
+            _guid = Guid.NewGuid();
+            NameAtoms();
+        }
+
+        /// <summary>
+        /// Bond to Identifier mapping
+        /// </summary>
+        public abstract List<(string atom1, string atom2)> AnalysisBonds { get; }
+
+        /// <summary>
+        /// RingAtoms by Identifier
+        /// </summary>
+        public abstract List<string> RingAtoms { get; }
+
+        /// <summary>
+        /// Alpha atoms of Macrocycle by Identifiers
+        /// </summary>
+        public abstract string[] AlphaAtoms { get; }
+
+        /// <summary>
+        /// Multipliers for C-Atom positioning
+        /// </summary>
+        public abstract Dictionary<string, double> Multiplier { get; }
+
+        /// <summary>
+        /// Returns Mean Square Plane of Analysis Fragment
+        /// </summary>
+        public Plane MeanPlane => MathV.MeanPlane(Atoms.Select(s => s.Location).ToList());
+
+        /// <summary>
+        /// Returns Neighbors in context of analysis
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        public IEnumerable<Atom> Neighbors(Atom a) => AtomUtil.Neighbors(a, Bonds);
+
+        /// <summary>
+        /// Generates DataPoints
+        /// </summary>
+        /// <returns></returns>
+        public virtual IEnumerable<AtomDataPoint> CalculateDataPoints()
+        {
+            Atoms = Atoms.OrderBy(s => RingAtoms.IndexOf(s.Title)).ToList();
+            var dist = 0d;
+            var fix = 1d;
+
+            foreach (var a in Atoms)
+            {
+                var coordX = 1d;
+                if(a.Title.Contains("C")) coordX = fix + dist * Multiplier[a.Title];
+                if (a.Title.Contains("N")) coordX = fix + dist / 2d;
+
+                //starts with C1 which is alpha per definition, so refresh distance every alpha atom.
+                if (IsAlpha(a) && NextAlpha(a) != null) dist = a.DistanceTo(NextAlpha(a));
+
+                //alpha atoms are fixpoints
+                if (IsAlpha(a)) fix = coordX;
+
+                yield return new AtomDataPoint(coordX, MathV.Distance(MeanPlane, a.Location), a);
+            }
+        }
+
+        /// <summary>
+        /// checks whether it's an alpha atom or not
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns>boolean</returns>
+        private bool IsAlpha(Atom a) => DFSUtil.VertexDegree(a, Neighbors) == 3;
+
+        /// <summary>
+        /// gets next alpha position for distance measuring
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns>Atom</returns>
+        private Atom NextAlpha(Atom a)
+        {
+            var i = Array.IndexOf(AlphaAtoms, a.Title) + 1;
+            return AlphaAtoms.Length > i ? Atoms.FirstOrDefault(a => a.Title == AlphaAtoms[i]) : null;
+        }
+
+        /// <summary>
+        /// An overrideable Method to get C1 Atom. 
+        /// In a Porphyrin it does not care which alpha atom is C1, so return any of them...
+        /// override this methode in any other class
+        /// </summary>
+        /// <returns></returns>
+        public virtual Atom C1 => Atoms.First(s => DFSUtil.VertexDegree(s, Neighbors) == 3);
+
+        public List<Atom> N4Cavity =>
+            Atoms.Where(s => DFSUtil.VertexDegree(s, a => Neighbors(a).Where(IsAlpha).Where(n => DFSUtil.BackTrack(n, a, Neighbors, 5).Count == 5)) == 2).ToList();
+
+        public List<Atom> Beta => Atoms.Where(s =>
+            DFSUtil.VertexDegree(s, Neighbors) == 2 && Neighbors(s).Count(IsAlpha) == 1).ToList();
+
+        /// <summary>
+        /// calculate distance between two atoms (as identifiers are needed this must be in Macrocycle-Class!!)
+        /// </summary>
+        /// <param name="id1">Identifier 1</param>
+        /// <param name="id2">Identifier 2</param>
+        /// <returns>The Vectordistance</returns>
+        public double CalculateDistance(string id1, string id2) => MathV.Distance(Atoms.First(s => s.Title == id1).Location, Atoms.First(s => s.Title == id2).Location);
+
+        /// <summary>
+        /// Creates Analysis Type
+        /// </summary>
+        /// <param name="atoms"></param>
+        /// <param name="bonds"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static MacrocycleAnalysis Create(List<Atom> atoms, IEnumerable<Bond> bonds, MacrocycleType type) =>
+            type switch
+            {
+                MacrocycleType.Porphyrin => new PorphyrinAnalysis(atoms, bonds)
+            };
+
+        /// <summary>
+        /// Assign the correct Identifiers for a cycle CN-corpus
+        /// </summary>
+        public void NameAtoms()
+        {
+            //cycle valid?
+            if (Atoms.Count() != RingAtoms.Count) return;
+            //set macrocycle flag
+            Atoms.ForEach(s => s.Title = s.Symbol + "M");
+            //track visited atoms
+            var visited = new HashSet<Atom>();
+
+            //set Identifier for C1 Atom
+            C1.Title = "C1";
+            //get N4 Cavity, necessary for performance
+            var cavity = N4Cavity;
+            //force c2 to be first step
+            var current = Neighbors(C1).First(s => !cavity.Contains(s) && Neighbors(s).Any(n => Beta.Contains(n)));
+            current.Title = "C2";
+            //add C1&C2 to visited
+            visited.UnionWith(new HashSet<Atom>() { current, C1 });
+            //get carbon atoms
+            var carbons = RingAtoms.Where(s => s.Contains("C")).OrderBy(s => int.Parse(s.Replace("C", ""))).ToList();
+            var i = 2;
+            //loop through atoms and name them
+            while (visited.Count != carbons.Count)
+            {
+                foreach (var neighbor in Neighbors(current).Where(s => !visited.Contains(s) && !cavity.Contains(s)))
+                {
+                    //add to visited and assign Identifier
+                    neighbor.Title = carbons[i];
+                    visited.Add(current = neighbor);
+                    i++;
+                }
+            }
+            //set up identifiers for nitrogens
+            // ReSharper disable once PossibleNullReferenceException
+            for (var j = 1; j <= 4; j++) cavity.FirstOrDefault(s => Neighbors(s).Contains(Atoms.FirstOrDefault(a => a.Title == AlphaAtoms[2 * j - 1]))).Title = "N" + j;
+        }
+    }
+}

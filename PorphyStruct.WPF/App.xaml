@@ -12,9 +12,10 @@
             <SolidColorBrush x:Key="Background" Color="{DynamicResource LightColor}" Opacity="0.50"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/ThemeCommons;component/Styles/Colors.xaml"/>
-                <materialDesign:CustomColorTheme BaseTheme="Light" PrimaryColor="{StaticResource OrangeColor}" SecondaryColor="{StaticResource GreenColor}"/>
+                <materialDesign:CustomColorTheme BaseTheme="Light" PrimaryColor="{StaticResource OrangeColor}" SecondaryColor="{StaticResource BlueColor}"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/ThemeCommons.MaterialDesign;component/Themes/Generic.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Styles/ToolBar.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

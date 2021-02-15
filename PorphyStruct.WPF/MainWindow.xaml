@@ -13,16 +13,18 @@
         xmlns:commonsEx="clr-namespace:ThemeCommons.Extension;assembly=ThemeCommons"
         d:DataContext="{d:DesignInstance Type=viewModel:MacrocycleViewModel}"
         mc:Ignorable="d"
-        TitlebarHeight="40"
-        IconSize="35"
+        TitlebarHeight="50"
+        IconSize="36"
         Background="{DynamicResource Background}"
         Icon="Resources/porphystruct.ico"
+        MinWidth="1200" MinHeight="750"
         TitlebarBackground="{DynamicResource TitleBar}" Height="750" Width="1200">
     <commons:DefaultWindow.TitlebarContent>
         <Grid VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="275"/>
                 <ColumnDefinition/>
+                <ColumnDefinition Width="70"/>
             </Grid.ColumnDefinitions>
             <TextBlock FontSize="14" VerticalAlignment="Center">
                 PorphyStruct
@@ -32,11 +34,29 @@
             <StackPanel Orientation="Horizontal" Grid.Column="1">
                 <ToolBarTray WindowChrome.IsHitTestVisibleInChrome="True">
                     <ToolBar>
-                        <Button extension:ControlExtension.AttachedIcon="Folder" commonsEx:ControlExtension.StackPanelOrientation="Vertical" FontSize="9" Content="Open" ToolTip="Open" />
-                        <Button extension:ControlExtension.AttachedIcon="ContentSave" Content="Save" ToolTip="Save"/>
+                        <Button extension:ControlExtension.AttachedIcon="Folder" Content="Open"/>
+                        <Button extension:ControlExtension.AttachedIcon="ContentSave" Content="Save"/>
+                        <Separator/>
+                        <Button extension:ControlExtension.AttachedIcon="Flask" Content="Analyze" Click="Analyze_OnClick"/>
+                        <Button extension:ControlExtension.AttachedIcon="Wand" Content="Simulate"/>
+                        <Button extension:ControlExtension.AttachedIcon="Compare" Content="Compare"/>
+                        <Separator/>
+                        <ListBox SelectionMode="Multiple">
+                            <ListBoxItem Style="{DynamicResource ToolbarListItem}" extension:ControlExtension.AttachedIcon="PlusMinusBox" Content="Invert"/>
+                            <ListBoxItem Style="{DynamicResource ToolbarListItem}" extension:ControlExtension.AttachedIcon="VectorDifference" Content="Difference"/>
+                        </ListBox>
+                        <Separator/>
+                        <Button extension:ControlExtension.AttachedIcon="MagnifyScan" Content="Detect" Click="Detect_OnClick"/>
+                    </ToolBar>
+                    <ToolBar>
+                        <Button extension:ControlExtension.AttachedIcon="Cog" Content="Settings"/>
+                        <Button extension:ControlExtension.AttachedIcon="InfoCircle" Content="About"/>
                     </ToolBar>
                 </ToolBarTray>
             </StackPanel>
+            <Label FontWeight="Light" FontSize="9" VerticalAlignment="Top" Height="20"
+                   Content="{Binding Title}" Background="{DynamicResource Dark}" 
+                   Foreground="{DynamicResource Light}" Grid.Column="2"/>
         </Grid>
     </commons:DefaultWindow.TitlebarContent>
     <Grid>
@@ -48,7 +68,7 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <wpf:PlotView Grid.RowSpan="2">
+        <wpf:PlotView Grid.RowSpan="2" x:Name="PlotView">
             <wpf:PlotView.Background>
                 <ImageBrush ImageSource="/Resources/porphystruct.png" Stretch="None"/>
             </wpf:PlotView.Background>
