@@ -1,15 +1,10 @@
-﻿using System;
-using HelixToolkit.Wpf;
-using OxyPlot;
-using OxyPlot.Series;
+﻿using HelixToolkit.Wpf;
 using PorphyStruct.ViewModel;
 using PorphyStruct.ViewModel.Windows;
+using System;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using PorphyStruct.Plot;
 using ThemeCommons.Controls;
 
 namespace PorphyStruct.WPF
@@ -19,15 +14,12 @@ namespace PorphyStruct.WPF
     /// </summary>
     public partial class MainWindow : DefaultWindow
     {
-        public MacrocycleViewModel ViewModel { get; }
+        public MacrocycleViewModel ViewModel { get; private set; }
 
         public MainWindow()
         {
             Settings.Instance.Load($"{AppDomain.CurrentDomain.BaseDirectory}/settings.json");
-            DataContext = ViewModel = new MacrocycleViewModel();
             InitializeComponent();
-            PlotView.Model = ViewModel.Model;
-            PlotView.Background = Brushes.White;
         }
 
         /// <summary>
@@ -42,23 +34,27 @@ namespace PorphyStruct.WPF
             {
                 if (hit.Visual.GetType() != typeof(AtomVisual3D)) continue;
                 var av3d = hit.Visual as AtomVisual3D;
-                ViewModel.SelectedItem = av3d?.Atom;
-                CoordinateGrid.ScrollIntoView(ViewModel.SelectedItem!);
+                ViewModel.SelectedAtom = av3d?.Atom;
+                CoordinateGrid.ScrollIntoView(ViewModel.SelectedAtom!);
             }
         }
 
-        private async void Detect_OnClick(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Drag and Drop Handler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <exception cref="InvalidOperationException"></exception>
+        private void OnFileDrop(object sender, DragEventArgs e)
         {
-            await Task.Run(ViewModel.Macrocycle.Detect);
-            ViewModel.Validate();
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop)) return;
+            var files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+            DataContext = ViewModel = new MacrocycleViewModel((files ?? throw new InvalidOperationException()).FirstOrDefault());
         }
 
-        private void Analyze_OnClick(object sender, RoutedEventArgs e)
-        {
-            var points = ViewModel.Macrocycle.DetectedParts[0].CalculateDataPoints();
-            var model = new DefaultPlotModel();
-            model.Series.Add(new ScatterSeries { ItemsSource = points, TrackerFormatString = AtomDataPoint.TrackerFormatString, ColorAxisKey = "colors", MarkerType = Settings.Instance.MarkerType});
-            PlotView.Model = model;
-        }
+
+        private async void Detect_OnClick(object sender, RoutedEventArgs e) => await ViewModel.Detect();
+
+        private void Analyze_OnClick(object sender, RoutedEventArgs e) => ViewModel.SelectedItem.Analyze();
     }
 }

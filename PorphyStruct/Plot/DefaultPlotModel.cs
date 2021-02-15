@@ -43,7 +43,7 @@ namespace PorphyStruct.Plot
             Axes.Add(YAxis);
             Axes.Add(ColorAxis);
 
-            AddZero();
+            
             if (!PlotAreaBorderThickness.Equals(new OxyThickness(0))) return;
             YAxis.AxislineStyle = LineStyle.Solid;
             XAxis.AxislineStyle = LineStyle.Solid;
@@ -65,6 +65,16 @@ namespace PorphyStruct.Plot
                 Slope = 0
             };
             Annotations.Add(zero);
+        }
+
+        /// <summary>
+        /// Inits Model for Analysis
+        /// </summary>
+        public void Init()
+        {
+            Series.Clear();
+            Annotations.Clear(); 
+            AddZero();
         }
 
         /// <summary>

@@ -1,13 +1,12 @@
-﻿using ChemSharp.Molecules;
+﻿using ChemSharp.Extensions;
+using ChemSharp.Mathematics;
+using ChemSharp.Molecules;
+using ChemSharp.Molecules.Extensions;
 using PorphyStruct.Extension;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using ChemSharp.Extensions;
-using ChemSharp.Mathematics;
-using ChemSharp.Molecules.Extensions;
-using OxyPlot.Series;
 
 namespace PorphyStruct.Analysis
 {
@@ -39,11 +38,6 @@ namespace PorphyStruct.Analysis
         }
 
         /// <summary>
-        /// Bond to Identifier mapping
-        /// </summary>
-        public abstract List<(string atom1, string atom2)> AnalysisBonds { get; }
-
-        /// <summary>
         /// RingAtoms by Identifier
         /// </summary>
         public abstract List<string> RingAtoms { get; }
@@ -58,6 +52,16 @@ namespace PorphyStruct.Analysis
         /// </summary>
         public abstract Dictionary<string, double> Multiplier { get; }
 
+        private IEnumerable<AtomDataPoint> _dataPoints;
+        /// <summary>
+        /// Cached Datapoints
+        /// </summary>
+        public IEnumerable<AtomDataPoint> DataPoints
+        {
+            get => _dataPoints ??= CalculateDataPoints();
+            set => _dataPoints = value;
+        }
+
         /// <summary>
         /// Returns Mean Square Plane of Analysis Fragment
         /// </summary>
@@ -68,7 +72,7 @@ namespace PorphyStruct.Analysis
         /// </summary>
         /// <param name="a"></param>
         /// <returns></returns>
-        public IEnumerable<Atom> Neighbors(Atom a) => AtomUtil.Neighbors(a, Bonds);
+        internal IEnumerable<Atom> Neighbors(Atom a) => AtomUtil.Neighbors(a, Bonds);
 
         /// <summary>
         /// Generates DataPoints
@@ -83,7 +87,7 @@ namespace PorphyStruct.Analysis
             foreach (var a in Atoms)
             {
                 var coordX = 1d;
-                if(a.Title.Contains("C")) coordX = fix + dist * Multiplier[a.Title];
+                if (a.Title.Contains("C")) coordX = fix + dist * Multiplier[a.Title];
                 if (a.Title.Contains("N")) coordX = fix + dist / 2d;
 
                 //starts with C1 which is alpha per definition, so refresh distance every alpha atom.
@@ -122,11 +126,22 @@ namespace PorphyStruct.Analysis
         /// <returns></returns>
         public virtual Atom C1 => Atoms.First(s => DFSUtil.VertexDegree(s, Neighbors) == 3);
 
+        /// <summary>
+        /// Lists N4 Cavity
+        /// </summary>
         public List<Atom> N4Cavity =>
             Atoms.Where(s => DFSUtil.VertexDegree(s, a => Neighbors(a).Where(IsAlpha).Where(n => DFSUtil.BackTrack(n, a, Neighbors, 5).Count == 5)) == 2).ToList();
 
+        /// <summary>
+        /// Lists all Beta Atoms
+        /// </summary>
         public List<Atom> Beta => Atoms.Where(s =>
             DFSUtil.VertexDegree(s, Neighbors) == 2 && Neighbors(s).Count(IsAlpha) == 1).ToList();
+
+        /// <summary>
+        /// Lists all alpha Atoms
+        /// </summary>
+        public List<Atom> Alpha => Atoms.Where(IsAlpha).ToList();
 
         /// <summary>
         /// calculate distance between two atoms (as identifiers are needed this must be in Macrocycle-Class!!)
@@ -135,6 +150,16 @@ namespace PorphyStruct.Analysis
         /// <param name="id2">Identifier 2</param>
         /// <returns>The Vectordistance</returns>
         public double CalculateDistance(string id1, string id2) => MathV.Distance(Atoms.First(s => s.Title == id1).Location, Atoms.First(s => s.Title == id2).Location);
+
+        /// <summary>
+        /// Gets DataPoints for Bonds
+        /// </summary>
+        /// <returns></returns>
+        public virtual IEnumerable<(AtomDataPoint a1, AtomDataPoint a2)> BondDataPoints() => 
+            from bond in Bonds 
+            let start = DataPoints.FirstOrDefault(s => s.Atom.Equals(bond.Atom1)) 
+            let end = DataPoints.FirstOrDefault(s => s.Atom.Equals(bond.Atom2)) 
+            select (start, end);
 
         /// <summary>
         /// Creates Analysis Type
@@ -146,7 +171,8 @@ namespace PorphyStruct.Analysis
         public static MacrocycleAnalysis Create(List<Atom> atoms, IEnumerable<Bond> bonds, MacrocycleType type) =>
             type switch
             {
-                MacrocycleType.Porphyrin => new PorphyrinAnalysis(atoms, bonds)
+                MacrocycleType.Porphyrin => new PorphyrinAnalysis(atoms, bonds),
+                MacrocycleType.Corrole => new CorroleAnalysis(atoms, bonds)
             };
 
         /// <summary>

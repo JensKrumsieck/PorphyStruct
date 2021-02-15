@@ -6,14 +6,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PorphyStruct.Analysis;
+using PorphyStruct.Extension;
 
 namespace PorphyStruct
 {
     public class Macrocycle : Molecule
     {
+        /// <summary>
+        /// Correlates type to size of ring fragment
+        /// </summary>
+        public static Dictionary<MacrocycleType, int> RingSize = new Dictionary<MacrocycleType, int>
+        {
+            {MacrocycleType.Porphyrin, 24},
+            {MacrocycleType.Corrole, 23}
+        };
+
         public Macrocycle(string path) : base(MoleculeFactory.CreateProvider(path))
         { }
 
+        /// <summary>
+        /// Gets or Sets the Macrocycle Type
+        /// </summary>
+        public MacrocycleType MacrocycleType { get; set; } = MacrocycleType.Porphyrin;
+
+        /// <summary>
+        /// Contains detected fragment data
+        /// </summary>
         public IList<MacrocycleAnalysis> DetectedParts = new List<MacrocycleAnalysis>();
 
         /// <summary>
@@ -29,7 +47,11 @@ namespace PorphyStruct
                 var p = part.ToHashSet();
                 var data = FindCorpus(ref p);
                 var bonds = Bonds.Where(b => data.Count(a => b.Atoms.Contains(a)) == 2);
-                if (data.Count == 24) DetectedParts.Add(MacrocycleAnalysis.Create(data.ToList(), bonds, MacrocycleType.Porphyrin));
+                var unique = true;
+                foreach (var current in DetectedParts) 
+                    if (current.Atoms.ScrambledEquals(data)) unique = false;
+
+                if (data.Count == RingSize[MacrocycleType] && unique) DetectedParts.Add(MacrocycleAnalysis.Create(data.ToList(), bonds, MacrocycleType.Porphyrin));
             }
         }
 
@@ -44,9 +66,8 @@ namespace PorphyStruct
                 Atoms.Where(s => Neighbors(s).Count() >= 2), NonMetalNonDeadEndNeighbors))
             {
                 var connectedAtoms = fig as Atom[] ?? fig.ToArray();
-                if (connectedAtoms.Length >= 24) parts.Add(connectedAtoms); //TODO: Types!
+                if (connectedAtoms.Length >= RingSize[MacrocycleType]) parts.Add(connectedAtoms);
             }
-
             return parts;
         }
 
@@ -60,15 +81,14 @@ namespace PorphyStruct
             var corpus = new HashSet<Atom>();
             foreach (var atom in part.Where(s => !s.IsMetal))
             {
-                corpus = RingPath(atom, 24 - 8); //TODO: Types
+                corpus = RingPath(atom, RingSize[MacrocycleType] - 8); 
                 foreach (var a in corpus.SelectMany(NonMetalNonDeadEndNeighbors))
                 {
-                    var outer = RingPath(a, 24 - 4);
+                    var outer = RingPath(a, RingSize[MacrocycleType] - 4);
                     outer.UnionWith(corpus);
-                    if (outer.Count == 24) return outer;
+                    if (outer.Count == RingSize[MacrocycleType]) return outer;
                 }
             }
-
             corpus = FindCorpusFallBack(ref part);
             return corpus;
         }
@@ -78,19 +98,19 @@ namespace PorphyStruct
         /// </summary>
         /// <param name="part"></param>
         /// <returns></returns>
-        private static HashSet<Atom> FindCorpusFallBack(ref HashSet<Atom> part)
+        private HashSet<Atom> FindCorpusFallBack(ref HashSet<Atom> part)
         {
             var corpus = new HashSet<Atom>();
             foreach (var atom in part.Where(s => !s?.IsMetal ?? false))
             {
                 var p = part;
                 IEnumerable<Atom> Func(Atom s) => p?.Where(a => a.BondToByCovalentRadii(s) && !a.IsMetal);
-                corpus = FuncRingPath(atom, 24 - 8, Func);
+                corpus = FuncRingPath(atom, RingSize[MacrocycleType] - 8, Func);
                 foreach (var n in corpus.SelectMany((Func<Atom, IEnumerable<Atom>>)Func))
                 {
-                    var outer = FuncRingPath(n, 24 - 4, Func);
+                    var outer = FuncRingPath(n, RingSize[MacrocycleType] - 4, Func);
                     outer.UnionWith(corpus);
-                    if (outer.Count == 24) return outer;
+                    if (outer.Count == RingSize[MacrocycleType]) return outer;
                 }
             }
             return corpus;

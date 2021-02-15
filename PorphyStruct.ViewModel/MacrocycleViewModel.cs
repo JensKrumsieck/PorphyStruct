@@ -1,15 +1,17 @@
 ﻿using ChemSharp.Molecules;
 using OxyPlot;
 using PorphyStruct.ViewModel.Windows;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using TinyMVVM;
 
 namespace PorphyStruct.ViewModel
 {
-    public class MacrocycleViewModel : BaseViewModel
+    public class MacrocycleViewModel : ListingViewModel<AnalysisViewModel>
     {
         /// <summary>
         /// The Path to open from
@@ -21,17 +23,17 @@ namespace PorphyStruct.ViewModel
         /// </summary>
         public Macrocycle Macrocycle { get; set; }
 
-        private Atom _selectedItem;
+        private Atom _selectedAtom;
         /// <summary>
         /// Gets or Sets the selected Atom
         /// </summary>
-        public Atom SelectedItem
+        public Atom SelectedAtom
         {
-            get => _selectedItem;
-            set => Set(ref _selectedItem, value, () =>
+            get => _selectedAtom;
+            set => Set(ref _selectedAtom, value, () =>
             {
                 foreach (var atom in Atoms3D)
-                    atom.IsSelected = atom.Atom.Equals(_selectedItem);
+                    atom.IsSelected = atom.Atom.Equals(_selectedAtom);
             });
         }
 
@@ -46,17 +48,35 @@ namespace PorphyStruct.ViewModel
         /// </summary>
         public ObservableCollection<BondVisual3D> Bonds3D { get; }
 
-        public MacrocycleViewModel()
+        public MacrocycleViewModel(string path)
         {
-            Filename = @"D:\Desktop\PorphyStruct_CIFS_PAPER\ps16bw_compl.cif";
+            Filename = path;
             Macrocycle = new Macrocycle(Filename);
-            Atoms3D = new ObservableCollection<AtomVisual3D>(Macrocycle.Atoms.Select(s => new AtomVisual3D(s) { IsSelected = s.Equals(SelectedItem) }));
+            Atoms3D = new ObservableCollection<AtomVisual3D>(Macrocycle.Atoms.Select(s => new AtomVisual3D(s) { IsSelected = s.Equals(SelectedAtom) }));
             Bonds3D = new ObservableCollection<BondVisual3D>(Macrocycle.Bonds.Select(s => new BondVisual3D(s)));
         }
 
         public override string Title => Path.GetFileNameWithoutExtension(Filename);
 
-        public void Validate()
+        /// <summary>
+        /// Runs Detection Algorithm
+        /// </summary>
+        /// <returns></returns>
+        public async Task Detect()
+        {
+            Items.Clear();
+            await Task.Run(Macrocycle.Detect);
+            Validate();
+            foreach (var part in Macrocycle.DetectedParts)
+            {
+                var analysis = new AnalysisViewModel(this) { Analysis = part };
+                await Task.Run(analysis.Analyze);
+                Items.Add(analysis);
+                SelectedIndex = Items.IndexOf(analysis);
+            }
+        }
+
+        private void Validate()
         {
             foreach (var bond in Bonds3D)
             {

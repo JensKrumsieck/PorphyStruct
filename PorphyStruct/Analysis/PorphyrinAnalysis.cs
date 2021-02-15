@@ -1,8 +1,7 @@
-﻿using ChemSharp.Molecules;
+﻿using ChemSharp.Mathematics;
+using ChemSharp.Molecules;
 using System.Collections.Generic;
 using System.Linq;
-using ChemSharp.Mathematics;
-using OxyPlot.Series;
 
 namespace PorphyStruct.Analysis
 {
@@ -13,37 +12,7 @@ namespace PorphyStruct.Analysis
         //ReSharper disable InconsistentNaming
         internal static string[] _AlphaAtoms = { "C1", "C4", "C6", "C9", "C11", "C14", "C16", "C19", "C1" };
         internal static List<string> _RingAtoms = new List<string> { "C1", "C2", "N1", "C3", "C4", "C5", "C6", "C7", "N2", "C8", "C9", "C10", "C11", "C12", "N3", "C13", "C14", "C15", "C16", "C17", "N4", "C18", "C19", "C20" };
-        internal static List<(string atom1, string atom2)> _AnalysisBonds => new List<(string atom1, string atom2)>
-            {
-            ("C1", "C2"),
-            ("C1", "N1"),
-            ("C2", "C3"),
-            ("C3", "C4"),
-            ("N1", "C4"),
-            ("C5", "C4"),
-            ("C5", "C6"),
-            ("C6", "N2"),
-            ("C6", "C7"),
-            ("C8", "C7"),
-            ("C8", "C9"),
-            ("C9", "C10"),
-            ("C9", "N2"),
-            ("C11", "C10"),
-            ("C11", "N3"),
-            ("C11", "C12"),
-            ("C12", "C13"),
-            ("C13", "C14"),
-            ("N3", "C14"),
-            ("C14", "C15"),
-            ("C15", "C16"),
-            ("C16", "C17"),
-            ("C17", "C18"),
-            ("C18", "C19"),
-            ("N4", "C19"),
-            ("N4", "C16"),
-            ("C19", "C20"),
-            ("C20", "C1")
-        };
+
         internal static Dictionary<string, double> _Multiplier => new Dictionary<string, double>
         {
             { "C1", 0d },
@@ -87,7 +56,19 @@ namespace PorphyStruct.Analysis
             if (c20 != null) yield return new AtomDataPoint(1, MathV.Distance(MeanPlane, c20.Location), c20);
         }
 
-        public override List<(string atom1, string atom2)> AnalysisBonds => _AnalysisBonds;
+        ///<inheritdoc/>
+        public override IEnumerable<(AtomDataPoint a1, AtomDataPoint a2)> BondDataPoints() => base.BondDataPoints().Where(s => s.a1.Atom.Title != "C20" && s.a2.Atom.Title != "C20").Concat(PorphyrinBonds());
+
+        /// <summary>
+        /// Calculates Bond DataPoints for Porphyrins
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<(AtomDataPoint a1, AtomDataPoint a2)> PorphyrinBonds()
+        {
+            yield return (DataPoints.OrderBy(s => s.X).First(), DataPoints.First(s => s.Atom.Title == "C1"));
+            yield return (DataPoints.OrderBy(s => s.X).Last(), DataPoints.First(s => s.Atom.Title == "C19"));
+        }
+
         public override List<string> RingAtoms => _RingAtoms;
         public override string[] AlphaAtoms => _AlphaAtoms;
         public override Dictionary<string, double> Multiplier => _Multiplier;

@@ -1,4 +1,5 @@
 ﻿using ChemSharp.Molecules;
+using OxyPlot;
 using OxyPlot.Series;
 
 namespace PorphyStruct
@@ -13,6 +14,8 @@ namespace PorphyStruct
             Atom = atom;
             Value = atom.AtomicNumber;
         }
+
+        public DataPoint ToDataPoint() => new DataPoint(X, Y);
 
         public static string TrackerFormatString = "{0} \r\n{1}: {2} \r\n{3}: {4} \r\n{Atom}";
     }

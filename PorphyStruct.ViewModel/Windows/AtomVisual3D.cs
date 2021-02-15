@@ -36,6 +36,6 @@ namespace PorphyStruct.ViewModel.Windows
             Content = new GeometryModel3D(builder.ToMesh(), MaterialHelper.CreateMaterial(brush, 0, 0));
         }
 
-        public override string ToString() => Atom + (IsSelected ? " SelectedItem" : "");
+        public override string ToString() => Atom + (IsSelected ? " SelectedAtom" : "");
     }
 }

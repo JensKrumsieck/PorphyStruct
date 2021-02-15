@@ -15,6 +15,7 @@
         mc:Ignorable="d"
         TitlebarHeight="50"
         IconSize="36"
+        AllowDrop="True"
         Background="{DynamicResource Background}"
         Icon="Resources/porphystruct.ico"
         MinWidth="1200" MinHeight="750"
@@ -68,11 +69,17 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <wpf:PlotView Grid.RowSpan="2" x:Name="PlotView">
-            <wpf:PlotView.Background>
+        <TabControl Grid.RowSpan="2" ItemsSource="{Binding Items}" 
+                    SelectedIndex="{Binding SelectedIndex}" Drop="OnFileDrop">
+            <TabControl.Background>
                 <ImageBrush ImageSource="/Resources/porphystruct.png" Stretch="None"/>
-            </wpf:PlotView.Background>
-        </wpf:PlotView>
+            </TabControl.Background>
+            <TabControl.ContentTemplate>
+                <DataTemplate DataType="viewModel:AnalysisViewModel">
+                    <wpf:PlotView x:Name="PlotView" Model="{Binding Model}"/>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
         <h:HelixViewport3D Grid.Column="1" Grid.Row="0" x:Name="Viewport3D"
                            MouseLeftButtonDown="Viewport3D_OnMouseLeftButtonDown"
                            ShowViewCube="False" ShowCoordinateSystem="True" 
@@ -85,7 +92,7 @@
         <TabControl Grid.Row="1" Grid.Column="1" Background="Transparent">
             <TabItem Header="Coordinates">
                 <DataGrid IsSynchronizedWithCurrentItem="True" x:Name="CoordinateGrid" CanUserSortColumns="True" CanUserAddRows="False" AutoGenerateColumns="False"
-                         SelectedItem="{Binding SelectedItem}"
+                         SelectedItem="{Binding SelectedAtom}"
                           ItemsSource="{Binding Macrocycle.Atoms}" Foreground="{DynamicResource Dark}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding Title}" Header="Identifier"/>

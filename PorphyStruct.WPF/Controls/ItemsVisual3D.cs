@@ -26,7 +26,9 @@ namespace PorphyStruct.WPF.Controls
                 oldObservableCollection.CollectionChanged -= OnCollectionChanged;
             if (e.NewValue is INotifyCollectionChanged observableCollection)
                 observableCollection.CollectionChanged += OnCollectionChanged;
-            if (ItemsSource != null)  AddItems(ItemsSource);
+            if (ItemsSource == null) return;
+                Children.Clear();
+                AddItems(ItemsSource);
         }
         
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
