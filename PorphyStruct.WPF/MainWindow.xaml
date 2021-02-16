@@ -10,7 +10,6 @@
         xmlns:viewModel="clr-namespace:PorphyStruct.ViewModel;assembly=PorphyStruct.ViewModel"
         xmlns:controls="clr-namespace:PorphyStruct.WPF.Controls"
         xmlns:extension="clr-namespace:ThemeCommons.MaterialDesign.Extension;assembly=ThemeCommons.MaterialDesign"
-        xmlns:commonsEx="clr-namespace:ThemeCommons.Extension;assembly=ThemeCommons"
         d:DataContext="{d:DesignInstance Type=viewModel:MacrocycleViewModel}"
         mc:Ignorable="d"
         TitlebarHeight="50"
@@ -69,7 +68,50 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TabControl Grid.RowSpan="2" ItemsSource="{Binding Items}" 
+        <controls:Popup Title="Choose Macrocyclic Framework" Grid.ZIndex="10" Grid.ColumnSpan="2" Grid.RowSpan="2" x:Name="TypePopup" Visibility="Collapsed">
+            <StackPanel>
+                <ListBox Style="{DynamicResource MaterialDesignToolToggleListBox}" x:Name="TypeList"
+                 HorizontalAlignment="Center" Margin="0 10 0 0"
+                 SelectedIndex="0">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="3"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="Width" Value="200"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                        <Border BorderThickness="{TemplateBinding BorderThickness}"
+                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                            Background="{TemplateBinding Background}"
+                                            CornerRadius="5">
+                                            <ContentPresenter/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="true">
+                                                <Setter Property="BorderBrush" Value="{DynamicResource SecondaryHueMidBrush}" />
+                                                <Setter Property="BorderThickness" Value="3" />
+                                                <Setter Property="Background" Value="WhiteSmoke" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBoxItem  Padding="0" ContentTemplate="{StaticResource Porphyrin}" RenderOptions.BitmapScalingMode="Fant" />
+                    <ListBoxItem Padding="0" ContentTemplate="{StaticResource Corrole}" RenderOptions.BitmapScalingMode="Fant"/>
+                    <ListBoxItem  Padding="0" ContentTemplate="{StaticResource Norcorrole}" RenderOptions.BitmapScalingMode="Fant" />
+                    <ListBoxItem  Padding="0" ContentTemplate="{StaticResource Porphycene}" RenderOptions.BitmapScalingMode="Fant" />
+                    <ListBoxItem  Padding="0" ContentTemplate="{StaticResource Corrphycene}" RenderOptions.BitmapScalingMode="Fant" />
+                </ListBox>
+                <Button Content="Submit" Background="{DynamicResource Dark}" Foreground="{DynamicResource Light}" Click="TypeSubmit_OnClick"/>
+            </StackPanel>
+        </controls:Popup>
+        <TabControl Grid.RowSpan="2" ItemsSource="{Binding Items}" Grid.Row="0" Grid.Column="0" 
                     SelectedIndex="{Binding SelectedIndex}" Drop="OnFileDrop">
             <TabControl.Background>
                 <ImageBrush ImageSource="/Resources/porphystruct.png" Stretch="None"/>

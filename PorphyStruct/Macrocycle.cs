@@ -51,7 +51,7 @@ namespace PorphyStruct
                 foreach (var current in DetectedParts) 
                     if (current.Atoms.ScrambledEquals(data)) unique = false;
 
-                if (data.Count == RingSize[MacrocycleType] && unique) DetectedParts.Add(MacrocycleAnalysis.Create(data.ToList(), bonds, MacrocycleType.Porphyrin));
+                if (data.Count == RingSize[MacrocycleType] && unique) DetectedParts.Add(MacrocycleAnalysis.Create(data.ToList(), bonds, MacrocycleType));
             }
         }
 

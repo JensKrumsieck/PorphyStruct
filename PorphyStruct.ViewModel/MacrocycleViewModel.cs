@@ -1,7 +1,6 @@
 ﻿using ChemSharp.Molecules;
 using OxyPlot;
 using PorphyStruct.ViewModel.Windows;
-using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -78,12 +77,13 @@ namespace PorphyStruct.ViewModel
 
         private void Validate()
         {
-            foreach (var bond in Bonds3D)
+            foreach (var part in Macrocycle.DetectedParts)
             {
-                foreach (var part in Macrocycle.DetectedParts)
+                var validBonds = Bonds3D.Where(bond => part.Atoms.Count(atom => bond.Bond.Atoms.Contains(atom)) == 2);
+                foreach (var bond in validBonds)
                 {
-                    bond.IsValid = part.Atoms.Count(s => bond.Bond.Atoms.Contains(s)) == 2;
                     bond.Color = (Color)ColorConverter.ConvertFromString(part.AnalysisColor);
+                    bond.IsValid = true;
                 }
             }
         }

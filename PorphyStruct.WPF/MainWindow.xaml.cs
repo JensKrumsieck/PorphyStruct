@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using PorphyStruct.Analysis;
 using ThemeCommons.Controls;
 
 namespace PorphyStruct.WPF
@@ -49,12 +50,26 @@ namespace PorphyStruct.WPF
         {
             if (!e.Data.GetDataPresent(DataFormats.FileDrop)) return;
             var files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-            DataContext = ViewModel = new MacrocycleViewModel((files ?? throw new InvalidOperationException()).FirstOrDefault());
+            OpenFile((files ?? throw new InvalidOperationException()).FirstOrDefault());
+        }
+
+        private void OpenFile(string path)
+        {
+            DataContext = ViewModel = new MacrocycleViewModel(path);
+            TypePopup.Visibility = Visibility.Visible;
         }
 
 
         private async void Detect_OnClick(object sender, RoutedEventArgs e) => await ViewModel.Detect();
 
         private void Analyze_OnClick(object sender, RoutedEventArgs e) => ViewModel.SelectedItem.Analyze();
+
+        private void TypeSubmit_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel == null) return;
+            var type = (MacrocycleType)TypeList.SelectedIndex;
+            ViewModel.Macrocycle.MacrocycleType = type;
+            TypePopup.Visibility = Visibility.Hidden;
+        }
     }
 }

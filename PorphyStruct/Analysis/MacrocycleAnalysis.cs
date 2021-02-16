@@ -5,6 +5,7 @@ using ChemSharp.Molecules.Extensions;
 using PorphyStruct.Extension;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 
@@ -89,13 +90,10 @@ namespace PorphyStruct.Analysis
                 var coordX = 1d;
                 if (a.Title.Contains("C")) coordX = fix + dist * Multiplier[a.Title];
                 if (a.Title.Contains("N")) coordX = fix + dist / 2d;
-
                 //starts with C1 which is alpha per definition, so refresh distance every alpha atom.
                 if (IsAlpha(a) && NextAlpha(a) != null) dist = a.DistanceTo(NextAlpha(a));
-
                 //alpha atoms are fixpoints
                 if (IsAlpha(a)) fix = coordX;
-
                 yield return new AtomDataPoint(coordX, MathV.Distance(MeanPlane, a.Location), a);
             }
         }
@@ -182,17 +180,14 @@ namespace PorphyStruct.Analysis
         {
             //cycle valid?
             if (Atoms.Count() != RingAtoms.Count) return;
-            //set macrocycle flag
-            Atoms.ForEach(s => s.Title = s.Symbol + "M");
             //track visited atoms
             var visited = new HashSet<Atom>();
-
             //set Identifier for C1 Atom
             C1.Title = "C1";
             //get N4 Cavity, necessary for performance
             var cavity = N4Cavity;
             //force c2 to be first step
-            var current = Neighbors(C1).First(s => !cavity.Contains(s) && Neighbors(s).Any(n => Beta.Contains(n)));
+            var current = Neighbors(C1).First(s => !cavity.Contains(s) && Beta.Contains(s));
             current.Title = "C2";
             //add C1&C2 to visited
             visited.UnionWith(new HashSet<Atom>() { current, C1 });
@@ -210,9 +205,14 @@ namespace PorphyStruct.Analysis
                     i++;
                 }
             }
+
             //set up identifiers for nitrogens
-            // ReSharper disable once PossibleNullReferenceException
-            for (var j = 1; j <= 4; j++) cavity.FirstOrDefault(s => Neighbors(s).Contains(Atoms.FirstOrDefault(a => a.Title == AlphaAtoms[2 * j - 1]))).Title = "N" + j;
+            for (var j = 1; j <= 4; j++)
+            {
+                var alpha = Atoms.First(a => a.Title == AlphaAtoms[2 * j - 1]);
+                var nitrogen = cavity.First(s => Neighbors(s).Contains(alpha));
+                nitrogen.Title = "N" + j;
+            }
         }
     }
 }
