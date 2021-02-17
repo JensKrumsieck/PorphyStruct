@@ -32,6 +32,10 @@ namespace PorphyStruct
         public double SeriesThickness { get; set; }
         public double AnnotationThickness { get; set; }
         public MarkerType MarkerType { get; set; }
+        public int MarkerSize { get; set; }
+        public bool UseAtomRadiusMarkerSize { get; set; }
+        public int MarkerBorderThickness { get; set; }
+        public string MarkerBorderColor { get; set; }
         #endregion
 
         #region Export
@@ -87,15 +91,23 @@ namespace PorphyStruct
                 FontWeight = 200,
                 Font = "Arial",
                 FontSize = 14,
+
                 BorderThickness = 0,
                 Padding = 1.5,
+
                 AxisFormat = "{0} / {1}",
                 AxisThickness = 1.5,
-                MarkerType = MarkerType.Circle,
                 ShowXAxis = false,
                 ShowZero = true,
-                AnnotationThickness = 1.5,
+
                 SeriesThickness = 1.5,
+                AnnotationThickness = 1.5,
+                MarkerType = MarkerType.Circle,
+                MarkerSize = 5,
+                UseAtomRadiusMarkerSize = true,
+                MarkerBorderThickness = 0,
+                MarkerBorderColor = "#000000",
+
                 ExportWidth = 2000,
                 ExportHeight = 1000,
                 ExportDPI = 300

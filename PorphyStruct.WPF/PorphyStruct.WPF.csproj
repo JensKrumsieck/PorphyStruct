@@ -4,6 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <LangVersion>9.0</LangVersion>
     <ApplicationIcon>Resources\porphystruct.ico</ApplicationIcon>
     <PackageIcon>Resources\porphystruct.ico</PackageIcon>
   </PropertyGroup>

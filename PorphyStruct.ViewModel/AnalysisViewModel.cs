@@ -1,12 +1,11 @@
-﻿using OxyPlot.Annotations;
-using OxyPlot.Series;
+﻿using MathNet.Numerics.LinearAlgebra.Double;
+using OxyPlot.Annotations;
 using PorphyStruct.Analysis;
+using PorphyStruct.Extension;
 using PorphyStruct.Plot;
 using System.Linq;
 using TinyMVVM;
 using ChemSharp.Mathematics;
-using MathNet.Numerics.LinearAlgebra.Double;
-using PorphyStruct.Extension;
 
 namespace PorphyStruct.ViewModel
 {
@@ -31,7 +30,7 @@ namespace PorphyStruct.ViewModel
             {
                 Model.Annotations.Add(new ArrowAnnotation { StartPoint = a1.ToDataPoint(), EndPoint = a2.ToDataPoint(), HeadLength = 0 });
             }
-            Model.Series.Add(new ScatterSeries { ItemsSource = points, TrackerFormatString = AtomDataPoint.TrackerFormatString, ColorAxisKey = "colors", MarkerType = Settings.Instance.MarkerType });
+            Model.Series.Add(new DefaultScatterSeries { ItemsSource = points });
             Model.InvalidatePlot(true);
         }
         public void Simulate()

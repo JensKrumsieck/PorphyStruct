@@ -13,6 +13,8 @@ namespace PorphyStruct
         {
             Atom = atom;
             Value = atom.AtomicNumber;
+            if (Settings.Instance.UseAtomRadiusMarkerSize)
+                Size = Settings.Instance.MarkerSize *  (Atom.CovalentRadius ?? 77) / 77d;
         }
 
         public DataPoint ToDataPoint() => new DataPoint(X, Y);

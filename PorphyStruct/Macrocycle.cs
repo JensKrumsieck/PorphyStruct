@@ -80,7 +80,7 @@ namespace PorphyStruct
         /// <returns></returns>
         private HashSet<Atom> FindCorpus(ref HashSet<Atom> part)
         {
-            var corpus = new HashSet<Atom>();
+            HashSet<Atom> corpus;
             foreach (var atom in part.Where(s => !s.IsMetal))
             {
                 corpus = RingPath(atom, RingSize[MacrocycleType] - 8); 

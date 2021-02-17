@@ -59,11 +59,7 @@ namespace PorphyStruct.WPF
             DataContext = ViewModel = new MacrocycleViewModel(path);
             TypePopup.Visibility = Visibility.Visible;
         }
-
-
-        private async void Detect_OnClick(object sender, RoutedEventArgs e) => await ViewModel.Detect();
-
-        private void Analyze_OnClick(object sender, RoutedEventArgs e) => Task.Run(ViewModel.SelectedItem.Analyze);
+        private async void Analyze_OnClick(object sender, RoutedEventArgs e) =>  await ViewModel.Detect();
         private void Simulate_OnClick(object sender, RoutedEventArgs e) => Task.Run(ViewModel.SelectedItem.Simulate);
 
         private void TypeSubmit_OnClick(object sender, RoutedEventArgs e)
