@@ -9,8 +9,8 @@
         xmlns:h="http://helix-toolkit.org/wpf"
         xmlns:viewModel="clr-namespace:PorphyStruct.ViewModel;assembly=PorphyStruct.ViewModel"
         xmlns:controls="clr-namespace:PorphyStruct.WPF.Controls"
-        xmlns:extension="clr-namespace:ThemeCommons.MaterialDesign.Extension;assembly=ThemeCommons.MaterialDesign"
-        d:DataContext="{d:DesignInstance Type=viewModel:MacrocycleViewModel}"
+        xmlns:extension="clr-namespace:ThemeCommons.MaterialDesign.Extension;assembly=ThemeCommons.MaterialDesign" xmlns:converter="clr-namespace:ThemeCommons.Converter;assembly=ThemeCommons"
+                       d:DataContext="{d:DesignInstance Type=viewModel:MacrocycleViewModel}"
         mc:Ignorable="d"
         TitlebarHeight="50"
         IconSize="36"
@@ -35,15 +35,16 @@
                 <ToolBarTray WindowChrome.IsHitTestVisibleInChrome="True">
                     <ToolBar>
                         <Button extension:ControlExtension.AttachedIcon="Folder" Content="Open"/>
-                        <Button extension:ControlExtension.AttachedIcon="ContentSave" Content="Save"/>
-                        <Separator/>
-                        <Button extension:ControlExtension.AttachedIcon="Flask" Content="Analyze" Click="Analyze_OnClick"/>
-                        <Button extension:ControlExtension.AttachedIcon="Wand" Content="Simulate" Click="Simulate_OnClick"/>
-                        <Button extension:ControlExtension.AttachedIcon="Compare" Content="Compare"/>
+                        <Button extension:ControlExtension.AttachedIcon="ContentSave" Content="Save" IsEnabled="{Binding Converter={converter:NotNullConverter}}"/>
+                    </ToolBar>
+                    <ToolBar IsEnabled="{Binding  Converter={converter:NotNullConverter}}">
+                        <Button extension:ControlExtension.AttachedIcon="Flask" Content="Analyze" Click="Analyze_OnClick" IsEnabled="{Binding Atoms3D, Converter={converter:NotNullConverter}}"/>
+                        <Button extension:ControlExtension.AttachedIcon="Wand" Content="Simulate" Click="Simulate_OnClick" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
+                        <Button extension:ControlExtension.AttachedIcon="Compare" Content="Compare" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
                         <Separator/>
                         <ListBox SelectionMode="Multiple">
-                            <ListBoxItem Style="{DynamicResource ToolbarListItem}" extension:ControlExtension.AttachedIcon="PlusMinusBox" Content="Invert"/>
-                            <ListBoxItem Style="{DynamicResource ToolbarListItem}" extension:ControlExtension.AttachedIcon="VectorDifference" Content="Difference"/>
+                            <ListBoxItem Style="{DynamicResource ToolbarListItem}" extension:ControlExtension.AttachedIcon="PlusMinusBox" Content="Invert" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
+                            <ListBoxItem Style="{DynamicResource ToolbarListItem}" extension:ControlExtension.AttachedIcon="VectorDifference" Content="Difference" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
                         </ListBox>
                     </ToolBar>
                     <ToolBar>
