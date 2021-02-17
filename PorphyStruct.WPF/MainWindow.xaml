@@ -38,7 +38,7 @@
                         <Button extension:ControlExtension.AttachedIcon="ContentSave" Content="Save"/>
                         <Separator/>
                         <Button extension:ControlExtension.AttachedIcon="Flask" Content="Analyze" Click="Analyze_OnClick"/>
-                        <Button extension:ControlExtension.AttachedIcon="Wand" Content="Simulate"/>
+                        <Button extension:ControlExtension.AttachedIcon="Wand" Content="Simulate" Click="Simulate_OnClick"/>
                         <Button extension:ControlExtension.AttachedIcon="Compare" Content="Compare"/>
                         <Separator/>
                         <ListBox SelectionMode="Multiple">
@@ -111,8 +111,8 @@
                 <Button Content="Submit" Background="{DynamicResource Dark}" Foreground="{DynamicResource Light}" Click="TypeSubmit_OnClick"/>
             </StackPanel>
         </controls:Popup>
-        <TabControl Grid.RowSpan="2" ItemsSource="{Binding Items}" Grid.Row="0" Grid.Column="0" 
-                    SelectedIndex="{Binding SelectedIndex}" Drop="OnFileDrop">
+        <TabControl Grid.RowSpan="2" ItemsSource="{Binding Items}" Grid.Row="0" Grid.Column="0" Margin="0" BorderThickness="0" Padding="0"
+                    SelectedIndex="{Binding SelectedIndex}" Drop="OnFileDrop" ItemContainerStyle="{DynamicResource TabHeaderStyle}">
             <TabControl.Background>
                 <ImageBrush ImageSource="/Resources/porphystruct.png" Stretch="None"/>
             </TabControl.Background>
@@ -131,7 +131,7 @@
             <controls:ItemsVisual3D ItemsSource="{Binding Atoms3D}"/>
             <controls:ItemsVisual3D ItemsSource="{Binding Bonds3D}"/>
         </h:HelixViewport3D>
-        <TabControl Grid.Row="1" Grid.Column="1" Background="Transparent">
+        <TabControl Grid.Row="1" Grid.Column="1" Background="Transparent" TabStripPlacement="Top">
             <TabItem Header="Coordinates">
                 <DataGrid IsSynchronizedWithCurrentItem="True" x:Name="CoordinateGrid" CanUserSortColumns="True" CanUserAddRows="False" AutoGenerateColumns="False"
                          SelectedItem="{Binding SelectedAtom}"

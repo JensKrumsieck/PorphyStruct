@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ChemSharp.Molecules.DataProviders;
 using PorphyStruct.Analysis;
 using PorphyStruct.Extension;
 
@@ -21,8 +22,9 @@ namespace PorphyStruct
             {MacrocycleType.Corrole, 23}
         };
 
-        public Macrocycle(string path) : base(MoleculeFactory.CreateProvider(path))
-        { }
+        public Macrocycle(string path) : base(MoleculeFactory.CreateProvider(path)) { }
+
+        public Macrocycle(IAtomDataProvider provider) : base(provider) { }
 
         /// <summary>
         /// Gets or Sets the Macrocycle Type

@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using MathNet.Numerics.LinearAlgebra.Double;
 using OxyPlot.Annotations;
 using OxyPlot.Series;
 using PorphyStruct.Analysis;
@@ -12,6 +14,8 @@ namespace PorphyStruct.ViewModel
         public MacrocycleAnalysis Analysis { get; set; }
 
         public DefaultPlotModel Model { get; set; }
+
+        public override string Title => Parent.Title;
 
         public AnalysisViewModel(MacrocycleViewModel parent) : base(parent)
         {
@@ -28,6 +32,12 @@ namespace PorphyStruct.ViewModel
             }
             Model.Series.Add(new ScatterSeries { ItemsSource = points, TrackerFormatString = AtomDataPoint.TrackerFormatString, ColorAxisKey = "colors", MarkerType = Settings.Instance.MarkerType });
             Model.InvalidatePlot(true);
+        }
+        public void Simulate()
+        {
+            var sim = new Simulation(Parent.Macrocycle.MacrocycleType);
+            var data = Analysis.DataPoints.Select(s => s.Y).ToArray();
+            var res = sim.Simulate(data);
         }
     }
 }

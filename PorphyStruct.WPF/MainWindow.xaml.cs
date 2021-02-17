@@ -63,6 +63,7 @@ namespace PorphyStruct.WPF
         private async void Detect_OnClick(object sender, RoutedEventArgs e) => await ViewModel.Detect();
 
         private void Analyze_OnClick(object sender, RoutedEventArgs e) => ViewModel.SelectedItem.Analyze();
+        private void Simulate_OnClick(object sender, RoutedEventArgs e) => ViewModel.SelectedItem.Simulate();
 
         private void TypeSubmit_OnClick(object sender, RoutedEventArgs e)
         {
