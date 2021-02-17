@@ -12,9 +12,7 @@
                 <ResourceDictionary Source="pack://application:,,,/ThemeCommons.MaterialDesign;component/Themes/Generic.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Styles/ToolBar.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Styles/Images.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/Styles/Popup.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Styles/TabItem.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <SolidColorBrush x:Key="TitleBar" Color="{DynamicResource DarkColor}" Opacity="0.80"/>
             <SolidColorBrush x:Key="MaterialDesignBody" Color="{DynamicResource DarkColor}"/>
