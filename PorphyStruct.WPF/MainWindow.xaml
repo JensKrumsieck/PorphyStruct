@@ -49,7 +49,7 @@
                     </ToolBar>
                     <ToolBar>
                         <Button extension:ControlExtension.AttachedIcon="Cog" Content="Settings"/>
-                        <Button extension:ControlExtension.AttachedIcon="InfoCircle" Content="About"/>
+                        <Button extension:ControlExtension.AttachedIcon="InfoCircle" Content="About" Click="Info_OnClick"/>
                     </ToolBar>
                 </ToolBarTray>
             </StackPanel>
@@ -67,7 +67,30 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <controls:Popup Title="Choose Macrocyclic Framework" Grid.ZIndex="10" Grid.ColumnSpan="2" Grid.RowSpan="2" x:Name="TypePopup" Visibility="Collapsed">
+        <controls:Popup Title="Info - PorphyStruct" Grid.ZIndex="10" Grid.ColumnSpan="2" Grid.RowSpan="2" x:Name="InfoPopup" Visibility="Collapsed">
+            <StackPanel Margin="10">
+                <Image Source="Resources/porphystruct.png" Width="120"/>
+                <TextBlock FontSize="40" TextAlignment="Center" FontWeight="Light" Margin="0 10 0 0">
+                    PorphyStruct
+                    <LineBreak/>
+                    <Run FontSize="16">
+                        Structural Analysis of Porphyrinoids
+                    </Run>
+                </TextBlock>
+                <TextBlock FontSize="16" Margin="0 10 0 0">
+                    Developed by <Hyperlink NavigateUri="http://jenskrumsieck.de" RequestNavigate="URL_OnClicked"><Run FontWeight="Bold">Jens Krumsieck</Run>.</Hyperlink>
+                </TextBlock>
+                <TextBlock Margin="0 10 0 0">
+                    Krumsieck, J, Bröring, M, manuscript in preparation, 2021.
+                    <LineBreak/>
+                    Based on the NSD Method of 
+                    <LineBreak/>
+                    W. Jentzen, X. Z. Song, and J. A. Shelnutt, 1997, J. Phys. Chem. B, 101, 9, 1684-1699.
+                </TextBlock>
+                <Button Content="Close"  Background="{DynamicResource Dark}" Foreground="{DynamicResource Light}" Click="Info_OnClick" Margin="0 20 0 0"/>
+            </StackPanel>
+        </controls:Popup>
+        <controls:Popup Grid.Column="0" Grid.Row="0" Title="Choose Macrocyclic Framework" Grid.ZIndex="10" Grid.ColumnSpan="2" Grid.RowSpan="2" x:Name="TypePopup" Visibility="Collapsed">
             <StackPanel>
                 <ListBox Style="{DynamicResource MaterialDesignToolToggleListBox}" x:Name="TypeList"
                  HorizontalAlignment="Center" Margin="0 10 0 0"

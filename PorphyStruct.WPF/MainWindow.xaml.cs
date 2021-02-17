@@ -1,12 +1,14 @@
 ﻿using HelixToolkit.Wpf;
+using PorphyStruct.Analysis;
 using PorphyStruct.ViewModel;
 using PorphyStruct.ViewModel.Windows;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using PorphyStruct.Analysis;
+using System.Windows.Navigation;
 using ThemeCommons.Controls;
 
 namespace PorphyStruct.WPF
@@ -59,7 +61,7 @@ namespace PorphyStruct.WPF
             DataContext = ViewModel = new MacrocycleViewModel(path);
             TypePopup.Visibility = Visibility.Visible;
         }
-        private async void Analyze_OnClick(object sender, RoutedEventArgs e) =>  await ViewModel.Detect();
+        private async void Analyze_OnClick(object sender, RoutedEventArgs e) => await ViewModel.Detect();
         private void Simulate_OnClick(object sender, RoutedEventArgs e) => Task.Run(ViewModel.SelectedItem.Simulate);
 
         private void TypeSubmit_OnClick(object sender, RoutedEventArgs e)
@@ -69,5 +71,13 @@ namespace PorphyStruct.WPF
             ViewModel.Macrocycle.MacrocycleType = type;
             TypePopup.Visibility = Visibility.Hidden;
         }
+
+        private void URL_OnClicked(object sender, RequestNavigateEventArgs e) =>
+            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
+
+        private void Info_OnClick(object sender, RoutedEventArgs e) => InfoPopup.Visibility =
+            InfoPopup.Visibility == Visibility.Collapsed
+                ? InfoPopup.Visibility = Visibility.Visible
+                : InfoPopup.Visibility = Visibility.Collapsed;
     }
 }
