@@ -30,12 +30,14 @@ namespace PorphyStruct
 
         #region Series
         public double SeriesThickness { get; set; }
-        public double AnnotationThickness { get; set; }
+        public double BondThickness { get; set; }
+        public string BondColor { get; set; }
         public MarkerType MarkerType { get; set; }
         public int MarkerSize { get; set; }
         public bool UseAtomRadiusMarkerSize { get; set; }
         public int MarkerBorderThickness { get; set; }
         public string MarkerBorderColor { get; set; }
+        public string NotMarkedPoints { get; set; }
         #endregion
 
         #region Export
@@ -101,15 +103,17 @@ namespace PorphyStruct
                 ShowZero = true,
 
                 SeriesThickness = 1.5,
-                AnnotationThickness = 1.5,
+                BondThickness = 1.5,
+                BondColor = "#000000",
                 MarkerType = MarkerType.Circle,
                 MarkerSize = 5,
                 UseAtomRadiusMarkerSize = true,
                 MarkerBorderThickness = 0,
                 MarkerBorderColor = "#000000",
+                NotMarkedPoints = "",
 
                 ExportWidth = 2000,
-                ExportHeight = 1000,
+                ExportHeight = 1500,
                 ExportDPI = 300
             };
     }

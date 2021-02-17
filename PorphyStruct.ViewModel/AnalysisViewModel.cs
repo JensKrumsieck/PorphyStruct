@@ -26,10 +26,8 @@ namespace PorphyStruct.ViewModel
         {
             Model.Init();
             var points = Analysis.CalculateDataPoints();
-            foreach (var (a1, a2) in Analysis.BondDataPoints())
-            {
-                Model.Annotations.Add(new ArrowAnnotation { StartPoint = a1.ToDataPoint(), EndPoint = a2.ToDataPoint(), HeadLength = 0 });
-            }
+            foreach (var (a1, a2) in Analysis.BondDataPoints()) 
+                Model.Annotations.Add(new BondAnnotation(a1,a2));
             Model.Series.Add(new DefaultScatterSeries { ItemsSource = points });
             Model.InvalidatePlot(true);
         }
