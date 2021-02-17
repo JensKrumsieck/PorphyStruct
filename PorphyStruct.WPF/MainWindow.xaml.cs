@@ -3,6 +3,7 @@ using PorphyStruct.ViewModel;
 using PorphyStruct.ViewModel.Windows;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using PorphyStruct.Analysis;
@@ -62,8 +63,8 @@ namespace PorphyStruct.WPF
 
         private async void Detect_OnClick(object sender, RoutedEventArgs e) => await ViewModel.Detect();
 
-        private void Analyze_OnClick(object sender, RoutedEventArgs e) => ViewModel.SelectedItem.Analyze();
-        private void Simulate_OnClick(object sender, RoutedEventArgs e) => ViewModel.SelectedItem.Simulate();
+        private void Analyze_OnClick(object sender, RoutedEventArgs e) => Task.Run(ViewModel.SelectedItem.Analyze);
+        private void Simulate_OnClick(object sender, RoutedEventArgs e) => Task.Run(ViewModel.SelectedItem.Simulate);
 
         private void TypeSubmit_OnClick(object sender, RoutedEventArgs e)
         {

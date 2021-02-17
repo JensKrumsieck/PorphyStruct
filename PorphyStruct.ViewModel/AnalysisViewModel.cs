@@ -1,11 +1,12 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using MathNet.Numerics.LinearAlgebra.Double;
-using OxyPlot.Annotations;
+﻿using OxyPlot.Annotations;
 using OxyPlot.Series;
 using PorphyStruct.Analysis;
 using PorphyStruct.Plot;
+using System.Linq;
 using TinyMVVM;
+using ChemSharp.Mathematics;
+using MathNet.Numerics.LinearAlgebra.Double;
+using PorphyStruct.Extension;
 
 namespace PorphyStruct.ViewModel
 {
@@ -36,8 +37,12 @@ namespace PorphyStruct.ViewModel
         public void Simulate()
         {
             var sim = new Simulation(Parent.Macrocycle.MacrocycleType);
-            var data = Analysis.DataPoints.Select(s => s.Y).ToArray();
+            var data = Analysis.DataPoints.OrderBy(d => d.X).Select(s => s.Y).ToArray();
             var res = sim.Simulate(data);
+            var conf = sim.ReferenceMatrix * DenseVector.OfArray(res);
+            var doop = conf.AsArray().Length();
+            var expDoop = Analysis.DataPoints.DisplacementValue();
+            //TODO:Save data somehow
         }
     }
 }
