@@ -12,6 +12,8 @@ namespace PorphyStruct.Plot
             HeadLength = 0;
             Color = OxyColor.Parse(Settings.Instance.BondColor);
             StrokeThickness = Settings.Instance.BondThickness;
+            Layer = AnnotationLayer.BelowSeries;
+            Tag = $"{a1.Atom.Title} - {a2.Atom.Title} ({a1}, {a2})";
         }
     }
 }

@@ -3,11 +3,11 @@ using ChemSharp.Mathematics;
 using ChemSharp.Molecules;
 using ChemSharp.Molecules.Extensions;
 using PorphyStruct.Extension;
+using PorphyStruct.Plot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using PorphyStruct.Plot;
 
 namespace PorphyStruct.Analysis
 {
@@ -153,10 +153,10 @@ namespace PorphyStruct.Analysis
         /// Gets DataPoints for Bonds
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerable<(AtomDataPoint a1, AtomDataPoint a2)> BondDataPoints() => 
-            from bond in Bonds 
-            let start = DataPoints.FirstOrDefault(s => s.Atom.Equals(bond.Atom1)) 
-            let end = DataPoints.FirstOrDefault(s => s.Atom.Equals(bond.Atom2)) 
+        public virtual IEnumerable<(AtomDataPoint a1, AtomDataPoint a2)> BondDataPoints() =>
+            from bond in Bonds.Where(s => !s.Atoms.Select(a => a.Title).ScrambledEquals(new[] { RingAtoms.First(), RingAtoms.Last() })) //Do not draw bond between first and last element
+            let start = DataPoints.FirstOrDefault(s => s.Atom.Equals(bond.Atom1))
+            let end = DataPoints.FirstOrDefault(s => s.Atom.Equals(bond.Atom2))
             select (start, end);
 
         /// <summary>
