@@ -10,7 +10,7 @@ namespace PorphyStruct.Analysis
 
         //ReSharper disable InconsistentNaming
         internal static string[] _AlphaAtoms = { "C1", "C4", "C6", "C9", "C11", "C14", "C16", "C19" };
-        internal static List<string> _RingAtoms = PorphyrinAnalysis._RingAtoms.Except(new List<string>() { "C20" }).ToList();
+        internal static List<string> _RingAtoms = PorphyrinAnalysis._RingAtoms.Except(new List<string> { "C20" }).ToList();
         internal static Dictionary<string, double> _Multiplier => PorphyrinAnalysis._Multiplier;
         // ReSharper restore InconsistentNaming
 
