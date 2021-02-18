@@ -1,13 +1,13 @@
 ﻿using ChemSharp.Extensions;
 using ChemSharp.Molecules;
+using ChemSharp.Molecules.DataProviders;
 using ChemSharp.Molecules.Mathematics;
+using PorphyStruct.Analysis;
+using PorphyStruct.Extension;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ChemSharp.Molecules.DataProviders;
-using PorphyStruct.Analysis;
-using PorphyStruct.Extension;
 
 namespace PorphyStruct
 {
@@ -19,7 +19,8 @@ namespace PorphyStruct
         public static Dictionary<MacrocycleType, int> RingSize = new Dictionary<MacrocycleType, int>
         {
             {MacrocycleType.Porphyrin, 24},
-            {MacrocycleType.Corrole, 23}
+            {MacrocycleType.Corrole, 23},
+            {MacrocycleType.Norcorrole, 22}
         };
 
         public Macrocycle(string path) : base(MoleculeFactory.CreateProvider(path)) { }
@@ -50,7 +51,7 @@ namespace PorphyStruct
                 var data = FindCorpus(ref p);
                 var bonds = Bonds.Where(b => data.Count(a => b.Atoms.Contains(a)) == 2);
                 var unique = true;
-                foreach (var current in DetectedParts) 
+                foreach (var current in DetectedParts)
                     if (current.Atoms.ScrambledEquals(data)) unique = false;
 
                 if (data.Count == RingSize[MacrocycleType] && unique) DetectedParts.Add(MacrocycleAnalysis.Create(data.ToList(), bonds, MacrocycleType));
@@ -83,7 +84,7 @@ namespace PorphyStruct
             HashSet<Atom> corpus;
             foreach (var atom in part.Where(s => !s.IsMetal))
             {
-                corpus = RingPath(atom, RingSize[MacrocycleType] - 8); 
+                corpus = RingPath(atom, RingSize[MacrocycleType] - 8);
                 foreach (var a in corpus.SelectMany(NonMetalNonDeadEndNeighbors))
                 {
                     var outer = RingPath(a, RingSize[MacrocycleType] - 4);

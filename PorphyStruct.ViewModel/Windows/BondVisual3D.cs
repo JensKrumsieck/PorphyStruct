@@ -26,7 +26,7 @@ namespace PorphyStruct.ViewModel.Windows
             get => _color;
             set
             {
-                _color = value; 
+                _color = value;
                 UpdateBond();
             }
         }
@@ -43,7 +43,7 @@ namespace PorphyStruct.ViewModel.Windows
         public BondVisual3D(Bond bond)
         {
             var builder = new MeshBuilder();
-            builder.AddCylinder(bond.Atom1.Location.ToPoint3D(), bond.Atom2.Location.ToPoint3D(), (IsValid? .24 : 0.075), 10);
+            builder.AddCylinder(bond.Atom1.Location.ToPoint3D(), bond.Atom2.Location.ToPoint3D(), (IsValid ? .24 : 0.075), 10);
             var brush = Brushes.DarkGray.Clone();
             if (IsValid) brush = new SolidColorBrush(Color);
             Content = new GeometryModel3D(builder.ToMesh(), MaterialHelper.CreateMaterial(brush, 0, 0));

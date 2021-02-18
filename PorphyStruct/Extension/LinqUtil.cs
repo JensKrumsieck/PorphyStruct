@@ -18,11 +18,11 @@ namespace PorphyStruct.Extension
             foreach (var s in list1)
             {
                 if (cnt.ContainsKey(s)) cnt[s]++;
-                else  cnt.Add(s, 1);
+                else cnt.Add(s, 1);
             }
             foreach (var s in list2)
             {
-                if (cnt.ContainsKey(s))  cnt[s]--;
+                if (cnt.ContainsKey(s)) cnt[s]--;
                 else return false;
             }
             return cnt.Values.All(c => c == 0);

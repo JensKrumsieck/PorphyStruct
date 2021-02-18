@@ -1,4 +1,5 @@
-﻿using ChemSharp.Molecules.DataProviders;
+﻿using ChemSharp.Mathematics;
+using ChemSharp.Molecules.DataProviders;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 using PorphyStruct.Extension;
@@ -6,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ChemSharp.Mathematics;
 
 namespace PorphyStruct.Analysis
 {

@@ -1,8 +1,8 @@
 ﻿using ChemSharp.Mathematics;
 using ChemSharp.Molecules;
+using PorphyStruct.Plot;
 using System.Collections.Generic;
 using System.Linq;
-using PorphyStruct.Plot;
 
 namespace PorphyStruct.Analysis
 {

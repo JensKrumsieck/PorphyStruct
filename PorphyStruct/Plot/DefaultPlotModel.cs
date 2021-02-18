@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using OxyPlot;
+﻿using OxyPlot;
 using OxyPlot.Axes;
 
 namespace PorphyStruct.Plot
@@ -43,7 +41,7 @@ namespace PorphyStruct.Plot
             Axes.Add(YAxis);
             Axes.Add(ColorAxis);
 
-            
+
             if (!PlotAreaBorderThickness.Equals(new OxyThickness(0))) return;
             YAxis.AxislineStyle = LineStyle.Solid;
             XAxis.AxislineStyle = LineStyle.Solid;
@@ -73,7 +71,7 @@ namespace PorphyStruct.Plot
         public void Init()
         {
             Series.Clear();
-            Annotations.Clear(); 
+            Annotations.Clear();
             AddZero();
         }
 

@@ -24,7 +24,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="275"/>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <TextBlock FontSize="14" VerticalAlignment="Center">
                 PorphyStruct

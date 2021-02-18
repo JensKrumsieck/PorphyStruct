@@ -1,11 +1,10 @@
-﻿using MathNet.Numerics.LinearAlgebra.Double;
-using OxyPlot.Annotations;
+﻿using ChemSharp.Mathematics;
+using MathNet.Numerics.LinearAlgebra.Double;
 using PorphyStruct.Analysis;
 using PorphyStruct.Extension;
 using PorphyStruct.Plot;
 using System.Linq;
 using TinyMVVM;
-using ChemSharp.Mathematics;
 
 namespace PorphyStruct.ViewModel
 {
@@ -26,8 +25,8 @@ namespace PorphyStruct.ViewModel
         {
             Model.Init();
             var points = Analysis.CalculateDataPoints();
-            foreach (var (a1, a2) in Analysis.BondDataPoints()) 
-                Model.Annotations.Add(new BondAnnotation(a1,a2));
+            foreach (var (a1, a2) in Analysis.BondDataPoints())
+                Model.Annotations.Add(new BondAnnotation(a1, a2));
             Model.Series.Add(new DefaultScatterSeries { ItemsSource = points });
             Model.InvalidatePlot(true);
         }

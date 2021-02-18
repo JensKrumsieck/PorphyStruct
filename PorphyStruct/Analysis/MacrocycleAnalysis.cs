@@ -170,7 +170,8 @@ namespace PorphyStruct.Analysis
             type switch
             {
                 MacrocycleType.Porphyrin => new PorphyrinAnalysis(atoms, bonds),
-                MacrocycleType.Corrole => new CorroleAnalysis(atoms, bonds)
+                MacrocycleType.Corrole => new CorroleAnalysis(atoms, bonds),
+                MacrocycleType.Norcorrole => new NorcorroleAnalysis(atoms, bonds)
             };
 
         /// <summary>
@@ -210,6 +211,7 @@ namespace PorphyStruct.Analysis
             for (var j = 1; j <= 4; j++)
             {
                 var alpha = Atoms.First(a => a.Title == AlphaAtoms[2 * j - 1]);
+                var neighbots = Neighbors(alpha);
                 var nitrogen = cavity.First(s => Neighbors(s).Contains(alpha));
                 nitrogen.Title = "N" + j;
             }

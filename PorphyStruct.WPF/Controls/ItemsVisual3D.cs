@@ -13,7 +13,7 @@ namespace PorphyStruct.WPF.Controls
             typeof(IEnumerable),
             typeof(ItemsVisual3D),
             new PropertyMetadata(null, (s, e) => ((ItemsVisual3D)s).ItemsSourceChanged(e)));
-        
+
         public IEnumerable ItemsSource
         {
             get => (IEnumerable)GetValue(ItemsSourceProperty);
@@ -27,10 +27,10 @@ namespace PorphyStruct.WPF.Controls
             if (e.NewValue is INotifyCollectionChanged observableCollection)
                 observableCollection.CollectionChanged += OnCollectionChanged;
             if (ItemsSource == null) return;
-                Children.Clear();
-                AddItems(ItemsSource);
+            Children.Clear();
+            AddItems(ItemsSource);
         }
-        
+
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
@@ -61,7 +61,7 @@ namespace PorphyStruct.WPF.Controls
         private void AddItems(IEnumerable items)
         {
             if (items == null) return;
-            foreach(var item in items.Cast<Visual3D>()) Children.Add(item);
+            foreach (var item in items.Cast<Visual3D>()) Children.Add(item);
         }
     }
 }
