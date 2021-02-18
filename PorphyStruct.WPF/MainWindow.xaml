@@ -59,42 +59,34 @@
         </Grid>
     </commons:DefaultWindow.TitlebarContent>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <controls:Popup Title="Info - PorphyStruct" Grid.ZIndex="10" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" x:Name="InfoPopup" Visibility="Collapsed">
+        <commons:Popup Header="Info - PorphyStruct" Grid.ZIndex="10" x:Name="InfoPopup" Visibility="Collapsed">
             <StackPanel Margin="10">
                 <Image Source="Resources/porphystruct.png" Width="120"/>
                 <TextBlock FontSize="40" TextAlignment="Center" FontWeight="Light" Margin="0 10 0 0">
-                    PorphyStruct
-                    <LineBreak/>
-                    <Run FontSize="16">
-                        Structural Analysis of Porphyrinoids
-                    </Run>
+                        PorphyStruct
+                        <LineBreak/>
+                        <Run FontSize="16">
+                            Structural Analysis of Porphyrinoids
+                        </Run>
                 </TextBlock>
                 <TextBlock FontSize="16" Margin="0 10 0 0">
-                    Developed by <Hyperlink NavigateUri="http://jenskrumsieck.de" RequestNavigate="URL_OnClicked"><Run FontWeight="Bold">Jens Krumsieck</Run>.</Hyperlink>
+                        Developed by <Hyperlink NavigateUri="http://jenskrumsieck.de" RequestNavigate="URL_OnClicked"><Run FontWeight="Bold">Jens Krumsieck</Run>.</Hyperlink>
                 </TextBlock>
                 <TextBlock Margin="0 10 0 0">
-                    J. Krumsieck, M. Bröring, manuscript in preparation, 2021.
-                    <LineBreak/>
-                    Based on the NSD Method of 
-                    <LineBreak/>
-                    W. Jentzen, X. Z. Song, and J. A. Shelnutt, 1997, J. Phys. Chem. B, 101, 9, 1684-1699.
+                        J. Krumsieck, M. Bröring, manuscript in preparation, 2021.
+                        <LineBreak/>
+                        Based on the NSD Method of 
+                        <LineBreak/>
+                        W. Jentzen, X. Z. Song, and J. A. Shelnutt, 1997, J. Phys. Chem. B, 101, 9, 1684-1699.
                 </TextBlock>
                 <Button Content="Close"  Background="{DynamicResource Dark}" Foreground="{DynamicResource Light}" Click="Info_OnClick" Margin="0 20 0 0"/>
             </StackPanel>
-        </controls:Popup>
-        <controls:Popup Grid.Column="0" Grid.Row="0" Title="Choose Macrocyclic Framework" Grid.ZIndex="10" Grid.ColumnSpan="2" Grid.RowSpan="2" x:Name="TypePopup" Visibility="Collapsed">
+        </commons:Popup>
+        <commons:Popup Header="Choose Macrocyclic Framework" Grid.ZIndex="10" x:Name="TypePopup" Visibility="Collapsed">
             <StackPanel>
                 <ListBox Style="{DynamicResource MaterialDesignToolToggleListBox}" x:Name="TypeList"
-                 HorizontalAlignment="Center" Margin="0 10 0 0"
-                 SelectedIndex="0">
+                     HorizontalAlignment="Center" Margin="0 10 0 0"
+                     SelectedIndex="0">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid Columns="3"/>
@@ -107,9 +99,9 @@
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
                                         <Border BorderThickness="{TemplateBinding BorderThickness}"
-                                            BorderBrush="{TemplateBinding BorderBrush}" 
-                                            Background="{TemplateBinding Background}"
-                                            CornerRadius="5">
+                                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                                Background="{TemplateBinding Background}"
+                                                CornerRadius="5">
                                             <ContentPresenter/>
                                         </Border>
                                         <ControlTemplate.Triggers>
@@ -132,39 +124,49 @@
                 </ListBox>
                 <Button Content="Submit" Background="{DynamicResource Dark}" Foreground="{DynamicResource Light}" Click="TypeSubmit_OnClick"/>
             </StackPanel>
-        </controls:Popup>
-        <TabControl Grid.RowSpan="2" ItemsSource="{Binding Items}" Grid.Row="0" Grid.Column="0" Margin="0" BorderThickness="0" Padding="0"
-                    SelectedIndex="{Binding SelectedIndex}" Drop="OnFileDrop" ItemContainerStyle="{DynamicResource TabHeaderStyle}">
-            <TabControl.Background>
-                <ImageBrush ImageSource="/Resources/porphystruct.png" Stretch="None"/>
-            </TabControl.Background>
-            <TabControl.ContentTemplate>
-                <DataTemplate DataType="viewModel:AnalysisViewModel">
-                    <wpf:PlotView x:Name="PlotView" Model="{Binding Model}"/>
-                </DataTemplate>
-            </TabControl.ContentTemplate>
-        </TabControl>
-        <h:HelixViewport3D Grid.Column="1" Grid.Row="0" x:Name="Viewport3D"
-                           MouseLeftButtonDown="Viewport3D_OnMouseLeftButtonDown"
-                           ShowViewCube="False" ShowCoordinateSystem="True" 
-                           ZoomExtentsWhenLoaded="True" IsHeadLightEnabled="True" >
-            <h:DefaultLights/>
-            <h:DirectionalHeadLight/>
-            <controls:ItemsVisual3D ItemsSource="{Binding Atoms3D}"/>
-            <controls:ItemsVisual3D ItemsSource="{Binding Bonds3D}"/>
-        </h:HelixViewport3D>
-        <TabControl Grid.Row="1" Grid.Column="1" Background="Transparent" TabStripPlacement="Top">
-            <TabItem Header="Coordinates">
-                <DataGrid IsSynchronizedWithCurrentItem="True" x:Name="CoordinateGrid" CanUserSortColumns="True" CanUserAddRows="False" AutoGenerateColumns="False"
-                         SelectedItem="{Binding SelectedAtom}"
-                          ItemsSource="{Binding Macrocycle.Atoms}" Foreground="{DynamicResource Dark}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding Title}" Header="Identifier"/>
-                        <DataGridTextColumn IsReadOnly="True" Binding="{Binding Symbol}" Header="Symbol"/>
-                        <DataGridTextColumn IsReadOnly="True" Binding="{Binding Location, StringFormat=N4}" Header="Location"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </TabItem>
-        </TabControl>
+        </commons:Popup>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TabControl Grid.RowSpan="2" ItemsSource="{Binding Items}" Grid.Row="0" Grid.Column="0" Margin="0" BorderThickness="0" Padding="0"
+                        SelectedIndex="{Binding SelectedIndex}" Drop="OnFileDrop" ItemContainerStyle="{DynamicResource TabHeaderStyle}">
+                <TabControl.Background>
+                    <ImageBrush ImageSource="/Resources/porphystruct.png" Stretch="None"/>
+                </TabControl.Background>
+                <TabControl.ContentTemplate>
+                    <DataTemplate DataType="viewModel:AnalysisViewModel">
+                        <wpf:PlotView x:Name="PlotView" Model="{Binding Model}"/>
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
+            </TabControl>
+            <h:HelixViewport3D Grid.Column="1" Grid.Row="0" x:Name="Viewport3D"
+                               MouseLeftButtonDown="Viewport3D_OnMouseLeftButtonDown"
+                               ShowViewCube="False" ShowCoordinateSystem="True" 
+                               ZoomExtentsWhenLoaded="True" IsHeadLightEnabled="True" >
+                <h:DefaultLights/>
+                <h:DirectionalHeadLight/>
+                <controls:ItemsVisual3D ItemsSource="{Binding Atoms3D}"/>
+                <controls:ItemsVisual3D ItemsSource="{Binding Bonds3D}"/>
+            </h:HelixViewport3D>
+            <TabControl Grid.Row="1" Grid.Column="1" Background="Transparent" TabStripPlacement="Top">
+                <TabItem Header="Coordinates">
+                    <DataGrid IsSynchronizedWithCurrentItem="True" x:Name="CoordinateGrid" CanUserSortColumns="True" CanUserAddRows="False" AutoGenerateColumns="False"
+                             SelectedItem="{Binding SelectedAtom}"
+                              ItemsSource="{Binding Macrocycle.Atoms}" Foreground="{DynamicResource Dark}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Title}" Header="Identifier"/>
+                            <DataGridTextColumn IsReadOnly="True" Binding="{Binding Symbol}" Header="Symbol"/>
+                            <DataGridTextColumn IsReadOnly="True" Binding="{Binding Location, StringFormat=N4}" Header="Location"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+            </TabControl>
+        </Grid>
     </Grid>
 </commons:DefaultWindow>

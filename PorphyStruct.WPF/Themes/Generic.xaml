@@ -1,8 +1,0 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:controls="clr-namespace:PorphyStruct.WPF.Controls">
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Styles/Popup.xaml"/>
-    </ResourceDictionary.MergedDictionaries>
-    <Style TargetType="{x:Type controls:Popup}" BasedOn="{StaticResource PopupDefaultStyle}"/>
-</ResourceDictionary>
