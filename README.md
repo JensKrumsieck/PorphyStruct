@@ -3,7 +3,7 @@
 # PorphyStruct
 Structural Analysis of Porphyrinoids
 Molecular structures of porphyrinoid macrocycles can be represented by a linear combination of their vibrational normal modes. 
-With **PorphyStruct{ }** displacement diagrams can be generated and simulated to gain insight into the conformation of the obtained substance.
+With **PorphyStruct** displacement diagrams can be generated and simulated to gain insight into the conformation of the obtained substance.
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/cbc210753b3ef4d72b50/maintainability)](https://codeclimate.com/github/JensKrumsieck/PorphyStruct/maintainability)
 [![Build Status](https://dev.azure.com/jenskrumsieck/jenskrumsieck/_apis/build/status/JensKrumsieck.PorphyStruct?branchName=master)](https://dev.azure.com/jenskrumsieck/jenskrumsieck/_build/latest?definitionId=1&branchName=master)
@@ -36,9 +36,12 @@ Due to the large number of correlations found for porphyrins, a transfer of this
 Windows 10 (since official Window 7 EOL was 14th Jan. 2020)
 
 ### Used Libraries
-* [OxyPlot](https://github.com/oxyplot/oxyplot) by Oystein Bjorke (MIT License)
-* [Math.NET](https://www.mathdotnet.com/)(Numerics/Spatial) (MIT/X11 License)
-* [Helix Toolkit](http://helix-toolkit.github.io/) (MIT License)
+* [ChemSharp](https://github.com/JensKrumsieck/ChemSharp) by Jens Krumsieck (MIT License)
+* [OxyPlot](https://github.com/oxyplot/oxyplot) (MIT License)
+* [Math.NET  Numerics](https://github.com/mathnet/mathnet-numerics) (MIT License)
+* [Helix Toolkit](https://github.com/helix-toolkit/helix-toolkit) (MIT License)
+* [TinyMVVM](http://github.com/JensKrumsieck/TinyMVVM) by Jens Krumsieck (MIT License)
+* [ThemeCommons](http://github.com/JensKrumsieck/ThemeCommons) by Jens Krumsieck (MIT License)
 * [Material Design in XAML Toolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit) (MIT License)
 
 - [Contribution guidelines for this project](.github/CONTRIBUTING.md)
