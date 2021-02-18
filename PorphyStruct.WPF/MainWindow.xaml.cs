@@ -1,4 +1,5 @@
-﻿using HelixToolkit.Wpf;
+﻿using ChemSharp.Mathematics;
+using HelixToolkit.Wpf;
 using PorphyStruct.Analysis;
 using PorphyStruct.ViewModel;
 using PorphyStruct.ViewModel.Windows;
@@ -59,8 +60,14 @@ namespace PorphyStruct.WPF
         private void OpenFile(string path)
         {
             DataContext = ViewModel = new MacrocycleViewModel(path);
+            ViewModel.SelectedIndexChanged += ViewModelOnSelectedIndexChanged;
             TypePopup.Visibility = Visibility.Visible;
+            Viewport3D.CameraController.CameraTarget =
+                MathV.Centroid(ViewModel.Macrocycle.Atoms.Select(s => s.Location)).ToPoint3D();
         }
+
+        private void ViewModelOnSelectedIndexChanged(object? sender, EventArgs e) => Viewport3D.CameraController.CameraTarget =
+                MathV.Centroid(ViewModel.SelectedItem.Analysis.Atoms.Select(s => s.Location)).ToPoint3D();
         private async void Analyze_OnClick(object sender, RoutedEventArgs e) => await ViewModel.Detect();
         private void Simulate_OnClick(object sender, RoutedEventArgs e) => Task.Run(ViewModel.SelectedItem.Simulate);
 
