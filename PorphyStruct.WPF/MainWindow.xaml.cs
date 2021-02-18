@@ -64,10 +64,14 @@ namespace PorphyStruct.WPF
             TypePopup.Visibility = Visibility.Visible;
             Viewport3D.CameraController.CameraTarget =
                 MathV.Centroid(ViewModel.Macrocycle.Atoms.Select(s => s.Location)).ToPoint3D();
+            Activate();
         }
 
-        private void ViewModelOnSelectedIndexChanged(object? sender, EventArgs e) => Viewport3D.CameraController.CameraTarget =
-                MathV.Centroid(ViewModel.SelectedItem?.Analysis.Atoms.Select(s => s.Location)).ToPoint3D();
+        private void ViewModelOnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(ViewModel?.SelectedItem != null) Viewport3D.CameraController.CameraTarget =
+                MathV.Centroid(ViewModel.SelectedItem.Analysis.Atoms.Select(s => s.Location)).ToPoint3D();
+        }
         private async void Analyze_OnClick(object sender, RoutedEventArgs e) => await ViewModel.Detect();
         private void Simulate_OnClick(object sender, RoutedEventArgs e) => Task.Run(ViewModel.SelectedItem.Simulate);
 

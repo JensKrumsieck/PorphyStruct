@@ -82,7 +82,7 @@ namespace PorphyStruct.ViewModel
                 var validBonds = Bonds3D.Where(bond => part.Atoms.Count(atom => bond.Bond.Atoms.Contains(atom)) == 2);
                 foreach (var bond in validBonds)
                 {
-                    bond.Color = (Color)ColorConverter.ConvertFromString(part.AnalysisColor);
+                    bond.Color = (Color)ColorConverter.ConvertFromString(part.AnalysisColor)!;
                     bond.IsValid = true;
                 }
             }
