@@ -54,7 +54,11 @@ namespace PorphyStruct.Core
                 foreach (var current in DetectedParts)
                     if (current.Atoms.ScrambledEquals(data)) unique = false;
 
-                if (data.Count == RingSize[MacrocycleType] && unique) DetectedParts.Add(MacrocycleAnalysis.Create(data.ToList(), bonds, MacrocycleType));
+                if (data.Count != RingSize[MacrocycleType] || !unique) continue;
+                var analysis = MacrocycleAnalysis.Create(data.ToList(), bonds, MacrocycleType);
+                var metal = Neighbors(analysis.N4Cavity[0]).FirstOrDefault(s => s.IsMetal);
+                if (metal != null) analysis.Metal = metal;
+                DetectedParts.Add(analysis);
             }
         }
 

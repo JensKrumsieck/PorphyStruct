@@ -2,6 +2,7 @@
 using MathNet.Numerics.LinearAlgebra.Double;
 using System.Linq;
 using PorphyStruct.Core.Analysis;
+using PorphyStruct.Core.Analysis.Properties;
 using PorphyStruct.Core.Extension;
 using PorphyStruct.Core.Plot;
 using TinyMVVM;
@@ -29,6 +30,7 @@ namespace PorphyStruct.ViewModel
                 Model.Annotations.Add(new BondAnnotation(a1, a2));
             Model.Series.Add(new DefaultScatterSeries { ItemsSource = points });
             Model.InvalidatePlot(true);
+            var D = Analysis.Dihedrals;
         }
         public void Simulate()
         {

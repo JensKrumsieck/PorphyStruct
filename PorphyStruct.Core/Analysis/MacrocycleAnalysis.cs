@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
+﻿#nullable enable
 using ChemSharp.Extensions;
 using ChemSharp.Mathematics;
 using ChemSharp.Molecules;
 using ChemSharp.Molecules.Extensions;
 using PorphyStruct.Core.Extension;
 using PorphyStruct.Core.Plot;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using PorphyStruct.Core.Analysis.Properties;
 
 namespace PorphyStruct.Core.Analysis
 {
@@ -24,6 +26,8 @@ namespace PorphyStruct.Core.Analysis
         public IEnumerable<Bond> Bonds { get; set; }
 
         private readonly Guid _guid;
+
+        public Atom? Metal { get; set; }
 
         /// <summary>
         /// Color Representation for Analysis to use as indicator
@@ -53,7 +57,15 @@ namespace PorphyStruct.Core.Analysis
         /// </summary>
         public abstract Dictionary<string, double> Multiplier { get; }
 
-        private IEnumerable<AtomDataPoint> _dataPoints;
+        public virtual IList<Dihedral> Dihedrals => new List<Dihedral> { new Dihedral( "N1", "N2", "N3", "N4", Atoms) };
+
+        public virtual IList<Angle> Angles => new List<Angle>
+        {
+            new Angle("N1", Metal?.Title, "N4", Atoms.Concat(new []{Metal}).ToList()),
+            new Angle("N2", Metal?.Title, "N3",Atoms.Concat(new []{Metal}).ToList())
+        };
+
+        private IEnumerable<AtomDataPoint>? _dataPoints;
         /// <summary>
         /// Cached Datapoints
         /// </summary>

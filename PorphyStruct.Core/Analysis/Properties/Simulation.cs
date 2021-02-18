@@ -7,7 +7,7 @@ using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 using PorphyStruct.Core.Extension;
 
-namespace PorphyStruct.Core.Analysis
+namespace PorphyStruct.Core.Analysis.Properties
 {
     public class Simulation
     {
