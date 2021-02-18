@@ -1,18 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+	<PackageId>PorphyStruct</PackageId>
+	<Authors>Jens Krumsieck</Authors>
+	<Version>1.0.0-beta9</Version>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <LangVersion>9.0</LangVersion>
-    <ApplicationIcon>Resources\porphystruct.ico</ApplicationIcon>
-    <PackageIcon>Resources\porphystruct.ico</PackageIcon>
+	<PackageProjectUrl>https://github.com/JensKrumsieck/PorphyStruct</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/JensKrumsieck/PorphyStruct</RepositoryUrl>
+	<RepositoryType>git</RepositoryType>
+	<ApplicationIcon>Resources\porphystruct.ico</ApplicationIcon>
+	<PackageIcon>Resources\porphystruct.ico</PackageIcon>
+	<AssemblyName>PorphyStruct</AssemblyName>
+	<RootNamespace>PorphyStruct</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Resources\porphystruct.ico" />
-    <None Remove="Resources\porphystruct.png" />
-  </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Resources\porphystruct.ico" />
