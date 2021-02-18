@@ -67,7 +67,7 @@ namespace PorphyStruct.WPF
         }
 
         private void ViewModelOnSelectedIndexChanged(object? sender, EventArgs e) => Viewport3D.CameraController.CameraTarget =
-                MathV.Centroid(ViewModel.SelectedItem.Analysis.Atoms.Select(s => s.Location)).ToPoint3D();
+                MathV.Centroid(ViewModel.SelectedItem?.Analysis.Atoms.Select(s => s.Location)).ToPoint3D();
         private async void Analyze_OnClick(object sender, RoutedEventArgs e) => await ViewModel.Detect();
         private void Simulate_OnClick(object sender, RoutedEventArgs e) => Task.Run(ViewModel.SelectedItem.Simulate);
 

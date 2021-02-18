@@ -9,7 +9,7 @@ namespace PorphyStruct.Analysis
         public NorcorroleAnalysis(List<Atom> atoms, IEnumerable<Bond> bonds) : base(atoms, bonds) { }
 
         //ReSharper disable InconsistentNaming
-        public static List<string> _RingAtoms = CorroleAnalysis._RingAtoms.Except(new List<string> { "C10" }).ToList();
+        public new static List<string> _RingAtoms = CorroleAnalysis._RingAtoms.Except(new List<string> { "C10" }).ToList();
         // ReSharper restore InconsistentNaming
         public override List<string> RingAtoms => _RingAtoms;
     }

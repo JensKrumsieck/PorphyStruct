@@ -6,6 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Reference\Norcorrole\Doming.xyz" />
+    <EmbeddedResource Include="Reference\Norcorrole\Propellering.xyz" />
+    <EmbeddedResource Include="Reference\Norcorrole\Ruffling.xyz" />
+    <EmbeddedResource Include="Reference\Norcorrole\Saddling.xyz" />
+    <EmbeddedResource Include="Reference\Norcorrole\WavingBipy.xyz" />
+    <EmbeddedResource Include="Reference\Norcorrole\WavingDipy.xyz" />
     <EmbeddedResource Include="Reference\Porphyrin\Doming.xyz" />
     <EmbeddedResource Include="Reference\Porphyrin\Propellering.xyz" />
     <EmbeddedResource Include="Reference\Porphyrin\Ruffling.xyz" />
