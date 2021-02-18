@@ -1,9 +1,9 @@
-﻿using ChemSharp.Mathematics;
-using PorphyStruct.Plot;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using ChemSharp.Mathematics;
+using PorphyStruct.Core.Plot;
 
-namespace PorphyStruct.Extension
+namespace PorphyStruct.Core.Extension
 {
     public static class MathUtil
     {

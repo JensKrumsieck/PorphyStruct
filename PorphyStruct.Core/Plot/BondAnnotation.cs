@@ -1,7 +1,7 @@
 ﻿using OxyPlot;
 using OxyPlot.Annotations;
 
-namespace PorphyStruct.Plot
+namespace PorphyStruct.Core.Plot
 {
     public class BondAnnotation : ArrowAnnotation
     {

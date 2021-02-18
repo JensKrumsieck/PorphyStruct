@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using PorphyStruct.Core;
 using TinyMVVM;
 
 namespace PorphyStruct.ViewModel

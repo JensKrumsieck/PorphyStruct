@@ -1,4 +1,4 @@
-﻿namespace PorphyStruct.Analysis
+﻿namespace PorphyStruct.Core.Analysis
 {
     public enum MacrocycleType
     {

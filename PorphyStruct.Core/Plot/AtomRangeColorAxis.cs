@@ -3,7 +3,7 @@ using OxyPlot;
 using OxyPlot.Axes;
 using Element = ChemSharp.Molecules.Element;
 
-namespace PorphyStruct.Plot
+namespace PorphyStruct.Core.Plot
 {
     public class AtomRangeColorAxis : RangeColorAxis
     {

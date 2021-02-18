@@ -1,15 +1,15 @@
-﻿using ChemSharp.Extensions;
-using ChemSharp.Mathematics;
-using ChemSharp.Molecules;
-using ChemSharp.Molecules.Extensions;
-using PorphyStruct.Extension;
-using PorphyStruct.Plot;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using ChemSharp.Extensions;
+using ChemSharp.Mathematics;
+using ChemSharp.Molecules;
+using ChemSharp.Molecules.Extensions;
+using PorphyStruct.Core.Extension;
+using PorphyStruct.Core.Plot;
 
-namespace PorphyStruct.Analysis
+namespace PorphyStruct.Core.Analysis
 {
     public abstract class MacrocycleAnalysis
     {

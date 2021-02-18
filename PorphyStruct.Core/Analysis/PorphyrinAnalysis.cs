@@ -1,10 +1,10 @@
-﻿using ChemSharp.Mathematics;
-using ChemSharp.Molecules;
-using PorphyStruct.Plot;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using ChemSharp.Mathematics;
+using ChemSharp.Molecules;
+using PorphyStruct.Core.Plot;
 
-namespace PorphyStruct.Analysis
+namespace PorphyStruct.Core.Analysis
 {
     public class PorphyrinAnalysis : MacrocycleAnalysis
     {

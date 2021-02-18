@@ -1,8 +1,8 @@
-﻿using ChemSharp.Molecules;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using ChemSharp.Molecules;
 
-namespace PorphyStruct
+namespace PorphyStruct.Core
 {
     public static class Constants
     {

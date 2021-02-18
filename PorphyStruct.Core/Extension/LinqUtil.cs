@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace PorphyStruct.Extension
+namespace PorphyStruct.Core.Extension
 {
     public static class LinqUtil
     {

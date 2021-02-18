@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PorphyStruct\PorphyStruct.csproj" />
+    <ProjectReference Include="..\PorphyStruct.Core\PorphyStruct.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PorphyStruct.WPF", "PorphyS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PorphyStruct.ViewModel", "PorphyStruct.ViewModel\PorphyStruct.ViewModel.csproj", "{EF00F37C-98D1-4E0F-B00A-6F3EF899D01A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PorphyStruct", "PorphyStruct\PorphyStruct.csproj", "{25132EE8-000D-4A77-9B3C-B2B65D561259}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PorphyStruct.Core", "PorphyStruct.Core\PorphyStruct.Core.csproj", "{25132EE8-000D-4A77-9B3C-B2B65D561259}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2F30BB10-02B9-44B6-95FE-0F81C95CB758}"
 	ProjectSection(SolutionItems) = preProject

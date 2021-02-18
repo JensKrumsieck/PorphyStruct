@@ -1,9 +1,9 @@
-﻿using ChemSharp.Molecules;
+﻿using System.Linq;
+using ChemSharp.Molecules;
 using OxyPlot;
 using OxyPlot.Series;
-using System.Linq;
 
-namespace PorphyStruct.Plot
+namespace PorphyStruct.Core.Plot
 {
     public class AtomDataPoint : ScatterPoint
     {

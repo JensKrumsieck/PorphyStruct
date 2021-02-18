@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Reflection;
 
-namespace PorphyStruct.Extension
+namespace PorphyStruct.Core.Extension
 {
     public static class ResourceUtil
     {

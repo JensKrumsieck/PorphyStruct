@@ -13,8 +13,8 @@
 	<RepositoryType>git</RepositoryType>
 	<ApplicationIcon>Resources\porphystruct.ico</ApplicationIcon>
 	<PackageIcon>Resources\porphystruct.ico</PackageIcon>
-	<AssemblyName>PorphyStruct</AssemblyName>
-	<RootNamespace>PorphyStruct</RootNamespace>
+	<Product>PorphyStruct</Product>
+	  <AssemblyName>PorphyStruct</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

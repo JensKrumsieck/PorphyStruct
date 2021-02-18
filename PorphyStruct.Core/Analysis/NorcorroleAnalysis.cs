@@ -1,8 +1,8 @@
-﻿using ChemSharp.Molecules;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using ChemSharp.Molecules;
 
-namespace PorphyStruct.Analysis
+namespace PorphyStruct.Core.Analysis
 {
     public class NorcorroleAnalysis : CorroleAnalysis
     {

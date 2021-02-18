@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace PorphyStruct.Extension
+namespace PorphyStruct.Core.Extension
 {
     public static class ColorUtil
     {

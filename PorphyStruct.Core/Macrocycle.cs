@@ -1,15 +1,15 @@
-﻿using ChemSharp.Extensions;
-using ChemSharp.Molecules;
-using ChemSharp.Molecules.DataProviders;
-using ChemSharp.Molecules.Mathematics;
-using PorphyStruct.Analysis;
-using PorphyStruct.Extension;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ChemSharp.Extensions;
+using ChemSharp.Molecules;
+using ChemSharp.Molecules.DataProviders;
+using ChemSharp.Molecules.Mathematics;
+using PorphyStruct.Core.Analysis;
+using PorphyStruct.Core.Extension;
 
-namespace PorphyStruct
+namespace PorphyStruct.Core
 {
     public class Macrocycle : Molecule
     {

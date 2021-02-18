@@ -1,7 +1,7 @@
 ﻿using OxyPlot;
 using OxyPlot.Axes;
 
-namespace PorphyStruct.Plot
+namespace PorphyStruct.Core.Plot
 {
     public class DefaultPlotModel : PlotModel
     {
