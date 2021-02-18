@@ -38,7 +38,7 @@ namespace PorphyStruct.Analysis
             BuildPorphyrinMatrix(minimal);
         }
 
-        public double[] Simulate(double[] data) => ReferenceMatrix.Svd().Solve(DenseVector.OfArray(data)).ToArray();
+        public double[] Simulate(double[] data) => ReferenceMatrix.QR().Solve(DenseVector.OfArray(data)).ToArray();
 
         private Matrix<double> DisplacementMatrix(IEnumerable<string> res)
         {
