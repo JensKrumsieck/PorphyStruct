@@ -4,14 +4,31 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
-
   <ItemGroup>
+    <EmbeddedResource Include="Reference\Corrphycene\Doming.xyz" />
+    <EmbeddedResource Include="Reference\Corrphycene\Propellering.xyz" />
+    <EmbeddedResource Include="Reference\Corrphycene\Ruffling.xyz" />
+    <EmbeddedResource Include="Reference\Corrphycene\Saddling.xyz" />
+    <EmbeddedResource Include="Reference\Corrphycene\WavingX.xyz" />
+    <EmbeddedResource Include="Reference\Corrphycene\WavingY.xyz" />
+    <EmbeddedResource Include="Reference\Corrole\Doming.xyz" />
+    <EmbeddedResource Include="Reference\Corrole\Propellering.xyz" />
+    <EmbeddedResource Include="Reference\Corrole\Ruffling.xyz" />
+    <EmbeddedResource Include="Reference\Corrole\Saddling.xyz" />
+    <EmbeddedResource Include="Reference\Corrole\WavingX.xyz" />
+    <EmbeddedResource Include="Reference\Corrole\WavingY.xyz" />
     <EmbeddedResource Include="Reference\Norcorrole\Doming.xyz" />
     <EmbeddedResource Include="Reference\Norcorrole\Propellering.xyz" />
     <EmbeddedResource Include="Reference\Norcorrole\Ruffling.xyz" />
     <EmbeddedResource Include="Reference\Norcorrole\Saddling.xyz" />
     <EmbeddedResource Include="Reference\Norcorrole\WavingBipy.xyz" />
     <EmbeddedResource Include="Reference\Norcorrole\WavingDipy.xyz" />
+    <EmbeddedResource Include="Reference\Porphycene\Doming.xyz" />
+    <EmbeddedResource Include="Reference\Porphycene\Propellering.xyz" />
+    <EmbeddedResource Include="Reference\Porphycene\Ruffling.xyz" />
+    <EmbeddedResource Include="Reference\Porphycene\Saddling.xyz" />
+    <EmbeddedResource Include="Reference\Porphycene\WavingX.xyz" />
+    <EmbeddedResource Include="Reference\Porphycene\WavingY.xyz" />
     <EmbeddedResource Include="Reference\Porphyrin\Doming.xyz" />
     <EmbeddedResource Include="Reference\Porphyrin\Propellering.xyz" />
     <EmbeddedResource Include="Reference\Porphyrin\Ruffling.xyz" />
