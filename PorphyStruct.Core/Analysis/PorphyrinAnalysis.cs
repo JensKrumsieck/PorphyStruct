@@ -38,19 +38,6 @@ namespace PorphyStruct.Core.Analysis
             { "C19", 1d },
             { "C20", 1 / 2d }
         };
-
-        internal static IList<string[]> PorphyrinDihedrals = new List<string[]>{
-            new[] { "C3", "C4", "C6", "C7" }, //chi1
-            new[] { "C2", "C1", "C19", "C18" }, //chi2
-            new[] { "C13", "C14", "C16", "C17" }, //chi3 
-            new[] { "C8", "C9", "C11", "C12" }, //chi4
-            new[] { "C4", "N1", "N3", "C11" }, //psi1
-            new[] { "C9", "N2", "N4", "C16" }, //psi2
-            new[] { "N1", "C4", "C6", "N2" }, //phi1
-            new[] { "N1", "C1", "C19", "N4" }, //phi2
-            new[] { "N3", "C14", "C16", "N4" }, //phi3
-            new[] { "N2", "C9", "C11", "N3" } //phi4
-        };
         // ReSharper restore InconsistentNaming
 
         /// <summary>
@@ -87,7 +74,5 @@ namespace PorphyStruct.Core.Analysis
         public override List<string> RingAtoms => _RingAtoms;
         public override string[] AlphaAtoms => _AlphaAtoms;
         public override Dictionary<string, double> Multiplier => _Multiplier;
-        public override IList<Dihedral> Dihedrals => base.Dihedrals
-            .Concat(PorphyrinDihedrals.Select(s => new Dihedral(s[0], s[1], s[2], s[3], Atoms))).ToList();
     }
 }

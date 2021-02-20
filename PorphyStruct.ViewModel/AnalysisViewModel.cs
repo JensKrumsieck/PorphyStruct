@@ -30,7 +30,7 @@ namespace PorphyStruct.ViewModel
                 Model.Annotations.Add(new BondAnnotation(a1, a2));
             Model.Series.Add(new DefaultScatterSeries { ItemsSource = points });
             Model.InvalidatePlot(true);
-            var D = Analysis.Dihedrals;
+            var D = Analysis.Properties;
         }
         public void Simulate()
         {

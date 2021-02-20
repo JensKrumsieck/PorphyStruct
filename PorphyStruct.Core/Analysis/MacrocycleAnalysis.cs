@@ -3,13 +3,13 @@ using ChemSharp.Extensions;
 using ChemSharp.Mathematics;
 using ChemSharp.Molecules;
 using ChemSharp.Molecules.Extensions;
+using PorphyStruct.Core.Analysis.Properties;
 using PorphyStruct.Core.Extension;
 using PorphyStruct.Core.Plot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using PorphyStruct.Core.Analysis.Properties;
 
 namespace PorphyStruct.Core.Analysis
 {
@@ -40,6 +40,7 @@ namespace PorphyStruct.Core.Analysis
             Bonds = bonds;
             _guid = Guid.NewGuid();
             NameAtoms();
+            Properties = new MacrocycleProperties(this);
         }
 
         /// <summary>
@@ -57,15 +58,23 @@ namespace PorphyStruct.Core.Analysis
         /// </summary>
         public abstract Dictionary<string, double> Multiplier { get; }
 
-        public virtual IList<Dihedral> Dihedrals => new List<Dihedral> { new Dihedral( "N1", "N2", "N3", "N4", Atoms) };
+        private MacrocycleProperties _properties;
 
-        public virtual IList<Angle> Angles => new List<Angle>
+        /// <summary>
+        /// A Set of Macrocyclic Properties
+        /// </summary>
+        public MacrocycleProperties Properties
         {
-            new Angle("N1", Metal?.Title, "N4", Atoms.Concat(new []{Metal}).ToList()),
-            new Angle("N2", Metal?.Title, "N3",Atoms.Concat(new []{Metal}).ToList())
-        };
+            get
+            {
+                _properties.Rebuild();
+                return _properties;
+            }
+            set => _properties = value;
+        }
 
         private IEnumerable<AtomDataPoint>? _dataPoints;
+
         /// <summary>
         /// Cached Datapoints
         /// </summary>
@@ -125,7 +134,7 @@ namespace PorphyStruct.Core.Analysis
         private Atom? NextAlpha(Atom a)
         {
             var i = Array.IndexOf(AlphaAtoms, a.Title) + 1;
-            return AlphaAtoms.Length > i ? Atoms.FirstOrDefault(a => a.Title == AlphaAtoms[i]) : null;
+            return AlphaAtoms.Length > i ? FindAtomByTitle(AlphaAtoms[i]) : null;
         }
 
         /// <summary>
@@ -159,7 +168,7 @@ namespace PorphyStruct.Core.Analysis
         /// <param name="id1">Identifier 1</param>
         /// <param name="id2">Identifier 2</param>
         /// <returns>The Vectordistance</returns>
-        public double CalculateDistance(string id1, string id2) => MathV.Distance(Atoms.First(s => s.Title == id1).Location, Atoms.First(s => s.Title == id2).Location);
+        public double CalculateDistance(string id1, string id2) => MathV.Distance(FindAtomByTitle(id1)!.Location, FindAtomByTitle(id2)!.Location);
 
         /// <summary>
         /// Gets DataPoints for Bonds
@@ -222,10 +231,17 @@ namespace PorphyStruct.Core.Analysis
             //set up identifiers for nitrogens
             for (var j = 1; j <= 4; j++)
             {
-                var alpha = Atoms.First(a => a.Title == AlphaAtoms[2 * j - 1]);
+                var alpha = FindAtomByTitle(AlphaAtoms[2 * j - 1]);
                 var nitrogen = cavity.First(s => Neighbors(s).Contains(alpha));
                 nitrogen.Title = "N" + j;
             }
         }
+
+        /// <summary>
+        /// Finds atom by Title
+        /// </summary>
+        /// <param name="title"></param>
+        /// <returns></returns>
+        public Atom? FindAtomByTitle(string title) => Atoms.FirstOrDefault(s => s.Title == title) ?? null;
     }
 }
