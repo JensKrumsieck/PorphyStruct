@@ -21,8 +21,8 @@
     <EmbeddedResource Include="Reference\Norcorrole\Propellering.xyz" />
     <EmbeddedResource Include="Reference\Norcorrole\Ruffling.xyz" />
     <EmbeddedResource Include="Reference\Norcorrole\Saddling.xyz" />
-    <EmbeddedResource Include="Reference\Norcorrole\WavingBipy.xyz" />
-    <EmbeddedResource Include="Reference\Norcorrole\WavingDipy.xyz" />
+    <EmbeddedResource Include="Reference\Norcorrole\WavingX.xyz" />
+    <EmbeddedResource Include="Reference\Norcorrole\WavingY.xyz" />
     <EmbeddedResource Include="Reference\Porphycene\Doming.xyz" />
     <EmbeddedResource Include="Reference\Porphycene\Propellering.xyz" />
     <EmbeddedResource Include="Reference\Porphycene\Ruffling.xyz" />

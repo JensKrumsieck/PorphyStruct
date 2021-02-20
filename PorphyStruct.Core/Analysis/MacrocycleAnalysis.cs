@@ -122,7 +122,7 @@ namespace PorphyStruct.Core.Analysis
         /// </summary>
         /// <param name="a"></param>
         /// <returns>Atom</returns>
-        private Atom NextAlpha(Atom a)
+        private Atom? NextAlpha(Atom a)
         {
             var i = Array.IndexOf(AlphaAtoms, a.Title) + 1;
             return AlphaAtoms.Length > i ? Atoms.FirstOrDefault(a => a.Title == AlphaAtoms[i]) : null;
@@ -223,7 +223,6 @@ namespace PorphyStruct.Core.Analysis
             for (var j = 1; j <= 4; j++)
             {
                 var alpha = Atoms.First(a => a.Title == AlphaAtoms[2 * j - 1]);
-                var neighbots = Neighbors(alpha);
                 var nitrogen = cavity.First(s => Neighbors(s).Contains(alpha));
                 nitrogen.Title = "N" + j;
             }
