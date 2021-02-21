@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using PorphyStruct.Core.Analysis;
+﻿using PorphyStruct.Core.Analysis;
 using PorphyStruct.Core.Plot;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Documents;
 using TinyMVVM;
 using TinyMVVM.Utility;
 

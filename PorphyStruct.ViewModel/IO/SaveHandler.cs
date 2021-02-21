@@ -1,9 +1,9 @@
-﻿using System.Globalization;
-using ChemSharp.Molecules;
+﻿using ChemSharp.Molecules;
 using ChemSharp.Molecules.Export;
 using OxyPlot;
 using OxyPlot.SkiaSharp;
 using PorphyStruct.Core;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using SvgExporter = PorphyStruct.Core.Plot.SvgExporter;

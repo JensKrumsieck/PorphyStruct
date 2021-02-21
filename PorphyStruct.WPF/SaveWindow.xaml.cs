@@ -18,7 +18,7 @@ namespace PorphyStruct.WPF
     {
         public AnalysisViewModel ViewModel;
 
-        public List<ExportFileType> AvailableFileTypes { get; } = new List<ExportFileType>
+        public static List<ExportFileType> AvailableFileTypes { get; } = new List<ExportFileType>
         {
             new ExportFileType("Graph", "ChartScatterPlot", "png"),
             new ExportFileType("Graph", "ChartScatterPlotHexBin", "svg"),
