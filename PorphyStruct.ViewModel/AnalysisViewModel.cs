@@ -1,7 +1,9 @@
-﻿using PorphyStruct.Core.Analysis;
+﻿using System.Collections.Generic;
+using PorphyStruct.Core.Analysis;
 using PorphyStruct.Core.Plot;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Documents;
 using TinyMVVM;
 using TinyMVVM.Utility;
 
@@ -78,8 +80,7 @@ namespace PorphyStruct.ViewModel
 
             if (!SimulationVisible) return;
             var simY = Analysis.Properties.Simulation.ConformationY;
-            var cache = Analysis.DataPoints.OrderBy(s => s.X).ToList();
-            var src = cache.Select((t, i) => new AtomDataPoint(t.X, simY[i], t.Atom)).ToList();
+            var src = BuildSimulationData(simY);
             SimulationSeries.ItemsSource = src;
 
             // ReSharper disable  CompareOfFloatsByEqualityOperator
@@ -87,6 +88,16 @@ namespace PorphyStruct.ViewModel
                 SimulationBonds.Add(new BondAnnotation(src.FirstOrDefault(s => s.X == a1.X), src.FirstOrDefault(s => s.X == a2.X), SimulationSeries) { Opacity = 128 });
             // ReSharper restore  CompareOfFloatsByEqualityOperator
             Model.InvalidatePlot(true);
+        }
+
+        /// <summary>
+        /// Calculates Conformation
+        /// </summary>
+        /// <returns></returns>
+        private List<AtomDataPoint> BuildSimulationData(IList<double> yAxis)
+        {
+            var cache = Analysis.DataPoints.OrderBy(s => s.X).ToList();
+            return cache.Select((t, i) => new AtomDataPoint(t.X, yAxis[i], t.Atom)).ToList();
         }
     }
 }

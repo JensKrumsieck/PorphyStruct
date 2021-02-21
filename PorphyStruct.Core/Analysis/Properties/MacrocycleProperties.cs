@@ -107,8 +107,8 @@ namespace PorphyStruct.Core.Analysis.Properties
 
         private static string ExportBlock(string title, IEnumerable<KeyValueProperty> content)
         {
-            var result = $"{title}\n";
-            result = content.Aggregate(result, (current, prop) => current + (prop + "\n"));
+            var result = $"### {title}\n";
+            result = content.Aggregate(result, (current, prop) => current + ("* " + prop + "\n"));
             result += "\n";
             return result;
         }

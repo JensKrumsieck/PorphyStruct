@@ -106,6 +106,12 @@ namespace PorphyStruct.WPF
             IsEnabled = true;
         }
 
+        private void Save_OnClick(object sender, RoutedEventArgs e)
+        {
+            var sw = new SaveWindow(ViewModel.SelectedItem);
+            sw.ShowDialog();
+        }
+
         private void TypeSubmit_OnClick(object sender, RoutedEventArgs e)
         {
             if (ViewModel == null) return;
