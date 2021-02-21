@@ -57,7 +57,7 @@
                         </ListBox>
                     </ToolBar>
                     <ToolBar>
-                        <Button extension:ControlExtension.AttachedIcon="Cog" Content="Settings"/>
+                        <Button extension:ControlExtension.AttachedIcon="Cog" Content="Preferences"/>
                         <Button extension:ControlExtension.AttachedIcon="InfoCircle" Content="About" Click="Info_OnClick"/>
                     </ToolBar>
                 </ToolBarTray>
@@ -228,18 +228,40 @@
                 <controls:ItemsVisual3D ItemsSource="{Binding Atoms3D}"/>
                 <controls:ItemsVisual3D ItemsSource="{Binding Bonds3D}"/>
             </h:HelixViewport3D>
-            <TabControl Grid.Row="1" Grid.Column="1" Background="Transparent" TabStripPlacement="Top">
-                <TabItem Header="Analysis">
-                    <StackPanel>
-                        <ItemsControl ItemsSource="{Binding SelectedItem.Analysis.Properties.Simulation.SimulationResult}"/>
-                        <ItemsControl ItemsSource="{Binding SelectedItem.Analysis.Properties.Distances}"/>
-                        <ItemsControl ItemsSource="{Binding SelectedItem.Analysis.Properties.Angles}"/>
-                        <ItemsControl ItemsSource="{Binding SelectedItem.Analysis.Properties.Dihedrals}"/>
-                    </StackPanel>
+            <TabControl Grid.Row="1" Grid.Column="1" Background="Transparent" TabStripPlacement="Left" ItemContainerStyle="{DynamicResource SideTabHeaderStyle}" 
+                        Padding="0" BorderThickness="0">
+                <TabItem Header="Analysis" extension:ControlExtension.AttachedIcon="Flask">
+                    <ScrollViewer >
+                        <Border Background="{DynamicResource Light}" CornerRadius="5 5 0 0" Padding="10">
+                            <StackPanel>
+                                <Label Content="Properties" FontWeight="Light" FontSize="16"/>
+                                <StackPanel>
+                                   <Label Content="Simulation" FontWeight="DemiBold"/>
+                                   <ItemsControl ItemsSource="{Binding SelectedItem.Analysis.Properties.Simulation.SimulationResult}"/>
+                               </StackPanel>
+                               <StackPanel>
+                                   <Label Content="Distances" FontWeight="DemiBold"/>
+                                   <ItemsControl ItemsSource="{Binding SelectedItem.Analysis.Properties.Distances}"/>
+                               </StackPanel>
+                               <StackPanel>
+                                   <Label Content="Angles" FontWeight="DemiBold"/>
+                                   <ItemsControl ItemsSource="{Binding SelectedItem.Analysis.Properties.Angles}"/>
+                               </StackPanel>
+                               <StackPanel>
+                                   <Label Content="Interplanar Angle" FontWeight="DemiBold"/>
+                                   <ContentControl Content="{Binding SelectedItem.Analysis.Properties.InterplanarAngle}"/>
+                               </StackPanel>
+                                <StackPanel>
+                                   <Label Content="Dihedrals" FontWeight="DemiBold"/>
+                                   <ItemsControl ItemsSource="{Binding SelectedItem.Analysis.Properties.Dihedrals}"/>
+                               </StackPanel>
+                           </StackPanel>
+                        </Border>
+                    </ScrollViewer>
                 </TabItem>
-                <TabItem Header="Coordinates">
+                <TabItem Header="Coordinates" extension:ControlExtension.AttachedIcon="Navigation">
                     <DataGrid IsSynchronizedWithCurrentItem="True" x:Name="CoordinateGrid" CanUserSortColumns="True" CanUserAddRows="False" AutoGenerateColumns="False"
-                             SelectedItem="{Binding SelectedAtom}"
+                             SelectedItem="{Binding SelectedAtom}" Background="{DynamicResource Light}"
                               ItemsSource="{Binding Macrocycle.Atoms}" Foreground="{DynamicResource Dark}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Title}" Header="Identifier"/>
@@ -248,6 +270,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 </TabItem>
+                <TabItem Header="Quick Settings" extension:ControlExtension.AttachedIcon="Cog"/>
             </TabControl>
         </Grid>
     </Grid>
