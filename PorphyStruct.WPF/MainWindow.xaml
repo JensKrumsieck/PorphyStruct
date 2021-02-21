@@ -43,7 +43,7 @@
                         <Separator/>
                         <ListBox SelectionMode="Multiple">
                             <ListBoxItem Style="{DynamicResource ToolbarListItem}" IsSelected="{Binding SelectedItem.SimulationVisible}" extension:ControlExtension.AttachedIcon="Wand" Content="Simulation" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
-                            <ListBoxItem Style="{DynamicResource ToolbarListItem}" extension:ControlExtension.AttachedIcon="PlusMinusBox" Content="Invert" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
+                            <ListBoxItem Style="{DynamicResource ToolbarListItem}" IsSelected="{Binding SelectedItem.Inverted}" extension:ControlExtension.AttachedIcon="PlusMinusBox" Content="Invert" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
                             <ListBoxItem Style="{DynamicResource ToolbarListItem}" extension:ControlExtension.AttachedIcon="VectorDifference" Content="Difference" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
                         </ListBox>
                     </ToolBar>

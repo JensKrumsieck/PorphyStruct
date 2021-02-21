@@ -2,6 +2,7 @@
 using PorphyStruct.Core.Plot;
 using System.Collections.ObjectModel;
 using System.Linq;
+using OxyPlot.Series;
 using TinyMVVM;
 using TinyMVVM.Utility;
 
@@ -31,6 +32,21 @@ namespace PorphyStruct.ViewModel
             set => Set(ref _simulationVisible, value, SimulationChanged);
         }
 
+        private bool _inverted;
+        /// <summary>
+        /// Indicates whether the series are inverted
+        /// </summary>
+        public bool Inverted
+        {
+            get => _inverted;
+            set => Set(ref _inverted, value, () =>
+            {
+                ExperimentalSeries.Inverted = value;
+                SimulationSeries.Inverted = value;
+                Model.InvalidatePlot(true);
+            });
+        }
+
         public override string Title => Parent.Title;
 
         public AnalysisViewModel(MacrocycleViewModel parent, MacrocycleAnalysis analysis) : base(parent)
@@ -46,20 +62,20 @@ namespace PorphyStruct.ViewModel
             SimulationSeries.Title = $"Simulation of {Parent.Title}";
 
             //Add Subscriptions
-            Subscribe(ExperimentalBonds, Model.Annotations, b => b, a => a, () => Model.InvalidatePlot(true));
-            Subscribe(SimulationBonds, Model.Annotations, b => b, a => a, () => Model.InvalidatePlot(true));
+            Subscribe(ExperimentalBonds, Model.Annotations, b => b, a => a, () => Model.InvalidatePlot(false));
+            Subscribe(SimulationBonds, Model.Annotations, b => b, a => a, () => Model.InvalidatePlot(false));
 
             //Add Experimental Data
             ExperimentalSeries.ItemsSource = Analysis.DataPoints;
             foreach (var (a1, a2) in Analysis.BondDataPoints())
-                ExperimentalBonds.Add(new BondAnnotation(a1, a2));
+                ExperimentalBonds.Add(new BondAnnotation(a1, a2, ExperimentalSeries));
         }
 
         public void SimulationChanged()
         {
             SimulationBonds.ClearAndNotify();
             SimulationSeries.ItemsSource = null;
-            Model.InvalidatePlot(true);
+            Model.InvalidatePlot(false);
 
             if (!SimulationVisible) return;
             var simY = Analysis.Properties.Simulation.ConformationY;
@@ -69,8 +85,9 @@ namespace PorphyStruct.ViewModel
 
             // ReSharper disable  CompareOfFloatsByEqualityOperator
             foreach (var (a1, a2) in Analysis.BondDataPoints())
-                SimulationBonds.Add(new BondAnnotation(src.FirstOrDefault(s => s.X == a1.X), src.FirstOrDefault(s => s.X == a2.X)) { Opacity = 128 });
+                SimulationBonds.Add(new BondAnnotation(src.FirstOrDefault(s => s.X == a1.X), src.FirstOrDefault(s => s.X == a2.X), SimulationSeries) { Opacity = 128 });
             // ReSharper restore  CompareOfFloatsByEqualityOperator
+            Model.InvalidatePlot(true);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using OxyPlot;
 using OxyPlot.Annotations;
+using OxyPlot.Series;
 
 namespace PorphyStruct.Core.Plot
 {
@@ -24,7 +25,9 @@ namespace PorphyStruct.Core.Plot
         public LineStyle LineStyle { get; set; }
         public LineJoin LineJoin { get; set; }
 
-        public BondAnnotation(AtomDataPoint a1, AtomDataPoint a2)
+        public DefaultScatterSeries AssociatedSeries { get; set; }
+
+        public BondAnnotation(AtomDataPoint a1, AtomDataPoint a2, DefaultScatterSeries associatedSeries)
         {
             StartPoint = a1;
             EndPoint = a2;
@@ -32,13 +35,18 @@ namespace PorphyStruct.Core.Plot
             StrokeThickness = Settings.Instance.BondThickness;
             Layer = AnnotationLayer.BelowSeries;
             Tag = $"{a1.Atom.Title} - {a2.Atom.Title} ({a1}, {a2})";
+            AssociatedSeries = associatedSeries;
         }
 
         public override void Render(IRenderContext rc)
         {
             base.Render(rc);
-            _screenEndPoint = Transform(EndPoint.ToDataPoint());
-            _screenStartPoint = Transform(StartPoint.ToDataPoint());
+            var sY = StartPoint.Y * (AssociatedSeries.Inverted ? -1 : 1);
+            var eY = EndPoint.Y * (AssociatedSeries.Inverted ? -1 : 1);
+            var actualStart = new DataPoint(StartPoint.X, sY);
+            var actualEnd = new DataPoint(EndPoint.X, eY);
+            _screenEndPoint = Transform(actualEnd);
+            _screenStartPoint = Transform(actualStart);
             var d = _screenEndPoint - _screenStartPoint;
             d.Normalize();
             var n = new ScreenVector(d.Y, -d.X);
