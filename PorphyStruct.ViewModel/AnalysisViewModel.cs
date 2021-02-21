@@ -42,6 +42,9 @@ namespace PorphyStruct.ViewModel
             Model.Series.Add(ExperimentalSeries);
             Model.Series.Add(SimulationSeries);
 
+            ExperimentalSeries.Title = $"Experimental Data of {Parent.Title}";
+            SimulationSeries.Title = $"Simulation of {Parent.Title}";
+
             //Add Subscriptions
             Subscribe(ExperimentalBonds, Model.Annotations, b => b, a => a, () => Model.InvalidatePlot(true));
             Subscribe(SimulationBonds, Model.Annotations, b => b, a => a, () => Model.InvalidatePlot(true));
