@@ -1,4 +1,5 @@
-﻿using ChemSharp.Mathematics;
+﻿using System.IO;
+using ChemSharp.Mathematics;
 using MathNet.Numerics.LinearAlgebra.Double;
 using PorphyStruct.Core.Analysis;
 using PorphyStruct.Core.Analysis.Properties;
@@ -30,7 +31,6 @@ namespace PorphyStruct.ViewModel
                 Model.Annotations.Add(new BondAnnotation(a1, a2));
             Model.Series.Add(new DefaultScatterSeries { ItemsSource = points });
             Model.InvalidatePlot(true);
-            var D = Analysis.Properties;
         }
 
         public void Simulate()

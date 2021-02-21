@@ -25,7 +25,6 @@ namespace PorphyStruct.Core.Analysis.Properties
         public MacrocycleProperties(MacrocycleAnalysis analysis)
         {
             Analysis = analysis;
-            InterplanarAngle.Key = $"[N1-{Analysis.Metal?.Title}-N4]x[N2-{Analysis.Metal?.Title}-N3]";
         }
 
         /// <summary>
@@ -60,6 +59,7 @@ namespace PorphyStruct.Core.Analysis.Properties
             if (Analysis.Metal == null) return;
             Angles.Add(new Angle(Analysis.FindAtomByTitle("N1"), Analysis.Metal, Analysis.FindAtomByTitle("N4")));
             Angles.Add(new Angle(Analysis.FindAtomByTitle("N2"), Analysis.Metal, Analysis.FindAtomByTitle("N3")));
+            InterplanarAngle.Key = $"[N1-{Analysis.Metal.Title}-N4]x[N2-{Analysis.Metal.Title}-N3]";
             InterplanarAngle.Value = Angles[0].PlaneAngle(Angles[1]);
             Distances.AddRange(Analysis.Atoms.Where(s => Analysis.Metal.BondToByCovalentRadii(s))
                 .Select(s => new Distance(Analysis.Metal, s)));
@@ -84,6 +84,33 @@ namespace PorphyStruct.Core.Analysis.Properties
             }
         }
 
-        public string Serialize => JsonSerializer.Serialize(this);
+        /// <summary>
+        /// Exports Properties in Machine readable format
+        /// </summary>
+        /// <returns></returns>
+        public string ExportJson() => JsonSerializer.Serialize(this);
+
+        /// <summary>
+        /// Exports Properties in Human readable format
+        /// </summary>
+        /// <returns></returns>
+        public string ExportString()
+        {
+            var result = "";
+            result += ExportBlock("Simulation", Simulation.SimulationResult.Append(OutOfPlaneParameter).Append(Simulation.OutOfPlaneParameter));
+            result += ExportBlock("Distances", Distances);
+            result += Analysis.Metal != null ? ExportBlock("Angles", Angles.Append(InterplanarAngle)) : ExportBlock("Angles", Angles);
+            result += ExportBlock("Dihedrals", Dihedrals);
+            return result;
+        }
+
+
+        private static string ExportBlock(string title, IEnumerable<KeyValueProperty> content)
+        {
+            var result = $"{title}\n";
+            result = content.Aggregate(result, (current, prop) => current + (prop + "\n"));
+            result += "\n";
+            return result;
+        }
     }
 }
