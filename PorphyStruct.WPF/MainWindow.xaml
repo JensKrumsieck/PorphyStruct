@@ -38,7 +38,14 @@
                 <ToolBarTray WindowChrome.IsHitTestVisibleInChrome="True">
                     <ToolBar>
                         <Button extension:ControlExtension.AttachedIcon="Folder" Content="Open" Click="Open_OnClick"/>
-                        <Button extension:ControlExtension.AttachedIcon="ContentSave" Content="Save" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}" Click="Save_OnClick"/>
+                        <Button extension:ControlExtension.AttachedIcon="ContentSave" Content="Save" Click="Save_OnClick">
+                            <Button.IsEnabled>
+                                <MultiBinding Converter="{converterlocal:MultiBooleanAndConverter}">
+                                    <Binding Path="SelectedItem" Converter="{converter:NotNullConverter}"/>
+                                    <Binding Path="" Converter="{converter:NotNullConverter}"/>
+                                </MultiBinding>
+                            </Button.IsEnabled>
+                        </Button>
                     </ToolBar>
                     <ToolBar IsEnabled="{Binding  Converter={converter:NotNullConverter}}">
                         <Button extension:ControlExtension.AttachedIcon="Flask" Content="Analyze" Click="Analyze_OnClick" IsEnabled="{Binding Atoms3D, Converter={converter:NotNullConverter}}"/>
