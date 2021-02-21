@@ -1,13 +1,14 @@
 ﻿using ChemSharp.Mathematics;
 using HelixToolkit.Wpf;
+using Microsoft.Win32;
 using PorphyStruct.Core;
 using PorphyStruct.Core.Analysis;
 using PorphyStruct.ViewModel;
 using PorphyStruct.ViewModel.Windows;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
@@ -56,6 +57,26 @@ namespace PorphyStruct.WPF
             if (!e.Data.GetDataPresent(DataFormats.FileDrop)) return;
             var files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
             OpenFile((files ?? throw new InvalidOperationException()).FirstOrDefault());
+        }
+
+        /// <summary>
+        /// Handles open File Dialog
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Open_OnClick(object sender, RoutedEventArgs e)
+        {
+            var path = string.IsNullOrEmpty(Settings.Instance.DefaultImportPath)
+                ? Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+                : Settings.Instance.DefaultImportPath;
+            var ofd = new OpenFileDialog
+            {
+                InitialDirectory = path,
+                Filter = Constants.OpenFileFilter,
+                Multiselect = false
+            };
+            if (ofd.ShowDialog(this) != true) return;
+            OpenFile(ofd.FileName);
         }
 
         private void OpenFile(string path)

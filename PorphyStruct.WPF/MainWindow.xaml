@@ -34,7 +34,7 @@
             <StackPanel Orientation="Horizontal" Grid.Column="1">
                 <ToolBarTray WindowChrome.IsHitTestVisibleInChrome="True">
                     <ToolBar>
-                        <Button extension:ControlExtension.AttachedIcon="Folder" Content="Open"/>
+                        <Button extension:ControlExtension.AttachedIcon="Folder" Content="Open" Click="Open_OnClick"/>
                         <Button extension:ControlExtension.AttachedIcon="ContentSave" Content="Save" IsEnabled="{Binding Converter={converter:NotNullConverter}}"/>
                     </ToolBar>
                     <ToolBar IsEnabled="{Binding  Converter={converter:NotNullConverter}}">
@@ -44,7 +44,6 @@
                         <ListBox SelectionMode="Multiple">
                             <ListBoxItem Style="{DynamicResource ToolbarListItem}" IsSelected="{Binding SelectedItem.SimulationVisible}" extension:ControlExtension.AttachedIcon="Wand" Content="Simulation" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
                             <ListBoxItem Style="{DynamicResource ToolbarListItem}" IsSelected="{Binding SelectedItem.Inverted}" extension:ControlExtension.AttachedIcon="PlusMinusBox" Content="Invert" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
-                            <ListBoxItem Style="{DynamicResource ToolbarListItem}" extension:ControlExtension.AttachedIcon="VectorDifference" Content="Difference" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
                         </ListBox>
                     </ToolBar>
                     <ToolBar>

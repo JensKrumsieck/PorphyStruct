@@ -45,6 +45,7 @@ namespace PorphyStruct.Core
         public float ExportHeight { get; set; }
         public float ExportDPI { get; set; }
         public string DefaultExportPath { get; set; }
+        public string DefaultImportPath { get; set; }
         #endregion
         /// <summary>
         /// use for json only!
@@ -116,7 +117,8 @@ namespace PorphyStruct.Core
                 ExportWidth = 2000,
                 ExportHeight = 1500,
                 ExportDPI = 300,
-                DefaultExportPath = ""
+                DefaultExportPath = "",
+                DefaultImportPath = ""
             };
     }
 }
