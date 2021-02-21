@@ -1,6 +1,5 @@
 ﻿using OxyPlot;
 using OxyPlot.Annotations;
-using OxyPlot.Series;
 
 namespace PorphyStruct.Core.Plot
 {
@@ -57,7 +56,7 @@ namespace PorphyStruct.Core.Plot
 
             if (!(StrokeThickness > 0) || LineStyle == LineStyle.None) return;
             rc.DrawReducedLine(
-                new[] {_screenStartPoint, _screenEndPoint},
+                new[] { _screenStartPoint, _screenEndPoint },
                 minimumSegmentLength * minimumSegmentLength,
                 GetSelectableColor(ActualColor),
                 StrokeThickness,

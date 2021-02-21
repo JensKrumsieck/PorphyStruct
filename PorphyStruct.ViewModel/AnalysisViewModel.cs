@@ -2,7 +2,6 @@
 using PorphyStruct.Core.Plot;
 using System.Collections.ObjectModel;
 using System.Linq;
-using OxyPlot.Series;
 using TinyMVVM;
 using TinyMVVM.Utility;
 
