@@ -79,6 +79,10 @@ namespace PorphyStruct.WPF
             OpenFile(ofd.FileName);
         }
 
+        /// <summary>
+        /// Handles actual file opening
+        /// </summary>
+        /// <param name="path"></param>
         private void OpenFile(string path)
         {
             DataContext = ViewModel = new MacrocycleViewModel(path);
