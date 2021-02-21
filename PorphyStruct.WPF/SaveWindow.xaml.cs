@@ -1,12 +1,12 @@
-﻿using PorphyStruct.ViewModel;
+﻿using Microsoft.Win32;
+using PorphyStruct.Core;
+using PorphyStruct.ViewModel;
 using PorphyStruct.ViewModel.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using Microsoft.Win32;
-using PorphyStruct.Core;
 using ThemeCommons.Controls;
 
 namespace PorphyStruct.WPF
@@ -43,7 +43,7 @@ namespace PorphyStruct.WPF
             get => _filename;
             set
             {
-                _filename = value; 
+                _filename = value;
                 OnPropertyChanged();
             }
         }

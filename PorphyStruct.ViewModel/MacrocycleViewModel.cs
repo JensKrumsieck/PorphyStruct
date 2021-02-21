@@ -1,5 +1,4 @@
 ﻿using ChemSharp.Molecules;
-using OxyPlot;
 using PorphyStruct.Core;
 using PorphyStruct.ViewModel.Windows;
 using System.Collections.ObjectModel;
@@ -36,8 +35,6 @@ namespace PorphyStruct.ViewModel
                     atom.IsSelected = atom.Atom.Equals(_selectedAtom);
             });
         }
-
-        public PlotModel Model { get; set; }
 
         /// <summary>
         /// 3D Representation of Atoms

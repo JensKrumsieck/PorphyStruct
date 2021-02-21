@@ -8,5 +8,8 @@
             "XYZ File (*.xyz)|*.xyz|" +
             "Tripos Mol2 (*.mol2)|*.mol|" +
             "All Files|*.*";
+
+        public const string CompareFileFilter =
+            "All Supported Files|*.csv;*.dat;";
     }
 }

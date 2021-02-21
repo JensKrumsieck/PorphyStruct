@@ -10,7 +10,10 @@
         xmlns:viewModel="clr-namespace:PorphyStruct.ViewModel;assembly=PorphyStruct.ViewModel"
         xmlns:controls="clr-namespace:PorphyStruct.WPF.Controls"
         xmlns:extension="clr-namespace:ThemeCommons.MaterialDesign.Extension;assembly=ThemeCommons.MaterialDesign" xmlns:converter="clr-namespace:ThemeCommons.Converter;assembly=ThemeCommons"
-                       d:DataContext="{d:DesignInstance Type=viewModel:MacrocycleViewModel}"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:io="clr-namespace:PorphyStruct.ViewModel.IO;assembly=PorphyStruct.ViewModel"
+        xmlns:converterlocal="clr-namespace:PorphyStruct.WPF.Converter"
+        d:DataContext="{d:DesignInstance Type=viewModel:MacrocycleViewModel}"
         mc:Ignorable="d"
         TitlebarHeight="50"
         IconSize="36"
@@ -35,11 +38,11 @@
                 <ToolBarTray WindowChrome.IsHitTestVisibleInChrome="True">
                     <ToolBar>
                         <Button extension:ControlExtension.AttachedIcon="Folder" Content="Open" Click="Open_OnClick"/>
-                        <Button extension:ControlExtension.AttachedIcon="ContentSave" Content="Save" IsEnabled="{Binding Converter={converter:NotNullConverter}}" Click="Save_OnClick"/>
+                        <Button extension:ControlExtension.AttachedIcon="ContentSave" Content="Save" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}" Click="Save_OnClick"/>
                     </ToolBar>
                     <ToolBar IsEnabled="{Binding  Converter={converter:NotNullConverter}}">
                         <Button extension:ControlExtension.AttachedIcon="Flask" Content="Analyze" Click="Analyze_OnClick" IsEnabled="{Binding Atoms3D, Converter={converter:NotNullConverter}}"/>
-                        <Button extension:ControlExtension.AttachedIcon="Compare" Content="Compare" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
+                        <Button extension:ControlExtension.AttachedIcon="Compare" Content="Compare" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}" Click="Compare_OnClick"/>
                         <Separator/>
                         <ListBox SelectionMode="Multiple">
                             <ListBoxItem Style="{DynamicResource ToolbarListItem}" IsSelected="{Binding SelectedItem.SimulationVisible}" extension:ControlExtension.AttachedIcon="Wand" Content="Simulation" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
@@ -58,7 +61,7 @@
         </Grid>
     </commons:DefaultWindow.TitlebarContent>
     <Grid>
-        <commons:Popup Header="Info - PorphyStruct" Grid.ZIndex="10" x:Name="InfoPopup" Visibility="Collapsed">
+        <commons:Popup Header="Info - PorphyStruct" x:Name="InfoPopup" Visibility="Collapsed">
             <StackPanel Margin="10">
                 <Image Source="Resources/porphystruct.png" Width="120"/>
                 <TextBlock FontSize="40" TextAlignment="Center" FontWeight="Light" Margin="0 10 0 0">
@@ -81,7 +84,7 @@
                 <Button Content="Close"  Background="{DynamicResource Dark}" Foreground="{DynamicResource Light}" Click="Info_OnClick" Margin="0 20 0 0"/>
             </StackPanel>
         </commons:Popup>
-        <commons:Popup Header="Choose Macrocyclic Framework" Grid.ZIndex="10" x:Name="TypePopup" Visibility="Collapsed">
+        <commons:Popup Header="Choose Macrocyclic Framework" x:Name="TypePopup" Visibility="Collapsed">
             <StackPanel>
                 <ListBox Style="{DynamicResource MaterialDesignToolToggleListBox}" x:Name="TypeList"
                      HorizontalAlignment="Center" Margin="0 10 0 0"
@@ -122,6 +125,71 @@
                     <ListBoxItem  Padding="0" ContentTemplate="{StaticResource Corrphycene}" RenderOptions.BitmapScalingMode="Fant" />
                 </ListBox>
                 <Button Content="Submit" Background="{DynamicResource Dark}" Foreground="{DynamicResource Light}" Click="TypeSubmit_OnClick"/>
+            </StackPanel>
+        </commons:Popup>
+        <commons:Popup Header="Compare Data" x:Name="ComparePopUp" Visibility="Collapsed">
+            <StackPanel Width="350">
+                <Label Content="Available Data" FontSize="14" FontWeight="DemiBold"/>
+
+                <Label Content="Local Data" Margin="0 15 0 0"/>
+                <ListBox ItemsSource="{Binding Items}" SelectionMode="Multiple" x:Name="LocalData">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type viewModel:AnalysisViewModel}">
+                            <Grid MinHeight="20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Ellipse x:Name="PART_ICON" Fill="{Binding Analysis.AnalysisColor}"
+                                         Width="12" Height="12"/>
+                                <Label Grid.Column="1" Content="{Binding Title}"
+                                       FontSize="12" HorizontalAlignment="Center"
+                                       FontWeight="Regular"
+                                       x:Name="PART_TEXT"
+                                       VerticalAlignment="{TemplateBinding VerticalAlignment}"/>
+                                <materialDesign:PackIcon Grid.Column="2" Kind="Check" Width="20" Height="20" x:Name="PART_CHECK" Visibility="Hidden" Foreground="Green"/>
+                            </Grid>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="True">
+                                    <Setter TargetName="PART_CHECK" Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <StackPanel Visibility="{Binding SelectedItem.CompareData.Count, Converter={converterlocal:CountToVisibilityConverter}}">
+                    <Label Content="Appended Data" Margin="0 15 0 0"/>
+                    <ListBox ItemsSource="{Binding SelectedItem.CompareData}" SelectionMode="Multiple" x:Name="AppendedData">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type io:CompareData}">
+                                <Grid MinHeight="20">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="16"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <materialDesign:PackIcon Kind="File"
+                                             Width="16" Height="16" VerticalAlignment="Center"/>
+                                    <Label Grid.Column="1" Content="{Binding Title}"
+                                           FontSize="12" HorizontalAlignment="Center"
+                                           FontWeight="Regular"
+                                           x:Name="PART_TEXT"
+                                           VerticalAlignment="{TemplateBinding VerticalAlignment}"/>
+                                    <materialDesign:PackIcon Grid.Column="2" Kind="Check" Width="20" Height="20" x:Name="PART_CHECK" Visibility="Hidden" Foreground="Green"/>
+                                </Grid>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="True">
+                                        <Setter TargetName="PART_CHECK" Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+                <Button Content="Append Data" Background="{DynamicResource Light}" Click="Append_OnClick" Margin="0 5" HorizontalAlignment="Right"/>
+                <Button Content="Ok" Background="{DynamicResource Dark}" Foreground="{DynamicResource Light}" Click="CompareAdd_OnClick"/>
+                <Label FontSize="9" Content="Note: Not selected Data will be discarded!"/>
             </StackPanel>
         </commons:Popup>
         <Grid>

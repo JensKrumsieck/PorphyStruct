@@ -1,5 +1,6 @@
 ﻿using PorphyStruct.Core.Analysis;
 using PorphyStruct.Core.Plot;
+using PorphyStruct.ViewModel.IO;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -21,6 +22,12 @@ namespace PorphyStruct.ViewModel
         public ObservableCollection<BondAnnotation> ExperimentalBonds { get; } = new ObservableCollection<BondAnnotation>();
 
         public ObservableCollection<BondAnnotation> SimulationBonds { get; } = new ObservableCollection<BondAnnotation>();
+
+        public ObservableCollection<CompareData> CompareData { get; } = new ObservableCollection<CompareData>();
+
+        public List<DefaultScatterSeries> ComparisonSeries { get; } = new List<DefaultScatterSeries>();
+
+        public ObservableCollection<BondAnnotation> ComparisonBonds { get; } = new ObservableCollection<BondAnnotation>();
 
         private bool _simulationVisible;
         /// <summary>
@@ -64,6 +71,7 @@ namespace PorphyStruct.ViewModel
             //Add Subscriptions
             Subscribe(ExperimentalBonds, Model.Annotations, b => b, a => a, () => Model.InvalidatePlot(false));
             Subscribe(SimulationBonds, Model.Annotations, b => b, a => a, () => Model.InvalidatePlot(false));
+            Subscribe(ComparisonBonds, Model.Annotations, b => b, a => a, () => Model.InvalidatePlot(false));
 
             //Add Experimental Data
             ExperimentalSeries.ItemsSource = Analysis.DataPoints;
@@ -84,7 +92,7 @@ namespace PorphyStruct.ViewModel
 
             // ReSharper disable  CompareOfFloatsByEqualityOperator
             foreach (var (a1, a2) in Analysis.BondDataPoints())
-                SimulationBonds.Add(new BondAnnotation(src.FirstOrDefault(s => s.X == a1.X), src.FirstOrDefault(s => s.X == a2.X), SimulationSeries) { Opacity = 128 });
+                SimulationBonds.Add(SimulationSeries.CreateBondAnnotation(a1, a2));
             // ReSharper restore  CompareOfFloatsByEqualityOperator
             Model.InvalidatePlot(true);
         }
@@ -98,5 +106,24 @@ namespace PorphyStruct.ViewModel
             var cache = Analysis.DataPoints.OrderBy(s => s.X).ToList();
             return cache.Select((t, i) => new AtomDataPoint(t.X, yAxis[i], t.Atom)).ToList();
         }
+
+        public void PrepareCompare()
+        {
+            if (CompareData.Count == 0)
+            {
+                foreach (var comp in ComparisonSeries) Model.Series.Remove(comp);
+                ComparisonBonds.ClearAndNotify();
+            }
+            foreach (var data in CompareData)
+            {
+                var series = new DefaultScatterSeries { ItemsSource = data.DataPoints, Title = $"Comparison {data.Title}" };
+                ComparisonSeries.Add(series);
+                Model.Series.Add(series);
+                foreach (var (a1, a2) in Analysis.BondDataPoints())
+                    ComparisonBonds.Add(series.CreateBondAnnotation(a1, a2));
+            }
+            Model.InvalidatePlot(true);
+        }
     }
+
 }

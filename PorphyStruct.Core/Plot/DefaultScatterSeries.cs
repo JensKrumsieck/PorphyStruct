@@ -1,5 +1,7 @@
 ﻿using OxyPlot;
 using OxyPlot.Series;
+using System;
+using System.Linq;
 
 namespace PorphyStruct.Core.Plot
 {
@@ -23,6 +25,16 @@ namespace PorphyStruct.Core.Plot
             var adp = (AtomDataPoint)arg;
             var y = Inverted ? -adp.Y : adp.Y;
             return new AtomDataPoint(adp.X, y, adp.Atom);
+        }
+
+        public BondAnnotation CreateBondAnnotation(AtomDataPoint a1, AtomDataPoint a2)
+        {
+            var src = ItemsSource.Cast<AtomDataPoint>().ToList();
+            return new BondAnnotation(
+                    src.FirstOrDefault(s => s.Atom.Title == a1.Atom.Title && Math.Abs(s.X - a1.X) < 1),
+                    src.FirstOrDefault(s => s.Atom.Title == a2.Atom.Title && Math.Abs(s.X - a2.X) < .51),
+                    this)
+            { Opacity = 128 };
         }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.Win32;
 using PorphyStruct.Core;
 using PorphyStruct.Core.Analysis;
 using PorphyStruct.ViewModel;
+using PorphyStruct.ViewModel.IO;
 using PorphyStruct.ViewModel.Windows;
 using System;
 using System.Diagnostics;
@@ -117,15 +118,48 @@ namespace PorphyStruct.WPF
             if (ViewModel == null) return;
             var type = (MacrocycleType)TypeList.SelectedIndex;
             ViewModel.Macrocycle.MacrocycleType = type;
-            TypePopup.Visibility = Visibility.Hidden;
+            TogglePopup(TypePopup);
         }
 
         private void URL_OnClicked(object sender, RequestNavigateEventArgs e) =>
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
 
-        private void Info_OnClick(object sender, RoutedEventArgs e) => InfoPopup.Visibility =
-            InfoPopup.Visibility == Visibility.Collapsed
-                ? InfoPopup.Visibility = Visibility.Visible
-                : InfoPopup.Visibility = Visibility.Collapsed;
+        private void Info_OnClick(object sender, RoutedEventArgs e) => TogglePopup(InfoPopup);
+
+        private void Append_OnClick(object sender, RoutedEventArgs e)
+        {
+            var path = string.IsNullOrEmpty(Settings.Instance.DefaultImportPath)
+                ? Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+                : Settings.Instance.DefaultImportPath;
+            var ofd = new OpenFileDialog
+            {
+                InitialDirectory = path,
+                Filter = Constants.CompareFileFilter,
+                Multiselect = false
+            };
+            if (ofd.ShowDialog(this) != true) return;
+            ViewModel.SelectedItem.CompareData.Add(new CompareData(ofd.FileName));
+        }
+
+        private void CompareAdd_OnClick(object sender, RoutedEventArgs e)
+        {
+            var appendedData = AppendedData.SelectedItems.Cast<CompareData>().ToList();
+            var remove = ViewModel.SelectedItem.CompareData.Except(appendedData);
+            foreach (var item in remove) ViewModel.SelectedItem.CompareData.Remove(item);
+            var localData = LocalData.SelectedItems.Cast<AnalysisViewModel>();
+            foreach (var item in localData) ViewModel.SelectedItem.CompareData.Add(new CompareData(item.Title, item.Analysis.DataPoints.ToList()));
+            ViewModel.SelectedItem.PrepareCompare();
+            TogglePopup(ComparePopUp);
+        }
+
+        private void Compare_OnClick(object sender, RoutedEventArgs e)
+        {
+            ViewModel.SelectedItem.CompareData.Clear();
+            ViewModel.SelectedItem.PrepareCompare();
+            TogglePopup(ComparePopUp);
+        }
+
+        private static void TogglePopup(UIElement sender) => sender.Visibility =
+            sender.Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
     }
 }
