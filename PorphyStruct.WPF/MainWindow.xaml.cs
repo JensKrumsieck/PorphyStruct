@@ -82,8 +82,6 @@ namespace PorphyStruct.WPF
             IsEnabled = true;
         }
 
-        private void Simulate_OnClick(object sender, RoutedEventArgs e) => Task.Run(ViewModel.SelectedItem.Simulate);
-
         private void TypeSubmit_OnClick(object sender, RoutedEventArgs e)
         {
             if (ViewModel == null) return;

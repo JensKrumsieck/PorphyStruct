@@ -69,8 +69,7 @@ namespace PorphyStruct.ViewModel
             Validate();
             foreach (var part in Macrocycle.DetectedParts)
             {
-                var analysis = new AnalysisViewModel(this) { Analysis = part };
-                await Task.Run(analysis.Analyze);
+                var analysis = new AnalysisViewModel(this, part);
                 Items.Add(analysis);
                 SelectedIndex = Items.IndexOf(analysis);
             }

@@ -39,10 +39,10 @@
                     </ToolBar>
                     <ToolBar IsEnabled="{Binding  Converter={converter:NotNullConverter}}">
                         <Button extension:ControlExtension.AttachedIcon="Flask" Content="Analyze" Click="Analyze_OnClick" IsEnabled="{Binding Atoms3D, Converter={converter:NotNullConverter}}"/>
-                        <Button extension:ControlExtension.AttachedIcon="Wand" Content="Simulate" Click="Simulate_OnClick" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
                         <Button extension:ControlExtension.AttachedIcon="Compare" Content="Compare" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
                         <Separator/>
                         <ListBox SelectionMode="Multiple">
+                            <ListBoxItem Style="{DynamicResource ToolbarListItem}" IsSelected="{Binding SelectedItem.SimulationVisible}" extension:ControlExtension.AttachedIcon="Wand" Content="Simulation" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
                             <ListBoxItem Style="{DynamicResource ToolbarListItem}" extension:ControlExtension.AttachedIcon="PlusMinusBox" Content="Invert" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
                             <ListBoxItem Style="{DynamicResource ToolbarListItem}" extension:ControlExtension.AttachedIcon="VectorDifference" Content="Difference" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
                         </ListBox>

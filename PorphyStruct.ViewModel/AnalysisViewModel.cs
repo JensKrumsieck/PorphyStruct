@@ -1,47 +1,73 @@
-﻿using System.IO;
-using ChemSharp.Mathematics;
-using MathNet.Numerics.LinearAlgebra.Double;
-using PorphyStruct.Core.Analysis;
-using PorphyStruct.Core.Analysis.Properties;
-using PorphyStruct.Core.Extension;
+﻿using PorphyStruct.Core.Analysis;
 using PorphyStruct.Core.Plot;
+using System.Collections.ObjectModel;
 using System.Linq;
 using TinyMVVM;
+using TinyMVVM.Utility;
 
 namespace PorphyStruct.ViewModel
 {
     public class AnalysisViewModel : ListItemViewModel<MacrocycleViewModel, AnalysisViewModel>
     {
-        public MacrocycleAnalysis Analysis { get; set; }
+        public MacrocycleAnalysis Analysis { get; }
 
-        public DefaultPlotModel Model { get; set; }
+        public DefaultPlotModel Model { get; }
+
+        public DefaultScatterSeries ExperimentalSeries { get; } = new DefaultScatterSeries();
+
+        public DefaultScatterSeries SimulationSeries { get; } = new DefaultScatterSeries();
+
+        public ObservableCollection<BondAnnotation> ExperimentalBonds { get; } = new ObservableCollection<BondAnnotation>();
+
+        public ObservableCollection<BondAnnotation> SimulationBonds { get; } = new ObservableCollection<BondAnnotation>();
+
+        private bool _simulationVisible;
+        /// <summary>
+        /// Gets or sets visibility for simulation series
+        /// </summary>
+        public bool SimulationVisible
+        {
+            get => _simulationVisible;
+            set => Set(ref _simulationVisible, value, SimulationChanged);
+        }
 
         public override string Title => Parent.Title;
 
-        public AnalysisViewModel(MacrocycleViewModel parent) : base(parent)
+        public AnalysisViewModel(MacrocycleViewModel parent, MacrocycleAnalysis analysis) : base(parent)
         {
+            //Init Object
+            Analysis = analysis;
             Model = new DefaultPlotModel();
-        }
-
-        public void Analyze()
-        {
             Model.Init();
-            var points = Analysis.CalculateDataPoints();
+            Model.Series.Add(ExperimentalSeries);
+            Model.Series.Add(SimulationSeries);
+
+            //Add Subscriptions
+            Subscribe(ExperimentalBonds, Model.Annotations, b => b, a => a, () => Model.InvalidatePlot(true));
+            Subscribe(SimulationBonds, Model.Annotations, b => b, a => a, () => Model.InvalidatePlot(true));
+
+            //Add Experimental Data
+            ExperimentalSeries.ItemsSource = Analysis.DataPoints;
             foreach (var (a1, a2) in Analysis.BondDataPoints())
-                Model.Annotations.Add(new BondAnnotation(a1, a2));
-            Model.Series.Add(new DefaultScatterSeries { ItemsSource = points });
-            Model.InvalidatePlot(true);
+                ExperimentalBonds.Add(new BondAnnotation(a1, a2));
         }
 
-        public void Simulate()
+        public void SimulationChanged()
         {
-            var sim = new Simulation(Parent.Macrocycle.MacrocycleType);
-            var data = Analysis.DataPoints.OrderBy(d => d.X).Select(s => s.Y).ToArray();
-            var res = sim.Simulate(data);
-            var conf = sim.ReferenceMatrix * DenseVector.OfArray(res);
-            var doop = conf.AsArray().Length();
-            var expDoop = Analysis.DataPoints.DisplacementValue();
-            //TODO:Save data somehow
+            SimulationBonds.ClearAndNotify();
+            SimulationSeries.ItemsSource = null;
+            Model.InvalidatePlot(true);
+
+            if (!SimulationVisible) return;
+            var simY = Analysis.Properties.Simulation.ConformationY;
+            var cache = Analysis.DataPoints.OrderBy(s => s.X).ToList();
+            var src = cache.Select((t, i) => new AtomDataPoint(t.X, simY[i], t.Atom)).ToList();
+            SimulationSeries.ItemsSource = src;
+
+            // ReSharper disable  CompareOfFloatsByEqualityOperator
+            foreach (var (a1, a2) in Analysis.BondDataPoints())
+                SimulationBonds.Add(new BondAnnotation(src.FirstOrDefault(s => s.X == a1.X), src.FirstOrDefault(s => s.X == a2.X)) { Opacity = 128 });
+            // ReSharper restore  CompareOfFloatsByEqualityOperator
         }
     }
 }
