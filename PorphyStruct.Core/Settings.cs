@@ -1,9 +1,9 @@
-﻿using System;
+﻿using OxyPlot;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using OxyPlot;
 using TinyMVVM.Utility;
 
 namespace PorphyStruct.Core

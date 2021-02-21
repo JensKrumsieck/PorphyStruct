@@ -1,10 +1,10 @@
 ﻿using ChemSharp.Mathematics;
 using MathNet.Numerics.LinearAlgebra.Double;
-using System.Linq;
 using PorphyStruct.Core.Analysis;
 using PorphyStruct.Core.Analysis.Properties;
 using PorphyStruct.Core.Extension;
 using PorphyStruct.Core.Plot;
+using System.Linq;
 using TinyMVVM;
 
 namespace PorphyStruct.ViewModel

@@ -1,5 +1,7 @@
 ﻿using ChemSharp.Mathematics;
 using HelixToolkit.Wpf;
+using PorphyStruct.Core;
+using PorphyStruct.Core.Analysis;
 using PorphyStruct.ViewModel;
 using PorphyStruct.ViewModel.Windows;
 using System;
@@ -9,8 +11,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
-using PorphyStruct.Core;
-using PorphyStruct.Core.Analysis;
 using ThemeCommons.Controls;
 
 namespace PorphyStruct.WPF

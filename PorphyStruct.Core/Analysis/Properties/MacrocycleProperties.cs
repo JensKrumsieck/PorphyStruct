@@ -1,12 +1,15 @@
 ﻿using ChemSharp.Molecules.Mathematics;
+using PorphyStruct.Core.Extension;
 using System.Collections.Generic;
 using System.Linq;
-using PorphyStruct.Core.Extension;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace PorphyStruct.Core.Analysis.Properties
 {
     public class MacrocycleProperties
     {
+        [JsonIgnore]
         public MacrocycleAnalysis Analysis;
 
         public List<Dihedral> Dihedrals { get; } = new List<Dihedral>();
@@ -15,13 +18,14 @@ namespace PorphyStruct.Core.Analysis.Properties
 
         public Simulation Simulation { get; set; }
 
-        public (string, double) InterplanarAngle { get; set; }
+        public KeyValueProperty InterplanarAngle { get; set; } = new KeyValueProperty { Unit = "°" };
 
-        public double OutOfPlaneParameter => Analysis.DataPoints.DisplacementValue();
+        public KeyValueProperty OutOfPlaneParameter { get; set; } = new KeyValueProperty { Key = "Doop (exp.)", Unit = "Å" };
 
         public MacrocycleProperties(MacrocycleAnalysis analysis)
         {
             Analysis = analysis;
+            InterplanarAngle.Key = $"[N1-{Analysis.Metal?.Title}-N4]x[N2-{Analysis.Metal?.Title}-N3]";
         }
 
         /// <summary>
@@ -49,13 +53,14 @@ namespace PorphyStruct.Core.Analysis.Properties
             Angles.Clear();
             Distances.Clear();
 
-            if(Analysis.DataPoints.Any()) Simulation?.Simulate(Analysis.DataPoints.Select(s => s.Y).ToArray());
+            if (Analysis.DataPoints.Any()) Simulation?.Simulate(Analysis.DataPoints.OrderBy(s => s.X).Select(s => s.Y).ToArray());
+            OutOfPlaneParameter.Value = Analysis.DataPoints.OrderBy(s => s.X).DisplacementValue();
             RebuildDihedrals();
 
             if (Analysis.Metal == null) return;
             Angles.Add(new Angle(Analysis.FindAtomByTitle("N1"), Analysis.Metal, Analysis.FindAtomByTitle("N4")));
             Angles.Add(new Angle(Analysis.FindAtomByTitle("N2"), Analysis.Metal, Analysis.FindAtomByTitle("N3")));
-            InterplanarAngle = ($"[N1-{Analysis.Metal?.Title}-N4]x[N2-{Analysis.Metal?.Title}-N3]", Angles[0].PlaneAngle(Angles[1]));
+            InterplanarAngle.Value = Angles[0].PlaneAngle(Angles[1]);
             Distances.AddRange(Analysis.Atoms.Where(s => Analysis.Metal.BondToByCovalentRadii(s))
                 .Select(s => new Distance(Analysis.Metal, s)));
         }
@@ -78,5 +83,7 @@ namespace PorphyStruct.Core.Analysis.Properties
                     Analysis.FindAtomByTitle(s[1]), Analysis.FindAtomByTitle(s[2]), Analysis.FindAtomByTitle(s[3]))));
             }
         }
+
+        public string Serialize => JsonSerializer.Serialize(this);
     }
 }

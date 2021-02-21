@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ChemSharp.Mathematics;
+﻿using ChemSharp.Mathematics;
 using PorphyStruct.Core.Plot;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PorphyStruct.Core.Extension
 {

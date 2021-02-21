@@ -3,7 +3,6 @@ using ChemSharp.Molecules;
 using PorphyStruct.Core.Plot;
 using System.Collections.Generic;
 using System.Linq;
-using PorphyStruct.Core.Analysis.Properties;
 
 namespace PorphyStruct.Core.Analysis
 {

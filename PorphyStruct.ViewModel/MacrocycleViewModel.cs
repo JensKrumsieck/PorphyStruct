@@ -1,12 +1,12 @@
 ﻿using ChemSharp.Molecules;
 using OxyPlot;
+using PorphyStruct.Core;
 using PorphyStruct.ViewModel.Windows;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media;
-using PorphyStruct.Core;
 using TinyMVVM;
 
 namespace PorphyStruct.ViewModel
