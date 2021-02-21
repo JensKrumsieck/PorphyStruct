@@ -11,19 +11,30 @@ namespace PorphyStruct.Core.Analysis.Properties
 {
     public class Simulation
     {
-        private readonly List<string> _modes = new List<string> { "Doming", "Saddling", "Ruffling", "WavingX", "WavingY", "Propellering" };
+        private readonly MacrocycleType _type;
 
-        public Matrix<double> ReferenceMatrix { get; private set; }
+        private readonly List<string> _modes = new List<string>
+            {"Doming", "Saddling", "Ruffling", "WavingX", "WavingY", "Propellering"};
+
+        /// <summary>
+        /// Matrix containing reference values
+        /// </summary>
+        public Matrix<double> ReferenceMatrix { get; }
+
+        /// <summary>
+        /// Result of Simulation, may be empty
+        /// </summary>
+        public List<(string mode, double value)> SimulationResult { get; } = new List<(string, double)>();
 
         /// <summary>
         /// Creates a Simulation Object for given Type
         /// </summary>
         /// <param name="type"></param>
-        /// <param name="minimal">for Porphyrins only - will reduce basis by Waving 2 to fit Shelnutt et. al.</param>
         public Simulation(MacrocycleType type)
         {
-            var typePrefix = $"PorphyStruct.Core.Reference.{type.ToString()}.";
-            ReferenceMatrix = DisplacementMatrix(_modes.Select(s => typePrefix + s + ".xyz"), type);
+            _type = type;
+            var typePrefix = $"PorphyStruct.Core.Reference.{_type}.";
+            ReferenceMatrix = DisplacementMatrix(_modes.Select(s => typePrefix + s + ".xyz"));
         }
 
         /// <summary>
@@ -31,28 +42,49 @@ namespace PorphyStruct.Core.Analysis.Properties
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public double[] Simulate(double[] data) => ReferenceMatrix.QR().Solve(DenseVector.OfArray(data)).ToArray();
+        public double[] Simulate(double[] data)
+        {
+            SimulationResult.Clear();
+            var result = ReferenceMatrix.QR().Solve(DenseVector.OfArray(data)).ToArray();
+            for (var i = 0; i < _modes.Count; i++) SimulationResult.Add((_modes[i], result[i]));
+            return result;
+        }
+
+        /// <summary>
+        /// Returns simulated Conformation Y Values
+        /// </summary>
+        public List<double> ConformationY => (ReferenceMatrix * DenseVector.OfEnumerable(SimulationResult.Select(s => s.value))).ToList();
+
+        public double OutOfPlaneParameter => ConformationY.Length();
 
         /// <summary>
         /// Build Displacement Matrix from Array of Paths (in Resources)
         /// </summary>
         /// <param name="res"></param>
-        /// <param name="type"></param>
         /// <returns></returns>
-        private Matrix<double> DisplacementMatrix(IEnumerable<string> res, MacrocycleType type)
+        private Matrix<double> DisplacementMatrix(IEnumerable<string> res)
         {
             var mat = new List<double[]>();
             foreach (var s in res)
             {
                 var stream = ResourceUtil.LoadResource(s);
                 var xyz = new XYZDataProvider(stream);
-                var cycle = new Macrocycle(xyz) { MacrocycleType = type };
-                Task.Run(cycle.Detect).Wait(500);
+                var cycle = new Macrocycle(xyz) { MacrocycleType = _type };
+                Task.Run(cycle.Detect).Wait(1500);
                 var part = cycle.DetectedParts[0];
                 var data = part.DataPoints.OrderBy(d => d.X).Select(d => d.Y).ToArray();
                 mat.Add(data.Normalize());
             }
             return Matrix.Build.DenseOfColumnArrays(mat);
+        }
+
+        public override string ToString()
+        {
+            var result = $"Simulation ({_type})\n";
+            foreach (var (mode, value) in SimulationResult)
+                result += $"{mode}: {value:N4} Å\n";
+            if (ConformationY.Any()) result += $"Doop: {OutOfPlaneParameter:N4}";
+            return result;
         }
     }
 }

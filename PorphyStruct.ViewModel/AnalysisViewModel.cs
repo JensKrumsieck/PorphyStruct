@@ -32,6 +32,7 @@ namespace PorphyStruct.ViewModel
             Model.InvalidatePlot(true);
             var D = Analysis.Properties;
         }
+
         public void Simulate()
         {
             var sim = new Simulation(Parent.Macrocycle.MacrocycleType);

@@ -58,8 +58,7 @@ namespace PorphyStruct.Core.Analysis
         /// </summary>
         public abstract Dictionary<string, double> Multiplier { get; }
 
-        private MacrocycleProperties _properties;
-
+        private MacrocycleProperties _properties = null!;
         /// <summary>
         /// A Set of Macrocyclic Properties
         /// </summary>

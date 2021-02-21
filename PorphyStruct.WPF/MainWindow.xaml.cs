@@ -73,7 +73,15 @@ namespace PorphyStruct.WPF
             if (ViewModel?.SelectedItem != null) Viewport3D.CameraController.CameraTarget =
                  MathV.Centroid(ViewModel.SelectedItem.Analysis.Atoms.Select(s => s.Location)).ToPoint3D();
         }
-        private async void Analyze_OnClick(object sender, RoutedEventArgs e) => await ViewModel.Detect();
+
+        private async void Analyze_OnClick(object sender, RoutedEventArgs e)
+        {
+            //Block UI during this
+            IsEnabled = false;
+            await ViewModel.Analyze();
+            IsEnabled = true;
+        }
+
         private void Simulate_OnClick(object sender, RoutedEventArgs e) => Task.Run(ViewModel.SelectedItem.Simulate);
 
         private void TypeSubmit_OnClick(object sender, RoutedEventArgs e)

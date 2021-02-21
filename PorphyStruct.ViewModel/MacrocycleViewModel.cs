@@ -62,7 +62,7 @@ namespace PorphyStruct.ViewModel
         /// Runs Detection Algorithm
         /// </summary>
         /// <returns></returns>
-        public async Task Detect()
+        public async Task Analyze()
         {
             Items.Clear();
             await Task.Run(Macrocycle.Detect);
