@@ -1,10 +1,9 @@
-﻿using ChemSharp.Molecules.Mathematics;
-using PorphyStruct.Core.Extension;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using ChemSharp.Molecules.Mathematics;
+using PorphyStruct.Core.Extension;
 
 namespace PorphyStruct.Core.Analysis.Properties
 {
@@ -44,6 +43,20 @@ namespace PorphyStruct.Core.Analysis.Properties
             new[] { "N2", "C9", "C11", "N3" } //phi4
         };
 
+        internal static IList<string[]> CorrphyceneDihedrals = new List<string[]>
+        {
+            new[] { "C2", "C1", "C20", "C19" }, //chi2
+            new[] { "C3", "C4", "C6", "C7" }, //chi1
+            new[] { "C8", "C9", "C12", "C13" }, //chi4
+            new[] { "C14", "C15", "C17", "C18" }, //chi3
+            new[] { "C9", "N2", "N4", "C17" }, //psi2
+            new[] { "C4", "N1", "N3", "C12" }, //psi1
+            new[] { "N1", "C1", "C20", "N4"}, //phi2
+            new[] { "N1", "C4", "C6" , "N2"}, //phi1
+            new[] { "N2", "C9", "C11", "N3"}, //phi4
+            new[] { "N3", "C14", "C17", "N4"} //phi3
+        };
+
         /// <summary>
         /// Fills all Lists
         /// </summary>
@@ -78,10 +91,17 @@ namespace PorphyStruct.Core.Analysis.Properties
             Distances.Add(new Distance(Analysis.FindAtomByTitle("N2"), Analysis.FindAtomByTitle("N4")));
 
             //add dihedrals from string list
-            if (Analysis is PorphyrinAnalysis || Analysis is CorroleAnalysis)
+            switch (Analysis)
             {
-                Dihedrals.AddRange(PorphyrinoidDihedrals.Select(s => new Dihedral(Analysis.FindAtomByTitle(s[0]),
-                    Analysis.FindAtomByTitle(s[1]), Analysis.FindAtomByTitle(s[2]), Analysis.FindAtomByTitle(s[3]))));
+                case PorphyrinAnalysis _:
+                case CorroleAnalysis _:
+                    Dihedrals.AddRange(PorphyrinoidDihedrals.Select(s => new Dihedral(Analysis.FindAtomByTitle(s[0]),
+                        Analysis.FindAtomByTitle(s[1]), Analysis.FindAtomByTitle(s[2]), Analysis.FindAtomByTitle(s[3]))));
+                    break;
+                case CorrphyceneAnalysis _:
+                    Dihedrals.AddRange(CorrphyceneDihedrals.Select(s => new Dihedral(Analysis.FindAtomByTitle(s[0]),
+                        Analysis.FindAtomByTitle(s[1]), Analysis.FindAtomByTitle(s[2]), Analysis.FindAtomByTitle(s[3]))));
+                    break;
             }
         }
 

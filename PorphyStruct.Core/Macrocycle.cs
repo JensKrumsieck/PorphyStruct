@@ -20,7 +20,8 @@ namespace PorphyStruct.Core
         {
             {MacrocycleType.Porphyrin, 24},
             {MacrocycleType.Corrole, 23},
-            {MacrocycleType.Norcorrole, 22}
+            {MacrocycleType.Norcorrole, 22},
+            {MacrocycleType.Corrphycene, 24}
         };
 
         public Macrocycle(string path) : base(MoleculeFactory.CreateProvider(path)) { }

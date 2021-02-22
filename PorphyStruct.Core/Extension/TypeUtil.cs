@@ -9,7 +9,8 @@ namespace PorphyStruct.Core.Extension
             {
                 NorcorroleAnalysis => MacrocycleType.Norcorrole,
                 CorroleAnalysis => MacrocycleType.Corrole,
-                PorphyrinAnalysis => MacrocycleType.Porphyrin
+                PorphyrinAnalysis => MacrocycleType.Porphyrin,
+                CorrphyceneAnalysis => MacrocycleType.Corrphycene
             };
     }
 }
