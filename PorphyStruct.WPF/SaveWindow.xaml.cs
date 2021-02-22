@@ -69,11 +69,8 @@ namespace PorphyStruct.WPF
         }
 
         private string InitialDir => string.IsNullOrEmpty(Settings.Instance.DefaultExportPath) ? Path.ChangeExtension(ViewModel.Parent.Filename, null) : Settings.Instance.DefaultExportPath + ViewModel.Title;
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

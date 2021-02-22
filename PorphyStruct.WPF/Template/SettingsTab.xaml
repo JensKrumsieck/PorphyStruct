@@ -4,6 +4,7 @@
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     xmlns:controls="clr-namespace:ThemeCommons.Controls;assembly=ThemeCommons"
                     xmlns:converter="clr-namespace:PorphyStruct.WPF.Converter"
+                    xmlns:core="clr-namespace:PorphyStruct.Core;assembly=PorphyStruct.Core"
                     x:Class="PorphyStruct.WPF.Template.TextBoxBindings">
     <DataTemplate x:Key="SettingsTab" DataType="{x:Type viewModel:AnalysisViewModel}">
         <DataTemplate.Resources>
@@ -13,7 +14,7 @@
             <Border Background="{DynamicResource Light}" CornerRadius="5 5  0 0">
                 <StackPanel Margin="15">
                     <Label Content="Quick Settings" FontSize="16" FontWeight="Light"/>
-                    <Label Content="Changes will not override Preferences!" FontSize="9" FontWeight="Light"/>
+                    <Label Content="Changes will not overwrite Preferences!" FontSize="9" FontWeight="Light"/>
                     <Label Content="Y Axis" FontSize="14" FontWeight="SemiBold" Margin="0 15 0 0"/>
                     <UniformGrid Columns="2">
                         <StackPanel>
@@ -47,29 +48,40 @@
                             <TextBox Style="{StaticResource SidebarTextBox}" 
                                      Text="{Binding Model.YAxis.TitlePosition, Mode=TwoWay, IsAsync=True, UpdateSourceTrigger=Explicit}"
                                      materialDesign:HintAssist.HelperText="Y Axis Title Position" KeyUp="BindingOnEnterUp" LostFocus="TextBoxOnLostFocus"/>
-                            <TextBlock TextWrapping="Wrap" FontSize="9">
-                                0: (bottom) <LineBreak/>1: (top)
-                            </TextBlock>
+                            <TextBlock TextWrapping="Wrap" FontSize="9" Margin="5 0 0 0">0: (bottom)<LineBreak/> 1: (top)</TextBlock>
                         </StackPanel>
                         <StackPanel>
                             <Label Content="Label Format"/>
                             <TextBox Style="{StaticResource SidebarTextBox}" 
                                      Text="{Binding Model.YAxis.TitleFormatString, Mode=TwoWay, IsAsync=True, UpdateSourceTrigger=Explicit}"
                                      materialDesign:HintAssist.HelperText="Y Axis Title Format" KeyUp="BindingOnEnterUp" LostFocus="TextBoxOnLostFocus"/>
-                            <TextBlock TextWrapping="Wrap" FontSize="9">
+                            <TextBlock TextWrapping="Wrap" FontSize="9" Margin="5 0 0 0">
                                 Placeholders <LineBreak/>{0}: Quantity {1}: Unit
                             </TextBlock>
                         </StackPanel>
                         <StackPanel>
-                            <Label Content="Orientation"/>
-                            <ToggleButton Margin="0 5 0 0"/>
-                            <TextBlock TextWrapping="Wrap" FontSize="9" Margin="0 7 0 0">
-                                On: Horizontal<LineBreak/>Off: Vertical
-                            </TextBlock>
+                            <Label Content="Label Angle"/>
+                            <TextBox Style="{StaticResource SidebarTextBox}" 
+                                     Text="{Binding Model.YAxis.TitleAngle, Mode=TwoWay, IsAsync=True, UpdateSourceTrigger=Explicit}"
+                                     materialDesign:HintAssist.HelperText="Y Axis Title Angle" KeyUp="BindingOnEnterUp" LostFocus="TextBoxOnLostFocus"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <Label Content="Padding"/>
+                            <TextBox Style="{StaticResource SidebarTextBox}" 
+                                     Text="{Binding Model.PaddingLeft, Mode=TwoWay, IsAsync=True, UpdateSourceTrigger=Explicit}"
+                                     materialDesign:HintAssist.HelperText="Y Axis Title Angle" KeyUp="BindingOnEnterUp" LostFocus="TextBoxOnLostFocus"/>
                         </StackPanel>
                     </UniformGrid>
                     <Label Content="Graph" FontSize="14" FontWeight="SemiBold" Margin="0 15 0 0"/>
                     <UniformGrid Columns="2">
+                        <StackPanel>
+                            <Label Content="Marker Size"/>
+                            <TextBox Style="{StaticResource SidebarTextBox}"
+                                     Text="{Binding ExperimentalSeries.MarkerSize, Mode=TwoWay, IsAsync=True, UpdateSourceTrigger=Explicit}"
+                                     KeyUp="BindingOnEnterUp" LostFocus="TextBoxOnLostFocus"/>
+                            <TextBlock TextWrapping="Wrap" Text="Has no Effect when the Atomradius based sizing option is activated." FontSize="9"/>
+                        </StackPanel>
+                        <StackPanel/>
                         <StackPanel>
                             <Label Content="Marker Stroke Thickness"/>
                             <TextBox Style="{StaticResource SidebarTextBox}"

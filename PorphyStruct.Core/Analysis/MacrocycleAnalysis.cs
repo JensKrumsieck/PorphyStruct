@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 
 namespace PorphyStruct.Core.Analysis
 {
@@ -39,8 +40,12 @@ namespace PorphyStruct.Core.Analysis
             Atoms = atoms;
             Bonds = bonds;
             _guid = Guid.NewGuid();
-            NameAtoms();
-            Properties = new MacrocycleProperties(this);
+            Task.Run(() =>
+                {
+                    NameAtoms();
+                    Properties = new MacrocycleProperties(this);
+                }
+            ).Wait(15000);
         }
 
         /// <summary>

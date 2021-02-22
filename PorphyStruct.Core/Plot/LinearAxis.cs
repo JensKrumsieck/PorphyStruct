@@ -1,10 +1,13 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using OxyPlot;
+using OxyPlot.Axes;
 
 namespace PorphyStruct.Core.Plot
 {
     public class LinearAxis : OxyPlot.Axes.LinearAxis, INotifyPropertyChanged
     {
+        public double TitleAngle { get; set; } = -90;
 
         /// <summary>
         /// Not perfect but i need access to <see cref="ActualMaximumAndMinimumChangedOverride"/>
@@ -65,6 +68,14 @@ namespace PorphyStruct.Core.Plot
             base.ActualMaximumAndMinimumChangedOverride();
             OnPropertyChanged(nameof(BindableActualMaximum));
             OnPropertyChanged(nameof(BindableActualMinimum));
+        }
+
+        public override void Render(IRenderContext rc, int pass)
+        {
+            if (Position == AxisPosition.None) return;
+
+            var r = new HorizontalAndVerticalAxisRenderer(rc, PlotModel);
+            r.Render(this, pass);
         }
 
 

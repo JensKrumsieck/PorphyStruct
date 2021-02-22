@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using OxyPlot;
+﻿using OxyPlot;
 using OxyPlot.Axes;
 using BaseLinearAxis = OxyPlot.Axes.LinearAxis;
 
@@ -36,7 +35,7 @@ namespace PorphyStruct.Core.Plot
                 Key = "Y",
                 IsAxisVisible = true,
                 AxislineThickness = Settings.Instance.AxisThickness,
-                TitleFormatString = Settings.Instance.AxisFormat,
+                TitleFormatString = Settings.Instance.AxisFormat
             };
 
             Axes.Add(XAxis);
@@ -114,9 +113,7 @@ namespace PorphyStruct.Core.Plot
         {
             foreach (var annotation in Annotations)
             {
-                var b = annotation as BondAnnotation;
-                if (b == null) continue;
-
+                if (!(annotation is BondAnnotation b)) continue;
                 var pInfo = typeof(BondAnnotation).GetProperty(prop);
                 pInfo?.SetValue(b, value);
             }
