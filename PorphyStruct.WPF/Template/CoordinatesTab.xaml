@@ -5,7 +5,7 @@
                     xmlns:viewModel="clr-namespace:PorphyStruct.ViewModel;assembly=PorphyStruct.ViewModel">
     <DataTemplate x:Key="CoordinatesTab" DataType="viewModel:MacrocycleViewModel">
         <DataGrid IsSynchronizedWithCurrentItem="True" CanUserSortColumns="True" CanUserAddRows="False" AutoGenerateColumns="False"
-                  SelectedItem="{Binding SelectedAtom}" Background="{DynamicResource Light}"
+                  SelectedItem="{Binding SelectedAtom, Mode=TwoWay}" Background="{DynamicResource Light}"
                   ItemsSource="{Binding Macrocycle.Atoms}" Foreground="{DynamicResource Dark}"
                   SelectionChanged="SelectionChanged" SelectionMode="Single">
             <DataGrid.Columns>
