@@ -66,8 +66,8 @@ namespace PorphyStruct.Core.Analysis
         {
             get
             {
-                _properties.Rebuild();
-                return _properties;
+                _properties?.Rebuild();
+                return _properties!;
             }
             set => _properties = value;
         }
@@ -93,7 +93,7 @@ namespace PorphyStruct.Core.Analysis
         /// </summary>
         /// <param name="a"></param>
         /// <returns></returns>
-        internal IEnumerable<Atom> Neighbors(Atom a) => AtomUtil.Neighbors(a, Bonds);
+        public IEnumerable<Atom> Neighbors(Atom a) => AtomUtil.Neighbors(a, Bonds);
 
         /// <summary>
         /// Generates DataPoints
@@ -162,6 +162,11 @@ namespace PorphyStruct.Core.Analysis
         public List<Atom> Alpha => Atoms.Where(IsAlpha).ToList();
 
         /// <summary>
+        /// Lists all meso Atoms
+        /// </summary>
+        public List<Atom> Meso => Atoms.Except(Alpha).Except(Beta).Except(N4Cavity).ToList();
+
+        /// <summary>
         /// calculate distance between two atoms (as identifiers are needed this must be in Macrocycle-Class!!)
         /// </summary>
         /// <param name="id1">Identifier 1</param>
@@ -200,7 +205,7 @@ namespace PorphyStruct.Core.Analysis
         public void NameAtoms()
         {
             //cycle valid?
-            if (Atoms.Count() != RingAtoms.Count) return;
+            if (Atoms.Count != RingAtoms.Count) return;
             //track visited atoms
             var visited = new HashSet<Atom>();
             //set Identifier for C1 Atom

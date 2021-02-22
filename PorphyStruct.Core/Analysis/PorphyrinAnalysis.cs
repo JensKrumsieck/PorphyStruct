@@ -1,8 +1,11 @@
-﻿using ChemSharp.Mathematics;
+﻿#nullable enable
+using System;
+using ChemSharp.Mathematics;
 using ChemSharp.Molecules;
 using PorphyStruct.Core.Plot;
 using System.Collections.Generic;
 using System.Linq;
+using PorphyStruct.Core.Analysis.Properties;
 
 namespace PorphyStruct.Core.Analysis
 {
@@ -46,7 +49,7 @@ namespace PorphyStruct.Core.Analysis
         /// <returns></returns>
         public override IEnumerable<AtomDataPoint> CalculateDataPoints() => base.CalculateDataPoints().Select(s => s = new AtomDataPoint(s.X + (CalculateDistance("C1", "C19") / 2), s.Y, s.Atom)).Concat(CalculatePorphyrinDataPoints());
 
-        // <summary>
+        /// <summary>
         /// Calculates PorphyrinDataPoints
         /// </summary>
         /// <returns></returns>
@@ -69,6 +72,37 @@ namespace PorphyStruct.Core.Analysis
             yield return (DataPoints.OrderBy(s => s.X).First(), DataPoints.First(s => s.Atom.Title == "C1"));
             yield return (DataPoints.OrderBy(s => s.X).Last(), DataPoints.First(s => s.Atom.Title == "C19"));
         }
+
+        /// <summary>
+        /// Indicates whether this could be an isoporphyrin
+        /// </summary>
+        public bool Isoporphyrin
+        {
+            get
+            {
+                var mesoAngles = (from m in Meso let n = Neighbors(m).ToArray() select new Angle(n[0], m, n[1])).ToList();
+                var median = mesoAngles.OrderBy(s => s.Value).ToArray()[mesoAngles.Count / 2];
+                var isoAngle = mesoAngles.FirstOrDefault(s => Math.Abs(s.Value - median.Value) > 5d);
+                _isoCarbon = isoAngle?.Atom2;
+                return isoAngle != null;
+            }
+        }
+        private Atom? _isoCarbon;
+
+        /// <summary>
+        /// Returns C1 for Isoporphyrins which is the neighbor of the sp3 opposing meso carbon 
+        /// </summary>
+        private Atom? IsoporphyrinC1
+        {
+            get
+            {
+                if (_isoCarbon == null) return null;
+                var mesoOpposing = Meso.OrderBy(s => s.DistanceTo(_isoCarbon)).LastOrDefault();
+                return mesoOpposing == null ? null : Neighbors(mesoOpposing).First();
+            }
+        }
+
+        public override Atom C1 => (Isoporphyrin ? IsoporphyrinC1 : base.C1) ?? base.C1;
 
         public override List<string> RingAtoms => _RingAtoms;
         public override string[] AlphaAtoms => _AlphaAtoms;

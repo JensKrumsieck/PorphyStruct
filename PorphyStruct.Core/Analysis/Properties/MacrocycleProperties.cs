@@ -54,11 +54,11 @@ namespace PorphyStruct.Core.Analysis.Properties
 
             if (Analysis.DataPoints.Any()) Simulation?.Simulate(Analysis.DataPoints.OrderBy(s => s.X).Select(s => s.Y).ToArray());
             OutOfPlaneParameter.Value = Analysis.DataPoints.OrderBy(s => s.X).DisplacementValue();
+
             RebuildDihedrals();
+            RebuildAngles();
 
             if (Analysis.Metal == null) return;
-            Angles.Add(new Angle(Analysis.FindAtomByTitle("N1"), Analysis.Metal, Analysis.FindAtomByTitle("N4")));
-            Angles.Add(new Angle(Analysis.FindAtomByTitle("N2"), Analysis.Metal, Analysis.FindAtomByTitle("N3")));
             InterplanarAngle.Key = $"[N1-{Analysis.Metal.Title}-N4]x[N2-{Analysis.Metal.Title}-N3]";
             InterplanarAngle.Value = Angles[0].PlaneAngle(Angles[1]);
             Distances.AddRange(Analysis.Atoms.Where(s => Analysis.Metal.BondToByCovalentRadii(s))
@@ -82,6 +82,21 @@ namespace PorphyStruct.Core.Analysis.Properties
                 Dihedrals.AddRange(PorphyrinoidDihedrals.Select(s => new Dihedral(Analysis.FindAtomByTitle(s[0]),
                     Analysis.FindAtomByTitle(s[1]), Analysis.FindAtomByTitle(s[2]), Analysis.FindAtomByTitle(s[3]))));
             }
+        }
+
+        /// <summary>
+        /// Rebuilds Angles
+        /// </summary>
+        private void RebuildAngles()
+        {
+            foreach (var m in Analysis.Meso)
+            {
+                var n = Analysis.Neighbors(m).ToArray();
+                Angles.Add(new Angle(n[0], m, n[1]));
+            }
+            if (Analysis.Metal == null) return;
+            Angles.Add(new Angle(Analysis.FindAtomByTitle("N1"), Analysis.Metal, Analysis.FindAtomByTitle("N4")));
+            Angles.Add(new Angle(Analysis.FindAtomByTitle("N2"), Analysis.Metal, Analysis.FindAtomByTitle("N3")));
         }
 
         /// <summary>
