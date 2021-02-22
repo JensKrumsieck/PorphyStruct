@@ -1,8 +1,8 @@
-﻿using System;
+﻿using OxyPlot;
+using OxyPlot.Axes;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using OxyPlot;
-using OxyPlot.Axes;
 
 namespace PorphyStruct.Core.Plot
 {
@@ -16,7 +16,7 @@ namespace PorphyStruct.Core.Plot
             set
             {
                 _titleAngle = value;
-                PlotModel.PlotMargins = Math.Abs(value) < 45 ? new OxyThickness(50, 0,0,0) : new OxyThickness(0, 0, 0, 0);
+                PlotModel.PlotMargins = Math.Abs(value) < 45 ? new OxyThickness(50, 0, 0, 0) : new OxyThickness(0, 0, 0, 0);
             }
         }
 

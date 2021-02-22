@@ -8,8 +8,9 @@ namespace PorphyStruct.Core.Analysis
     {
         public CorrphyceneAnalysis(List<Atom> atoms, IEnumerable<Bond> bonds) : base(atoms, bonds) { }
 
+#pragma warning disable IDE1006
         //ReSharper disable InconsistentNaming
-        internal static string[] _AlphaAtoms = {"C1", "C4", "C6", "C9", "C12", "C15", "C17", "C20"};
+        internal static string[] _AlphaAtoms = { "C1", "C4", "C6", "C9", "C12", "C15", "C17", "C20" };
         internal static List<string> _RingAtoms = PorphyrinAnalysis._RingAtoms;
 
         internal static Dictionary<string, double> _Multiplier => new Dictionary<string, double>
@@ -36,6 +37,7 @@ namespace PorphyStruct.Core.Analysis
             {"C20", 1d}
         };
         // ReSharper restore InconsistentNaming
+#pragma warning restore IDE1006
 
         public override Atom C1 => Alpha.FirstOrDefault(atom => Neighbors(atom).Count(l => Alpha.Contains(l)) != 0);
 

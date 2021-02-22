@@ -1,4 +1,5 @@
 ﻿using PorphyStruct.Core.Analysis;
+using System;
 
 namespace PorphyStruct.Core.Extension
 {
@@ -10,7 +11,9 @@ namespace PorphyStruct.Core.Extension
                 NorcorroleAnalysis => MacrocycleType.Norcorrole,
                 CorroleAnalysis => MacrocycleType.Corrole,
                 PorphyrinAnalysis => MacrocycleType.Porphyrin,
-                CorrphyceneAnalysis => MacrocycleType.Corrphycene
+                PorphyceneAnalysis => MacrocycleType.Porphycene,
+                CorrphyceneAnalysis => MacrocycleType.Corrphycene,
+                _ => throw new InvalidOperationException()
             };
     }
 }

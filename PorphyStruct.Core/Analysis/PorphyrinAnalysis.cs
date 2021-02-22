@@ -1,18 +1,18 @@
 ﻿#nullable enable
-using System;
 using ChemSharp.Mathematics;
 using ChemSharp.Molecules;
+using PorphyStruct.Core.Analysis.Properties;
 using PorphyStruct.Core.Plot;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using PorphyStruct.Core.Analysis.Properties;
 
 namespace PorphyStruct.Core.Analysis
 {
     public class PorphyrinAnalysis : MacrocycleAnalysis
     {
         public PorphyrinAnalysis(List<Atom> atoms, IEnumerable<Bond> bonds) : base(atoms, bonds) { }
-        #pragma warning disable IDE1006
+#pragma warning disable IDE1006
         //ReSharper disable InconsistentNaming
         internal static string[] _AlphaAtoms = { "C1", "C4", "C6", "C9", "C11", "C14", "C16", "C19", "C1" };
         internal static List<string> _RingAtoms = new List<string> { "C1", "C2", "N1", "C3", "C4", "C5", "C6", "C7", "N2", "C8", "C9", "C10", "C11", "C12", "N3", "C13", "C14", "C15", "C16", "C17", "N4", "C18", "C19", "C20" };
@@ -40,7 +40,7 @@ namespace PorphyStruct.Core.Analysis
             { "C20", 1 / 2d }
         };
         // ReSharper restore InconsistentNaming
-        #pragma warning restore IDE1006
+#pragma warning restore IDE1006
 
         /// <summary>
         /// Overrides Macrocycle.CalculateDataPoints

@@ -107,7 +107,6 @@ namespace PorphyStruct.Core.Plot
         }
 
         private double _bondThickness = Settings.Instance.BondThickness;
-        private double _paddingLeft;
 
         public double BondThickness
         {

@@ -202,7 +202,9 @@ namespace PorphyStruct.Core.Analysis
                 MacrocycleType.Porphyrin => new PorphyrinAnalysis(atoms, bonds),
                 MacrocycleType.Corrole => new CorroleAnalysis(atoms, bonds),
                 MacrocycleType.Norcorrole => new NorcorroleAnalysis(atoms, bonds),
-                MacrocycleType.Corrphycene => new CorrphyceneAnalysis(atoms, bonds)
+                MacrocycleType.Porphycene => new PorphyceneAnalysis(atoms, bonds),
+                MacrocycleType.Corrphycene => new CorrphyceneAnalysis(atoms, bonds),
+                _ => throw new InvalidOperationException()
             };
 
         /// <summary>

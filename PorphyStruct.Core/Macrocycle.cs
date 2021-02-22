@@ -21,6 +21,7 @@ namespace PorphyStruct.Core
             {MacrocycleType.Porphyrin, 24},
             {MacrocycleType.Corrole, 23},
             {MacrocycleType.Norcorrole, 22},
+            {MacrocycleType.Porphycene, 24},
             {MacrocycleType.Corrphycene, 24}
         };
 
