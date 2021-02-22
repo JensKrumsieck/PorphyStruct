@@ -1,4 +1,5 @@
-﻿using OxyPlot;
+﻿using System.Reflection;
+using OxyPlot;
 using OxyPlot.Axes;
 using BaseLinearAxis = OxyPlot.Axes.LinearAxis;
 
@@ -86,5 +87,39 @@ namespace PorphyStruct.Core.Plot
             Position = AxisPosition.Bottom,
             IsAxisVisible = false
         };
+
+        private OxyColor _bondColor = OxyColor.Parse(Settings.Instance.BondColor);
+        public OxyColor BondColor
+        {
+            get => _bondColor;
+            set
+            {
+                _bondColor = value;
+                SetBondProperty(nameof(BondAnnotation.Color), value);
+            }
+        }
+
+        private double _bondThickness = Settings.Instance.BondThickness;
+        public double BondThickness
+        {
+            get => _bondThickness;
+            set
+            {
+                _bondThickness = value;
+                SetBondProperty(nameof(BondAnnotation.StrokeThickness), value);
+            }
+        }
+
+        private void SetBondProperty<T>(string prop, T value)
+        {
+            foreach (var annotation in Annotations)
+            {
+                var b = annotation as BondAnnotation;
+                if (b == null) continue;
+
+                var pInfo = typeof(BondAnnotation).GetProperty(prop);
+                pInfo?.SetValue(b, value);
+            }
+        }
     }
 }

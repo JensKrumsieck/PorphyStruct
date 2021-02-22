@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using OxyPlot.Series;
+using PorphyStruct.Core.Plot;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -32,6 +34,18 @@ namespace PorphyStruct.WPF.Template
         private static void UpdateSource(FrameworkElement textBox)
         {
             var expr = textBox.GetBindingExpression(TextBox.TextProperty);
+            switch (expr?.ResolvedSource)
+            {
+                case DefaultPlotModel model:
+                    model.InvalidatePlot(false);
+                    break;
+                case Series series:
+                    series.PlotModel.InvalidatePlot(false);
+                    break;
+                case OxyPlot.Axes.LinearAxis axis:
+                    axis.PlotModel.InvalidatePlot(false);
+                    break;
+            }
             expr?.UpdateSource();
         }
     }
