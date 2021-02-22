@@ -42,7 +42,6 @@ namespace PorphyStruct.WPF
                 if (hit.Visual.GetType() != typeof(AtomVisual3D)) continue;
                 var av3d = hit.Visual as AtomVisual3D;
                 ViewModel.SelectedAtom = av3d?.Atom;
-                CoordinateGrid.ScrollIntoView(ViewModel.SelectedAtom!);
             }
         }
 

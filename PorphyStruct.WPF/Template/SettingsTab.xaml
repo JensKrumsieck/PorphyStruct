@@ -1,0 +1,44 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewModel="clr-namespace:PorphyStruct.ViewModel;assembly=PorphyStruct.ViewModel"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    x:Class="PorphyStruct.WPF.Template.TextBoxBindings">
+    <DataTemplate x:Key="SettingsTab" DataType="{x:Type viewModel:AnalysisViewModel}">
+        <DataTemplate.Resources>
+            <materialDesign:NullableToVisibilityConverter x:Key="NullableToVisibilityConverter"/>
+        </DataTemplate.Resources>
+        <ScrollViewer Visibility="{Binding Analysis, Converter={StaticResource NullableToVisibilityConverter}}">
+            <Border Background="{DynamicResource Light}" CornerRadius="5 5  0 0">
+                <StackPanel Margin="15">
+                    <Label Content="Y Axis" FontSize="15" FontWeight="Light"/>
+                    <UniformGrid Columns="2">
+                        <StackPanel>
+                            <Label Content="Minimum"/>
+                            <TextBox Text="{Binding Model.YAxis.BindableActualMinimum, Mode=TwoWay, IsAsync=True, UpdateSourceTrigger=Explicit}"
+                                 materialDesign:HintAssist.HelperText="X Axis Minimum" Style="{DynamicResource SidebarTextBox}"
+                                 KeyUp="BindingOnEnterUp" LostFocus="TextBoxOnLostFocus"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <Label Content="Maximum"/>
+                            <TextBox Text="{Binding Model.YAxis.BindableActualMaximum, Mode=TwoWay, IsAsync=True, UpdateSourceTrigger=Explicit}" 
+                                 materialDesign:HintAssist.HelperText="X Axis Maximum"  Style="{DynamicResource SidebarTextBox}"
+                                 KeyUp="BindingOnEnterUp" LostFocus="TextBoxOnLostFocus"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <Label Content="Major Tick Size"/>
+                            <TextBox Style="{StaticResource SidebarTextBox}" 
+                                 Text="{Binding Model.YAxis.BindableMajorStep, Mode=TwoWay, IsAsync=True, UpdateSourceTrigger=Explicit}"
+                                 materialDesign:HintAssist.HelperText="Y Axis Major Step" KeyUp="BindingOnEnterUp" LostFocus="TextBoxOnLostFocus"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <Label Content="Minor Tick Size"/>
+                            <TextBox Style="{StaticResource SidebarTextBox}" 
+                                 Text="{Binding Model.YAxis.BindableMinorStep, Mode=TwoWay, IsAsync=True, UpdateSourceTrigger=Explicit}"
+                                 materialDesign:HintAssist.HelperText="Y Axis Major Step" KeyUp="BindingOnEnterUp" LostFocus="TextBoxOnLostFocus"/>
+                        </StackPanel>
+                    </UniformGrid>
+                </StackPanel>
+            </Border>
+        </ScrollViewer>
+    </DataTemplate>
+</ResourceDictionary>

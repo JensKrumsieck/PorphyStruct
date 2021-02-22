@@ -10,7 +10,7 @@
                 <ColumnDefinition Width="155"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <materialDesign:PackIcon x:Name="PART_Icon" Kind="Wand"/>
+            <materialDesign:PackIcon x:Name="PART_Icon" Kind="Flask"/>
             <TextBlock Text="{Binding Key}" Margin="2" Grid.Column="1"/>
             <Grid Grid.Column="2">
                 <Grid.ColumnDefinitions>

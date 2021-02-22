@@ -1,0 +1,18 @@
+﻿<ResourceDictionary x:Class="PorphyStruct.WPF.Template.CoordinatesTab"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:local="clr-namespace:PorphyStruct.WPF.Template"
+                    xmlns:viewModel="clr-namespace:PorphyStruct.ViewModel;assembly=PorphyStruct.ViewModel">
+    <DataTemplate x:Key="CoordinatesTab" DataType="viewModel:MacrocycleViewModel">
+        <DataGrid IsSynchronizedWithCurrentItem="True" CanUserSortColumns="True" CanUserAddRows="False" AutoGenerateColumns="False"
+                  SelectedItem="{Binding SelectedAtom}" Background="{DynamicResource Light}"
+                  ItemsSource="{Binding Macrocycle.Atoms}" Foreground="{DynamicResource Dark}"
+                  SelectionChanged="SelectionChanged" SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Title}" Header="Identifier"/>
+                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Symbol}" Header="Symbol"/>
+                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Location, StringFormat=N4}" Header="Location"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DataTemplate>
+</ResourceDictionary>
