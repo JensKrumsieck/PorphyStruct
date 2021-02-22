@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using OxyPlot;
 using OxyPlot.Axes;
@@ -7,11 +8,22 @@ namespace PorphyStruct.Core.Plot
 {
     public class LinearAxis : OxyPlot.Axes.LinearAxis, INotifyPropertyChanged
     {
-        public double TitleAngle { get; set; } = -90;
+        private double _titleAngle = -90;
+
+        public double TitleAngle
+        {
+            get => _titleAngle;
+            set
+            {
+                _titleAngle = value;
+                PlotModel.PlotMargins = Math.Abs(value) < 45 ? new OxyThickness(50, 0,0,0) : new OxyThickness(0, 0, 0, 0);
+            }
+        }
 
         /// <summary>
         /// Not perfect but i need access to <see cref="ActualMaximumAndMinimumChangedOverride"/>
         /// </summary>
+
         #region BindableProperties
         public double BindableActualMinimum
         {

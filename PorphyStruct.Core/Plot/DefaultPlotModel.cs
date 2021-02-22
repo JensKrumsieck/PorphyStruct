@@ -9,12 +9,20 @@ namespace PorphyStruct.Core.Plot
         public BaseLinearAxis XAxis { get; }
         public LinearAxis YAxis { get; }
 
+        //Expose left padding
+        public double PaddingLeft
+        {
+            get => Padding.Left;
+            set => Padding = new OxyThickness(value, Padding.Top, Padding.Right, Padding.Bottom);
+        }
+
         public DefaultPlotModel()
         {
             TitleFontWeight = 200;
             DefaultFontSize = Settings.Instance.FontSize;
             DefaultFont = Settings.Instance.Font;
             PlotAreaBorderThickness = new OxyThickness(Settings.Instance.BorderThickness);
+            Padding = new OxyThickness(8);
 
             XAxis = new BaseLinearAxis
             {
@@ -99,6 +107,8 @@ namespace PorphyStruct.Core.Plot
         }
 
         private double _bondThickness = Settings.Instance.BondThickness;
+        private double _paddingLeft;
+
         public double BondThickness
         {
             get => _bondThickness;
