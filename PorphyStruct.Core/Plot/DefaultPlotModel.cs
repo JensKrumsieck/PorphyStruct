@@ -22,7 +22,7 @@ namespace PorphyStruct.Core.Plot
             DefaultFontSize = Settings.Instance.FontSize;
             DefaultFont = Settings.Instance.Font;
             PlotAreaBorderThickness = new OxyThickness(Settings.Instance.BorderThickness);
-            Padding = new OxyThickness(8);
+            Padding = new OxyThickness(Settings.Instance.Padding + Settings.Instance.LabelPadding, Settings.Instance.Padding, Settings.Instance.Padding, Settings.Instance.Padding);
 
             XAxis = new BaseLinearAxis
             {

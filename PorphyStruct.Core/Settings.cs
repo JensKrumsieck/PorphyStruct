@@ -11,40 +11,48 @@ namespace PorphyStruct.Core
     public sealed class Settings : Singleton<Settings>
     {
         #region Font
-        public string Font { get; set; }
-        public int FontWeight { get; set; }
-        public int FontSize { get; set; }
+
+        public string Font { get; set; } = "Arial";
+        public int FontWeight { get; set; } = 200;
+        public int FontSize { get; set; } = 14;
         #endregion
 
         #region PlotArea
+
         public double BorderThickness { get; set; }
-        public double Padding { get; set; }
+        public double Padding { get; set; } = 8;
         #endregion
 
         #region Axis
-        public string AxisFormat { get; set; }
-        public double AxisThickness { get; set; }
+
+        public string AxisFormat { get; set; } = "{0} / {1}";
+        public double LabelAngle { get; set; } = -90d;
+        public double LabelPadding { get; set; } = 0;
+        public double LabelPosition { get; set; } = 0.5d;
+        public double AxisThickness { get; set; } = 2d;
         public bool ShowXAxis { get; set; }
-        public bool ShowZero { get; set; }
+        public bool ShowZero { get; set; } = true;
         #endregion
 
         #region Series
-        public double BondThickness { get; set; }
-        public string BondColor { get; set; }
-        public MarkerType MarkerType { get; set; }
-        public int MarkerSize { get; set; }
+
+        public double BondThickness { get; set; } = 2d;
+        public string BondColor { get; set; } = "#FF000000";
+        public MarkerType MarkerType { get; set; } = MarkerType.Circle;
+        public int MarkerSize { get; set; } = 6;
         public bool UseAtomRadiusMarkerSize { get; set; }
         public int MarkerBorderThickness { get; set; }
-        public string MarkerBorderColor { get; set; }
-        public string NotMarkedPoints { get; set; }
+        public string MarkerBorderColor { get; set; } = "#FF000000";
+        public string NotMarkedPoints { get; set; } = "";
         #endregion
 
         #region Export
-        public float ExportWidth { get; set; }
-        public float ExportHeight { get; set; }
-        public float ExportDPI { get; set; }
-        public string DefaultExportPath { get; set; }
-        public string DefaultImportPath { get; set; }
+
+        public float ExportWidth { get; set; } = 3000f;
+        public float ExportHeight { get; set; } = 1500f;
+        public float ExportDPI { get; set; } = 300f;
+        public string DefaultExportPath { get; set; } = "";
+        public string DefaultImportPath { get; set; } = "";
         #endregion
         /// <summary>
         /// use for json only!
@@ -60,7 +68,7 @@ namespace PorphyStruct.Core
         /// <param name="path"></param>
         public void Load(string path = "")
         {
-            var settings = Default;
+            var settings = Instance;
             if (File.Exists(path))
             {
                 var file = File.ReadAllText(path);
@@ -82,40 +90,5 @@ namespace PorphyStruct.Core
             var content = JsonSerializer.Serialize(Instance, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}/settings.json", content);
         }
-
-        /// <summary>
-        /// Load Default Settings
-        /// </summary>
-        /// <returns></returns>
-        private static Settings Default =>
-            new Settings
-            {
-                FontWeight = 200,
-                Font = "Arial",
-                FontSize = 14,
-
-                BorderThickness = 0,
-                Padding = 1.5,
-
-                AxisFormat = "{0} / {1}",
-                AxisThickness = 1.5,
-                ShowXAxis = false,
-                ShowZero = true,
-
-                BondThickness = 1.5,
-                BondColor = "#000000",
-                MarkerType = MarkerType.Circle,
-                MarkerSize = 5,
-                UseAtomRadiusMarkerSize = true,
-                MarkerBorderThickness = 0,
-                MarkerBorderColor = "#000000",
-                NotMarkedPoints = "",
-
-                ExportWidth = 2000,
-                ExportHeight = 1500,
-                ExportDPI = 300,
-                DefaultExportPath = "",
-                DefaultImportPath = ""
-            };
     }
 }

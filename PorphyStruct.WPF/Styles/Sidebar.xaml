@@ -3,7 +3,6 @@
                     xmlns:controls="clr-namespace:ThemeCommons.Controls;assembly=ThemeCommons">
     <Style TargetType="{x:Type TextBox}" x:Key="SidebarTextBox" BasedOn="{StaticResource ThemeCommonsDefaultTextBox}">
         <Setter Property="Margin" Value="2 0 10 0"/>
-        <Setter Property="Background" Value="{DynamicResource Light}"/>
     </Style>
     <Style TargetType="{x:Type controls:ColorPickerTextBox}" x:Key="SidebarColorPickerTextBox" BasedOn="{StaticResource ColorPickerTextBox}">
         <Setter Property="Margin" Value="2 0 10 0"/>

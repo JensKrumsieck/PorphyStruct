@@ -7,13 +7,22 @@
         xmlns:controls="clr-namespace:ThemeCommons.Controls;assembly=ThemeCommons"
         xmlns:viewModel="clr-namespace:PorphyStruct.ViewModel;assembly=PorphyStruct.ViewModel"
         xmlns:converter="clr-namespace:PorphyStruct.WPF.Converter"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        xmlns:oxyplot="clr-namespace:OxyPlot;assembly=OxyPlot"
         mc:Ignorable="d"
         IconSize="24"
         TitlebarBackground="{DynamicResource TitleBar}" 
         Icon="Resources/porphystruct.ico"
         Background="{DynamicResource Background}"
         ResizeMode="NoResize"
-        Title="SettingsWindow" Height="750" Width="600" DataContext="viewModel:SettingsViewModel" d:DataContext="{d:DesignInstance viewModel:SettingsViewModel}">
+        Title="SettingsWindow" Height="800" Width="600" DataContext="viewModel:SettingsViewModel" d:DataContext="{d:DesignInstance viewModel:SettingsViewModel}">
+    <controls:DefaultWindow.Resources>
+        <ObjectDataProvider x:Key="enumData" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="oxyplot:MarkerType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </controls:DefaultWindow.Resources>
     <controls:DefaultWindow.TitlebarContent>
         <Grid VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
@@ -52,12 +61,33 @@
                      <StackPanel>
                          <Label Content="Axis Format"/>
                          <TextBox Text="{Binding AxisFormat}"/>
-                     </StackPanel>
+                         <TextBlock TextWrapping="Wrap" FontSize="9" Margin="5 0 0 0">
+                             Placeholders <LineBreak/>{0}: Quantity {1}: Unit
+                         </TextBlock>
+                        </StackPanel>
                      <StackPanel>
                          <Label Content="Axis Thickness"/>
                          <TextBox Text="{Binding AxisThickness}"/>
                      </StackPanel>
                      <StackPanel>
+                         <Label Content="Y Axis Label Rotation"/>
+                         <TextBox Text="{Binding LabelAngle}"/>
+                         <TextBlock TextWrapping="Wrap" FontSize="9" Margin="5 0 0 0">
+                             May requires some additional Label padding (see below)
+                         </TextBlock>
+                        </StackPanel>
+                     <StackPanel>
+                         <Label Content="Y Axis Label Position"/>
+                         <TextBox Text="{Binding LabelPosition}"/>
+                         <TextBlock TextWrapping="Wrap" FontSize="9" Margin="5 0 0 0">
+                             0: Bottom, 1: Top
+                         </TextBlock>
+                     </StackPanel>
+                        <StackPanel>
+                         <Label Content="Y Axis Label Padding"/>
+                         <TextBox Text="{Binding LabelPadding}"/>
+                     </StackPanel>
+                        <StackPanel>
                          <Label Content="Show X Axis"/>
                          <ToggleButton IsChecked="{Binding ShowXAxis}"/>
                      </StackPanel>
@@ -65,20 +95,7 @@
                          <Label Content="Show Zero"/>
                          <ToggleButton IsChecked="{Binding ShowZero}"/>
                      </StackPanel>
-                     <Label FontSize="14" Content="Font" FontWeight="DemiBold"/>
-                     <StackPanel>
-                         <Label Content="Font Family"/>
-                         <TextBox Text="{Binding FontFamily}"/>
-                     </StackPanel>
-                     <StackPanel>
-                         <Label Content="Font Size"/>
-                         <TextBox Text="{Binding FontSize}"/>
-                     </StackPanel>
-                     <StackPanel>
-                         <Label Content="Font Weight"/>
-                         <TextBox Text="{Binding FontWeight}"/>
-                     </StackPanel>
-                    </StackPanel>
+                 </StackPanel>
 
                  <StackPanel Grid.Column="1" Margin="10">
                      <Label FontSize="14" Content="Series" FontWeight="DemiBold"/>
@@ -88,7 +105,7 @@
                      </StackPanel>
                      <StackPanel>
                          <Label Content="Marker Type"/>
-                         <ComboBox/>
+                         <ComboBox ItemsSource="{Binding Source={StaticResource enumData}}" SelectedItem="{Binding MarkerType}"/>
                      </StackPanel>
                         <StackPanel>
                             <Label Content="Use Atom Radius as MarkerSize"/>
@@ -105,6 +122,9 @@
                      <StackPanel>
                          <Label Content="Not Marked Points"/>
                          <TextBox Text="{Binding NotMarkedPoints}"/>
+                         <TextBlock TextWrapping="Wrap" FontSize="9" Margin="5 0 0 0">
+                            Separate with Comma, e.g. "C1,N" to hide C1 and all nitrogens
+                         </TextBlock>
                      </StackPanel>
                      <StackPanel>
                          <Label Content="Bond Thickness"/>
@@ -114,9 +134,55 @@
                          <Label Content="Bond Color"/>
                          <controls:ColorPickerTextBox Text="{Binding BondColor}"/>
                      </StackPanel>
+                     <Label FontSize="14" Content="Font" FontWeight="DemiBold"/>
+                     <StackPanel>
+                         <Label Content="Font Family"/>
+                         <TextBox Text="{Binding FontFamily}"/>
+                     </StackPanel>
+                     <StackPanel>
+                         <Label Content="Font Size"/>
+                         <TextBox Text="{Binding FontSize}"/>
+                     </StackPanel>
+                     <StackPanel>
+                         <Label Content="Font Weight"/>
+                         <TextBox Text="{Binding FontWeight}"/>
+                     </StackPanel>
                     </StackPanel>
                 </Grid>
          </TabItem>
+            <TabItem Header="Export">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Margin="10">
+                        <StackPanel>
+                            <Label Content="Height"/>
+                            <TextBox Text="{Binding ExportHeight}"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <Label Content="Width"/>
+                            <TextBox Text="{Binding ExportWidth}"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <Label Content="DPI"/>
+                            <TextBox Text="{Binding ExportDPI}"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <Label Content="Import Path"/>
+                            <TextBox Text="{Binding DefaultImportPath}"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <Label Content="Export Path"/>
+                            <TextBox Text="{Binding DefaultExportPath}"/>
+                            <TextBlock TextWrapping="Wrap" FontSize="9" Margin="5 0 0 0">
+                                Uses Import path of molecule file if empty (Recommended)
+                            </TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
      </TabControl> 
     </DockPanel>
 </controls:DefaultWindow>

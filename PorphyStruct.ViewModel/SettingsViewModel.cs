@@ -20,6 +20,9 @@ namespace PorphyStruct.ViewModel
         #region Axis
         public string AxisFormat { get => Settings.Instance.AxisFormat; set => Settings.Instance.AxisFormat = value; }
         public double AxisThickness { get => Settings.Instance.AxisThickness; set => Settings.Instance.AxisThickness = value; }
+        public double LabelAngle { get => Settings.Instance.LabelAngle; set => Settings.Instance.LabelAngle = value; } 
+        public double LabelPadding { get => Settings.Instance.LabelPadding; set => Settings.Instance.LabelPadding = value; }
+        public double LabelPosition { get => Settings.Instance.LabelPosition; set => Settings.Instance.LabelPosition = value; }
         public bool ShowXAxis { get => Settings.Instance.ShowXAxis; set => Settings.Instance.ShowXAxis = value; }
         public bool ShowZero { get => Settings.Instance.ShowZero; set => Settings.Instance.ShowZero = value; }
         #endregion

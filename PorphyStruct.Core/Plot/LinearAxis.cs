@@ -1,6 +1,5 @@
 ﻿using OxyPlot;
 using OxyPlot.Axes;
-using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -8,16 +7,12 @@ namespace PorphyStruct.Core.Plot
 {
     public class LinearAxis : OxyPlot.Axes.LinearAxis, INotifyPropertyChanged
     {
-        private double _titleAngle = -90;
+        private double _titleAngle = Settings.Instance.LabelAngle;
 
         public double TitleAngle
         {
             get => _titleAngle;
-            set
-            {
-                _titleAngle = value;
-                PlotModel.PlotMargins = Math.Abs(value) < 45 ? new OxyThickness(50, 0, 0, 0) : new OxyThickness(0, 0, 0, 0);
-            }
+            set => _titleAngle = value;
         }
 
         /// <summary>
