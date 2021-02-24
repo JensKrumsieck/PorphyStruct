@@ -42,11 +42,11 @@ namespace PorphyStruct.ViewModel
         #endregion
 
         #region Export
-        public float ExportWidth { get => Settings.Instance.ExportWidth; set => Settings.Instance.ExportWidth = value; }
-        public float ExportHeight { get => Settings.Instance.ExportHeight; set => Settings.Instance.ExportHeight = value; }
-        public float ExportDPI { get => Settings.Instance.ExportDPI; set => Settings.Instance.ExportDPI = value; }
-        public string DefaultExportPath { get => Settings.Instance.DefaultExportPath; set => Settings.Instance.DefaultExportPath = value; }
-        public string DefaultImportPath { get => Settings.Instance.DefaultImportPath; set => Settings.Instance.DefaultImportPath = value; }
+        public float ExportWidth { get => Get<float>(); set =>Set(value);}
+        public float ExportHeight { get => Get<float>(); set => Set(value); }
+        public float ExportDPI { get => Get<float>(); set => Set(value); }
+        public string DefaultExportPath { get => Get<string>(); set => Set(value); }
+        public string DefaultImportPath { get => Get<string>(); set => Set(value); }
         #endregion
 
         #region Simulation/Comparions
@@ -62,7 +62,7 @@ namespace PorphyStruct.ViewModel
             OnPropertyChanged(propertyName);
         }
 
-        public T Get<T>([CallerMemberName] string propertyName = null)
+        public static T Get<T>([CallerMemberName] string propertyName = null)
         {
             var pInfo = typeof(Settings).GetProperty(propertyName!);
             return (T)pInfo?.GetValue(Settings.Instance);
