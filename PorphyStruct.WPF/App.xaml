@@ -1,0 +1,33 @@
+﻿<Application x:Class="PorphyStruct.WPF.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             StartupUri="MainWindow.xaml" DispatcherUnhandledException="App_OnDispatcherUnhandledException">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/ThemeCommons;component/Styles/Colors.xaml"/>
+                <materialDesign:CustomColorTheme BaseTheme="Light" PrimaryColor="{StaticResource OrangeColor}" SecondaryColor="{StaticResource BlueColor}"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/ThemeCommons.MaterialDesign;component/Themes/Generic.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Styles/ToolBar.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Styles/Images.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Styles/TabItem.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Styles/Sidebar.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Template/Property.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Template/SettingsTab.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Template/AnalysisTab.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Template/CoordinatesTab.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Template/TabTemplateSelector.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="TitleBar" Color="{DynamicResource DarkColor}" Opacity="0.80"/>
+            <SolidColorBrush x:Key="MaterialDesignBody" Color="{DynamicResource DarkColor}"/>
+            <SolidColorBrush x:Key="MaterialDesignToolBarBackground" Color="Transparent"/>
+            <SolidColorBrush x:Key="Background" Color="{DynamicResource LightColor}" Opacity="0.50"/>
+            <Style TargetType="TextBox" BasedOn="{StaticResource ThemeCommonsDefaultTextBox}">
+                <Setter Property="Background" Value="{DynamicResource Light}"/>
+            </Style>
+        </ResourceDictionary>
+       
+    </Application.Resources>
+</Application>

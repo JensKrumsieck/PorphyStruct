@@ -1,0 +1,239 @@
+﻿<commons:DefaultWindow x:Class="PorphyStruct.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PorphyStruct.WPF"
+        xmlns:commons="clr-namespace:ThemeCommons.Controls;assembly=ThemeCommons"
+        xmlns:wpf="http://oxyplot.org/skiawpf"
+        xmlns:h="http://helix-toolkit.org/wpf"
+        xmlns:viewModel="clr-namespace:PorphyStruct.ViewModel;assembly=PorphyStruct.ViewModel"
+        xmlns:controls="clr-namespace:PorphyStruct.WPF.Controls"
+        xmlns:extension="clr-namespace:ThemeCommons.MaterialDesign.Extension;assembly=ThemeCommons.MaterialDesign" xmlns:converter="clr-namespace:ThemeCommons.Converter;assembly=ThemeCommons"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:io="clr-namespace:PorphyStruct.ViewModel.IO;assembly=PorphyStruct.ViewModel"
+        xmlns:converterlocal="clr-namespace:PorphyStruct.WPF.Converter"
+        d:DataContext="{d:DesignInstance Type=viewModel:MacrocycleViewModel}"
+        mc:Ignorable="d"
+        TitlebarHeight="50"
+        IconSize="36"
+        AllowDrop="True"
+        Background="{DynamicResource Background}"
+        Icon="Resources/porphystruct.ico"
+        MinWidth="1200" MinHeight="750"
+        TitlebarBackground="{DynamicResource TitleBar}" Height="750" Width="1200">
+    <commons:DefaultWindow.TitlebarContent>
+        <Grid VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="275"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock FontSize="14" VerticalAlignment="Center">
+                PorphyStruct
+                <LineBreak/>
+                <Run FontSize="9">Structural Analysis of Porphyrinoids</Run>
+            </TextBlock>
+            <StackPanel Orientation="Horizontal" Grid.Column="1">
+                <ToolBarTray WindowChrome.IsHitTestVisibleInChrome="True">
+                    <ToolBar>
+                        <Button extension:ControlExtension.AttachedIcon="Folder" Content="Open" Click="Open_OnClick"/>
+                        <Button extension:ControlExtension.AttachedIcon="ContentSave" Content="Save" Click="Save_OnClick">
+                            <Button.IsEnabled>
+                                <MultiBinding Converter="{converterlocal:MultiBooleanAndConverter}">
+                                    <Binding Path="SelectedItem" Converter="{converter:NotNullConverter}"/>
+                                    <Binding Path="" Converter="{converter:NotNullConverter}"/>
+                                </MultiBinding>
+                            </Button.IsEnabled>
+                        </Button>
+                    </ToolBar>
+                    <ToolBar IsEnabled="{Binding  Converter={converter:NotNullConverter}}">
+                        <Button extension:ControlExtension.AttachedIcon="Flask" Content="Analyze" Click="Analyze_OnClick" IsEnabled="{Binding Atoms3D, Converter={converter:NotNullConverter}}"/>
+                        <Button extension:ControlExtension.AttachedIcon="Compare" Content="Compare" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}" Click="Compare_OnClick"/>
+                        <Separator/>
+                        <ListBox SelectionMode="Multiple">
+                            <ListBoxItem Style="{DynamicResource ToolbarListItem}" IsSelected="{Binding SelectedItem.SimulationVisible}" extension:ControlExtension.AttachedIcon="Wand" Content="Simulation" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
+                            <ListBoxItem Style="{DynamicResource ToolbarListItem}" IsSelected="{Binding SelectedItem.Inverted}" extension:ControlExtension.AttachedIcon="PlusMinusBox" Content="Invert" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
+                        </ListBox>
+                    </ToolBar>
+                    <ToolBar>
+                        <Button extension:ControlExtension.AttachedIcon="Cog" Content="Preferences" Click="Settings_OnClick"/>
+                        <Button extension:ControlExtension.AttachedIcon="InfoCircle" Content="About" Click="Info_OnClick"/>
+                    </ToolBar>
+                </ToolBarTray>
+            </StackPanel>
+            <Label FontWeight="Light" FontSize="9" VerticalAlignment="Top" Height="20"
+                   Content="{Binding Title}" Background="{DynamicResource Dark}" 
+                   Foreground="{DynamicResource Light}" Grid.Column="2"/>
+        </Grid>
+    </commons:DefaultWindow.TitlebarContent>
+    <Grid>
+        <commons:Popup Header="Info - PorphyStruct" x:Name="InfoPopup" Visibility="Collapsed">
+            <StackPanel Margin="10">
+                <Image Source="Resources/porphystruct.png" Width="120"/>
+                <TextBlock FontSize="40" TextAlignment="Center" FontWeight="Light" Margin="0 10 0 0">
+                        PorphyStruct
+                        <LineBreak/>
+                        <Run FontSize="16">
+                            Structural Analysis of Porphyrinoids
+                        </Run>
+                </TextBlock>
+                <TextBlock FontSize="16" Margin="0 10 0 0">
+                        Developed by <Hyperlink NavigateUri="http://jenskrumsieck.de" RequestNavigate="URL_OnClicked"><Run FontWeight="Bold">Jens Krumsieck</Run>.</Hyperlink>
+                </TextBlock>
+                <TextBlock Margin="0 10 0 0">
+                        J. Krumsieck, M. Bröring, manuscript in preparation, 2021.
+                        <LineBreak/>
+                        Based on the NSD Method of 
+                        <LineBreak/>
+                        W. Jentzen, X. Z. Song, and J. A. Shelnutt, 1997, J. Phys. Chem. B, 101, 9, 1684-1699.
+                </TextBlock>
+                <Button Content="Close"  Background="{DynamicResource Dark}" Foreground="{DynamicResource Light}" Click="Info_OnClick" Margin="0 20 0 0"/>
+            </StackPanel>
+        </commons:Popup>
+        <commons:Popup Header="Choose Macrocyclic Framework" x:Name="TypePopup" Visibility="Collapsed">
+            <StackPanel>
+                <ListBox Style="{DynamicResource MaterialDesignToolToggleListBox}" x:Name="TypeList"
+                     HorizontalAlignment="Center" Margin="0 10 0 0"
+                     SelectedIndex="0">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="3"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="Width" Value="200"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                        <Border BorderThickness="{TemplateBinding BorderThickness}"
+                                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                                Background="{TemplateBinding Background}"
+                                                CornerRadius="5">
+                                            <ContentPresenter/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="true">
+                                                <Setter Property="BorderBrush" Value="{DynamicResource SecondaryHueMidBrush}" />
+                                                <Setter Property="BorderThickness" Value="3" />
+                                                <Setter Property="Background" Value="WhiteSmoke" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBoxItem  Padding="0" ContentTemplate="{StaticResource Porphyrin}" RenderOptions.BitmapScalingMode="Fant" />
+                    <ListBoxItem Padding="0" ContentTemplate="{StaticResource Corrole}" RenderOptions.BitmapScalingMode="Fant"/>
+                    <ListBoxItem  Padding="0" ContentTemplate="{StaticResource Norcorrole}" RenderOptions.BitmapScalingMode="Fant" />
+                    <ListBoxItem  Padding="0" ContentTemplate="{StaticResource Porphycene}" RenderOptions.BitmapScalingMode="Fant" />
+                    <ListBoxItem  Padding="0" ContentTemplate="{StaticResource Corrphycene}" RenderOptions.BitmapScalingMode="Fant" />
+                </ListBox>
+                <Button Content="Submit" Background="{DynamicResource Dark}" Foreground="{DynamicResource Light}" Click="TypeSubmit_OnClick"/>
+            </StackPanel>
+        </commons:Popup>
+        <commons:Popup Header="Compare Data" x:Name="ComparePopUp" Visibility="Collapsed">
+            <StackPanel Width="350">
+                <Label Content="Available Data" FontSize="14" FontWeight="DemiBold"/>
+
+                <Label Content="Local Data" Margin="0 15 0 0"/>
+                <ListBox ItemsSource="{Binding Items}" SelectionMode="Multiple" x:Name="LocalData">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type viewModel:AnalysisViewModel}">
+                            <Grid MinHeight="20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Ellipse x:Name="PART_ICON" Fill="{Binding Analysis.AnalysisColor}"
+                                         Width="12" Height="12"/>
+                                <Label Grid.Column="1" Content="{Binding Title}"
+                                       FontSize="12" HorizontalAlignment="Center"
+                                       FontWeight="Regular"
+                                       x:Name="PART_TEXT"
+                                       VerticalAlignment="{TemplateBinding VerticalAlignment}"/>
+                                <materialDesign:PackIcon Grid.Column="2" Kind="Check" Width="20" Height="20" x:Name="PART_CHECK" Visibility="Hidden" Foreground="Green"/>
+                            </Grid>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="True">
+                                    <Setter TargetName="PART_CHECK" Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <StackPanel Visibility="{Binding SelectedItem.CompareData.Count, Converter={converterlocal:CountToVisibilityConverter}}">
+                    <Label Content="Appended Data" Margin="0 15 0 0"/>
+                    <ListBox ItemsSource="{Binding SelectedItem.CompareData}" SelectionMode="Multiple" x:Name="AppendedData">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type io:CompareData}">
+                                <Grid MinHeight="20">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="16"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <materialDesign:PackIcon Kind="File"
+                                             Width="16" Height="16" VerticalAlignment="Center"/>
+                                    <Label Grid.Column="1" Content="{Binding Title}"
+                                           FontSize="12" HorizontalAlignment="Center"
+                                           FontWeight="Regular"
+                                           x:Name="PART_TEXT"
+                                           VerticalAlignment="{TemplateBinding VerticalAlignment}"/>
+                                    <materialDesign:PackIcon Grid.Column="2" Kind="Check" Width="20" Height="20" x:Name="PART_CHECK" Visibility="Hidden" Foreground="Green"/>
+                                </Grid>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="True">
+                                        <Setter TargetName="PART_CHECK" Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+                <Button Content="Append Data" Background="{DynamicResource Light}" Click="Append_OnClick" Margin="0 5" HorizontalAlignment="Right"/>
+                <Button Content="Ok" Background="{DynamicResource Dark}" Foreground="{DynamicResource Light}" Click="CompareAdd_OnClick"/>
+                <Label FontSize="9" Content="Note: Not selected Data will be discarded!"/>
+            </StackPanel>
+        </commons:Popup>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TabControl Grid.RowSpan="2" ItemsSource="{Binding Items}" Grid.Row="0" Grid.Column="0" Margin="0" BorderThickness="0" Padding="0"
+                        SelectedIndex="{Binding SelectedIndex}" Drop="OnFileDrop" ItemContainerStyle="{DynamicResource TabHeaderStyle}">
+                <TabControl.Background>
+                    <ImageBrush ImageSource="/Resources/porphystruct.png" Stretch="None"/>
+                </TabControl.Background>
+                <TabControl.ContentTemplate>
+                    <DataTemplate DataType="viewModel:AnalysisViewModel">
+                        <wpf:PlotView x:Name="PlotView" Model="{Binding Model}"/>
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
+            </TabControl>
+            <h:HelixViewport3D Grid.Column="1" Grid.Row="0" x:Name="Viewport3D"
+                               MouseLeftButtonDown="Viewport3D_OnMouseLeftButtonDown"
+                               ShowViewCube="False" ShowCoordinateSystem="True" 
+                               ZoomExtentsWhenLoaded="True" IsHeadLightEnabled="True" >
+                <h:DefaultLights/>
+                <h:DirectionalHeadLight/>
+                <controls:ItemsVisual3D ItemsSource="{Binding Atoms3D}"/>
+                <controls:ItemsVisual3D ItemsSource="{Binding Bonds3D}"/>
+            </h:HelixViewport3D>
+            <TabControl Grid.Row="1" Grid.Column="1" Background="Transparent" TabStripPlacement="Left" ItemContainerStyle="{DynamicResource SideTabHeaderStyle}" 
+                        Padding="0" BorderThickness="0" ContentTemplateSelector="{DynamicResource TemplateByTypeSelector}">
+                <TabItem Header="Analysis" extension:ControlExtension.AttachedIcon="Flask" DataContext="{Binding SelectedItem.Analysis}" Content="{Binding}"/>
+                <TabItem Header="Coordinates" extension:ControlExtension.AttachedIcon="Navigation" DataContext="{Binding}" Content="{Binding}"/>
+                <TabItem DataContext="{Binding SelectedItem}" Content="{Binding}" Header="Quick Settings" extension:ControlExtension.AttachedIcon="Cog" VerticalAlignment="Top"/>
+            </TabControl>
+        </Grid>
+    </Grid>
+</commons:DefaultWindow>

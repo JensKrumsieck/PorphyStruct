@@ -2,43 +2,49 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-	  <LangVersion>Latest</LangVersion>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="MathNet.Numerics" Version="4.9.1" />
-    <PackageReference Include="MathNet.Spatial" Version="0.5.0" />
-    <PackageReference Include="OxyPlot.Core" Version="2.0.0" />
-    <PackageReference Include="OxyPlot.Core.Drawing" Version="2.0.0" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
-    <PackageReference Include="System.Text.Json" Version="5.0.0-preview.1.20120.5" />
+    <EmbeddedResource Include="Reference\Corrphycene\Doming.xyz" />
+    <EmbeddedResource Include="Reference\Corrphycene\Propellering.xyz" />
+    <EmbeddedResource Include="Reference\Corrphycene\Ruffling.xyz" />
+    <EmbeddedResource Include="Reference\Corrphycene\Saddling.xyz" />
+    <EmbeddedResource Include="Reference\Corrphycene\WavingX.xyz" />
+    <EmbeddedResource Include="Reference\Corrphycene\WavingY.xyz" />
+    <EmbeddedResource Include="Reference\Corrole\Doming.xyz" />
+    <EmbeddedResource Include="Reference\Corrole\Propellering.xyz" />
+    <EmbeddedResource Include="Reference\Corrole\Ruffling.xyz" />
+    <EmbeddedResource Include="Reference\Corrole\Saddling.xyz" />
+    <EmbeddedResource Include="Reference\Corrole\WavingX.xyz" />
+    <EmbeddedResource Include="Reference\Corrole\WavingY.xyz" />
+    <EmbeddedResource Include="Reference\Norcorrole\Doming.xyz" />
+    <EmbeddedResource Include="Reference\Norcorrole\Propellering.xyz" />
+    <EmbeddedResource Include="Reference\Norcorrole\Ruffling.xyz" />
+    <EmbeddedResource Include="Reference\Norcorrole\Saddling.xyz" />
+    <EmbeddedResource Include="Reference\Norcorrole\WavingX.xyz" />
+    <EmbeddedResource Include="Reference\Norcorrole\WavingY.xyz" />
+    <EmbeddedResource Include="Reference\Porphycene\Doming.xyz" />
+    <EmbeddedResource Include="Reference\Porphycene\Propellering.xyz" />
+    <EmbeddedResource Include="Reference\Porphycene\Ruffling.xyz" />
+    <EmbeddedResource Include="Reference\Porphycene\Saddling.xyz" />
+    <EmbeddedResource Include="Reference\Porphycene\WavingX.xyz" />
+    <EmbeddedResource Include="Reference\Porphycene\WavingY.xyz" />
+    <EmbeddedResource Include="Reference\Porphyrin\Doming.xyz" />
+    <EmbeddedResource Include="Reference\Porphyrin\Propellering.xyz" />
+    <EmbeddedResource Include="Reference\Porphyrin\Ruffling.xyz" />
+    <EmbeddedResource Include="Reference\Porphyrin\Saddling.xyz" />
+    <EmbeddedResource Include="Reference\Porphyrin\Waving2X.xyz" />
+    <EmbeddedResource Include="Reference\Porphyrin\Waving2Y.xyz" />
+    <EmbeddedResource Include="Reference\Porphyrin\WavingX.xyz" />
+    <EmbeddedResource Include="Reference\Porphyrin\WavingY.xyz" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
+	<ItemGroup>
+    <PackageReference Include="ChemSharp.Molecules" Version="1.0.0-beta5" />
+    <PackageReference Include="JensKrumsieck.TinyMVVM" Version="1.0.0-beta5" />
+    <PackageReference Include="OxyPlot.Core" Version="2.1.0-Preview1" />
+    <PackageReference Include="OxyPlot.SkiaSharp" Version="2.1.0-Preview1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Properties\Settings.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
 
 </Project>
