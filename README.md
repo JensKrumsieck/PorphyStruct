@@ -6,7 +6,7 @@ Molecular structures of porphyrinoid macrocycles can be represented by a linear 
 With **PorphyStruct** displacement diagrams can be generated and simulated to gain insight into the conformation of the obtained substance.
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/cbc210753b3ef4d72b50/maintainability)](https://codeclimate.com/github/JensKrumsieck/PorphyStruct/maintainability)
-[![Build Status](https://dev.azure.com/jenskrumsieck/jenskrumsieck/_apis/build/status/JensKrumsieck.PorphyStruct?branchName=master)](https://dev.azure.com/jenskrumsieck/jenskrumsieck/_build/latest?definitionId=1&branchName=master)
+[![.NET](https://github.com/JensKrumsieck/PorphyStruct/actions/workflows/dotnet.yml/badge.svg)](https://github.com/JensKrumsieck/PorphyStruct/actions/workflows/dotnet.yml)
 ![GitHub repo size](https://img.shields.io/github/repo-size/JensKrumsieck/PorphyStruct)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/JensKrumsieck/PorphyStruct)
 ![GitHub Pre-Releases](https://img.shields.io/github/downloads-pre/JensKrumsieck/PorphyStruct/latest/total)
