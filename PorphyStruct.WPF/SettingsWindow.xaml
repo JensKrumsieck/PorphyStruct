@@ -16,7 +16,7 @@
         Icon="Resources/porphystruct.ico"
         Background="{DynamicResource Background}"
         ResizeMode="NoResize"
-        Title="SettingsWindow" Height="800" Width="600" DataContext="viewModel:SettingsViewModel" d:DataContext="{d:DesignInstance viewModel:SettingsViewModel}">
+        Title="SettingsWindow" Height="800" Width="700" DataContext="viewModel:SettingsViewModel" d:DataContext="{d:DesignInstance viewModel:SettingsViewModel}">
     <controls:DefaultWindow.Resources>
         <ObjectDataProvider x:Key="enumData" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
             <ObjectDataProvider.MethodParameters>
@@ -45,19 +45,26 @@
          <TabItem Header="Graph" extension:ControlExtension.AttachedIcon="ChartScatterPlotHexbin">
              <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
                  <StackPanel Grid.Column="0" Margin="10">
                      <Label FontSize="14" Content="Plot Area" FontWeight="DemiBold"/>
                      <StackPanel>
                          <Label Content="Border Thickness"/>
-                         <TextBox Text="{Binding BorderThickness}"/>
-                     </StackPanel>
+                         <StackPanel Orientation="Horizontal">
+                             <TextBox Text="{Binding BorderThickness}" Width="150" Margin="0 0 15 0"/>
+                             <Label Content="px"/>
+                         </StackPanel>
+                        </StackPanel>
                      <StackPanel>
                          <Label Content="Padding"/>
-                         <TextBox Text="{Binding Padding}"/>
-                     </StackPanel>
+                         <StackPanel Orientation="Horizontal">
+                             <TextBox Text="{Binding Padding}" Width="150" Margin="0 0 15 0"/>
+                             <Label Content="px"/>
+                         </StackPanel>
+                        </StackPanel>
                      <Label FontSize="14" Content="Axis" FontWeight="DemiBold"/>
                      <StackPanel>
                          <Label Content="Axis Format"/>
@@ -68,12 +75,18 @@
                         </StackPanel>
                      <StackPanel>
                          <Label Content="Axis Thickness"/>
-                         <TextBox Text="{Binding AxisThickness}"/>
-                     </StackPanel>
+                         <StackPanel Orientation="Horizontal">
+                             <TextBox Text="{Binding AxisThickness}" Width="150" Margin="0 0 15 0"/>
+                             <Label Content="px"/>
+                         </StackPanel>
+                        </StackPanel>
                      <StackPanel>
                          <Label Content="Y Axis Label Rotation"/>
-                         <TextBox Text="{Binding LabelAngle}"/>
-                         <TextBlock TextWrapping="Wrap" FontSize="9" Margin="5 0 0 0">
+                         <StackPanel Orientation="Horizontal">
+                             <TextBox Text="{Binding LabelAngle}" Width="150" Margin="0 0 15 0"/>
+                             <Label Content="°"/>
+                         </StackPanel>
+                            <TextBlock TextWrapping="Wrap" FontSize="9" Margin="5 0 0 0">
                              May requires some additional Label padding (see below)
                          </TextBlock>
                         </StackPanel>
@@ -100,22 +113,32 @@
 
                  <StackPanel Grid.Column="1" Margin="10">
                      <Label FontSize="14" Content="Series" FontWeight="DemiBold"/>
-                     <StackPanel>
+                        <StackPanel IsEnabled="{Binding UseAtomRadiusMarkerSize, Converter={converter:InverseBooleanConverter}}">
                          <Label Content="Marker Size"/>
                          <TextBox Text="{Binding MarkerSize}"/>
-                     </StackPanel>
-                     <StackPanel>
-                         <Label Content="Marker Type"/>
-                         <ComboBox ItemsSource="{Binding Source={StaticResource enumData}}" SelectedItem="{Binding MarkerType}"/>
-                     </StackPanel>
+                         <TextBlock TextWrapping="Wrap" FontSize="9" Margin="5 0 0 0">
+                             Has no Effect if "Use Atom Radius as Marker Size" is set to true.
+                         </TextBlock>
+                        </StackPanel>
+                     
                         <StackPanel>
+                         <Label Content="Use Single Marker Color"/>
+                         <ToggleButton IsChecked="{Binding SingleColor}"/>
+                         <TextBlock TextWrapping="Wrap" FontSize="9" Margin="5 0 0 0">
+                             Deactivates Atom specific colors
+                         </TextBlock>
+                        </StackPanel>
+                    <StackPanel>
                             <Label Content="Use Atom Radius as MarkerSize"/>
                          <ToggleButton IsChecked="{Binding UseAtomRadiusMarkerSize}"/>
                      </StackPanel>
                         <StackPanel>
                             <Label Content="Marker Border Thickness"/>
-                         <TextBox Text="{Binding MarkerBorderThickness}"/>
-                     </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox Text="{Binding MarkerBorderThickness}" Width="150" Margin="0 0 15 0"/>
+                                <Label Content="px"/>
+                            </StackPanel>
+                        </StackPanel>
                      <StackPanel>
                          <Label Content="Marker Border Color"/>
                          <controls:ColorPickerTextBox Text="{Binding MarkerBorderColor}"/>
@@ -129,21 +152,57 @@
                      </StackPanel>
                      <StackPanel>
                          <Label Content="Bond Thickness"/>
-                         <TextBox Text="{Binding BondThickness}"/>
+                         <StackPanel Orientation="Horizontal">
+                             <TextBox Text="{Binding BondThickness}" Width="150" Margin="0 0 15 0"/>
+                             <Label Content="px"/>
+                         </StackPanel>
+                        </StackPanel>
+                 </StackPanel>
+                 <StackPanel Grid.Column="2" Margin="10">
+                     <Label FontSize="14" FontWeight="DemiBold" Content="Experimental"/>
+                     <StackPanel IsEnabled="{Binding SingleColor}">
+                         <Label Content="Marker Color"/>
+                         <controls:ColorPickerTextBox Text="{Binding MarkerColor}"/>
+                         <TextBlock TextWrapping="Wrap" FontSize="9" Margin="5 0 0 0">
+                             Has no Effect if "Single Marker Color" is set to false.
+                         </TextBlock>
+                     </StackPanel>
+                     <StackPanel>
+                         <Label Content="Marker Type"/>
+                         <ComboBox ItemsSource="{Binding Source={StaticResource enumData}}" SelectedItem="{Binding MarkerType}"/>
                      </StackPanel>
                      <StackPanel>
                          <Label Content="Bond Color"/>
                          <controls:ColorPickerTextBox Text="{Binding BondColor}"/>
                      </StackPanel>
-                     <Label FontSize="14" Content="Font" FontWeight="DemiBold"/>
+                        <Label Margin="0 25 0 0" FontSize="14" Content="Simulation/Comparison" FontWeight="DemiBold"/>
+                     <StackPanel IsEnabled="{Binding SingleColor}">
+                         <Label Content="Simulation Marker Color"/>
+                         <controls:ColorPickerTextBox Text="{Binding SimulationMarkerColor}"/>
+                         <TextBlock TextWrapping="Wrap" FontSize="9" Margin="5 0 0 0">
+                             Has no Effect if "Single Marker Color" is set to false.
+                         </TextBlock>
+                     </StackPanel>
+                     <StackPanel>
+                         <Label Content="Simulation Marker Type"/>
+                         <ComboBox ItemsSource="{Binding Source={StaticResource enumData}}" SelectedItem="{Binding SimulationMarkerType}"/>
+                     </StackPanel>
+                        <StackPanel>
+                         <Label Content="Simulation Bond Color"/>
+                         <controls:ColorPickerTextBox Text="{Binding SimulationBondColor}"/>
+                        </StackPanel>
+                        <Label Margin="0 25 0 0" FontSize="14" Content="Font" FontWeight="DemiBold"/>
                      <StackPanel>
                          <Label Content="Font Family"/>
-                         <TextBox Text="{Binding FontFamily}"/>
+                         <TextBox Text="{Binding Font}"/>
                      </StackPanel>
                      <StackPanel>
                          <Label Content="Font Size"/>
-                         <TextBox Text="{Binding FontSize}"/>
-                     </StackPanel>
+                         <StackPanel Orientation="Horizontal">
+                             <TextBox Text="{Binding FontSize}" Width="150" Margin="0 0 15 0"/>
+                             <Label Content="px"/>
+                         </StackPanel>
+                        </StackPanel>
                      <StackPanel>
                          <Label Content="Font Weight"/>
                          <TextBox Text="{Binding FontWeight}"/>
@@ -156,15 +215,22 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Margin="10">
                         <StackPanel>
                             <Label Content="Height"/>
-                            <TextBox Text="{Binding ExportHeight}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox Text="{Binding ExportHeight}" Width="150" Margin="0 0 15 0"/>
+                                <Label Content="px"/>
+                            </StackPanel>
                         </StackPanel>
                         <StackPanel>
                             <Label Content="Width"/>
-                            <TextBox Text="{Binding ExportWidth}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox Text="{Binding ExportWidth}" Width="150" Margin="0 0 15 0"/>
+                                <Label Content="px"/>
+                            </StackPanel>
                         </StackPanel>
                         <StackPanel>
                             <Label Content="DPI"/>
@@ -173,14 +239,14 @@
                         <StackPanel>
                             <Label Content="Import Path"/>
                             <StackPanel Orientation="Horizontal">
-                                <TextBox Text="{Binding DefaultImportPath}" Width="200" Margin="0 0 5 0" x:Name="ImportPath"/>
+                                <TextBox Text="{Binding DefaultImportPath}" Width="125" Margin="0 0 5 0" x:Name="ImportPath"/>
                                 <Button Content="Search" Background="{DynamicResource Dark}" Foreground="{DynamicResource Light}" Click="Search_OnClick" Tag="Import"/>
                             </StackPanel>
                         </StackPanel>
                         <StackPanel>
                             <Label Content="Export Path"/>
                             <StackPanel Orientation="Horizontal">
-                                <TextBox Text="{Binding DefaultExportPath}" Width="200" Margin="0 0 5 0" x:Name="ExportPath"/>
+                                <TextBox Text="{Binding DefaultExportPath}" Width="125" Margin="0 0 5 0" x:Name="ExportPath"/>
                                 <Button Content="Search" Background="{DynamicResource Dark}" Foreground="{DynamicResource Light}" Click="Search_OnClick" Tag="Export"/>
                             </StackPanel>
                             <TextBlock TextWrapping="Wrap" FontSize="9" Margin="5 0 0 0">

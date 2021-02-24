@@ -116,7 +116,7 @@
                             <Setter TargetName="PART_BORDER" Property="BorderBrush" Value="{DynamicResource Blue}"/>
                             <Setter TargetName="PART_TEXT" Property="Foreground" Value="{DynamicResource Dark}"/>
                         </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
+                        <Trigger Property="IsMouseOver" Value="True" SourceName="PART_BORDER">
                             <Setter TargetName="PART_BORDER" Property="Background" Value="{DynamicResource TitleBar}"/>
                             <Setter TargetName="PART_TEXT" Property="Foreground" Value="{DynamicResource Light}"/>
                             <Setter TargetName="PART_ICON" Property="Foreground" Value="{DynamicResource Light}"/>

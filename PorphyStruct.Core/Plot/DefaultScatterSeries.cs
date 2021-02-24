@@ -18,6 +18,7 @@ namespace PorphyStruct.Core.Plot
             MarkerStroke = OxyColor.Parse(Settings.Instance.MarkerBorderColor);
             MarkerSize = Settings.Instance.MarkerSize;
             Mapping = InverseMapping;
+            if (Settings.Instance.SingleColor) MarkerFill = OxyColor.Parse(Settings.Instance.MarkerColor);
         }
 
         private ScatterPoint InverseMapping(object arg)
@@ -30,11 +31,18 @@ namespace PorphyStruct.Core.Plot
         public BondAnnotation CreateBondAnnotation(AtomDataPoint a1, AtomDataPoint a2)
         {
             var src = ItemsSource.Cast<AtomDataPoint>().ToList();
-            return new BondAnnotation(
+            var annotation = new BondAnnotation(
                     src.FirstOrDefault(s => s.Atom.Title == a1.Atom.Title && Math.Abs(s.X - a1.X) < 1),
                     src.FirstOrDefault(s => s.Atom.Title == a2.Atom.Title && Math.Abs(s.X - a2.X) < .51),
                     this)
-            { Opacity = 128 };
+                { Opacity = 128 };
+
+            if (!Title.Contains("Simulation"))
+                return annotation;
+
+            annotation.Opacity = 255;
+            annotation.Color = OxyColor.Parse(Settings.Instance.SimulationBondColor);
+            return annotation;
         }
     }
 }

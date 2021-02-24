@@ -1,4 +1,5 @@
-﻿using OxyPlot;
+﻿using System.Runtime.CompilerServices;
+using OxyPlot;
 using PorphyStruct.Core;
 using TinyMVVM;
 
@@ -7,35 +8,37 @@ namespace PorphyStruct.ViewModel
     public class SettingsViewModel : BaseViewModel
     {
         #region Font
-        public string FontFamily { get => Settings.Instance.Font; set => Settings.Instance.Font = value; }
-        public int FontSize { get => Settings.Instance.FontSize; set => Settings.Instance.FontSize = value; }
-        public int FontWeight { get => Settings.Instance.FontWeight; set => Settings.Instance.FontWeight = value; }
+        public string Font { get => Get<string>(); set => Set(value); }
+        public int FontSize { get => Get<int>(); set => Set(value); }
+        public int FontWeight { get => Get<int>(); set => Set(value); }
         #endregion
 
         #region PlotArea
-        public double BorderThickness { get => Settings.Instance.BorderThickness; set => Settings.Instance.BorderThickness = value; }
-        public double Padding { get => Settings.Instance.Padding; set => Settings.Instance.Padding = value; }
+        public double BorderThickness { get => Get<double>(); set => Set(value); }
+        public double Padding { get => Get<double>(); set => Set(value); }
         #endregion
 
         #region Axis
-        public string AxisFormat { get => Settings.Instance.AxisFormat; set => Settings.Instance.AxisFormat = value; }
-        public double AxisThickness { get => Settings.Instance.AxisThickness; set => Settings.Instance.AxisThickness = value; }
-        public double LabelAngle { get => Settings.Instance.LabelAngle; set => Settings.Instance.LabelAngle = value; }
-        public double LabelPadding { get => Settings.Instance.LabelPadding; set => Settings.Instance.LabelPadding = value; }
-        public double LabelPosition { get => Settings.Instance.LabelPosition; set => Settings.Instance.LabelPosition = value; }
-        public bool ShowXAxis { get => Settings.Instance.ShowXAxis; set => Settings.Instance.ShowXAxis = value; }
-        public bool ShowZero { get => Settings.Instance.ShowZero; set => Settings.Instance.ShowZero = value; }
+        public string AxisFormat { get => Get<string>(); set => Set(value); }
+        public double AxisThickness { get => Get<double>(); set => Set(value); }
+        public double LabelAngle { get => Get<double>(); set => Set(value); }
+        public double LabelPadding { get => Get<double>(); set => Set(value); }
+        public double LabelPosition { get => Get<double>(); set => Set(value); }
+        public bool ShowXAxis { get => Get<bool>();  set => Set(value); }
+        public bool ShowZero { get => Get<bool>(); set => Set(value); }
         #endregion
 
         #region Series
-        public double BondThickness { get => Settings.Instance.BondThickness; set => Settings.Instance.BondThickness = value; }
-        public string BondColor { get => Settings.Instance.BondColor; set => Settings.Instance.BondColor = value; }
-        public MarkerType MarkerType { get => Settings.Instance.MarkerType; set => Settings.Instance.MarkerType = value; }
-        public int MarkerSize { get => Settings.Instance.MarkerSize; set => Settings.Instance.MarkerSize = value; }
-        public bool UseAtomRadiusMarkerSize { get => Settings.Instance.UseAtomRadiusMarkerSize; set => Settings.Instance.UseAtomRadiusMarkerSize = value; }
-        public int MarkerBorderThickness { get => Settings.Instance.MarkerBorderThickness; set => Settings.Instance.MarkerBorderThickness = value; }
-        public string MarkerBorderColor { get => Settings.Instance.MarkerBorderColor; set => Settings.Instance.MarkerBorderColor = value; }
-        public string NotMarkedPoints { get => Settings.Instance.NotMarkedPoints; set => Settings.Instance.NotMarkedPoints = value; }
+        public double BondThickness { get => Get<double>(); set => Set(value); }
+        public string BondColor { get => Get<string>(); set => Set(value); }
+        public MarkerType MarkerType { get => Get<MarkerType>(); set => Set(value); }
+        public string MarkerColor { get => Get<string>(); set => Set(value); }
+        public int MarkerSize { get => Get<int>(); set => Set(value); }
+        public bool UseAtomRadiusMarkerSize { get => Get<bool>(); set => Set(value); }
+        public int MarkerBorderThickness { get => Get<int>(); set => Set(value); }
+        public string MarkerBorderColor { get => Get<string>(); set => Set(value); }
+        public string NotMarkedPoints { get => Get<string>(); set => Set(value); }
+        public bool SingleColor { get => Get<bool>(); set => Set(value); }
         #endregion
 
         #region Export
@@ -45,5 +48,24 @@ namespace PorphyStruct.ViewModel
         public string DefaultExportPath { get => Settings.Instance.DefaultExportPath; set => Settings.Instance.DefaultExportPath = value; }
         public string DefaultImportPath { get => Settings.Instance.DefaultImportPath; set => Settings.Instance.DefaultImportPath = value; }
         #endregion
+
+        #region Simulation/Comparions
+        public string SimulationBondColor { get => Get<string>(); set => Set(value); }
+        public string SimulationMarkerColor { get => Get<string>(); set => Set(value);}
+        public MarkerType SimulationMarkerType { get => Get<MarkerType>(); set => Set(value); }
+        #endregion
+
+        public void Set(object value, [CallerMemberName] string propertyName = null)
+        {
+            var pInfo = typeof(Settings).GetProperty(propertyName!);
+            pInfo?.SetValue(Settings.Instance, value);
+            OnPropertyChanged(propertyName);
+        }
+
+        public T Get<T>([CallerMemberName] string propertyName = null)
+        {
+            var pInfo = typeof(Settings).GetProperty(propertyName!);
+            return (T)pInfo?.GetValue(Settings.Instance);
+        }
     }
 }

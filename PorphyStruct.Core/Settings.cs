@@ -1,5 +1,6 @@
 ﻿using OxyPlot;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -37,6 +38,7 @@ namespace PorphyStruct.Core
         #region Series
 
         public double BondThickness { get; set; } = 2d;
+        public string MarkerColor { get; set; } = "#FF000000";
         public string BondColor { get; set; } = "#FF000000";
         public MarkerType MarkerType { get; set; } = MarkerType.Circle;
         public int MarkerSize { get; set; } = 6;
@@ -44,6 +46,7 @@ namespace PorphyStruct.Core
         public int MarkerBorderThickness { get; set; }
         public string MarkerBorderColor { get; set; } = "#FF000000";
         public string NotMarkedPoints { get; set; } = "";
+        public bool SingleColor { get; set; }
         #endregion
 
         #region Export
@@ -54,6 +57,14 @@ namespace PorphyStruct.Core
         public string DefaultExportPath { get; set; } = "";
         public string DefaultImportPath { get; set; } = "";
         #endregion
+
+
+        #region Simulation/Comparions
+        public string SimulationBondColor { get; set; } = "#FF000000";
+        public string SimulationMarkerColor { get; set; } = "#FFFF0000";
+        public MarkerType SimulationMarkerType { get; set; } = MarkerType.Circle;
+        #endregion
+
         /// <summary>
         /// use for json only!
         /// For accessing settings use <see cref="Singleton.Instance"/>

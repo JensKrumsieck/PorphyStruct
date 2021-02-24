@@ -4,6 +4,8 @@ using PorphyStruct.ViewModel.IO;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using OxyPlot;
+using PorphyStruct.Core;
 using TinyMVVM;
 using TinyMVVM.Utility;
 
@@ -89,11 +91,10 @@ namespace PorphyStruct.ViewModel
             var simY = Analysis.Properties.Simulation.ConformationY;
             var src = BuildSimulationData(simY);
             SimulationSeries.ItemsSource = src;
+            if (Settings.Instance.SingleColor) SimulationSeries.MarkerFill = OxyColor.Parse(Settings.Instance.SimulationMarkerColor);
 
-            // ReSharper disable  CompareOfFloatsByEqualityOperator
             foreach (var (a1, a2) in Analysis.BondDataPoints())
                 SimulationBonds.Add(SimulationSeries.CreateBondAnnotation(a1, a2));
-            // ReSharper restore  CompareOfFloatsByEqualityOperator
             Model.InvalidatePlot(true);
         }
 

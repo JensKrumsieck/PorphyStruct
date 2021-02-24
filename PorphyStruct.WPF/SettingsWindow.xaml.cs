@@ -17,8 +17,11 @@ namespace PorphyStruct.WPF
             DataContext = new SettingsViewModel();
         }
 
-        private void Save_OnClick(object sender, RoutedEventArgs e) => Settings.Instance.Save();
-
+        private void Save_OnClick(object sender, RoutedEventArgs e)
+        {
+            Settings.Instance.Save();
+            Close();
+        }
         private void Search_OnClick(object sender, RoutedEventArgs e)
         {
             var btn = (sender as Button)?.Tag.ToString()!;
