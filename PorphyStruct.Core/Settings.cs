@@ -29,7 +29,6 @@ namespace PorphyStruct.Core
         #endregion
 
         #region Series
-        public double SeriesThickness { get; set; }
         public double BondThickness { get; set; }
         public string BondColor { get; set; }
         public MarkerType MarkerType { get; set; }
@@ -103,7 +102,6 @@ namespace PorphyStruct.Core
                 ShowXAxis = false,
                 ShowZero = true,
 
-                SeriesThickness = 1.5,
                 BondThickness = 1.5,
                 BondColor = "#000000",
                 MarkerType = MarkerType.Circle,

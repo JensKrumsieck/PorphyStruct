@@ -160,5 +160,10 @@ namespace PorphyStruct.WPF
 
         private static void TogglePopup(UIElement sender) => sender.Visibility =
             sender.Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
+
+        private void Settings_OnClick(object sender, RoutedEventArgs e)
+        {
+            new SettingsWindow().ShowDialog();
+        }
     }
 }

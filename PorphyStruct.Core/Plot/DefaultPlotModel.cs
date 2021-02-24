@@ -67,7 +67,7 @@ namespace PorphyStruct.Core.Plot
             var zero = new OxyPlot.Annotations.LineAnnotation()
             {
                 Color = OxyColor.FromAColor(40, OxyColors.Gray),
-                StrokeThickness = Settings.Instance.SeriesThickness,
+                StrokeThickness = Settings.Instance.BondThickness,
                 Intercept = 0,
                 Slope = 0
             };

@@ -57,7 +57,7 @@
                         </ListBox>
                     </ToolBar>
                     <ToolBar>
-                        <Button extension:ControlExtension.AttachedIcon="Cog" Content="Preferences"/>
+                        <Button extension:ControlExtension.AttachedIcon="Cog" Content="Preferences" Click="Settings_OnClick"/>
                         <Button extension:ControlExtension.AttachedIcon="InfoCircle" Content="About" Click="Info_OnClick"/>
                     </ToolBar>
                 </ToolBarTray>
