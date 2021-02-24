@@ -11,9 +11,6 @@ using ThemeCommons.Controls;
 
 namespace PorphyStruct.WPF
 {
-    /// <summary>
-    /// Interaktionslogik für SaveWindow.xaml
-    /// </summary>
     public partial class SaveWindow : DefaultWindow, INotifyPropertyChanged
     {
         public AnalysisViewModel ViewModel;

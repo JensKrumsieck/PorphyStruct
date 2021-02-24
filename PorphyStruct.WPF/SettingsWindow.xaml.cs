@@ -1,17 +1,14 @@
-﻿using System;
-using System.IO;
+﻿using Microsoft.Win32;
 using PorphyStruct.Core;
 using PorphyStruct.ViewModel;
+using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Win32;
 using ThemeCommons.Controls;
 
 namespace PorphyStruct.WPF
 {
-    /// <summary>
-    /// Interaktionslogik für SettingsWindow.xaml
-    /// </summary>
     public partial class SettingsWindow : DefaultWindow
     {
         public SettingsWindow()
@@ -35,7 +32,7 @@ namespace PorphyStruct.WPF
                 CheckPathExists = false
             };
             if (ofd.ShowDialog(this) != true) return;
-            textBox!.Text = Path.GetDirectoryName(ofd.FileName)??"";
+            textBox!.Text = Path.GetDirectoryName(ofd.FileName) ?? "";
             textBox?.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
         }
     }
