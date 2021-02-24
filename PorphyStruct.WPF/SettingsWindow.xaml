@@ -9,6 +9,7 @@
         xmlns:converter="clr-namespace:PorphyStruct.WPF.Converter"
         xmlns:system="clr-namespace:System;assembly=System.Runtime"
         xmlns:oxyplot="clr-namespace:OxyPlot;assembly=OxyPlot"
+        xmlns:extension="clr-namespace:ThemeCommons.MaterialDesign.Extension;assembly=ThemeCommons.MaterialDesign"
         mc:Ignorable="d"
         IconSize="24"
         TitlebarBackground="{DynamicResource TitleBar}" 
@@ -40,8 +41,8 @@
     <DockPanel>
         <Button Content="Save To Settings File" DockPanel.Dock="Bottom" Margin="10" Background="{DynamicResource Dark}" 
                 Foreground="{DynamicResource Light}" Click="Save_OnClick"/>
-        <TabControl>
-         <TabItem Header="Graph">
+        <TabControl ItemContainerStyle="{DynamicResource SettingsTabHeaderStyle}">
+         <TabItem Header="Graph" extension:ControlExtension.AttachedIcon="ChartScatterPlotHexbin">
              <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -150,7 +151,7 @@
                     </StackPanel>
                 </Grid>
          </TabItem>
-            <TabItem Header="Export">
+            <TabItem Header="Export" extension:ControlExtension.AttachedIcon="Folder">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
