@@ -160,7 +160,7 @@ namespace PorphyStruct.Core.Analysis.Properties
         /// Exports Properties in Machine readable format
         /// </summary>
         /// <returns></returns>
-        public string ExportJson() => JsonSerializer.Serialize(this);
+        public string ExportJson() => JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
 
         /// <summary>
         /// Exports Properties in Human readable format

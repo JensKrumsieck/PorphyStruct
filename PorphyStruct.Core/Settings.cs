@@ -67,7 +67,6 @@ namespace PorphyStruct.Core
                 var file = File.ReadAllText(path);
                 settings = JsonSerializer.Deserialize<Settings>(file);
             }
-            // ReSharper disable once InconsistentNaming
 
             var properties = typeof(Settings).GetProperties();
             foreach (var p in properties.Where(s => s.PropertyType != typeof(Settings))) p.SetValue(this, p.GetValue(settings));
@@ -81,7 +80,7 @@ namespace PorphyStruct.Core
         /// </summary>
         public void Save()
         {
-            var content = JsonSerializer.Serialize(Instance);
+            var content = JsonSerializer.Serialize(Instance, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}/settings.json", content);
         }
 
