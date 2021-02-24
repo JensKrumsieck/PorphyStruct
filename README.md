@@ -1,4 +1,4 @@
-<img src="https://github.com/JensKrumsieck/PorphyStruct/blob/master/PorphyStruct/Resources/porphystructlogo.png" alt="logo" width="128"/>
+<img src="https://github.com/JensKrumsieck/PorphyStruct/blob/master/PorphyStruct.WPF/Resources/porphystruct.png" alt="logo" width="128"/>
 
 # PorphyStruct
 Structural Analysis of Porphyrinoids
@@ -24,7 +24,7 @@ With **PorphyStruct** displacement diagrams can be generated and simulated to ga
 ## Abstract
 While the conformational features of porphyrins have been extensively investigated in recent years using J.A. Shelnutt's NSD method <sup>[1]</sup>, the limitations of this method have left other macrocycles such as Corrole far behind. Studies have shown correlations of conformation with photophysical and chemical properties such as reactivity. <sup>[2]</sup> For example, the metallation rates of porphyrins with large amounts of saddling are several orders of magnitude higher than for their planar counterparts. <sup>[2b]</sup> 
 
-<img src="https://github.com/JensKrumsieck/PorphyStruct/blob/master/assets/abstract_img.png?raw=true" alt="abstract_img" width="700"/>
+<img src="https://github.com/JensKrumsieck/PorphyStruct/blob/master/.github/abstract_img.png?raw=true" alt="abstract_img" width="700"/>
 
 **Figure 1**: Analysis with simulation of a chromyl corrole <sup>[3]</sup>.
 
