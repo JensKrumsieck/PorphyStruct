@@ -35,7 +35,7 @@ namespace PorphyStruct.Core.Plot
                     src.FirstOrDefault(s => s.Atom.Title == a1.Atom.Title && Math.Abs(s.X - a1.X) < 1),
                     src.FirstOrDefault(s => s.Atom.Title == a2.Atom.Title && Math.Abs(s.X - a2.X) < .51),
                     this)
-                { Opacity = 128 };
+            { Opacity = 128 };
 
             if (!Title.Contains("Simulation"))
                 return annotation;

@@ -7,17 +7,17 @@
         <Grid Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="25"/>
-                <ColumnDefinition Width="155"/>
+                <ColumnDefinition Width="170"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <materialDesign:PackIcon x:Name="PART_Icon" Kind="Flask"/>
             <TextBlock Text="{Binding Key}" Margin="2" Grid.Column="1"/>
             <Grid Grid.Column="2">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="45"/>
+                    <ColumnDefinition Width="55"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding Value, StringFormat={}{0: 0.00;-0.00}}" Margin="2"/>
+                <TextBlock Text="{Binding Value, StringFormat={}{0: 0.000;-0.000}}" Margin="2"/>
                 <TextBlock Text="{Binding Unit}" Margin="2" Grid.Column="1"/>
             </Grid>
         </Grid>

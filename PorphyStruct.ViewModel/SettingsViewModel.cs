@@ -1,6 +1,6 @@
-﻿using System.Runtime.CompilerServices;
-using OxyPlot;
+﻿using OxyPlot;
 using PorphyStruct.Core;
+using System.Runtime.CompilerServices;
 using TinyMVVM;
 
 namespace PorphyStruct.ViewModel
@@ -24,7 +24,7 @@ namespace PorphyStruct.ViewModel
         public double LabelAngle { get => Get<double>(); set => Set(value); }
         public double LabelPadding { get => Get<double>(); set => Set(value); }
         public double LabelPosition { get => Get<double>(); set => Set(value); }
-        public bool ShowXAxis { get => Get<bool>();  set => Set(value); }
+        public bool ShowXAxis { get => Get<bool>(); set => Set(value); }
         public bool ShowZero { get => Get<bool>(); set => Set(value); }
         #endregion
 
@@ -42,7 +42,7 @@ namespace PorphyStruct.ViewModel
         #endregion
 
         #region Export
-        public float ExportWidth { get => Get<float>(); set =>Set(value);}
+        public float ExportWidth { get => Get<float>(); set => Set(value); }
         public float ExportHeight { get => Get<float>(); set => Set(value); }
         public float ExportDPI { get => Get<float>(); set => Set(value); }
         public string DefaultExportPath { get => Get<string>(); set => Set(value); }
@@ -51,7 +51,7 @@ namespace PorphyStruct.ViewModel
 
         #region Simulation/Comparions
         public string SimulationBondColor { get => Get<string>(); set => Set(value); }
-        public string SimulationMarkerColor { get => Get<string>(); set => Set(value);}
+        public string SimulationMarkerColor { get => Get<string>(); set => Set(value); }
         public MarkerType SimulationMarkerType { get => Get<MarkerType>(); set => Set(value); }
         #endregion
 

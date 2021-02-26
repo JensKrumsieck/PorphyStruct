@@ -1,4 +1,5 @@
-﻿using ChemSharp.Molecules.Mathematics;
+﻿using ChemSharp.Mathematics;
+using ChemSharp.Molecules.Mathematics;
 using PorphyStruct.Core.Extension;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,16 +16,15 @@ namespace PorphyStruct.Core.Analysis.Properties
         public List<Dihedral> Dihedrals { get; } = new List<Dihedral>();
         public List<Angle> Angles { get; } = new List<Angle>();
         public List<Distance> Distances { get; } = new List<Distance>();
-
+        public List<PlaneDistance> PlaneDistances { get; } = new List<PlaneDistance>();
         public Simulation Simulation { get; set; }
-
         public KeyValueProperty InterplanarAngle { get; set; } = new KeyValueProperty { Unit = "°" };
-
         public KeyValueProperty OutOfPlaneParameter { get; set; } = new KeyValueProperty { Key = "Doop (exp.)", Unit = "Å" };
 
         public MacrocycleProperties(MacrocycleAnalysis analysis)
         {
             Analysis = analysis;
+            Rebuild();
         }
 
         /// <summary>
@@ -149,11 +149,15 @@ namespace PorphyStruct.Core.Analysis.Properties
         private void RebuildDistances()
         {
             Distances.Clear();
+            PlaneDistances.Clear();
+
             Distances.Add(new Distance(Analysis.FindAtomByTitle("N1"), Analysis.FindAtomByTitle("N3")));
             Distances.Add(new Distance(Analysis.FindAtomByTitle("N2"), Analysis.FindAtomByTitle("N4")));
             if (Analysis.Metal == null) return;
             Distances.AddRange(Analysis.Atoms.Where(s => Analysis.Metal.BondToByCovalentRadii(s))
                 .Select(s => new Distance(Analysis.Metal, s)));
+            PlaneDistances.Add(new PlaneDistance(Analysis.Metal, Analysis.MeanPlane, "Mean Plane"));
+            PlaneDistances.Add(new PlaneDistance(Analysis.Metal, MathV.MeanPlane(Analysis.N4Cavity.Select(s => s.Location).ToList()), "N4 Plane"));
         }
 
         /// <summary>

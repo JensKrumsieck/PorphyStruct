@@ -12,7 +12,7 @@ namespace PorphyStruct.WPF.Converter
             return !(bool)value!;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) => 
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) =>
             throw new NotSupportedException();
 
         public override object ProvideValue(IServiceProvider serviceProvider) => this;

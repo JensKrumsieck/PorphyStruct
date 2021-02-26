@@ -19,6 +19,7 @@
                     <StackPanel>
                         <Label Content="Distances" FontWeight="DemiBold"/>
                         <ItemsControl ItemsSource="{Binding Properties.Distances}"/>
+                        <ItemsControl ItemsSource="{Binding Properties.PlaneDistances}"/>
                     </StackPanel>
                     <StackPanel>
                         <Label Content="Angles" FontWeight="DemiBold"/>

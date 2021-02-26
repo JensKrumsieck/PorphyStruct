@@ -40,12 +40,7 @@ namespace PorphyStruct.Core.Analysis
             Atoms = atoms;
             Bonds = bonds;
             _guid = Guid.NewGuid();
-            Task.Run(() =>
-                {
-                    NameAtoms();
-                    Properties = new MacrocycleProperties(this);
-                }
-            ).Wait(15000);
+            Task.Run(NameAtoms).Wait(15000);
         }
 
         /// <summary>
@@ -69,11 +64,7 @@ namespace PorphyStruct.Core.Analysis
         /// </summary>
         public MacrocycleProperties Properties
         {
-            get
-            {
-                _properties?.Rebuild();
-                return _properties!;
-            }
+            get => _properties ??= new MacrocycleProperties(this);
             set => _properties = value;
         }
 

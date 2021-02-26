@@ -1,11 +1,11 @@
-﻿using PorphyStruct.Core.Analysis;
+﻿using OxyPlot;
+using PorphyStruct.Core;
+using PorphyStruct.Core.Analysis;
 using PorphyStruct.Core.Plot;
 using PorphyStruct.ViewModel.IO;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using OxyPlot;
-using PorphyStruct.Core;
 using TinyMVVM;
 using TinyMVVM.Utility;
 
