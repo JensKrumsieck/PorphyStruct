@@ -1,0 +1,78 @@
+﻿<controls:DefaultWindow x:Class="PorphyStruct.WPF.StatisticsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PorphyStruct.WPF"
+        xmlns:controls="clr-namespace:ThemeCommons.Controls;assembly=ThemeCommons"
+        xmlns:viewModel="clr-namespace:PorphyStruct.ViewModel;assembly=PorphyStruct.ViewModel"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        mc:Ignorable="d"
+        IconSize="24"
+        TitlebarBackground="{DynamicResource TitleBar}" 
+        Icon="Resources/porphystruct.ico"
+        Background="{DynamicResource Background}"
+        Title="StatisticsWindow" Height="800" Width="1200" d:DataContext="{d:DesignInstance viewModel:StatisticsViewModel}">
+    <controls:DefaultWindow.TitlebarContent>
+        <Grid VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock FontSize="14" VerticalAlignment="Center">
+                PorphyStruct
+                <LineBreak/>
+                <Run FontSize="9">Structural Analysis of Porphyrinoids</Run>
+            </TextBlock>
+            <TextBlock Grid.Column="1" FontSize="14" VerticalAlignment="Center" Text="Statistics"/>
+        </Grid>
+    </controls:DefaultWindow.TitlebarContent>
+    <controls:DefaultWindow.DataContext>
+        <viewModel:StatisticsViewModel/>
+    </controls:DefaultWindow.DataContext>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="130"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Margin="5">
+                <Label Content="Working Directory"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Text="{Binding WorkingDir}" Width="200" Margin="0 0 5 0" x:Name="PathTextBox"/>
+                    <Button Content="Search" Background="{DynamicResource Dark}" Foreground="{DynamicResource Light}" Click="Search_OnClick"/>
+                </StackPanel>
+                <TextBlock Margin="5 5 0 0" FontSize="9" Text="Select Folder to Search for completed analysis files (*_analysis.json)."/>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Include Subfolders" Margin="5 15"/>
+                    <ToggleButton IsChecked="{Binding IsRecursive}" Margin="15"/>
+                </StackPanel>
+            </StackPanel>
+        <StackPanel Grid.Column="1" Margin="5">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Number of Files:"/>
+                <Label Content="{Binding Files.Length}"/>
+            </StackPanel>
+            <StackPanel>
+                <Label Content="The Table below will be auto-saved as:"/>
+                <TextBlock TextWrapping="Wrap">
+                    <Run Text="{Binding WorkingDir}"/>
+                    <Run Text="/PorphyStruct_MergedData.csv"/>
+                </TextBlock>
+            </StackPanel>
+            </StackPanel>
+        </Grid>
+        <DataGrid Grid.Row="1" Grid.Column="0" 
+                  ItemsSource="{Binding Table, IsAsync=True, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"
+                  CanUserAddRows="False" CanUserDeleteRows="False" AutoGeneratingColumn="DataGrid_OnAutoGeneratingColumn" />
+    </Grid>
+</controls:DefaultWindow>
+ 

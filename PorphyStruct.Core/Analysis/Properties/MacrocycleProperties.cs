@@ -12,14 +12,14 @@ namespace PorphyStruct.Core.Analysis.Properties
     {
         [JsonIgnore]
         public MacrocycleAnalysis Analysis;
-
+        
         public List<Dihedral> Dihedrals { get; } = new List<Dihedral>();
         public List<Angle> Angles { get; } = new List<Angle>();
         public List<Distance> Distances { get; } = new List<Distance>();
         public List<PlaneDistance> PlaneDistances { get; } = new List<PlaneDistance>();
-        public Simulation Simulation { get; set; }
-        public KeyValueProperty InterplanarAngle { get; set; } = new KeyValueProperty { Unit = "°" };
-        public KeyValueProperty OutOfPlaneParameter { get; set; } = new KeyValueProperty { Key = "Doop (exp.)", Unit = "Å" };
+        public Simulation Simulation { get; private set; }
+        public KeyValueProperty InterplanarAngle { get; } = new KeyValueProperty { Unit = "°" };
+        public KeyValueProperty OutOfPlaneParameter { get; } = new KeyValueProperty { Key = "Doop (exp.)", Unit = "Å" };
 
         public MacrocycleProperties(MacrocycleAnalysis analysis)
         {
@@ -30,6 +30,7 @@ namespace PorphyStruct.Core.Analysis.Properties
         /// <summary>
         /// Dihedrals for Corrole, Porphyrin and Norcorrole
         /// </summary>
+        [JsonIgnore]
         internal static IList<string[]> PorphyrinoidDihedrals = new List<string[]>{
             new[] { "C3", "C4", "C6", "C7" }, //chi1
             new[] { "C2", "C1", "C19", "C18" }, //chi2
@@ -43,6 +44,7 @@ namespace PorphyStruct.Core.Analysis.Properties
             new[] { "N2", "C9", "C11", "N3" } //phi4
         };
 
+        [JsonIgnore]
         internal static IList<string[]> CorrphyceneDihedrals = new List<string[]>
         {
             new[] { "C3", "C4", "C6", "C7" }, //chi1
@@ -57,6 +59,7 @@ namespace PorphyStruct.Core.Analysis.Properties
             new[] { "N2", "C9", "C11", "N3"} //phi4
         };
 
+        [JsonIgnore]
         internal static IList<string[]> PorphyceneDihedrals = new List<string[]>
         {
             new[] { "C3", "C4", "C7", "C8" }, //chi1
@@ -174,7 +177,7 @@ namespace PorphyStruct.Core.Analysis.Properties
         {
             var result = "";
             result += ExportBlock("Simulation", Simulation.SimulationResult.Append(OutOfPlaneParameter).Append(Simulation.OutOfPlaneParameter));
-            result += ExportBlock("Distances", Distances);
+            result += Analysis.Metal != null ? ExportBlock("Distances", Distances.Cast<KeyValueProperty>().Concat(PlaneDistances)) : ExportBlock("Distances", Distances);
             result += Analysis.Metal != null ? ExportBlock("Angles", Angles.Append(InterplanarAngle)) : ExportBlock("Angles", Angles);
             result += ExportBlock("Dihedrals", Dihedrals);
             return result;
