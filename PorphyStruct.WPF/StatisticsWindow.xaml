@@ -3,10 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PorphyStruct.WPF"
         xmlns:controls="clr-namespace:ThemeCommons.Controls;assembly=ThemeCommons"
         xmlns:viewModel="clr-namespace:PorphyStruct.ViewModel;assembly=PorphyStruct.ViewModel"
-        xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        xmlns:extension="clr-namespace:ThemeCommons.MaterialDesign.Extension;assembly=ThemeCommons.MaterialDesign"
+        xmlns:wpf="http://oxyplot.org/skiawpf"
+        xmlns:data="clr-namespace:System.Data;assembly=System.Data.Common"
         mc:Ignorable="d"
         IconSize="24"
         TitlebarBackground="{DynamicResource TitleBar}" 
@@ -35,10 +36,6 @@
             <RowDefinition Height="130"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -54,6 +51,8 @@
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Include Subfolders" Margin="5 15"/>
                     <ToggleButton IsChecked="{Binding IsRecursive}" Margin="15"/>
+                    <Label Content="Show Normal Modes only" Margin="5 15"/>
+                    <ToggleButton IsChecked="{Binding ModesOnly}" Margin="15"/>
                 </StackPanel>
             </StackPanel>
         <StackPanel Grid.Column="1" Margin="5">
@@ -63,16 +62,57 @@
             </StackPanel>
             <StackPanel>
                 <Label Content="The Table below will be auto-saved as:"/>
-                <TextBlock TextWrapping="Wrap">
+                <TextBlock TextWrapping="Wrap" Margin="15">
                     <Run Text="{Binding WorkingDir}"/>
                     <Run Text="/PorphyStruct_MergedData.csv"/>
                 </TextBlock>
             </StackPanel>
             </StackPanel>
         </Grid>
-        <DataGrid Grid.Row="1" Grid.Column="0" 
-                  ItemsSource="{Binding Table, IsAsync=True, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"
-                  CanUserAddRows="False" CanUserDeleteRows="False" AutoGeneratingColumn="DataGrid_OnAutoGeneratingColumn" />
+        <TabControl Grid.Row="1" ItemContainerStyle="{DynamicResource SettingsTabHeaderStyle}">
+            <TabItem Header="Combined Data" extension:ControlExtension.AttachedIcon="Table">
+                <DataGrid ItemsSource="{Binding Table, IsAsync=True, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"
+                          CanUserAddRows="False" CanUserDeleteRows="False" AutoGeneratingColumn="DataGrid_OnAutoGeneratingColumn" 
+                          IsReadOnly="True"/>
+            </TabItem>
+            <TabItem Header="Visualization" extension:ControlExtension.AttachedIcon="ChartScatterPlot">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <wpf:PlotView Model="{Binding PlotModel}"/>
+                    <ScrollViewer Grid.Column="1">
+                        <StackPanel Margin="20">
+                            <Label Content="X Column"/>
+                            <ComboBox ItemsSource="{Binding Table.Table.Columns}" Width="250"
+                                      SelectedValuePath="Caption" SelectedItem="{Binding SelectedXColumn}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type data:DataColumn}">
+                                        <ContentControl Content="{Binding Caption}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <Label Content="Y Columns"/>
+                            <ListBox ItemsSource="{Binding Table.Table.Columns}" Width="250"
+                                     Height="300"
+                                      SelectedValuePath="Caption" SelectionMode="Multiple" SelectionChanged="ListBox_OnSelectionChanged">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type data:DataColumn}">
+                                        <ContentControl Content="{Binding Caption}"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <Label Content="Use Absolute Values"/>
+                            <ToggleButton IsChecked="{Binding AbsoluteValues}"/>
+                            <Label Content="Show Labels"/>
+                            <ToggleButton IsChecked="{Binding ShowLabels}"/>
+                            <Button Content="Export" Margin="25" Click="Save_OnClick"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </controls:DefaultWindow>
  

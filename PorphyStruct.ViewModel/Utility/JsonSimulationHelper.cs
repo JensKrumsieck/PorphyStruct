@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using PorphyStruct.Core.Analysis.Properties;
+﻿using PorphyStruct.Core.Analysis.Properties;
+using System.Collections.Generic;
 
 namespace PorphyStruct.ViewModel.Utility
 {

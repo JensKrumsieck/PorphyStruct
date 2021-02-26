@@ -16,7 +16,7 @@
         Icon="Resources/porphystruct.ico"
         Background="{DynamicResource Background}"
         ResizeMode="NoResize"
-        Title="SettingsWindow" Height="800" Width="700" DataContext="viewModel:SettingsViewModel" d:DataContext="{d:DesignInstance viewModel:SettingsViewModel}">
+        Title="SettingsWindow" Height="800" Width="700" d:DataContext="{d:DesignInstance viewModel:SettingsViewModel}">
     <controls:DefaultWindow.Resources>
         <ObjectDataProvider x:Key="enumData" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
             <ObjectDataProvider.MethodParameters>
@@ -24,6 +24,9 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </controls:DefaultWindow.Resources>
+    <controls:DefaultWindow.DataContext>
+        <viewModel:SettingsViewModel/>
+    </controls:DefaultWindow.DataContext>
     <controls:DefaultWindow.TitlebarContent>
         <Grid VerticalAlignment="Center">
             <Grid.ColumnDefinitions>

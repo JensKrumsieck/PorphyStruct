@@ -1,12 +1,10 @@
 ﻿using OxyPlot;
 using OxyPlot.Axes;
-using BaseLinearAxis = OxyPlot.Axes.LinearAxis;
 
 namespace PorphyStruct.Core.Plot
 {
-    public class DefaultPlotModel : PlotModel
+    public class DefaultPlotModel : BasePlotModel
     {
-        public BaseLinearAxis XAxis { get; }
         public LinearAxis YAxis { get; }
 
         //Expose left padding
@@ -18,22 +16,9 @@ namespace PorphyStruct.Core.Plot
 
         public DefaultPlotModel()
         {
-            TitleFontWeight = 200;
-            DefaultFontSize = Settings.Instance.FontSize;
-            DefaultFont = Settings.Instance.Font;
-            PlotAreaBorderThickness = new OxyThickness(Settings.Instance.BorderThickness);
             Padding = new OxyThickness(Settings.Instance.Padding + Settings.Instance.LabelPadding, Settings.Instance.Padding, Settings.Instance.Padding, Settings.Instance.Padding);
 
-            XAxis = new BaseLinearAxis
-            {
-                Title = "X",
-                Unit = "Å",
-                Position = AxisPosition.Bottom,
-                Key = "X",
-                AxislineThickness = Settings.Instance.AxisThickness,
-                TitleFormatString = Settings.Instance.AxisFormat,
-                IsAxisVisible = Settings.Instance.ShowXAxis
-            };
+            XAxis.IsAxisVisible = Settings.Instance.ShowXAxis;
 
             YAxis = new LinearAxis
             {
@@ -46,10 +31,8 @@ namespace PorphyStruct.Core.Plot
                 TitleFormatString = Settings.Instance.AxisFormat
             };
 
-            Axes.Add(XAxis);
             Axes.Add(YAxis);
             Axes.Add(ColorAxis);
-
 
             if (!PlotAreaBorderThickness.Equals(new OxyThickness(0))) return;
             YAxis.AxislineStyle = LineStyle.Solid;

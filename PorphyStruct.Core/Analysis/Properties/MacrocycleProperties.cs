@@ -12,7 +12,7 @@ namespace PorphyStruct.Core.Analysis.Properties
     {
         [JsonIgnore]
         public MacrocycleAnalysis Analysis;
-        
+
         public List<Dihedral> Dihedrals { get; } = new List<Dihedral>();
         public List<Angle> Angles { get; } = new List<Angle>();
         public List<Distance> Distances { get; } = new List<Distance>();

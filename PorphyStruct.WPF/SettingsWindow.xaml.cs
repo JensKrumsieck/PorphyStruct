@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
 using PorphyStruct.Core;
-using PorphyStruct.ViewModel;
 using System;
 using System.IO;
 using System.Windows;
@@ -14,7 +13,6 @@ namespace PorphyStruct.WPF
         public SettingsWindow()
         {
             InitializeComponent();
-            DataContext = new SettingsViewModel();
         }
 
         private void Save_OnClick(object sender, RoutedEventArgs e)
