@@ -1,11 +1,9 @@
-﻿using System;
-using PorphyStruct.Core;
+﻿using PorphyStruct.Core;
 using PorphyStruct.Core.Analysis;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using ChemSharp.Molecules;
-using ChemSharp.Molecules.Export;
 using TinyMVVM;
 
 namespace PorphyStruct.ViewModel

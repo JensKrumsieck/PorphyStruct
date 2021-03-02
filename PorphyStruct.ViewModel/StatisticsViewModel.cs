@@ -5,6 +5,7 @@ using OxyPlot.Legends;
 using OxyPlot.Series;
 using PorphyStruct.Core;
 using PorphyStruct.Core.Analysis.Properties;
+using PorphyStruct.Core.Extension;
 using PorphyStruct.Core.Plot;
 using PorphyStruct.ViewModel.Utility;
 using System;
@@ -17,7 +18,6 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using PorphyStruct.Core.Extension;
 using TinyMVVM;
 using Element = ChemSharp.Molecules.Element;
 
