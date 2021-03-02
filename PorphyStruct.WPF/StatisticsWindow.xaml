@@ -13,7 +13,7 @@
         TitlebarBackground="{DynamicResource TitleBar}" 
         Icon="Resources/porphystruct.ico"
         Background="{DynamicResource Background}"
-        Title="StatisticsWindow" Height="800" Width="1200" d:DataContext="{d:DesignInstance viewModel:StatisticsViewModel}">
+        Title="Statistics" Height="800" Width="1200" d:DataContext="{d:DesignInstance viewModel:StatisticsViewModel}">
     <controls:DefaultWindow.TitlebarContent>
         <Grid VerticalAlignment="Center">
             <Grid.ColumnDefinitions>

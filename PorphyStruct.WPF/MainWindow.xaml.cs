@@ -164,5 +164,7 @@ namespace PorphyStruct.WPF
         private void Settings_OnClick(object sender, RoutedEventArgs e) => new SettingsWindow().ShowDialog();
 
         private void Stats_OnClick(object sender, RoutedEventArgs e) => new StatisticsWindow().Show();
+
+        private void Batch_OnClick(object sender, RoutedEventArgs e) => new BatchWindow().Show();
     }
 }

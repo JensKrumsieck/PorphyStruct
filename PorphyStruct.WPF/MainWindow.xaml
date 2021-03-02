@@ -18,6 +18,7 @@
         TitlebarHeight="50"
         IconSize="36"
         AllowDrop="True"
+        Title="PorphyStruct"
         Background="{DynamicResource Background}"
         Icon="Resources/porphystruct.ico"
         MinWidth="1200" MinHeight="750"
@@ -58,6 +59,7 @@
                     </ToolBar>
                     <ToolBar>
                         <Button extension:ControlExtension.AttachedIcon="GraphOutline" Content="Statistics" Click="Stats_OnClick"/>
+                        <Button extension:ControlExtension.AttachedIcon="Console" Content="Batch" Click="Batch_OnClick"/>
                      </ToolBar>   
                     <ToolBar>
                         <Button extension:ControlExtension.AttachedIcon="Cog" Content="Preferences" Click="Settings_OnClick"/>

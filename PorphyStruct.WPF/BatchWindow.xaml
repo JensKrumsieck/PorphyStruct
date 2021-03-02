@@ -1,0 +1,114 @@
+﻿<controls:DefaultWindow x:Class="PorphyStruct.WPF.BatchWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PorphyStruct.WPF"
+        xmlns:controls="clr-namespace:ThemeCommons.Controls;assembly=ThemeCommons"
+        xmlns:viewModel="clr-namespace:PorphyStruct.ViewModel;assembly=PorphyStruct.ViewModel"
+        mc:Ignorable="d"
+        IconSize="24"
+        TitlebarBackground="{DynamicResource TitleBar}" 
+        Icon="Resources/porphystruct.ico"
+        Background="{DynamicResource Background}"
+        ResizeMode="NoResize"
+        Title="Batch Processing" Height="300" Width="800">
+    <controls:DefaultWindow.TitlebarContent>
+        <Grid VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="225"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock FontSize="14" VerticalAlignment="Center">
+                PorphyStruct
+                <LineBreak/>
+                <Run FontSize="9">Structural Analysis of Porphyrinoids</Run>
+            </TextBlock>
+            <TextBlock Grid.Column="1" FontSize="14" VerticalAlignment="Center" Text="Batch Processing"/>
+        </Grid>
+    </controls:DefaultWindow.TitlebarContent>
+    <controls:DefaultWindow.DataContext>
+        <viewModel:BatchViewModel/>
+    </controls:DefaultWindow.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Margin="5">
+            <Label Content="Working Directory"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBox Text="{Binding WorkingDir}" Width="200" Margin="0 0 5 0" x:Name="PathTextBox"/>
+                <Button Content="Search" Background="{DynamicResource Dark}" Foreground="{DynamicResource Light}" Click="Search_OnClick"/>
+            </StackPanel>
+            <TextBlock Margin="5 5 0 0" FontSize="9" Text="Select Folder to Search for molecules (.cif, .xyz, .mol2)"/>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Include Subfolders" Margin="5 15"/>
+                <ToggleButton IsChecked="{Binding IsRecursive}" Margin="15"/>
+            </StackPanel>
+            <StackPanel>
+                <Label Content="Selected Type" FontWeight="DemiBold"/>
+                <ListBox Style="{DynamicResource MaterialDesignToolToggleListBox}" x:Name="TypeList"
+                         SelectionChanged="TypeList_OnSelectionChanged"
+                         Margin="0 10 0 0"
+                         SelectedIndex="0">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="5"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="Width" Value="50"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                        <Border BorderThickness="{TemplateBinding BorderThickness}"
+                                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                                Background="{TemplateBinding Background}"
+                                                CornerRadius="5">
+                                            <ContentPresenter/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="true">
+                                                <Setter Property="BorderBrush" Value="{DynamicResource SecondaryHueMidBrush}" />
+                                                <Setter Property="BorderThickness" Value="3" />
+                                                <Setter Property="Background" Value="WhiteSmoke" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBoxItem  Padding="0" ContentTemplate="{StaticResource Porphyrin}" RenderOptions.BitmapScalingMode="Fant" />
+                    <ListBoxItem Padding="0" ContentTemplate="{StaticResource Corrole}" RenderOptions.BitmapScalingMode="Fant"/>
+                    <ListBoxItem  Padding="0" ContentTemplate="{StaticResource Norcorrole}" RenderOptions.BitmapScalingMode="Fant" />
+                    <ListBoxItem  Padding="0" ContentTemplate="{StaticResource Porphycene}" RenderOptions.BitmapScalingMode="Fant" />
+                    <ListBoxItem  Padding="0" ContentTemplate="{StaticResource Corrphycene}" RenderOptions.BitmapScalingMode="Fant" />
+                </ListBox>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Margin="5">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Number of Files:"/>
+                <Label Content="{Binding Files.Length}"/>
+            </StackPanel>
+            <Button Content="Start Processing" Click="Process_OnClick" Foreground="{DynamicResource Light}" Background="{DynamicResource Dark}"/>
+            <StackPanel x:Name="Results" Visibility="Collapsed">
+                <ProgressBar x:Name="TheBar" Margin="20" Minimum="0" Maximum="{Binding Files.Length, Mode=OneWay}"
+                             Value="{Binding CurrentIndex}"/>
+                <TextBlock TextWrapping="Wrap">
+                    Processing file <Run Text="{Binding CurrentIndex}"/> of <Run Text="{Binding Files.Length, Mode=OneWay}"/>. 
+                    <LineBreak/>
+                    Current: <Run Text="{Binding CurrentItem, Mode=OneWay}"/>
+                    <LineBreak/>
+                    <Run Text="{Binding Failed}"/> Files could not be analyzed so far (due to timeout).
+                    <LineBreak/>
+                    *_analysis.json- and *_analysis.md-Files have been saved in the same Directory the individual files were found.
+                </TextBlock>
+            </StackPanel>
+
+        </StackPanel>
+    </Grid>
+</controls:DefaultWindow>

@@ -16,7 +16,7 @@
         Icon="Resources/porphystruct.ico"
         Background="{DynamicResource Background}"
         ResizeMode="NoResize"
-        Title="SettingsWindow" Height="800" Width="700" d:DataContext="{d:DesignInstance viewModel:SettingsViewModel}">
+        Title="Preferences" Height="800" Width="700" d:DataContext="{d:DesignInstance viewModel:SettingsViewModel}">
     <controls:DefaultWindow.Resources>
         <ObjectDataProvider x:Key="enumData" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
             <ObjectDataProvider.MethodParameters>
