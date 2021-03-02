@@ -1,4 +1,5 @@
-﻿using PorphyStruct.Core;
+﻿using System;
+using PorphyStruct.Core;
 using PorphyStruct.Core.Analysis;
 using System.IO;
 using System.Linq;
@@ -51,13 +52,13 @@ namespace PorphyStruct.ViewModel
         public string CurrentItem => Files?[CurrentIndex - 1] ?? "";
 
         private int _failed;
-
         public int Failed
         {
             get => _failed;
             set => Set(ref _failed, value);
         }
 
+        private string _failedItems = "";
         private void LoadFiles()
         {
             var supported = new[] { "cif", "xyz", "mol2" };
@@ -76,7 +77,11 @@ namespace PorphyStruct.ViewModel
                 var cycle = new Macrocycle(current) { MacrocycleType = Type };
                 await Task.Run(cycle.Detect).ContinueWith((ts) =>
                 {
-                    if (!cycle.DetectedParts.Any()) Failed++;
+                    if (!cycle.DetectedParts.Any())
+                    {
+                        Failed++;
+                        _failedItems += Files[CurrentIndex - 1] + "\n";
+                    }
                     foreach (var analysis in cycle.DetectedParts)
                     {
                         var folder = Path.GetDirectoryName(Files[CurrentIndex - 1]);
@@ -86,11 +91,10 @@ namespace PorphyStruct.ViewModel
                             : folder + "/" + file + "_" + analysis.AnalysisColor;
                         File.WriteAllText(filename + "_analysis.md", analysis.Properties.ExportString());
                         File.WriteAllText(filename + "_analysis.json", analysis.Properties.ExportJson());
-                        Mol2Exporter.Export(new Molecule(analysis.Atoms), filename + "_cycle.mol2");
                     }
                 });
-
             }
+            await File.WriteAllTextAsync(WorkingDir + "/FailedItems" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".txt", _failedItems);
         }
     }
 }

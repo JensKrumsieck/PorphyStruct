@@ -17,6 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using PorphyStruct.Core.Extension;
 using TinyMVVM;
 using Element = ChemSharp.Molecules.Element;
 
@@ -95,7 +96,7 @@ namespace PorphyStruct.ViewModel
             SelectedYColumns.CollectionChanged += SelectedYColumnsOnCollectionChanged;
         }
 
-        private void SelectedYColumnsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) =>
+        private void SelectedYColumnsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e) =>
             UpdatePlot();
 
         /// <summary>
@@ -255,7 +256,7 @@ namespace PorphyStruct.ViewModel
         private static string GenericMetal(string input)
         {
             _ = new Element("H"); //ensure class data is loaded
-            var metals = ElementDataProvider.ElementData.Where(s => s.IsMetal)
+            var metals = ElementDataProvider.ElementData.Where(s => !s.IsNonCoordinative())
                 .Select(s => s.Symbol).ToList();
             if (!metals.Any(input.Contains)) return input;
             input = metals.Aggregate(input, (current, metal) => current.Replace(metal, "M"));

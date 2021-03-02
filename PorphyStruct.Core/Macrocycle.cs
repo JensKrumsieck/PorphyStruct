@@ -58,7 +58,7 @@ namespace PorphyStruct.Core
 
                 if (data.Count != RingSize[MacrocycleType] || !unique) continue;
                 var analysis = MacrocycleAnalysis.Create(data.ToList(), bonds, MacrocycleType);
-                var metal = Neighbors(analysis.N4Cavity[0]).FirstOrDefault(s => s.IsMetal);
+                var metal = Neighbors(analysis.N4Cavity[0]).FirstOrDefault(s => !s.IsNonCoordinative());
                 if (metal != null) analysis.Metal = metal;
                 DetectedParts.Add(analysis);
             }
@@ -88,7 +88,7 @@ namespace PorphyStruct.Core
         private HashSet<Atom> FindCorpus(ref HashSet<Atom> part)
         {
             HashSet<Atom> corpus;
-            foreach (var atom in part.Where(s => !s.IsMetal))
+            foreach (var atom in part.Where(s => s.IsNonCoordinative()))
             {
                 corpus = RingPath(atom, RingSize[MacrocycleType] - 8);
                 foreach (var a in corpus.SelectMany(NonMetalNonDeadEndNeighbors))
@@ -110,12 +110,12 @@ namespace PorphyStruct.Core
         private HashSet<Atom> FindCorpusFallBack(ref HashSet<Atom> part)
         {
             var corpus = new HashSet<Atom>();
-            foreach (var atom in part.Where(s => !s?.IsMetal ?? false))
+            foreach (var atom in part.Where(s => s?.IsNonCoordinative() ?? false))
             {
                 var p = part;
-                IEnumerable<Atom> Func(Atom s) => p?.Where(a => a.BondToByCovalentRadii(s) && !a.IsMetal);
+                IEnumerable<Atom> Func(Atom s) => p?.Where(a => a.BondToByCovalentRadii(s) && a.IsNonCoordinative());
                 corpus = FuncRingPath(atom, RingSize[MacrocycleType] - 8, Func);
-                foreach (var n in corpus.SelectMany((Func<Atom, IEnumerable<Atom>>)Func))
+                foreach (var n in corpus.SelectMany(Func))
                 {
                     var outer = FuncRingPath(n, RingSize[MacrocycleType] - 4, Func);
                     outer.UnionWith(corpus);
@@ -131,6 +131,6 @@ namespace PorphyStruct.Core
             var goal = func(atom).FirstOrDefault();
             return goal == null ? new HashSet<Atom>() : DFSUtil.BackTrack(atom, goal, func, size);
         }
-        private IEnumerable<Atom> NonMetalNonDeadEndNeighbors(Atom atom) => NonMetalNeighbors(atom)?.Where(a => !Constants.DeadEnds.Contains(a.Symbol));
+        private IEnumerable<Atom> NonMetalNonDeadEndNeighbors(Atom atom) => NonMetalNeighbors(atom)?.Where(a => !Constants.DeadEnds.Contains(a.Symbol) && a.IsNonCoordinative());
     }
 }

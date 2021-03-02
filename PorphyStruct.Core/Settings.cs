@@ -57,11 +57,15 @@ namespace PorphyStruct.Core
         public string DefaultImportPath { get; set; } = "";
         #endregion
 
-
         #region Simulation/Comparions
         public string SimulationBondColor { get; set; } = "#FF000000";
         public string SimulationMarkerColor { get; set; } = "#FFFF0000";
         public MarkerType SimulationMarkerType { get; set; } = MarkerType.Circle;
+        #endregion
+
+        #region Data
+
+        public bool HandlePhosphorusMetal { get; set; } = true;
         #endregion
 
         /// <summary>
