@@ -1,11 +1,11 @@
 ﻿using Microsoft.Win32;
+using OxyPlot;
 using PorphyStruct.Core;
+using PorphyStruct.ViewModel;
 using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using OxyPlot;
-using PorphyStruct.ViewModel;
 using ThemeCommons.Controls;
 
 namespace PorphyStruct.WPF
@@ -43,7 +43,7 @@ namespace PorphyStruct.WPF
         {
             var color = AddColor.Text;
             var actualColor = OxyColor.Parse(color);
-            var vm = (SettingsViewModel) DataContext;
+            var vm = (SettingsViewModel)DataContext;
             vm.ComparisonColors.Add(actualColor);
         }
     }
