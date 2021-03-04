@@ -47,7 +47,8 @@ namespace PorphyStruct.Core
         {
             DetectedParts.Clear();
             var parts = await GetParts();
-            foreach (var part in parts.Distinct())
+            var distinct = parts.Distinct(new EnumerableEqualityComparer<Atom>());
+            foreach (var part in distinct)
             {
                 var p = part.ToHashSet();
                 var data = FindCorpus(ref p);
@@ -74,7 +75,8 @@ namespace PorphyStruct.Core
             await foreach (var fig in DFSUtil.ConnectedFigures(
                 Atoms.Where(s => Neighbors(s).Count() >= 2), NonMetalNonDeadEndNeighbors))
             {
-                var connectedAtoms = fig as Atom[] ?? fig.ToArray();
+                var connectedAtoms = fig.Distinct().ToArray();
+                connectedAtoms = connectedAtoms.Where(s => s.IsNonCoordinative() && s.Symbol != "H").ToArray();
                 if (connectedAtoms.Length >= RingSize[MacrocycleType]) parts.Add(connectedAtoms);
             }
             return parts;

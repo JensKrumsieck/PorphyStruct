@@ -166,6 +166,16 @@
                             <TextBlock Text="(Turn off for e.g. 10-Phosphacorrole)" FontSize="9" />
                         </StackPanel>
                         <StackPanel>
+                            <Label Content="Treat Boron as Metal" />
+                            <ToggleButton IsChecked="{Binding HandleBoronMetal}" />
+                            <TextBlock Text="(Turn off for e.g. 10-Boracorrole)" FontSize="9" />
+                        </StackPanel>
+                        <StackPanel>
+                            <Label Content="Treat Silicon as Metal" />
+                            <ToggleButton IsChecked="{Binding HandleSiliconMetal}" />
+                            <TextBlock Text="(Turn off for e.g. 10-Silacorrole)" FontSize="9" />
+                        </StackPanel>
+                        <StackPanel>
                             <Label Content="Not Marked Points" />
                             <TextBox Text="{Binding NotMarkedPoints}" />
                             <TextBlock TextWrapping="Wrap" FontSize="9" Margin="5 0 0 0">
@@ -188,12 +198,14 @@
                             <Label Content="Bond Color" />
                             <controls:ColorPickerTextBox Text="{Binding BondColor}" />
                         </StackPanel>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="10">
                         <Label Margin="0 25 0 0" FontSize="14" Content="Simulation" FontWeight="DemiBold" />
                         <StackPanel IsEnabled="{Binding SingleColor}">
                             <Label Content="Simulation Marker Color" />
                             <controls:ColorPickerTextBox Text="{Binding SimulationMarkerColor}" IsEnabled="{Binding SingleColor}" />
                             <TextBlock TextWrapping="Wrap" FontSize="9" Margin="5 0 0 0">
-                             Has no Effect if "Single Marker Color" is set to false.
+                                Has no Effect if "Single Marker Color" is set to false.
                             </TextBlock>
                         </StackPanel>
                         <StackPanel>
@@ -208,8 +220,6 @@
                             <Label Content="Simulation Opacity" />
                             <TextBox Text="{Binding SimulationOpacity}" />
                         </StackPanel>
-                    </StackPanel>
-                    <StackPanel Grid.Column="1" Margin="10">
                         <Label Content="Comparison" FontWeight="DemiBold" FontSize="14" />
                         <StackPanel>
                             <Label Content="Comparison Marker Type" />
@@ -217,7 +227,7 @@
                         </StackPanel>
                         <StackPanel>
                             <Label Content="Colors" />
-                            <Label Content="Used for Bond and Marker (if 'Single Marker Color' is true)" FontSize="9"/>
+                            <Label Content="Used for Bond and Marker (if 'Single Marker Color' is true)" FontSize="9" />
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <controls:ColorPickerTextBox x:Name="AddColor" Margin="5" />
                                 <Button Content="AddColor" Margin="5" Background="{DynamicResource Light}" Click="ColorAdd_OnClick" />
@@ -236,8 +246,7 @@
                                                         <Ellipse Fill="{Binding Converter={converter:StringToOxyColorConverter}}" Width="16" Height="16" />
                                                         <Label Content="{Binding}" />
                                                     </StackPanel>
-                                                    <Button Width="24" Grid.Column="1" Style="{DynamicResource RoundedIconButton}" Content="&#xE711;"
-                                                            Command="{Binding DataContext.DeleteColorCommand, RelativeSource={RelativeSource AncestorType={x:Type controls:DefaultWindow}}}" CommandParameter="{Binding}"/>
+                                                    <Button Width="24" Grid.Column="1" Style="{DynamicResource RoundedIconButton}" Content="&#xE711;" Command="{Binding DataContext.DeleteColorCommand, RelativeSource={RelativeSource AncestorType={x:Type controls:DefaultWindow}}}" CommandParameter="{Binding}" />
                                                 </Grid>
                                             </ContentControl>
                                         </DataTemplate>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PorphyStruct.Core.Extension
@@ -26,6 +27,24 @@ namespace PorphyStruct.Core.Extension
                 else return false;
             }
             return cnt.Values.All(c => c == 0);
+        }
+
+        /// <summary>
+        /// Distinct Method with selector
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TKey"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="selector"></param>
+        /// <returns></returns>
+        public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> src,
+            Func<TSource, TKey> selector)
+        {
+            var seenKeys = new HashSet<TKey>();
+            foreach (var item in src)
+            {
+                if (seenKeys.Add(selector(item))) yield return item;
+            }
         }
     }
 }

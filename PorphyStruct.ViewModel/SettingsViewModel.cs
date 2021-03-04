@@ -63,6 +63,8 @@ namespace PorphyStruct.ViewModel
 
         #region Data
         public bool HandlePhosphorusMetal { get => Get<bool>(); set => Set(value); }
+        public bool HandleBoronMetal { get => Get<bool>(); set => Set(value); }
+        public bool HandleSiliconMetal { get => Get<bool>(); set => Set(value); }
         public double SimulationOpacity { get => Get<double>(); set => Set(value); }
         #endregion
 
