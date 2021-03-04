@@ -55,6 +55,11 @@ namespace PorphyStruct.ViewModel
         public MarkerType SimulationMarkerType { get => Get<MarkerType>(); set => Set(value); }
         #endregion
 
+        #region Data
+        public bool HandlePhosphorusMetal { get => Get<bool>(); set => Set(value); }
+        public double SimulationOpacity { get => Get<double>(); set => Set(value); }
+        #endregion
+
         public void Set(object value, [CallerMemberName] string propertyName = null)
         {
             var pInfo = typeof(Settings).GetProperty(propertyName!);

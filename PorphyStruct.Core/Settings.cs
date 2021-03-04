@@ -66,6 +66,7 @@ namespace PorphyStruct.Core
         #region Data
 
         public bool HandlePhosphorusMetal { get; set; } = true;
+        public double SimulationOpacity { get; set; } = .5d;
         #endregion
 
         /// <summary>

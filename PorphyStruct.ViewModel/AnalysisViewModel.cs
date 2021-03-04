@@ -3,6 +3,7 @@ using PorphyStruct.Core;
 using PorphyStruct.Core.Analysis;
 using PorphyStruct.Core.Plot;
 using PorphyStruct.ViewModel.IO;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -69,6 +70,7 @@ namespace PorphyStruct.ViewModel
 
             ExperimentalSeries.Title = $"Experimental Data of {Parent.Title}";
             SimulationSeries.Title = $"Simulation of {Parent.Title}";
+            SimulationSeries.Opacity = (byte)Math.Round(255u * Settings.Instance.SimulationOpacity);
 
             //Add Subscriptions
             Subscribe(ExperimentalBonds, Model.Annotations, b => b, a => a, () => Model.InvalidatePlot(false));
