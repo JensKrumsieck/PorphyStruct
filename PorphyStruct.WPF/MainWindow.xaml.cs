@@ -137,7 +137,9 @@ namespace PorphyStruct.WPF
                 Multiselect = false
             };
             if (ofd.ShowDialog(this) != true) return;
-            ViewModel.SelectedItem.CompareData.Add(new CompareData(ofd.FileName));
+            var data = new CompareData(ofd.FileName);
+            ViewModel.SelectedItem.CompareData.Add(data);
+            AppendedData.SelectedItems.Add(data);
         }
 
         private void CompareAdd_OnClick(object sender, RoutedEventArgs e)
