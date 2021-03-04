@@ -4,6 +4,8 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using OxyPlot;
+using PorphyStruct.ViewModel;
 using ThemeCommons.Controls;
 
 namespace PorphyStruct.WPF
@@ -35,6 +37,14 @@ namespace PorphyStruct.WPF
             if (ofd.ShowDialog(this) != true) return;
             textBox!.Text = Path.GetDirectoryName(ofd.FileName) ?? "";
             textBox?.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+        }
+
+        private void ColorAdd_OnClick(object sender, RoutedEventArgs e)
+        {
+            var color = AddColor.Text;
+            var actualColor = OxyColor.Parse(color);
+            var vm = (SettingsViewModel) DataContext;
+            vm.ComparisonColors.Add(actualColor);
         }
     }
 }

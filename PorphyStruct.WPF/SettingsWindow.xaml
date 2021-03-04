@@ -1,4 +1,4 @@
-﻿<controls:DefaultWindow x:Class="PorphyStruct.WPF.SettingsWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:PorphyStruct.WPF" xmlns:controls="clr-namespace:ThemeCommons.Controls;assembly=ThemeCommons" xmlns:viewModel="clr-namespace:PorphyStruct.ViewModel;assembly=PorphyStruct.ViewModel" xmlns:converter="clr-namespace:PorphyStruct.WPF.Converter" xmlns:system="clr-namespace:System;assembly=System.Runtime" xmlns:oxyplot="clr-namespace:OxyPlot;assembly=OxyPlot" xmlns:extension="clr-namespace:ThemeCommons.MaterialDesign.Extension;assembly=ThemeCommons.MaterialDesign" mc:Ignorable="d" IconSize="24" TitlebarBackground="{DynamicResource TitleBar}" Icon="Resources/porphystruct.ico" Background="{DynamicResource Background}" ResizeMode="NoResize" Title="Preferences" Height="800" Width="700" d:DataContext="{d:DesignInstance viewModel:SettingsViewModel}">
+﻿<controls:DefaultWindow x:Class="PorphyStruct.WPF.SettingsWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:PorphyStruct.WPF" xmlns:controls="clr-namespace:ThemeCommons.Controls;assembly=ThemeCommons" xmlns:viewModel="clr-namespace:PorphyStruct.ViewModel;assembly=PorphyStruct.ViewModel" xmlns:converter="clr-namespace:PorphyStruct.WPF.Converter" xmlns:system="clr-namespace:System;assembly=System.Runtime" xmlns:oxyplot="clr-namespace:OxyPlot;assembly=OxyPlot" xmlns:extension="clr-namespace:ThemeCommons.MaterialDesign.Extension;assembly=ThemeCommons.MaterialDesign" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" mc:Ignorable="d" IconSize="24" TitlebarBackground="{DynamicResource TitleBar}" Icon="Resources/porphystruct.ico" Background="{DynamicResource Background}" ResizeMode="NoResize" Title="Preferences" Height="800" Width="700" d:DataContext="{d:DesignInstance viewModel:SettingsViewModel}">
     <controls:DefaultWindow.Resources>
         <ObjectDataProvider x:Key="enumData" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
             <ObjectDataProvider.MethodParameters>
@@ -205,12 +205,46 @@
                             <controls:ColorPickerTextBox Text="{Binding SimulationBondColor}" />
                         </StackPanel>
                         <StackPanel>
-                            <Label Content="Simulation Opacity"/>
+                            <Label Content="Simulation Opacity" />
                             <TextBox Text="{Binding SimulationOpacity}" />
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10">
                         <Label Content="Comparison" FontWeight="DemiBold" FontSize="14" />
+                        <StackPanel>
+                            <Label Content="Comparison Marker Type" />
+                            <ComboBox ItemsSource="{Binding Source={StaticResource enumData}}" SelectedItem="{Binding ComparisonMarkerType}" />
+                        </StackPanel>
+                        <StackPanel>
+                            <Label Content="Colors" />
+                            <Label Content="Used for Bond and Marker (if 'Single Marker Color' is true)" FontSize="9"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <controls:ColorPickerTextBox x:Name="AddColor" Margin="5" />
+                                <Button Content="AddColor" Margin="5" Background="{DynamicResource Light}" Click="ColorAdd_OnClick" />
+                            </StackPanel>
+                            <ScrollViewer>
+                                <ListView ItemsSource="{Binding ComparisonColors}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate DataType="{x:Type oxyplot:OxyColor}">
+                                            <ContentControl Margin="5">
+                                                <Grid HorizontalAlignment="Center">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="150" />
+                                                        <ColumnDefinition Width="24" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Ellipse Fill="{Binding Converter={converter:StringToOxyColorConverter}}" Width="16" Height="16" />
+                                                        <Label Content="{Binding}" />
+                                                    </StackPanel>
+                                                    <Button Width="24" Grid.Column="1" Style="{DynamicResource RoundedIconButton}" Content="&#xE711;"
+                                                            Command="{Binding DataContext.DeleteColorCommand, RelativeSource={RelativeSource AncestorType={x:Type controls:DefaultWindow}}}" CommandParameter="{Binding}"/>
+                                                </Grid>
+                                            </ContentControl>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </ScrollViewer>
+                        </StackPanel>
                     </StackPanel>
                 </Grid>
             </TabItem>

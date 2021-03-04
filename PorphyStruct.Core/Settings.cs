@@ -1,5 +1,6 @@
 ﻿using OxyPlot;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -61,6 +62,15 @@ namespace PorphyStruct.Core
         public string SimulationBondColor { get; set; } = "#FF000000";
         public string SimulationMarkerColor { get; set; } = "#FFFF0000";
         public MarkerType SimulationMarkerType { get; set; } = MarkerType.Circle;
+        public MarkerType ComparisonMarkerType { get; set; } = MarkerType.Circle;
+
+        public List<string> ComparisonColorPalette { get; set; } = new List<string>
+        {
+            OxyColors.Red.ToByteString(),
+            OxyColors.Blue.ToByteString(),
+            OxyColors.Green.ToByteString(),
+            OxyColors.Purple.ToByteString()
+        };
         #endregion
 
         #region Data

@@ -120,6 +120,10 @@ namespace PorphyStruct.ViewModel
             foreach (var data in CompareData)
             {
                 var series = new DefaultScatterSeries { ItemsSource = data.DataPoints, Title = $"Comparison {data.Title}" };
+                if (Settings.Instance.SingleColor)
+                    series.MarkerFill =
+                        OxyColor.Parse(Settings.Instance.ComparisonColorPalette[
+                            CompareData.IndexOf(data) % Settings.Instance.ComparisonColorPalette.Count]);
                 ComparisonSeries.Add(series);
                 Model.Series.Add(series);
                 foreach (var (a1, a2) in Analysis.BondDataPoints())

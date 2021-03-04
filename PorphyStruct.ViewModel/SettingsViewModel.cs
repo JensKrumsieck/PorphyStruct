@@ -1,7 +1,11 @@
-﻿using OxyPlot;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using OxyPlot;
 using PorphyStruct.Core;
 using System.Runtime.CompilerServices;
 using TinyMVVM;
+using TinyMVVM.Command;
 
 namespace PorphyStruct.ViewModel
 {
@@ -53,12 +57,25 @@ namespace PorphyStruct.ViewModel
         public string SimulationBondColor { get => Get<string>(); set => Set(value); }
         public string SimulationMarkerColor { get => Get<string>(); set => Set(value); }
         public MarkerType SimulationMarkerType { get => Get<MarkerType>(); set => Set(value); }
+        public MarkerType ComparisonMarkerType { get => Get<MarkerType>(); set => Set(value); }
+        public List<string> ComparisonColorPalette { get => Get<List<string>>(); set => Set(value); }
         #endregion
 
         #region Data
         public bool HandlePhosphorusMetal { get => Get<bool>(); set => Set(value); }
         public double SimulationOpacity { get => Get<double>(); set => Set(value); }
         #endregion
+
+        public ObservableCollection<OxyColor> ComparisonColors { get; }
+
+        public RelayCommand<OxyColor> DeleteColorCommand { get; }
+
+        public SettingsViewModel()
+        {
+            ComparisonColors = new ObservableCollection<OxyColor>(ComparisonColorPalette.Select(OxyColor.Parse));
+            DeleteColorCommand = new RelayCommand<OxyColor>(DeleteColor);
+            Subscribe(ComparisonColors, ComparisonColorPalette, c => c.ToByteString(), c => c.ToByteString());
+        }
 
         public void Set(object value, [CallerMemberName] string propertyName = null)
         {
@@ -72,5 +89,8 @@ namespace PorphyStruct.ViewModel
             var pInfo = typeof(Settings).GetProperty(propertyName!);
             return (T)pInfo?.GetValue(Settings.Instance);
         }
+
+        private void DeleteColor(OxyColor col) => ComparisonColors.Remove(col);
+
     }
 }
