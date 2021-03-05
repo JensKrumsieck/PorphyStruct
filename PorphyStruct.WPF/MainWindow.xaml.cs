@@ -9,8 +9,10 @@ using PorphyStruct.ViewModel.Windows;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using ThemeCommons.Controls;
 
@@ -88,7 +90,7 @@ namespace PorphyStruct.WPF
             ViewModel.SelectedIndexChanged += ViewModelOnSelectedIndexChanged;
             TypePopup.Visibility = Visibility.Visible;
             Viewport3D.CameraController.CameraTarget =
-                MathV.Centroid(ViewModel.Macrocycle.Atoms.Select(s => s.Location)).ToPoint3D();
+                MathV.Centroid(ViewModel.Macrocycle.Atoms.Select(s => s.Location).ToList()).ToPoint3D();
             Activate();
         }
 
