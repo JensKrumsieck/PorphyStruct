@@ -1,6 +1,6 @@
 ﻿<controls:DefaultWindow x:Class="PorphyStruct.WPF.SettingsWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:PorphyStruct.WPF" xmlns:controls="clr-namespace:ThemeCommons.Controls;assembly=ThemeCommons" xmlns:viewModel="clr-namespace:PorphyStruct.ViewModel;assembly=PorphyStruct.ViewModel" xmlns:converter="clr-namespace:PorphyStruct.WPF.Converter" xmlns:system="clr-namespace:System;assembly=System.Runtime" xmlns:oxyplot="clr-namespace:OxyPlot;assembly=OxyPlot" xmlns:extension="clr-namespace:ThemeCommons.MaterialDesign.Extension;assembly=ThemeCommons.MaterialDesign" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" mc:Ignorable="d" IconSize="24" TitlebarBackground="{DynamicResource TitleBar}" Icon="Resources/porphystruct.ico" Background="{DynamicResource Background}" ResizeMode="NoResize" Title="Preferences" Height="800" Width="700" d:DataContext="{d:DesignInstance viewModel:SettingsViewModel}">
     <controls:DefaultWindow.Resources>
-        <ObjectDataProvider x:Key="enumData" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+        <ObjectDataProvider x:Key="EnumData" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="oxyplot:MarkerType" />
             </ObjectDataProvider.MethodParameters>
@@ -192,7 +192,7 @@
                         </StackPanel>
                         <StackPanel>
                             <Label Content="Marker Type" />
-                            <ComboBox ItemsSource="{Binding Source={StaticResource enumData}}" SelectedItem="{Binding MarkerType}" />
+                            <ComboBox ItemsSource="{Binding Source={StaticResource EnumData}}" SelectedItem="{Binding MarkerType}" />
                         </StackPanel>
                         <StackPanel>
                             <Label Content="Bond Color" />
@@ -210,7 +210,7 @@
                         </StackPanel>
                         <StackPanel>
                             <Label Content="Simulation Marker Type" />
-                            <ComboBox ItemsSource="{Binding Source={StaticResource enumData}}" SelectedItem="{Binding SimulationMarkerType}" />
+                            <ComboBox ItemsSource="{Binding Source={StaticResource EnumData}}" SelectedItem="{Binding SimulationMarkerType}" />
                         </StackPanel>
                         <StackPanel>
                             <Label Content="Simulation Bond Color" />
@@ -223,7 +223,7 @@
                         <Label Content="Comparison" FontWeight="DemiBold" FontSize="14" />
                         <StackPanel>
                             <Label Content="Comparison Marker Type" />
-                            <ComboBox ItemsSource="{Binding Source={StaticResource enumData}}" SelectedItem="{Binding ComparisonMarkerType}" />
+                            <ComboBox ItemsSource="{Binding Source={StaticResource EnumData}}" SelectedItem="{Binding ComparisonMarkerType}" />
                         </StackPanel>
                         <StackPanel>
                             <Label Content="Colors" />
