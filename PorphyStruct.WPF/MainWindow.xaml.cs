@@ -9,10 +9,8 @@ using PorphyStruct.ViewModel.Windows;
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Numerics;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using ThemeCommons.Controls;
 
@@ -84,7 +82,7 @@ namespace PorphyStruct.WPF
         /// Handles actual file opening
         /// </summary>
         /// <param name="path"></param>
-        private void OpenFile(string path)
+        internal void OpenFile(string path)
         {
             DataContext = ViewModel = new MacrocycleViewModel(path);
             ViewModel.SelectedIndexChanged += ViewModelOnSelectedIndexChanged;
@@ -96,8 +94,9 @@ namespace PorphyStruct.WPF
 
         private void ViewModelOnSelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ViewModel?.SelectedItem != null) Viewport3D.CameraController.CameraTarget =
-                 MathV.Centroid(ViewModel.SelectedItem.Analysis.Atoms.Select(s => s.Location)).ToPoint3D();
+            if (ViewModel?.SelectedItem != null)
+                Viewport3D.CameraController.CameraTarget =
+                    MathV.Centroid(ViewModel.SelectedItem.Analysis.Atoms.Select(s => s.Location)).ToPoint3D();
         }
 
         private async void Analyze_OnClick(object sender, RoutedEventArgs e)
@@ -150,7 +149,8 @@ namespace PorphyStruct.WPF
             var remove = ViewModel.SelectedItem.CompareData.Except(appendedData);
             foreach (var item in remove) ViewModel.SelectedItem.CompareData.Remove(item);
             var localData = LocalData.SelectedItems.Cast<AnalysisViewModel>();
-            foreach (var item in localData) ViewModel.SelectedItem.CompareData.Add(new CompareData(item.Title, item.Analysis.DataPoints.ToList()));
+            foreach (var item in localData)
+                ViewModel.SelectedItem.CompareData.Add(new CompareData(item.Title, item.Analysis.DataPoints.ToList()));
             ViewModel.SelectedItem.PrepareCompare();
             TogglePopup(ComparePopUp);
         }
@@ -170,5 +170,7 @@ namespace PorphyStruct.WPF
         private void Stats_OnClick(object sender, RoutedEventArgs e) => new StatisticsWindow().Show();
 
         private void Batch_OnClick(object sender, RoutedEventArgs e) => new BatchWindow().Show();
+
+        private void Isolation_OnClick(object sender, RoutedEventArgs e) => new IsolationWindow(this).ShowDialog();
     }
 }

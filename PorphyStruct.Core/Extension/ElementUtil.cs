@@ -8,8 +8,11 @@ namespace PorphyStruct.Core.Extension
             e.Symbol switch
             {
                 "P" when !Settings.Instance.HandlePhosphorusMetal => true,
+                "P" when Settings.Instance.HandlePhosphorusMetal => false,
                 "B" when !Settings.Instance.HandleBoronMetal => true,
+                "B" when Settings.Instance.HandleBoronMetal => false,
                 "Si" when !Settings.Instance.HandleSiliconMetal => true,
+                "Si" when Settings.Instance.HandleSiliconMetal => false,
                 _ => e.IsNonMetal
             };
     }

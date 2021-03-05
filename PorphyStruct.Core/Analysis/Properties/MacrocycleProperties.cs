@@ -133,7 +133,7 @@ namespace PorphyStruct.Core.Analysis.Properties
             foreach (var m in Analysis.Meso)
             {
                 var n = Analysis.Neighbors(m).ToArray();
-                if(n.Length == 2) Angles.Add(new Angle(n[0], m, n[1]));
+                if (n.Length == 2) Angles.Add(new Angle(n[0], m, n[1]));
             }
         }
 

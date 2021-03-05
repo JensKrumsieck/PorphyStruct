@@ -58,9 +58,12 @@
                         </ListBox>
                     </ToolBar>
                     <ToolBar>
-                        <Button extension:ControlExtension.AttachedIcon="GraphOutline" Content="Statistics" Click="Stats_OnClick"/>
-                        <Button extension:ControlExtension.AttachedIcon="Console" Content="Batch" Click="Batch_OnClick"/>
-                     </ToolBar>   
+                        <Button extension:ControlExtension.AttachedIcon="SelectionDrag" Content="Isolation" Click="Isolation_OnClick" IsEnabled="{Binding  Converter={converter:NotNullConverter}}" />
+                    </ToolBar>
+                    <ToolBar>
+                        <Button extension:ControlExtension.AttachedIcon="GraphOutline" Content="Statistics" Click="Stats_OnClick" />
+                        <Button extension:ControlExtension.AttachedIcon="Console" Content="Batch" Click="Batch_OnClick" />
+                    </ToolBar>   
                     <ToolBar>
                         <Button extension:ControlExtension.AttachedIcon="Cog" Content="Preferences" Click="Settings_OnClick"/>
                         <Button extension:ControlExtension.AttachedIcon="InfoCircle" Content="About" Click="Info_OnClick"/>
@@ -142,7 +145,6 @@
         <commons:Popup Header="Compare Data" x:Name="ComparePopUp" Visibility="Collapsed">
             <StackPanel Width="350">
                 <Label Content="Available Data" FontSize="14" FontWeight="DemiBold"/>
-
                 <Label Content="Local Data" Margin="0 15 0 0"/>
                 <ListBox ItemsSource="{Binding Items}" SelectionMode="Multiple" x:Name="LocalData">
                     <ListBox.ItemTemplate>
