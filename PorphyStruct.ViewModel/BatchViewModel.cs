@@ -1,6 +1,7 @@
 ﻿using PorphyStruct.Core;
 using PorphyStruct.Core.Analysis;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -47,7 +48,7 @@ namespace PorphyStruct.ViewModel
             set => Set(ref _currentIndex, value, () => OnPropertyChanged(nameof(CurrentItem)));
         }
 
-        public string CurrentItem => Files?[CurrentIndex - 1] ?? "";
+        public string CurrentItem => Files?.ElementAtOrDefault(CurrentIndex - 1) ?? "";
 
         private int _failed;
         public int Failed
@@ -61,15 +62,18 @@ namespace PorphyStruct.ViewModel
         {
             var supported = new[] { "cif", "xyz", "mol2" };
             if (!Directory.Exists(WorkingDir) || string.IsNullOrEmpty(WorkingDir)) return;
+            var filter = new List<string>();
+            if (File.Exists(WorkingDir + "/.psignore")) filter.AddRange(File.ReadAllLines(WorkingDir + "/.psignore"));
             Files = supported.Select(ext => "*." + ext).SelectMany(f =>
-                Directory.EnumerateFiles(WorkingDir, f,
-                    IsRecursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)).ToArray();
+            Directory.EnumerateFiles(WorkingDir, f,
+                IsRecursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
+                .Where(s => !filter.Any(s.Contains)).ToArray();
         }
 
         public async Task Process()
         {
             Failed = 0;
-            for (CurrentIndex = 1; CurrentIndex < Files.Length; CurrentIndex++)
+            for (CurrentIndex = 1; CurrentIndex < Files.Length + 1; CurrentIndex++)
             {
                 var current = Files[CurrentIndex - 1];
                 var cycle = new Macrocycle(current) { MacrocycleType = Type };

@@ -61,7 +61,7 @@ namespace PorphyStruct.ViewModel
         public string Save()
         {
             var bonds = DataObject.Bonds.Where(bond => Isolation.Count(atom => bond.Atoms.Contains(atom)) == 2);
-            var mol = new Molecule(Isolation.ToList(), bonds);
+            var mol = DataObject.BondDataProvider != null ? new Molecule(Isolation.ToList(), bonds) : new Molecule(Isolation.ToList());
             var folder = Path.GetDirectoryName(_path);
             var file = Path.GetFileNameWithoutExtension(_path);
             var createdFile = folder + "/" + file + "_isolation.mol2";
