@@ -48,5 +48,6 @@ Windows 10
 * [ThemeCommons](http://github.com/JensKrumsieck/ThemeCommons) by Jens Krumsieck (MIT License)
 * [Material Design in XAML Toolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit) (MIT License)
 
-- [Contribution guidelines for this project](.github/CONTRIBUTING.md)
-- [Contributors](CONTRIBUTORS)
+#### Contributors
+[![Jens Krumsieck](https://avatars.githubusercontent.com/u/4296194?s=32&v=4)](https://github.com/jenskrumsieck)
+
