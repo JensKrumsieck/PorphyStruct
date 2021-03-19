@@ -18,6 +18,7 @@ namespace PorphyStruct.Core.Analysis.Properties
         public List<Distance> Distances { get; } = new List<Distance>();
         public List<PlaneDistance> PlaneDistances { get; } = new List<PlaneDistance>();
         public Simulation Simulation { get; private set; }
+        public N4Cavity Cavity { get; private set; }
         public KeyValueProperty InterplanarAngle { get; } = new KeyValueProperty { Unit = "°" };
         public KeyValueProperty OutOfPlaneParameter { get; } = new KeyValueProperty { Key = "Doop (exp.)", Unit = "Å" };
 
@@ -86,6 +87,8 @@ namespace PorphyStruct.Core.Analysis.Properties
             RebuildDihedrals();
             RebuildAngles();
             RebuildDistances();
+            Cavity = new N4Cavity(Analysis.FindAtomByTitle("N1"), Analysis.FindAtomByTitle("N2"),
+                Analysis.FindAtomByTitle("N3"), Analysis.FindAtomByTitle("N4"));
         }
 
         /// <summary>
@@ -177,6 +180,7 @@ namespace PorphyStruct.Core.Analysis.Properties
         {
             var result = "";
             result += ExportBlock("Simulation", Simulation.SimulationResult.Append(OutOfPlaneParameter).Append(Simulation.OutOfPlaneParameter));
+            result += ExportBlock("Cavity", new[] {Cavity});
             result += Analysis.Metal != null ? ExportBlock("Distances", Distances.Cast<KeyValueProperty>().Concat(PlaneDistances)) : ExportBlock("Distances", Distances);
             result += Analysis.Metal != null ? ExportBlock("Angles", Angles.Append(InterplanarAngle)) : ExportBlock("Angles", Angles);
             result += ExportBlock("Dihedrals", Dihedrals);

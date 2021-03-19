@@ -40,7 +40,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-    <PackageReference Include="ChemSharp.Molecules" Version="1.0.0-beta5" />
+    <PackageReference Include="ChemSharp.Molecules" Version="1.0.0" />
     <PackageReference Include="JensKrumsieck.TinyMVVM" Version="1.0.0-beta5" />
     <PackageReference Include="OxyPlot.Core" Version="2.1.0-Preview1" />
     <PackageReference Include="OxyPlot.SkiaSharp" Version="2.1.0-Preview1" />

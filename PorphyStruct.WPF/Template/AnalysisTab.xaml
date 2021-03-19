@@ -30,6 +30,10 @@
                         <ContentControl Content="{Binding Properties.InterplanarAngle}"/>
                     </StackPanel>
                     <StackPanel>
+                        <Label Content="Cavity Size" FontWeight="DemiBold" />
+                        <ContentControl Content="{Binding Properties.Cavity}" />
+                    </StackPanel>
+                    <StackPanel>
                         <Label Content="Dihedrals" FontWeight="DemiBold"/>
                         <ItemsControl ItemsSource="{Binding Properties.Dihedrals}"/>
                     </StackPanel>
