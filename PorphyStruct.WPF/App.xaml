@@ -20,10 +20,10 @@
                 <ResourceDictionary Source="pack://application:,,,/Template/CoordinatesTab.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Template/TabTemplateSelector.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <SolidColorBrush x:Key="TitleBar" Color="{DynamicResource DarkColor}" Opacity="0.80"/>
+            <SolidColorBrush x:Key="TitleBar" Color="{DynamicResource DarkColor}" Opacity=".9"/>
             <SolidColorBrush x:Key="MaterialDesignBody" Color="{DynamicResource DarkColor}"/>
             <SolidColorBrush x:Key="MaterialDesignToolBarBackground" Color="Transparent"/>
-            <SolidColorBrush x:Key="Background" Color="{DynamicResource LightColor}" Opacity="0.50"/>
+            <SolidColorBrush x:Key="Background" Color="{DynamicResource LightColor}" Opacity=".7"/>
             <Style TargetType="TextBox" BasedOn="{StaticResource ThemeCommonsDefaultTextBox}">
                 <Setter Property="Background" Value="{DynamicResource Light}"/>
             </Style>

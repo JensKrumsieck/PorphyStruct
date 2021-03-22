@@ -21,8 +21,8 @@
         Title="PorphyStruct"
         Background="{DynamicResource Background}"
         Icon="Resources/porphystruct.ico"
-        MinWidth="1440" MinHeight="750"
-        TitlebarBackground="{DynamicResource TitleBar}" Height="750" Width="1200">
+        MinWidth="1300" MinHeight="750"
+        TitlebarBackground="{DynamicResource TitleBar}" Height="750" Width="1440">
     <commons:DefaultWindow.TitlebarContent>
         <Grid VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
