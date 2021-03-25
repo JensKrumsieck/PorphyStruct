@@ -14,6 +14,10 @@
     <None Remove="Reference\Corrole\Saddling2.xyz" />
     <None Remove="Reference\Corrole\WavingX2.xyz" />
     <None Remove="Reference\Corrole\WavingY2.xyz" />
+    <None Remove="Reference\Porphyrin\Doming2.xyz" />
+    <None Remove="Reference\Porphyrin\Propellering2.xyz" />
+    <None Remove="Reference\Porphyrin\Ruffling2.xyz" />
+    <None Remove="Reference\Porphyrin\Saddling2.xyz" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reference\Corrole\Doming2.xyz" />
@@ -47,11 +51,14 @@
     <EmbeddedResource Include="Reference\Porphycene\WavingX.xyz" />
     <EmbeddedResource Include="Reference\Porphycene\WavingY.xyz" />
     <EmbeddedResource Include="Reference\Porphyrin\Doming.xyz" />
+    <EmbeddedResource Include="Reference\Porphyrin\Doming2.xyz" />
     <EmbeddedResource Include="Reference\Porphyrin\Propellering.xyz" />
+    <EmbeddedResource Include="Reference\Porphyrin\Propellering2.xyz" />
     <EmbeddedResource Include="Reference\Porphyrin\Ruffling.xyz" />
+    <EmbeddedResource Include="Reference\Porphyrin\Ruffling2.xyz" />
     <EmbeddedResource Include="Reference\Porphyrin\Saddling.xyz" />
-    <EmbeddedResource Include="Reference\Porphyrin\Waving2X.xyz" />
-    <EmbeddedResource Include="Reference\Porphyrin\Waving2Y.xyz" />
+    <EmbeddedResource Include="Reference\Porphyrin\Saddling2.xyz" />
+    <EmbeddedResource Include="Reference\Porphyrin\WavingX2.xyz" />
     <EmbeddedResource Include="Reference\Porphyrin\WavingX.xyz" />
     <EmbeddedResource Include="Reference\Porphyrin\WavingY.xyz" />
   </ItemGroup>
