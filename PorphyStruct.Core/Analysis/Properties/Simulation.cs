@@ -14,8 +14,12 @@ namespace PorphyStruct.Core.Analysis.Properties
     {
         private readonly MacrocycleType _type;
 
-        private readonly List<string> _modes = new List<string>
+        private static readonly List<string> Modes = new List<string>
             {"Doming", "Saddling", "Ruffling", "WavingX", "WavingY", "Propellering"};
+
+        private static readonly List<string> ExtendedModes = Modes.Select(s => s +  "2").ToList();
+
+        private readonly List<string> _usedModes;
 
         /// <summary>
         /// Matrix containing reference values
@@ -34,9 +38,10 @@ namespace PorphyStruct.Core.Analysis.Properties
         /// <param name="type"></param>
         public Simulation(MacrocycleType type)
         {
+            _usedModes = Settings.Instance.UseExtendedBasis ? Modes.Concat(ExtendedModes).ToList() : Modes;
             _type = type;
             var typePrefix = $"PorphyStruct.Core.Reference.{_type}.";
-            ReferenceMatrix = DisplacementMatrix(_modes.Select(s => typePrefix + s + ".xyz"));
+            ReferenceMatrix = DisplacementMatrix(_usedModes.Select(s => typePrefix + s + ".xyz"));
         }
 
         /// <summary>
@@ -48,7 +53,8 @@ namespace PorphyStruct.Core.Analysis.Properties
         {
             SimulationResult.Clear();
             var result = ReferenceMatrix.QR().Solve(DenseVector.OfArray(data)).ToArray();
-            for (var i = 0; i < _modes.Count; i++) SimulationResult.Add(new KeyValueProperty { Key = _modes[i], Value = result[i], Unit = "Å" });
+           
+            for (var i = 0; i < _usedModes.Count; i++) SimulationResult.Add(new KeyValueProperty { Key = _usedModes[i], Value = result[i], Unit = "Å" });
             OutOfPlaneParameter.Value = ConformationY.Length();
             return result;
         }

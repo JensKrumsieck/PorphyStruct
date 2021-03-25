@@ -4,7 +4,24 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
+
   <ItemGroup>
+    <None Remove="Reference\Corrole\Doming2.xyz" />
+    <None Remove="Reference\Corrole\mode_467.xyz" />
+    <None Remove="Reference\Corrole\mode_479.xyz" />
+    <None Remove="Reference\Corrole\Propellering2.xyz" />
+    <None Remove="Reference\Corrole\Ruffling2.xyz" />
+    <None Remove="Reference\Corrole\Saddling2.xyz" />
+    <None Remove="Reference\Corrole\WavingX2.xyz" />
+    <None Remove="Reference\Corrole\WavingY2.xyz" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reference\Corrole\Doming2.xyz" />
+    <EmbeddedResource Include="Reference\Corrole\Propellering2.xyz" />
+    <EmbeddedResource Include="Reference\Corrole\Ruffling2.xyz" />
+    <EmbeddedResource Include="Reference\Corrole\Saddling2.xyz" />
+    <EmbeddedResource Include="Reference\Corrole\WavingX2.xyz" />
+    <EmbeddedResource Include="Reference\Corrole\WavingY2.xyz" />
     <EmbeddedResource Include="Reference\Corrphycene\Doming.xyz" />
     <EmbeddedResource Include="Reference\Corrphycene\Propellering.xyz" />
     <EmbeddedResource Include="Reference\Corrphycene\Ruffling.xyz" />

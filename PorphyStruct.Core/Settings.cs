@@ -47,6 +47,8 @@ namespace PorphyStruct.Core
         public string MarkerBorderColor { get; set; } = "#FF000000";
         public string NotMarkedPoints { get; set; } = "";
         public bool SingleColor { get; set; }
+
+        public bool UseExtendedBasis { get; set; }
         #endregion
 
         #region Export

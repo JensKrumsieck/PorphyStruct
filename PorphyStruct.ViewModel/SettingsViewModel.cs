@@ -66,6 +66,7 @@ namespace PorphyStruct.ViewModel
         public bool HandleBoronMetal { get => Get<bool>(); set => Set(value); }
         public bool HandleSiliconMetal { get => Get<bool>(); set => Set(value); }
         public double SimulationOpacity { get => Get<double>(); set => Set(value); }
+        public bool UseExtendedBasis { get => Get<bool>(); set => Set(value); }
         #endregion
 
         public ObservableCollection<OxyColor> ComparisonColors { get; }

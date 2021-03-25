@@ -48,7 +48,7 @@
                                 <Label Content="px" />
                             </StackPanel>
                         </StackPanel>
-                        <Label FontSize="14" Content="Axis" FontWeight="DemiBold" />
+                        <Label FontSize="14" Content="Axis" FontWeight="DemiBold" Margin="0 25 0 0"/>
                         <StackPanel>
                             <Label Content="Axis Format" />
                             <TextBox Text="{Binding AxisFormat}" />
@@ -133,7 +133,7 @@
                                 <Label Content="px" />
                             </StackPanel>
                         </StackPanel>
-                        <Label Margin="0 25 0 0" FontSize="14" Content="Font" FontWeight="DemiBold" />
+                        <Label Margin="0 25 0 0" FontSize="14" Content="Font" FontWeight="DemiBold"/>
                         <StackPanel>
                             <Label Content="Font Family" />
                             <TextBox Text="{Binding Font}" />
@@ -182,7 +182,14 @@
                                 Separate with Comma, e.g. "C1,N" to hide C1 and all nitrogens
                             </TextBlock>
                         </StackPanel>
-                        <Label FontSize="14" FontWeight="DemiBold" Content="Experimental" />
+                        <StackPanel>
+                            <Label Content="Use Extended Basis" />
+                            <ToggleButton IsChecked="{Binding UseExtendedBasis}" />
+                            <TextBlock TextWrapping="Wrap" FontSize="9" Margin="5 0 0 0">
+                                Try when Simulation gives weird results. This will add a second set of References.
+                            </TextBlock>
+                        </StackPanel>
+                        <Label FontSize="14" FontWeight="DemiBold" Content="Experimental" Margin="0 25 0 0" />
                         <StackPanel>
                             <Label Content="Marker Color" IsEnabled="{Binding SingleColor}" />
                             <controls:ColorPickerTextBox Text="{Binding MarkerColor}" />
@@ -200,7 +207,7 @@
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10">
-                        <Label Margin="0 25 0 0" FontSize="14" Content="Simulation" FontWeight="DemiBold" />
+                        <Label FontSize="14" Content="Simulation" FontWeight="DemiBold" />
                         <StackPanel IsEnabled="{Binding SingleColor}">
                             <Label Content="Simulation Marker Color" />
                             <controls:ColorPickerTextBox Text="{Binding SimulationMarkerColor}" IsEnabled="{Binding SingleColor}" />
@@ -220,7 +227,7 @@
                             <Label Content="Simulation Opacity" />
                             <TextBox Text="{Binding SimulationOpacity}" />
                         </StackPanel>
-                        <Label Content="Comparison" FontWeight="DemiBold" FontSize="14" />
+                        <Label Content="Comparison" FontWeight="DemiBold" FontSize="14" Margin="0 25 0 0"/>
                         <StackPanel>
                             <Label Content="Comparison Marker Type" />
                             <ComboBox ItemsSource="{Binding Source={StaticResource EnumData}}" SelectedItem="{Binding ComparisonMarkerType}" />
