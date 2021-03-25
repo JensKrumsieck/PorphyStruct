@@ -39,7 +39,7 @@ namespace PorphyStruct.Core.Analysis.Properties
         public Simulation(MacrocycleType type)
         {
             _usedModes = Settings.Instance.UseExtendedBasis ? Modes.Concat(ExtendedModes).ToList() : Modes;
-            if (type == MacrocycleType.Porphyrin) _usedModes.Remove("WavingY2");
+            if (type == MacrocycleType.Porphyrin) _usedModes.Remove("WavingY2");//Por: WavingX2 = -WavingY2 -> linear dependent!
             _type = type;
             var typePrefix = $"PorphyStruct.Core.Reference.{_type}.";
             ReferenceMatrix = DisplacementMatrix(_usedModes.Select(s => typePrefix + s + ".xyz"));
