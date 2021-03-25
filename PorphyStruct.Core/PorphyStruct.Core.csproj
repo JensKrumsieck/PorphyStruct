@@ -14,6 +14,11 @@
     <None Remove="Reference\Corrole\Saddling2.xyz" />
     <None Remove="Reference\Corrole\WavingX2.xyz" />
     <None Remove="Reference\Corrole\WavingY2.xyz" />
+    <None Remove="Reference\Norcorrole\Doming2.xyz" />
+    <None Remove="Reference\Norcorrole\Propellering2.xyz" />
+    <None Remove="Reference\Norcorrole\Ruffling2.xyz" />
+    <None Remove="Reference\Norcorrole\Saddling2.xyz" />
+    <None Remove="Reference\Norcorrole\WavingX2.xyz" />
     <None Remove="Reference\Porphyrin\Doming2.xyz" />
     <None Remove="Reference\Porphyrin\Propellering2.xyz" />
     <None Remove="Reference\Porphyrin\Ruffling2.xyz" />
@@ -39,10 +44,15 @@
     <EmbeddedResource Include="Reference\Corrole\WavingX.xyz" />
     <EmbeddedResource Include="Reference\Corrole\WavingY.xyz" />
     <EmbeddedResource Include="Reference\Norcorrole\Doming.xyz" />
+    <EmbeddedResource Include="Reference\Norcorrole\Doming2.xyz" />
     <EmbeddedResource Include="Reference\Norcorrole\Propellering.xyz" />
+    <EmbeddedResource Include="Reference\Norcorrole\Propellering2.xyz" />
     <EmbeddedResource Include="Reference\Norcorrole\Ruffling.xyz" />
+    <EmbeddedResource Include="Reference\Norcorrole\Ruffling2.xyz" />
     <EmbeddedResource Include="Reference\Norcorrole\Saddling.xyz" />
+    <EmbeddedResource Include="Reference\Norcorrole\Saddling2.xyz" />
     <EmbeddedResource Include="Reference\Norcorrole\WavingX.xyz" />
+    <EmbeddedResource Include="Reference\Norcorrole\WavingX2.xyz" />
     <EmbeddedResource Include="Reference\Norcorrole\WavingY.xyz" />
     <EmbeddedResource Include="Reference\Porphycene\Doming.xyz" />
     <EmbeddedResource Include="Reference\Porphycene\Propellering.xyz" />
