@@ -41,8 +41,8 @@
     <EmbeddedResource Include="Reference\Corrole\Propellering2.xyz" />
     <EmbeddedResource Include="Reference\Corrole\Ruffling2.xyz" />
     <EmbeddedResource Include="Reference\Corrole\Saddling2.xyz" />
-    <EmbeddedResource Include="Reference\Corrole\WavingX2.xyz" />
     <EmbeddedResource Include="Reference\Corrole\WavingY2.xyz" />
+    <EmbeddedResource Include="Reference\Corrole\WavingX2.xyz" />
     <EmbeddedResource Include="Reference\Corrphycene\Doming.xyz" />
     <EmbeddedResource Include="Reference\Corrphycene\Doming2.xyz" />
     <EmbeddedResource Include="Reference\Corrphycene\Propellering.xyz" />

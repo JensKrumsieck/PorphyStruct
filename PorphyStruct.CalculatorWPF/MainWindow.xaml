@@ -43,6 +43,7 @@
         <StackPanel>
             <ComboBox ItemsSource="{Binding Source={StaticResource EnumData}}" SelectedItem="{Binding CycleType}" MinWidth="150"/>
             <DataGrid ItemsSource="{Binding ModeVector}" />
+            <Button Content="Export" Margin="25" Click="Save_OnClick" />
         </StackPanel>
         <wpf:PlotView Model="{Binding Model}" Grid.Column="1"/>
     </Grid>

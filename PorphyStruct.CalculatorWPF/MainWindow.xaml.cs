@@ -1,5 +1,12 @@
-﻿using System.Windows;
+﻿using System;
+using System.IO;
+using System.Windows;
+using Microsoft.Win32;
+using OxyPlot.SkiaSharp;
+using PorphyStruct.Core;
+using PorphyStruct.ViewModel;
 using ThemeCommons.Controls;
+using SvgExporter = PorphyStruct.Core.Plot.SvgExporter;
 
 namespace PorphyStruct.CalculatorWPF
 {
@@ -11,6 +18,35 @@ namespace PorphyStruct.CalculatorWPF
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Save_OnClick(object sender, RoutedEventArgs e)
+        {
+            var vm = (CalculatorViewModel)DataContext;
+            var sfd = new SaveFileDialog
+            {
+                Filter = "Scalable Vector Graphics (*.svg)|*.svg|Portable Network Graphics (*.png)|*.png",
+                InitialDirectory =Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+            };
+
+            if (sfd.ShowDialog(this) != true) return;
+            var filename = sfd.FileName;
+            switch (Path.GetExtension(filename))
+            {
+                case ".svg":
+                    new SvgExporter
+                    {
+                        Width = Settings.Instance.ExportWidth,
+                        Height = Settings.Instance.ExportHeight,
+                        Dpi = Settings.Instance.ExportDPI
+                    }.Export(vm.Model, File.Create(filename));
+                    break;
+                case ".png":
+                    PngExporter.Export(vm.Model, File.Create(filename), (int)Settings.Instance.ExportWidth, (int)Settings.Instance.ExportHeight, Settings.Instance.ExportDPI);
+                    break;
+                default: throw new InvalidOperationException();
+            }
+
         }
     }
 }
