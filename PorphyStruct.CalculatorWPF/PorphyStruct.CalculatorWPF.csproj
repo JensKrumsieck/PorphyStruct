@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows10.0.17763.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+	  <PackageReference Include="OxyPlot.SkiaSharp.Wpf" Version="2.1.0-Preview1" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\PorphyStruct.ViewModel\PorphyStruct.ViewModel.csproj" />
+	</ItemGroup>
+
+</Project>

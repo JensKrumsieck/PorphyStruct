@@ -42,7 +42,7 @@ namespace PorphyStruct.Core.Analysis.Properties
             if (type == MacrocycleType.Porphyrin || type == MacrocycleType.Norcorrole) _usedModes.Remove("WavingY2");//Por: WavingX2 = -WavingY2 -> linear dependent! //Nor: Only one Waving2 Mode could be found
             _type = type;
             var typePrefix = $"PorphyStruct.Core.Reference.{_type}.";
-            ReferenceMatrix = DisplacementMatrix(_usedModes.Select(s => typePrefix + s + ".xyz"));
+            ReferenceMatrix = DisplacementMatrix(_usedModes.Select(s => typePrefix + s + ".xyz"), type);
         }
 
         /// <summary>
@@ -72,14 +72,14 @@ namespace PorphyStruct.Core.Analysis.Properties
         /// </summary>
         /// <param name="res"></param>
         /// <returns></returns>
-        private Matrix<double> DisplacementMatrix(IEnumerable<string> res)
+        public static Matrix<double> DisplacementMatrix(IEnumerable<string> res, MacrocycleType type)
         {
             var mat = new List<double[]>();
             foreach (var s in res)
             {
                 var stream = ResourceUtil.LoadResource(s);
                 var xyz = new XYZDataProvider(stream);
-                var cycle = new Macrocycle(xyz) { MacrocycleType = _type };
+                var cycle = new Macrocycle(xyz) { MacrocycleType = type };
                 Task.Run(cycle.Detect).Wait(1500);
                 var part = cycle.DetectedParts[0];
                 var data = part.DataPoints.OrderBy(d => d.X).Select(d => d.Y).ToArray();
