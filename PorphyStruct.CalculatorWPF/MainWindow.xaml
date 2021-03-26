@@ -1,4 +1,4 @@
-﻿<Window x:Class="PorphyStruct.CalculatorWPF.MainWindow"
+﻿<controls:DefaultWindow x:Class="PorphyStruct.CalculatorWPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,9 +7,24 @@
         xmlns:viewModel="clr-namespace:PorphyStruct.ViewModel;assembly=PorphyStruct.ViewModel"
         xmlns:system="clr-namespace:System;assembly=System.Runtime"
         xmlns:analysis="clr-namespace:PorphyStruct.Core.Analysis;assembly=PorphyStruct.Core"
-        d:DataContext="{d:DesignInstance viewModel:CalculatorViewModel}" 
-        mc:Ignorable="d"
-        Title="Mode Calculator" Height="450" Width="800">
+        xmlns:controls="clr-namespace:ThemeCommons.Controls;assembly=ThemeCommons"
+        d:DataContext="{d:DesignInstance viewModel:CalculatorViewModel}" mc:Ignorable="d" IconSize="24" TitlebarBackground="{DynamicResource TitleBar}" 
+        Background="{DynamicResource Background}"
+        Title="Mode Calculator" Height="600" Width="1000">
+    <controls:DefaultWindow.TitlebarContent>
+        <Grid VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="225" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TextBlock FontSize="14" VerticalAlignment="Center">
+                PorphyStruct
+                <LineBreak />
+                <Run FontSize="9">Structural Analysis of Porphyrinoids</Run>
+            </TextBlock>
+            <TextBlock Grid.Column="1" FontSize="14" VerticalAlignment="Center" Text="Mode Calculator" />
+        </Grid>
+    </controls:DefaultWindow.TitlebarContent>
     <Window.DataContext>
         <viewModel:CalculatorViewModel/>
     </Window.DataContext>
@@ -31,4 +46,4 @@
         </StackPanel>
         <wpf:PlotView Model="{Binding Model}" Grid.Column="1"/>
     </Grid>
-</Window>
+</controls:DefaultWindow>

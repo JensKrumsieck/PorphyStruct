@@ -1,17 +1,42 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows10.0.17763.0</TargetFramework>
-    <UseWPF>true</UseWPF>
+	  <Authors>Jens Krumsieck</Authors>
+	  <Version>1.0.0-beta11</Version>
+	  <OutputType>WinExe</OutputType>
+	  <TargetFramework>net5.0-windows10.0.17763.0</TargetFramework>
+	  <UseWPF>true</UseWPF>
+	  <LangVersion>9.0</LangVersion>
+	  <PackageProjectUrl>https://github.com/JensKrumsieck/PorphyStruct</PackageProjectUrl>
+	  <RepositoryUrl>https://github.com/JensKrumsieck/PorphyStruct</RepositoryUrl>
+	  <RepositoryType>git</RepositoryType>
+	  <ApplicationIcon>..\PorphyStruct.WPF\Resources\porphystruct.ico</ApplicationIcon>
+	  <PackageIcon>..\PorphyStruct.WPF\Resources\porphystruct.ico</PackageIcon>
+	  <Product>PorphyStruct Mode Calculator</Product>
+	  <AssemblyName>PorphyStructCalculator</AssemblyName>
+	  <IncludeAllContentForSelfExtract>True</IncludeAllContentForSelfExtract>
+	  <PublishSingleFile>True</PublishSingleFile>
+	  <SelfContained>True</SelfContained>
+	  <PublishTrimmed>True</PublishTrimmed>
+	  <PublishReadyToRun>True</PublishReadyToRun>
+	  <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	  <PublishReadyToRunShowWarnings>True</PublishReadyToRunShowWarnings>
   </PropertyGroup>
 
   <ItemGroup>
+	  <PackageReference Include="JensKrumsieck.ThemeCommons.MaterialDesign" Version="1.0.0-beta4" />
 	  <PackageReference Include="OxyPlot.SkiaSharp.Wpf" Version="2.1.0-Preview1" />
   </ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\PorphyStruct.ViewModel\PorphyStruct.ViewModel.csproj" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<TrimmerRootAssembly Include="System.Runtime" />
+		<TrimmerRootAssembly Include="System.Diagnostics.Debug" />
+		<TrimmerRootAssembly Include="System.Runtime.Extensions" />
 	</ItemGroup>
 
 </Project>
