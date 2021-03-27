@@ -40,7 +40,6 @@ namespace PorphyStruct.Core.Analysis
             Atoms = atoms;
             Bonds = bonds;
             _guid = Guid.NewGuid();
-            Task.Run(NameAtoms).Wait(15000);
         }
 
         /// <summary>
