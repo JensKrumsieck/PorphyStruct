@@ -3,7 +3,7 @@ using HelixToolkit.Wpf;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
-namespace PorphyStruct.ViewModel.Windows
+namespace PorphyStruct.ViewModel.Windows.Visual
 {
     public class AtomVisual3D : ModelVisual3D
     {

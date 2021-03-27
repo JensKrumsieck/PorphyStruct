@@ -1,9 +1,9 @@
-﻿using ChemSharp.Molecules;
-using HelixToolkit.Wpf;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using ChemSharp.Molecules;
+using HelixToolkit.Wpf;
 
-namespace PorphyStruct.ViewModel.Windows
+namespace PorphyStruct.ViewModel.Windows.Visual
 {
     public class BondVisual3D : ModelVisual3D
     {

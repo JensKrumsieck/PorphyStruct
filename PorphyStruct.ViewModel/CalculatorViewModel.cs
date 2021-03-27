@@ -53,7 +53,7 @@ namespace PorphyStruct.ViewModel
             Recalculate();
         }
 
-        private void MOnPropertyChanged(object? sender, PropertyChangedEventArgs e) =>
+        private void MOnPropertyChanged(object sender, PropertyChangedEventArgs e) =>
             Task.Run(Recalculate);
 
         public void Recalculate()

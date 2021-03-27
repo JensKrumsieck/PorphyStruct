@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:selector="clr-namespace:ThemeCommons.Selector;assembly=ThemeCommons"
                     xmlns:analysis="clr-namespace:PorphyStruct.Core.Analysis;assembly=PorphyStruct.Core"
-                    xmlns:viewModel="clr-namespace:PorphyStruct.ViewModel;assembly=PorphyStruct.ViewModel">
+                    xmlns:viewModel="clr-namespace:PorphyStruct.ViewModel;assembly=PorphyStruct.ViewModel"
+                    xmlns:windows="clr-namespace:PorphyStruct.ViewModel.Windows;assembly=PorphyStruct.ViewModel.Windows">
     <DataTemplate x:Key="NullTab">
        <Border Background="{DynamicResource Light}" CornerRadius="5 5 0 0" Padding="15">
            <Label FontSize="15">No Data Present</Label>
@@ -13,7 +14,7 @@
         <selector:TemplateByTypeSelector.Templates>
             <selector:TemplateForType Type="analysis:MacrocycleAnalysis" DataTemplate="{StaticResource  AnalysisTab}"/>
             <selector:TemplateForType Type="viewModel:AnalysisViewModel" DataTemplate="{StaticResource SettingsTab}"/>
-            <selector:TemplateForType Type="viewModel:MacrocycleViewModel" DataTemplate="{StaticResource CoordinatesTab}"/>
+            <selector:TemplateForType Type="windows:MacrocycleViewModel" DataTemplate="{StaticResource CoordinatesTab}"/>
         </selector:TemplateByTypeSelector.Templates>
     </selector:TemplateByTypeSelector>
 </ResourceDictionary>

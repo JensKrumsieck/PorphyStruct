@@ -1,11 +1,6 @@
-﻿using ChemSharp.Molecules;
-using PorphyStruct.Core;
-using PorphyStruct.ViewModel.Windows;
-using System.Collections.ObjectModel;
+﻿using PorphyStruct.Core;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Media;
 using TinyMVVM;
 
 namespace PorphyStruct.ViewModel
@@ -22,35 +17,10 @@ namespace PorphyStruct.ViewModel
         /// </summary>
         public Macrocycle Macrocycle { get; set; }
 
-        private Atom _selectedAtom;
-        /// <summary>
-        /// Gets or Sets the selected Atom
-        /// </summary>
-        public Atom SelectedAtom
-        {
-            get => _selectedAtom;
-            set => Set(ref _selectedAtom, value, () =>
-            {
-                foreach (var atom in Atoms3D)
-                    atom.IsSelected = atom.Atom.Equals(_selectedAtom);
-            });
-        }
-
-        /// <summary>
-        /// 3D Representation of Atoms
-        /// </summary>
-        public ObservableCollection<AtomVisual3D> Atoms3D { get; }
-        /// <summary>
-        /// 3D Representation of Bonds
-        /// </summary>
-        public ObservableCollection<BondVisual3D> Bonds3D { get; }
-
         public MacrocycleViewModel(string path)
         {
             Filename = path;
             Macrocycle = new Macrocycle(Filename);
-            Atoms3D = new ObservableCollection<AtomVisual3D>(Macrocycle.Atoms.Select(s => new AtomVisual3D(s) { IsSelected = s.Equals(SelectedAtom) }));
-            Bonds3D = new ObservableCollection<BondVisual3D>(Macrocycle.Bonds.Select(s => new BondVisual3D(s)));
         }
 
         public override string Title => Path.GetFileNameWithoutExtension(Filename);
@@ -72,17 +42,6 @@ namespace PorphyStruct.ViewModel
             }
         }
 
-        private void Validate()
-        {
-            foreach (var part in Macrocycle.DetectedParts)
-            {
-                var validBonds = Bonds3D.Where(bond => part.Atoms.Count(atom => bond.Bond.Atoms.Contains(atom)) == 2);
-                foreach (var bond in validBonds)
-                {
-                    bond.Color = (Color)ColorConverter.ConvertFromString(part.AnalysisColor)!;
-                    bond.IsValid = true;
-                }
-            }
-        }
+        protected virtual void Validate() { }
     }
 }

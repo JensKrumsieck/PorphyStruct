@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using System.Windows.Media.Media3D;
 
-namespace PorphyStruct.ViewModel.Windows
+namespace PorphyStruct.ViewModel.Windows.Visual
 {
     public static class Util3D
     {

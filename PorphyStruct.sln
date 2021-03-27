@@ -14,7 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PorphyStruct.CalculatorWPF", "PorphyStruct.CalculatorWPF\PorphyStruct.CalculatorWPF.csproj", "{292E71F0-7753-4F71-8739-7A282A4E21CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PorphyStruct.CalculatorWPF", "PorphyStruct.CalculatorWPF\PorphyStruct.CalculatorWPF.csproj", "{292E71F0-7753-4F71-8739-7A282A4E21CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PorphyStruct.ViewModel.Windows", "PorphyStruct.ViewModel.Windows\PorphyStruct.ViewModel.Windows.csproj", "{FD16B5E4-3677-4F47-BBA6-ADCACCA1215D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +40,10 @@ Global
 		{292E71F0-7753-4F71-8739-7A282A4E21CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{292E71F0-7753-4F71-8739-7A282A4E21CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{292E71F0-7753-4F71-8739-7A282A4E21CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD16B5E4-3677-4F47-BBA6-ADCACCA1215D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD16B5E4-3677-4F47-BBA6-ADCACCA1215D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD16B5E4-3677-4F47-BBA6-ADCACCA1215D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD16B5E4-3677-4F47-BBA6-ADCACCA1215D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

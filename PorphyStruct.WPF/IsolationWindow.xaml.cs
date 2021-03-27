@@ -1,10 +1,11 @@
 ﻿using HelixToolkit.Wpf;
-using PorphyStruct.ViewModel;
 using PorphyStruct.ViewModel.Windows;
+using PorphyStruct.ViewModel.Windows.Visual;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using ThemeCommons.Controls;
+using MacrocycleViewModel = PorphyStruct.ViewModel.Windows.MacrocycleViewModel;
 
 namespace PorphyStruct.WPF
 {
