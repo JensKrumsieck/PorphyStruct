@@ -187,8 +187,9 @@ namespace PorphyStruct.Core.Analysis
         /// <param name="bonds"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static MacrocycleAnalysis Create(List<Atom> atoms, IEnumerable<Bond> bonds, MacrocycleType type) =>
-            type switch
+        public static async Task<MacrocycleAnalysis> CreateAsync(List<Atom> atoms, IEnumerable<Bond> bonds, MacrocycleType type)
+        {
+            MacrocycleAnalysis analysis = type switch
             {
                 MacrocycleType.Porphyrin => new PorphyrinAnalysis(atoms, bonds),
                 MacrocycleType.Corrole => new CorroleAnalysis(atoms, bonds),
@@ -197,6 +198,9 @@ namespace PorphyStruct.Core.Analysis
                 MacrocycleType.Corrphycene => new CorrphyceneAnalysis(atoms, bonds),
                 _ => throw new InvalidOperationException()
             };
+            await Task.Run(analysis.NameAtoms);
+            return analysis;
+        }
 
         /// <summary>
         /// Assign the correct Identifiers for a cycle CN-corpus

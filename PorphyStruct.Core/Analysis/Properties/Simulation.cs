@@ -80,7 +80,7 @@ namespace PorphyStruct.Core.Analysis.Properties
                 var stream = ResourceUtil.LoadResource(s);
                 var xyz = new XYZDataProvider(stream);
                 var cycle = new Macrocycle(xyz) { MacrocycleType = type };
-                Task.Run(cycle.Detect).Wait(1500);
+                Task.Run(cycle.Detect).Wait(15000);
                 var part = cycle.DetectedParts[0];
                 var data = part.DataPoints.OrderBy(d => d.X).Select(d => d.Y).ToArray();
                 mat.Add(data.Normalize());
