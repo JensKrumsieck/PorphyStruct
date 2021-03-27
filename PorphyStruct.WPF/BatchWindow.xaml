@@ -30,7 +30,7 @@
     <controls:DefaultWindow.DataContext>
         <viewModel:BatchViewModel/>
     </controls:DefaultWindow.DataContext>
-    <Grid>
+    <Grid x:Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>

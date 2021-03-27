@@ -24,7 +24,7 @@
         MinWidth="1300" MinHeight="750"
         TitlebarBackground="{DynamicResource TitleBar}" Height="750" Width="1440">
     <commons:DefaultWindow.TitlebarContent>
-        <Grid VerticalAlignment="Center">
+        <Grid VerticalAlignment="Center" x:Name="TitleGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="275"/>
                 <ColumnDefinition/>
@@ -75,7 +75,7 @@
                    Foreground="{DynamicResource Light}" Grid.Column="2"/>
         </Grid>
     </commons:DefaultWindow.TitlebarContent>
-    <Grid>
+    <Grid x:Name="MainGrid">
         <commons:Popup Header="Info - PorphyStruct" x:Name="InfoPopup" Visibility="Collapsed">
             <StackPanel Margin="10">
                 <Image Source="Resources/porphystruct.png" Width="120"/>

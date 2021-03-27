@@ -103,9 +103,11 @@ namespace PorphyStruct.WPF
         private async void Analyze_OnClick(object sender, RoutedEventArgs e)
         {
             //Block UI interaction during this
-            IsEnabled = false;
+            MainGrid.IsEnabled = false;
+            TitleGrid.IsEnabled = false;
             await ViewModel.Analyze();
-            IsEnabled = true;
+            MainGrid.IsEnabled = true;
+            TitleGrid.IsEnabled = true;
         }
 
         private void Save_OnClick(object sender, RoutedEventArgs e)

@@ -38,11 +38,11 @@ namespace PorphyStruct.WPF
 
         private async void Process_OnClick(object sender, RoutedEventArgs e)
         {
-            IsEnabled = false;
+            MainGrid.IsEnabled = false;
             Results.Visibility = Visibility.Visible;
             var vm = (BatchViewModel)DataContext;
             await vm.Process();
-            IsEnabled = true;
+            MainGrid.IsEnabled = true;
             var stats = new StatisticsViewModel()
             {
                 WorkingDir = vm.WorkingDir,
