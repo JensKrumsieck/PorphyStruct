@@ -12,20 +12,21 @@ namespace PorphyStruct.Core.Analysis.Properties
 {
     public class Simulation
     {
-        private readonly MacrocycleType _type;
+        [JsonIgnore]
+        internal readonly MacrocycleType Type;
 
         private static readonly List<string> Modes = new List<string>
             {"Doming", "Saddling", "Ruffling", "WavingX", "WavingY", "Propellering"};
 
         private static readonly List<string> ExtendedModes = Modes.Select(s => s + "2").ToList();
-
-        private readonly List<string> _usedModes;
+        [JsonIgnore]
+        internal readonly List<string> UsedModes;
 
         /// <summary>
         /// Matrix containing reference values
         /// </summary>
         [JsonIgnore]
-        public Matrix<double> ReferenceMatrix { get; }
+        public Matrix<double> ReferenceMatrix { get; private set; }
 
         /// <summary>
         /// Result of Simulation, may be empty
@@ -38,11 +39,18 @@ namespace PorphyStruct.Core.Analysis.Properties
         /// <param name="type"></param>
         public Simulation(MacrocycleType type)
         {
-            _usedModes = Settings.Instance.UseExtendedBasis ? Modes.Concat(ExtendedModes).ToList() : Modes;
-            if (type == MacrocycleType.Porphyrin || type == MacrocycleType.Norcorrole) _usedModes.Remove("WavingY2");//Por: WavingX2 = -WavingY2 -> linear dependent! //Nor: Only one Waving2 Mode could be found
-            _type = type;
-            var typePrefix = $"PorphyStruct.Core.Reference.{_type}.";
-            ReferenceMatrix = DisplacementMatrix(_usedModes.Select(s => typePrefix + s + ".xyz"), type);
+            UsedModes = Settings.Instance.UseExtendedBasis ? Modes.Concat(ExtendedModes).ToList() : Modes;
+            if (type == MacrocycleType.Porphyrin || type == MacrocycleType.Norcorrole) UsedModes.Remove("WavingY2");//Por: WavingX2 = -WavingY2 -> linear dependent! //Nor: Only one Waving2 Mode could be found
+            Type = type;
+           
+        }
+
+        public static async Task<Simulation> CreateAsync(MacrocycleType type)
+        {
+            var sim = new Simulation(type);
+            var typePrefix = $"PorphyStruct.Core.Reference.{sim.Type}.";
+            sim.ReferenceMatrix = await DisplacementMatrix(sim.UsedModes.Select(s => typePrefix + s + ".xyz"), type);
+            return sim;
         }
 
         /// <summary>
@@ -55,7 +63,7 @@ namespace PorphyStruct.Core.Analysis.Properties
             SimulationResult.Clear();
             var result = ReferenceMatrix.QR().Solve(DenseVector.OfArray(data)).ToArray();
 
-            for (var i = 0; i < _usedModes.Count; i++) SimulationResult.Add(new KeyValueProperty { Key = _usedModes[i], Value = result[i], Unit = "Å" });
+            for (var i = 0; i < UsedModes.Count; i++) SimulationResult.Add(new KeyValueProperty { Key = UsedModes[i], Value = result[i], Unit = "Å" });
             OutOfPlaneParameter.Value = ConformationY.Length();
             return result;
         }
@@ -72,7 +80,7 @@ namespace PorphyStruct.Core.Analysis.Properties
         /// </summary>
         /// <param name="res"></param>
         /// <returns></returns>
-        public static Matrix<double> DisplacementMatrix(IEnumerable<string> res, MacrocycleType type)
+        public static async Task<Matrix<double>> DisplacementMatrix(IEnumerable<string> res, MacrocycleType type)
         {
             var mat = new List<double[]>();
             foreach (var s in res)
@@ -80,7 +88,7 @@ namespace PorphyStruct.Core.Analysis.Properties
                 var stream = ResourceUtil.LoadResource(s);
                 var xyz = new XYZDataProvider(stream);
                 var cycle = new Macrocycle(xyz) { MacrocycleType = type };
-                Task.Run(cycle.Detect).Wait(15000);
+                await Task.Run(cycle.Detect);
                 var part = cycle.DetectedParts[0];
                 var data = part.DataPoints.OrderBy(d => d.X).Select(d => d.Y).ToArray();
                 mat.Add(data.Normalize());
@@ -90,7 +98,7 @@ namespace PorphyStruct.Core.Analysis.Properties
 
         public override string ToString()
         {
-            var result = $"Simulation ({_type})\n";
+            var result = $"Simulation ({Type})\n";
             result = SimulationResult.Aggregate(result, (current, prop) => current + prop + "\n");
             if (ConformationY.Any()) result += OutOfPlaneParameter.ToString();
             return result;

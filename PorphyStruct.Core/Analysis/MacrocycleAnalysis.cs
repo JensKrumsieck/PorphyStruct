@@ -57,18 +57,12 @@ namespace PorphyStruct.Core.Analysis
         /// </summary>
         public abstract Dictionary<string, double> Multiplier { get; }
 
-        private MacrocycleProperties _properties = null!;
         /// <summary>
         /// A Set of Macrocyclic Properties
         /// </summary>
-        public MacrocycleProperties Properties
-        {
-            get => _properties ??= new MacrocycleProperties(this);
-            set => _properties = value;
-        }
+        public MacrocycleProperties? Properties { get; set; }
 
         private IEnumerable<AtomDataPoint>? _dataPoints;
-
         /// <summary>
         /// Cached Datapoints
         /// </summary>
@@ -107,7 +101,7 @@ namespace PorphyStruct.Core.Analysis
                 if (a.Title.Contains("N")) coordX = fix + dist / 2d;
                 //starts with C1 which is alpha per definition, so refresh distance every alpha atom.
                 if (IsAlpha(a) && NextAlpha(a) != null) dist = a.DistanceTo(NextAlpha(a));
-                //alpha atoms are fixpoints
+                //alpha atoms are fix-points
                 if (IsAlpha(a)) fix = coordX;
                 yield return new AtomDataPoint(coordX, MathV.Distance(MeanPlane, a.Location), a);
             }

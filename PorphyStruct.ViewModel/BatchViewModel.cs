@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using PorphyStruct.Core.Analysis.Properties;
 using TinyMVVM;
 
 namespace PorphyStruct.ViewModel
@@ -86,6 +87,7 @@ namespace PorphyStruct.ViewModel
                     }
                     foreach (var analysis in cycle.DetectedParts)
                     {
+                        analysis.Properties ??= await MacrocycleProperties.CreateAsync(analysis);
                         var folder = Path.GetDirectoryName(Files[CurrentIndex - 1]);
                         var file = Path.GetFileNameWithoutExtension(Files[CurrentIndex - 1]);
                         var filename = cycle.DetectedParts.Count == 1

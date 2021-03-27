@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace PorphyStruct.Core.Analysis.Properties
 {
@@ -25,7 +26,13 @@ namespace PorphyStruct.Core.Analysis.Properties
         public MacrocycleProperties(MacrocycleAnalysis analysis)
         {
             Analysis = analysis;
-            Rebuild();
+        }
+
+        public static async Task<MacrocycleProperties> CreateAsync(MacrocycleAnalysis analysis)
+        {
+            var props = new MacrocycleProperties(analysis);
+            await props.Rebuild();
+            return props;
         }
 
         /// <summary>
@@ -78,9 +85,9 @@ namespace PorphyStruct.Core.Analysis.Properties
         /// <summary>
         /// Fills all Lists
         /// </summary>
-        public void Rebuild()
+        public async Task Rebuild()
         {
-            Simulation ??= new Simulation(Analysis.GetAnalysisType());
+            Simulation ??= await Simulation.CreateAsync(Analysis.GetAnalysisType());
             if (Analysis.DataPoints.Any()) Simulation?.Simulate(Analysis.DataPoints.OrderBy(s => s.X).Select(s => s.Y).ToArray());
             OutOfPlaneParameter.Value = Analysis.DataPoints.OrderBy(s => s.X).DisplacementValue();
 

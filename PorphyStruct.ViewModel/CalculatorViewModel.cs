@@ -52,15 +52,15 @@ namespace PorphyStruct.ViewModel
             Recalculate();
         }
 
-        private void MOnPropertyChanged(object sender, PropertyChangedEventArgs e) =>
-            Task.Run(Recalculate);
+        private async void MOnPropertyChanged(object sender, PropertyChangedEventArgs e) =>
+            await Task.Run(Recalculate);
 
-        public void Recalculate()
+        public async Task Recalculate()
         {
             Bonds.ClearAndNotify();
             Series.ItemsSource = null;
             var typePrefix = $"PorphyStruct.Core.Reference.{CycleType}.";
-            var matrix = Simulation.DisplacementMatrix(ModeVector.Select(s => typePrefix + s.Key + ".xyz"), CycleType);
+            var matrix = await Simulation.DisplacementMatrix(ModeVector.Select(s => typePrefix + s.Key + ".xyz"), CycleType);
             var result = (matrix * DenseVector.OfEnumerable(ModeVector.Select(s => s.Value))).ToList();
 
             var dom = LoadSample();

@@ -1,6 +1,7 @@
 ﻿using PorphyStruct.Core;
 using System.IO;
 using System.Threading.Tasks;
+using PorphyStruct.Core.Analysis.Properties;
 using TinyMVVM;
 
 namespace PorphyStruct.ViewModel
@@ -37,6 +38,7 @@ namespace PorphyStruct.ViewModel
             foreach (var part in Macrocycle.DetectedParts)
             {
                 var analysis = new AnalysisViewModel(this, part);
+                part.Properties ??= await MacrocycleProperties.CreateAsync(part);
                 Items.Add(analysis);
                 SelectedIndex = Items.IndexOf(analysis);
             }
