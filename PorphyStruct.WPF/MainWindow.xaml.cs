@@ -3,15 +3,15 @@ using HelixToolkit.Wpf;
 using Microsoft.Win32;
 using PorphyStruct.Core;
 using PorphyStruct.Core.Analysis;
+using PorphyStruct.ViewModel;
 using PorphyStruct.ViewModel.IO;
+using PorphyStruct.ViewModel.Windows.Visual;
 using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
-using PorphyStruct.ViewModel;
-using PorphyStruct.ViewModel.Windows.Visual;
 using ThemeCommons.Controls;
 using MacrocycleViewModel = PorphyStruct.ViewModel.Windows.MacrocycleViewModel;
 

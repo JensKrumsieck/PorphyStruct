@@ -180,7 +180,7 @@ namespace PorphyStruct.Core.Analysis.Properties
         {
             var result = "";
             result += ExportBlock("Simulation", Simulation.SimulationResult.Append(OutOfPlaneParameter).Append(Simulation.OutOfPlaneParameter));
-            result += ExportBlock("Cavity", new[] {Cavity});
+            result += ExportBlock("Cavity", new[] { Cavity });
             result += Analysis.Metal != null ? ExportBlock("Distances", Distances.Cast<KeyValueProperty>().Concat(PlaneDistances)) : ExportBlock("Distances", Distances);
             result += Analysis.Metal != null ? ExportBlock("Angles", Angles.Append(InterplanarAngle)) : ExportBlock("Angles", Angles);
             result += ExportBlock("Dihedrals", Dihedrals);

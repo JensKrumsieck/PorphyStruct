@@ -1,12 +1,12 @@
 ﻿using ChemSharp.Molecules;
 using ChemSharp.Molecules.Export;
 using PorphyStruct.Core;
+using PorphyStruct.ViewModel.Windows.Visual;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Windows.Media;
-using PorphyStruct.ViewModel.Windows.Visual;
 using TinyMVVM;
 using TinyMVVM.Command;
 

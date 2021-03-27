@@ -1,8 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using ChemSharp.Molecules;
+using PorphyStruct.ViewModel.Windows.Visual;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Media;
-using ChemSharp.Molecules;
-using PorphyStruct.ViewModel.Windows.Visual;
 
 namespace PorphyStruct.ViewModel.Windows
 {

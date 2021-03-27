@@ -5,7 +5,6 @@ using PorphyStruct.Core.Analysis;
 using PorphyStruct.Core.Analysis.Properties;
 using PorphyStruct.Core.Extension;
 using PorphyStruct.Core.Plot;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -86,7 +85,7 @@ namespace PorphyStruct.ViewModel
         private void BuildModeVector()
         {
             //Remove Events
-            foreach(var m in ModeVector??Enumerable.Empty<Mode>()) m.PropertyChanged -= MOnPropertyChanged;
+            foreach (var m in ModeVector ?? Enumerable.Empty<Mode>()) m.PropertyChanged -= MOnPropertyChanged;
             ModeVector.ClearAndNotify();
 
             ModeVector.Add(new Mode("Doming", 1d));

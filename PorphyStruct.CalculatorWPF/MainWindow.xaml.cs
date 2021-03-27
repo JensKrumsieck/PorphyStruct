@@ -1,10 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Windows;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using OxyPlot.SkiaSharp;
 using PorphyStruct.Core;
 using PorphyStruct.ViewModel;
+using System;
+using System.IO;
+using System.Windows;
 using ThemeCommons.Controls;
 using SvgExporter = PorphyStruct.Core.Plot.SvgExporter;
 
@@ -26,7 +26,7 @@ namespace PorphyStruct.CalculatorWPF
             var sfd = new SaveFileDialog
             {
                 Filter = "Scalable Vector Graphics (*.svg)|*.svg|Portable Network Graphics (*.png)|*.png",
-                InitialDirectory =Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
             };
 
             if (sfd.ShowDialog(this) != true) return;
