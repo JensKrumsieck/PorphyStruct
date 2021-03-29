@@ -46,7 +46,7 @@ namespace PorphyStruct.Core
         public async Task Detect()
         {
             DetectedParts.Clear();
-            var parts = await GetParts();
+            var parts = GetParts();
             var distinct = parts.Distinct(new EnumerableEqualityComparer<Atom>());
             foreach (var part in distinct)
             {
@@ -69,10 +69,10 @@ namespace PorphyStruct.Core
         /// Returns connected figures
         /// </summary>
         /// <returns></returns>
-        private async Task<IList<IEnumerable<Atom>>> GetParts()
+        private IList<IEnumerable<Atom>> GetParts()
         {
             var parts = new List<IEnumerable<Atom>>();
-            await foreach (var fig in DFSUtil.ConnectedFigures(
+            foreach (var fig in DFSUtil.ConnectedFigures(
                 Atoms.Where(s => Neighbors(s).Count() >= 2), NonMetalNonDeadEndNeighbors))
             {
                 var connectedAtoms = fig.Distinct().ToArray();
