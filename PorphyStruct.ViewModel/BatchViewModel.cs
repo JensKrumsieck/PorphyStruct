@@ -94,12 +94,12 @@ namespace PorphyStruct.ViewModel
                         var filename = cycle.DetectedParts.Count == 1
                             ? folder + "/" + file
                             : folder + "/" + file + "_" + analysis.AnalysisColor;
-                        File.WriteAllText(filename + "_analysis.md", analysis.Properties.ExportString());
-                        File.WriteAllText(filename + "_analysis.json", analysis.Properties.ExportJson());
+                        await File.WriteAllTextAsync(filename + "_analysis.md", analysis.Properties?.ExportString());
+                        await File.WriteAllTextAsync(filename + "_analysis.json", analysis.Properties?.ExportJson());
                     }
                 });
             }
-            await File.WriteAllTextAsync(WorkingDir + "/FailedItems" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".txt", _failedItems);
+            if(_failedItems.Any()) await File.WriteAllTextAsync(WorkingDir + "/FailedItems" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".txt", _failedItems));
         }
     }
 }
