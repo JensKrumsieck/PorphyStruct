@@ -78,7 +78,7 @@ namespace PorphyStruct.ViewModel
             {
                 var current = Files[CurrentIndex - 1];
                 var cycle = new Macrocycle(current) { MacrocycleType = Type };
-                await Task.Run(cycle.Detect).ContinueWith(async (ts) =>
+                await Task.Run(async() => await cycle.Detect()).ContinueWith(async (ts) =>
                 {
                     if (!cycle.DetectedParts.Any())
                     {
@@ -87,14 +87,15 @@ namespace PorphyStruct.ViewModel
                     }
                     foreach (var analysis in cycle.DetectedParts)
                     {
-                        analysis.Properties ??= await MacrocycleProperties.CreateAsync(analysis);
+                        analysis.Properties = new MacrocycleProperties(analysis);
+                        Task.Run(async() => await analysis.Properties.Rebuild()).Wait();
                         var folder = Path.GetDirectoryName(Files[CurrentIndex - 1]);
                         var file = Path.GetFileNameWithoutExtension(Files[CurrentIndex - 1]);
                         var filename = cycle.DetectedParts.Count == 1
                             ? folder + "/" + file
                             : folder + "/" + file + "_" + analysis.AnalysisColor;
-                        await File.WriteAllTextAsync(filename + "_analysis.md", analysis.Properties.ExportString());
-                        await File.WriteAllTextAsync(filename + "_analysis.json", analysis.Properties.ExportJson());
+                        File.WriteAllText(filename + "_analysis.md", analysis.Properties.ExportString());
+                        File.WriteAllText(filename + "_analysis.json", analysis.Properties.ExportJson());
                     }
                 });
             }
