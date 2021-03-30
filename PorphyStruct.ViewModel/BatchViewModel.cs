@@ -1,11 +1,11 @@
 ﻿using PorphyStruct.Core;
 using PorphyStruct.Core.Analysis;
+using PorphyStruct.Core.Analysis.Properties;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using PorphyStruct.Core.Analysis.Properties;
 using TinyMVVM;
 
 namespace PorphyStruct.ViewModel
@@ -78,28 +78,28 @@ namespace PorphyStruct.ViewModel
             {
                 var current = Files[CurrentIndex - 1];
                 var cycle = new Macrocycle(current) { MacrocycleType = Type };
-                await Task.Run(async() => await cycle.Detect()).ContinueWith(async (ts) =>
-                {
-                    if (!cycle.DetectedParts.Any())
-                    {
-                        Failed++;
-                        _failedItems += Files[CurrentIndex - 1] + "\n";
-                    }
-                    foreach (var analysis in cycle.DetectedParts)
-                    {
-                        analysis.Properties = new MacrocycleProperties(analysis);
-                        Task.Run(async() => await analysis.Properties.Rebuild()).Wait();
-                        var folder = Path.GetDirectoryName(Files[CurrentIndex - 1]);
-                        var file = Path.GetFileNameWithoutExtension(Files[CurrentIndex - 1]);
-                        var filename = cycle.DetectedParts.Count == 1
-                            ? folder + "/" + file
-                            : folder + "/" + file + "_" + analysis.AnalysisColor;
-                        await File.WriteAllTextAsync(filename + "_analysis.md", analysis.Properties?.ExportString());
-                        await File.WriteAllTextAsync(filename + "_analysis.json", analysis.Properties?.ExportJson());
-                    }
-                });
+                await Task.Run(async () => await cycle.Detect()).ContinueWith(async (ts) =>
+                 {
+                     if (!cycle.DetectedParts.Any())
+                     {
+                         Failed++;
+                         _failedItems += Files[CurrentIndex - 1] + "\n";
+                     }
+                     foreach (var analysis in cycle.DetectedParts)
+                     {
+                         analysis.Properties = new MacrocycleProperties(analysis);
+                         Task.Run(async () => await analysis.Properties.Rebuild()).Wait();
+                         var folder = Path.GetDirectoryName(Files[CurrentIndex - 1]);
+                         var file = Path.GetFileNameWithoutExtension(Files[CurrentIndex - 1]);
+                         var filename = cycle.DetectedParts.Count == 1
+                             ? folder + "/" + file
+                             : folder + "/" + file + "_" + analysis.AnalysisColor;
+                         await File.WriteAllTextAsync(filename + "_analysis.md", analysis.Properties?.ExportString());
+                         await File.WriteAllTextAsync(filename + "_analysis.json", analysis.Properties?.ExportJson());
+                     }
+                 });
             }
-            if(_failedItems.Any()) await File.WriteAllTextAsync(WorkingDir + "/FailedItems" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".txt", _failedItems));
+            if (_failedItems.Any()) await File.WriteAllTextAsync(WorkingDir + "/FailedItems" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".txt", _failedItems);
         }
     }
 }
