@@ -1,9 +1,9 @@
-﻿using System;
-using OxyPlot;
+﻿using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using OxyPlot.SkiaSharp;
 using PorphyStruct.Core.Analysis.Properties;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -58,7 +58,7 @@ namespace PorphyStruct.Core.Plot
                 var key = prop.Key.Replace("2", "");
                 var color = OxyColor.Parse(Colors[key]);
                 if (prop.Key.Contains("2")) color = OxyColor.FromAColor(200, color);
-                series.Items.Add(new BarItem(prop.Value, Categories.IndexOf(key)) { Color =  color});
+                series.Items.Add(new BarItem(prop.Value, Categories.IndexOf(key)) { Color = color });
             }
             return series;
         }
@@ -70,7 +70,9 @@ namespace PorphyStruct.Core.Plot
             {
                 Position = AxisPosition.Left,
                 ItemsSource = Categories,
-                AxislineThickness = Settings.Instance.AxisThickness
+                AxislineThickness = Settings.Instance.AxisThickness,
+                AxisDistance = 0,
+                GapWidth = .2
             };
             model.Axes.Add(yAxis);
             model.Series.Add(sim.PrepareBarSeries(showLabels));
