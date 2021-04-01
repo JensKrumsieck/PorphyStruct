@@ -6,6 +6,7 @@ using PorphyStruct.Core;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using PorphyStruct.Core.Plot;
 using SvgExporter = PorphyStruct.Core.Plot.SvgExporter;
 
 namespace PorphyStruct.ViewModel.IO
@@ -36,8 +37,18 @@ namespace PorphyStruct.ViewModel.IO
 
         public static void ExportSimulation(this AnalysisViewModel viewModel, string path, string extension)
         {
-            if (extension == "json") File.WriteAllText(path + "_analysis.json", viewModel.Analysis.Properties.ExportJson());
-            else File.WriteAllText(path + "_analysis.md", viewModel.Analysis.Properties.ExportString());
+            switch (extension)
+            {
+                case "json":
+                    File.WriteAllText(path + "_analysis.json", viewModel.Analysis.Properties?.ExportJson());
+                    break;
+                case "md":
+                    File.WriteAllText(path + "_analysis.md", viewModel.Analysis.Properties?.ExportString());
+                    break;
+                case "png":
+                    viewModel.Analysis.Properties?.Simulation.ExportSummaryPlot(path + "_analysis.png");
+                    break;
+            }
         }
 
         public static void ExportData(this AnalysisViewModel viewModel, string path, string extension)

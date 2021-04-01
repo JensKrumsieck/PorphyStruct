@@ -12,7 +12,7 @@
         Icon="Resources/porphystruct.ico"
         Background="{DynamicResource Background}"
         ResizeMode="NoResize"
-        Title="Save" Height="400" Width="685"
+        Title="Save" Height="500" Width="685"
         Loaded="SaveWindow_OnLoaded">
     <controls:DefaultWindow.TitlebarContent>
         <Grid VerticalAlignment="Center">

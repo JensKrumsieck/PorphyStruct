@@ -4,6 +4,7 @@ using PorphyStruct.ViewModel;
 using PorphyStruct.ViewModel.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -21,6 +22,7 @@ namespace PorphyStruct.WPF
             new ExportFileType("Graph", "ChartScatterPlotHexBin", "svg"),
             new ExportFileType("Analysis", "AtomVariant", "md"),
             new ExportFileType("Analysis", "CodeJson", "json"),
+            new ExportFileType("Analysis", "CodeJson", "png"),
             new ExportFileType("XYData", "MicrosoftExcel", "csv"),
             new ExportFileType("XYData", "TableLarge", "dat"),
             new ExportFileType("Molecule", "Molecule", "mol2"),
@@ -31,6 +33,7 @@ namespace PorphyStruct.WPF
         public SaveWindow(AnalysisViewModel viewModel)
         {
             InitializeComponent();
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             DataContext = ViewModel = viewModel;
             Filename = InitialDir;
         }
