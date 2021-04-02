@@ -32,12 +32,20 @@ namespace PorphyStruct.Core.Plot
 
                 var rect = new OxyRect(this.Transform(x, categoryValue), this.Transform(topValue, categoryValue + actualBarWidth));
                 ActualBarRectangles.Add(rect);
-                
+
                 RenderItem(rc, topValue, categoryValue, actualBarWidth, item, rect);
                 RenderLabel(rc, item, x, topValue, categoryValue, categoryValue + actualBarWidth);
-
                 Manager.IncreaseCurrentBarOffset(categoryIndex, actualBarWidth);
             }
+            RenderSpacing(rc, actualMargin / 2, ValidItems);
+        }
+
+        private void RenderSpacing(IRenderContext rc, double x, ICollection<BarItem> items)
+        {
+            var tl = this.Transform(-x, items.Count / 2d - .5); 
+            var br = this.Transform(x, -.5);
+            var size = new OxySize(Math.Abs(tl.X - br.X) - 20, Math.Abs(br.Y - tl.Y) - 10);
+            rc.DrawRectangle(new OxyRect(new ScreenPoint(tl.X + 10, tl.Y + 5), size), OxyColors.Transparent, OxyColors.Black, 1, EdgeRenderingMode.Adaptive);
         }
 
         public double GetActualMargin()
