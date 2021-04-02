@@ -65,11 +65,21 @@ namespace PorphyStruct.Core.Plot
             return series;
         }
 
-        public static BasePlotModel PrepareSummaryPlot(this MacrocycleProperties props)
+        public static TitleOverridePlotModel PrepareSummaryPlot(this MacrocycleProperties props)
         {
-            var model = new BasePlotModel
+            var delta = (props.OutOfPlaneParameter.Value - props.Simulation.OutOfPlaneParameter.Value);
+            var model = new TitleOverridePlotModel()
             {
-                Title = "D_{oop} = " + props.OutOfPlaneParameter.Value.ToString("N3")
+                Title = "D_{oop} = " + props.OutOfPlaneParameter.Value.ToString("N3") + " Å",
+                Subtitle = "δ_{ oop } = " + delta.ToString("N3") + " Å  — " + (delta/props.OutOfPlaneParameter.Value).ToString("P1"),
+                SubtitleFontWeight = 200,
+                SubtitleFont = Settings.Instance.Font,
+                SubtitleFontSize = Settings.Instance.FontSize - 2,
+                TitleFont = Settings.Instance.Font,
+                TitleFontWeight = Settings.Instance.FontWeight,
+                TitleFontSize = Settings.Instance.FontSize + 2,
+                TitlePadding = 4,
+                SubtitleColor = OxyColor.Parse("#293133")
             };
             var yAxis = new CategoryAxis
             {
@@ -96,7 +106,7 @@ namespace PorphyStruct.Core.Plot
             return model;
         }
 
-        private static void PrepareYAxisAnnotations(ref BasePlotModel model)
+        private static void PrepareYAxisAnnotations(ref TitleOverridePlotModel model)
         {
             for (var i = 0; i < Categories.Count; i++)
             {
