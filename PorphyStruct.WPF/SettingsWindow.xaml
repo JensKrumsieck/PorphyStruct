@@ -144,6 +144,9 @@
                                 <TextBox Text="{Binding FontSize}" Width="150" Margin="0 0 15 0" />
                                 <Label Content="px" />
                             </StackPanel>
+                            <TextBlock TextWrapping="Wrap" FontSize="9" Margin="5 0 0 0">
+                                About 14 px will look good on A4 full sized images. For smaller images, you may need to increase it to 30 px or higher. (Assuming default image sizes and dpi).
+                            </TextBlock>
                         </StackPanel>
                         <StackPanel>
                             <Label Content="Font Weight" />

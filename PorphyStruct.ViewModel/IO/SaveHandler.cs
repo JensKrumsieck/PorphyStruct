@@ -3,6 +3,7 @@ using ChemSharp.Molecules.Export;
 using OxyPlot;
 using OxyPlot.SkiaSharp;
 using PorphyStruct.Core;
+using PorphyStruct.Core.Plot;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -34,13 +35,23 @@ namespace PorphyStruct.ViewModel.IO
             }
         }
 
-        private static void ExportSimulation(this AnalysisViewModel viewModel, string path, string extension)
+        public static void ExportSimulation(this AnalysisViewModel viewModel, string path, string extension)
         {
-            if (extension == "json") File.WriteAllText(path + "_analysis.json", viewModel.Analysis.Properties.ExportJson());
-            else File.WriteAllText(path + "_analysis.md", viewModel.Analysis.Properties.ExportString());
+            switch (extension)
+            {
+                case "json":
+                    File.WriteAllText(path + "_analysis.json", viewModel.Analysis.Properties?.ExportJson());
+                    break;
+                case "md":
+                    File.WriteAllText(path + "_analysis.md", viewModel.Analysis.Properties?.ExportString());
+                    break;
+                case "png":
+                    viewModel.Analysis.Properties?.ExportSummaryPlot(path + "_analysis.png");
+                    break;
+            }
         }
 
-        private static void ExportData(this AnalysisViewModel viewModel, string path, string extension)
+        public static void ExportData(this AnalysisViewModel viewModel, string path, string extension)
         {
             var separator = extension == "csv" ? "," : ";";
             var result = $"X{separator}Y{separator}Atom{separator}\n";
@@ -48,7 +59,7 @@ namespace PorphyStruct.ViewModel.IO
             File.WriteAllText(path + "_data." + extension, result);
         }
 
-        private static void ExportPlot(this AnalysisViewModel viewModel, string path, string extension)
+        public static void ExportPlot(this AnalysisViewModel viewModel, string path, string extension)
         {
             using var stream = File.Create(path + "_graph." + extension);
             IExporter exporter = extension switch
@@ -70,8 +81,8 @@ namespace PorphyStruct.ViewModel.IO
             exporter?.Export(viewModel.Model, stream);
         }
 
-        private static void ExportCycle(this AnalysisViewModel viewModel, string path) => Mol2Exporter.Export(new Molecule(viewModel.Analysis.Atoms), path + "_cycle.mol2");
+        public static void ExportCycle(this AnalysisViewModel viewModel, string path) => Mol2Exporter.Export(new Molecule(viewModel.Analysis.Atoms), path + "_cycle.mol2");
 
-        private static void ExportMolecule(this AnalysisViewModel viewModel, string path) => Mol2Exporter.Export(viewModel.Parent.Macrocycle, path + "_molecule.mol2");
+        public static void ExportMolecule(this AnalysisViewModel viewModel, string path) => Mol2Exporter.Export(viewModel.Parent.Macrocycle, path + "_molecule.mol2");
     }
 }

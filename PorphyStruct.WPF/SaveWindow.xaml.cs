@@ -4,6 +4,7 @@ using PorphyStruct.ViewModel;
 using PorphyStruct.ViewModel.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -21,15 +22,18 @@ namespace PorphyStruct.WPF
             new ExportFileType("Graph", "ChartScatterPlotHexBin", "svg"),
             new ExportFileType("Analysis", "AtomVariant", "md"),
             new ExportFileType("Analysis", "CodeJson", "json"),
+            new ExportFileType("Analysis", "CodeJson", "png"),
             new ExportFileType("XYData", "MicrosoftExcel", "csv"),
             new ExportFileType("XYData", "TableLarge", "dat"),
             new ExportFileType("Molecule", "Molecule", "mol2"),
-            new ExportFileType("Macrocycle", "Molecule", "mol2")
+            new ExportFileType("Macrocycle", "Molecule", "mol2"),
+            new ExportFileType("Viewport", "ChartScatterPlot", "png")
         };
 
         public SaveWindow(AnalysisViewModel viewModel)
         {
             InitializeComponent();
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             DataContext = ViewModel = viewModel;
             Filename = InitialDir;
         }
@@ -51,7 +55,12 @@ namespace PorphyStruct.WPF
 
         private void Save_OnClick(object sender, RoutedEventArgs e)
         {
-            foreach (ExportFileType t in TypeList.SelectedItems) ViewModel.Export(t, Filename);
+            foreach (ExportFileType t in TypeList.SelectedItems)
+            {
+                if (t.Title == "Viewport")
+                    ViewModel.ExportViewport(Filename);
+                else ViewModel.Export(t, Filename);
+            }
             Close();
         }
 

@@ -1,7 +1,7 @@
 ﻿using PorphyStruct.Core;
+using PorphyStruct.Core.Analysis.Properties;
 using System.IO;
 using System.Threading.Tasks;
-using PorphyStruct.Core.Analysis.Properties;
 using TinyMVVM;
 
 namespace PorphyStruct.ViewModel
