@@ -4,6 +4,7 @@ using OxyPlot;
 using OxyPlot.SkiaSharp;
 using PorphyStruct.Core;
 using PorphyStruct.Core.Plot;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -51,11 +52,16 @@ namespace PorphyStruct.ViewModel.IO
             }
         }
 
-        public static void ExportData(this AnalysisViewModel viewModel, string path, string extension)
+        public static void ExportData(this AnalysisViewModel viewModel, string path, string extension) =>
+            ExportData(viewModel.Analysis.DataPoints, path, extension);
+        public static void ExportData(this CalculatorViewModel viewModel, string path, string extension) =>
+            ExportData((IEnumerable<AtomDataPoint>)viewModel.Series.ItemsSource, path, extension);
+
+        private static void ExportData(IEnumerable<AtomDataPoint> dataPoints, string path, string extension)
         {
             var separator = extension == "csv" ? "," : ";";
             var result = $"X{separator}Y{separator}Atom{separator}\n";
-            result = viewModel.Analysis.DataPoints.Aggregate(result, (current, data) => current + $"{data.X.ToString(CultureInfo.InvariantCulture)}{separator}{data.Y.ToString(CultureInfo.InvariantCulture)}{separator}{data.Atom.Title}{separator}\n");
+            result = dataPoints.Aggregate(result, (current, data) => current + $"{data.X.ToString(CultureInfo.InvariantCulture)}{separator}{data.Y.ToString(CultureInfo.InvariantCulture)}{separator}{data.Atom.Title}{separator}\n");
             File.WriteAllText(path + "_data." + extension, result);
         }
 

@@ -5,6 +5,8 @@ using PorphyStruct.Core.Analysis;
 using PorphyStruct.Core.Analysis.Properties;
 using PorphyStruct.Core.Extension;
 using PorphyStruct.Core.Plot;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -25,6 +27,7 @@ namespace PorphyStruct.ViewModel
         public ObservableCollection<Mode> ModeVector { get; } = new ObservableCollection<Mode>();
 
         private MacrocycleType _cycleType = MacrocycleType.Porphyrin;
+
         public MacrocycleType CycleType
         {
             get => _cycleType;
@@ -48,9 +51,8 @@ namespace PorphyStruct.ViewModel
 
             //Build Vector
             BuildModeVector();
-
-            Recalculate();
         }
+
 
         private async void MOnPropertyChanged(object sender, PropertyChangedEventArgs e) =>
             await Task.Run(Recalculate);
@@ -69,7 +71,10 @@ namespace PorphyStruct.ViewModel
                 .Select((s, i) => new AtomDataPoint(s.X, result[i], s.Atom));
             foreach (var (a1, a2) in dom.BondDataPoints())
                 Bonds.Add(Series.CreateBondAnnotation(a1, a2));
-
+            var data = ((IEnumerable<AtomDataPoint>)Series.ItemsSource).ToList();
+            var doop = data.DisplacementValue();
+            var mean = data.Sum(s => Math.Abs(s.Y)) / result.Count;
+            Model.Title = "D_{oop} = " + doop.ToString("N3") + " Å — Mean Disp. = " + mean.ToString("N3") + " Å";
             Model.InvalidatePlot(true);
         }
 
