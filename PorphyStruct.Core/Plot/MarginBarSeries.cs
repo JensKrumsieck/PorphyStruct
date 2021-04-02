@@ -42,7 +42,8 @@ namespace PorphyStruct.Core.Plot
 
         private void RenderSpacing(IRenderContext rc, double x, ICollection<BarItem> items)
         {
-            var tl = this.Transform(-x, items.Count / 2d - .5); 
+            var mult = items.Count == 12 ? 2d : 1d;
+            var tl = this.Transform(-x, items.Count / mult - .5); 
             var br = this.Transform(x, -.5);
             var size = new OxySize(Math.Abs(tl.X - br.X) - 20, Math.Abs(br.Y - tl.Y) - 10);
             rc.DrawRectangle(new OxyRect(new ScreenPoint(tl.X + 10, tl.Y + 5), size), OxyColors.Transparent, OxyColors.Black, 1, EdgeRenderingMode.Adaptive);
