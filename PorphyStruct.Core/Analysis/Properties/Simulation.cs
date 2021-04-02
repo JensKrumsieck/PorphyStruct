@@ -42,7 +42,7 @@ namespace PorphyStruct.Core.Analysis.Properties
             UsedModes = Settings.Instance.UseExtendedBasis ? Modes.Concat(ExtendedModes).ToList() : Modes;
             if (type == MacrocycleType.Porphyrin || type == MacrocycleType.Norcorrole) UsedModes.Remove("WavingY2");//Por: WavingX2 = -WavingY2 -> linear dependent! //Nor: Only one Waving2 Mode could be found
             Type = type;
-           
+
         }
 
         public static async Task<Simulation> CreateAsync(MacrocycleType type)

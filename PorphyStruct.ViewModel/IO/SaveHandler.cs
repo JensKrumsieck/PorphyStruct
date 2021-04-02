@@ -3,10 +3,10 @@ using ChemSharp.Molecules.Export;
 using OxyPlot;
 using OxyPlot.SkiaSharp;
 using PorphyStruct.Core;
+using PorphyStruct.Core.Plot;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using PorphyStruct.Core.Plot;
 using SvgExporter = PorphyStruct.Core.Plot.SvgExporter;
 
 namespace PorphyStruct.ViewModel.IO

@@ -71,7 +71,7 @@ namespace PorphyStruct.Core.Plot
             var model = new TitleOverridePlotModel()
             {
                 Title = "D_{oop} = " + props.OutOfPlaneParameter.Value.ToString("N3") + " Å",
-                Subtitle = "δ_{ oop } = " + delta.ToString("N3") + " Å  — " + (delta/props.OutOfPlaneParameter.Value).ToString("P1"),
+                Subtitle = "δ_{ oop } = " + delta.ToString("N3") + " Å  — " + (delta / props.OutOfPlaneParameter.Value).ToString("P1"),
                 SubtitleFontWeight = Settings.Instance.FontWeight - 100,
                 SubtitleFont = Settings.Instance.Font,
                 SubtitleFontSize = Settings.Instance.FontSize - 2,
