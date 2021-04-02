@@ -49,7 +49,7 @@ namespace PorphyStruct.Core.Plot
 
         public static MarginBarSeries PrepareBarSeries(this Simulation sim)
         {
-            var series = new MarginBarSeries(80)
+            var series = new MarginBarSeries(Settings.Instance.FontSize * 5.5)
             {
                 LabelPlacement = LabelPlacement.Outside,
                 LabelFormatString = "{0:N3} Å",
@@ -72,7 +72,7 @@ namespace PorphyStruct.Core.Plot
             {
                 Title = "D_{oop} = " + props.OutOfPlaneParameter.Value.ToString("N3") + " Å",
                 Subtitle = "δ_{ oop } = " + delta.ToString("N3") + " Å  — " + (delta/props.OutOfPlaneParameter.Value).ToString("P1"),
-                SubtitleFontWeight = 200,
+                SubtitleFontWeight = Settings.Instance.FontWeight - 100,
                 SubtitleFont = Settings.Instance.Font,
                 SubtitleFontSize = Settings.Instance.FontSize - 2,
                 TitleFont = Settings.Instance.Font,
@@ -120,7 +120,8 @@ namespace PorphyStruct.Core.Plot
                     Text = Categories[i].Substring(0, 3).ToLower() +
                            (Categories[i].Contains("Waving") ? " " + Categories[i].Last() : ""),
                     StrokeThickness = 0,
-                    Padding = new OxyThickness(0)
+                    Padding = new OxyThickness(0),
+                    TextVerticalAlignment = VerticalAlignment.Middle
                 });
             }
         }
