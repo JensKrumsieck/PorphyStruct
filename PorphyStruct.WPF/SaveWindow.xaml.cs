@@ -20,14 +20,18 @@ namespace PorphyStruct.WPF
         {
             new ExportFileType("Graph", "ChartScatterPlot", "png"),
             new ExportFileType("Graph", "ChartScatterPlotHexBin", "svg"),
+
             new ExportFileType("Analysis", "AtomVariant", "md"),
             new ExportFileType("Analysis", "CodeJson", "json"),
             new ExportFileType("Analysis", "ChartBox", "png"),
             new ExportFileType("Analysis", "ChartBox", "svg"),
+
             new ExportFileType("XYData", "MicrosoftExcel", "csv"),
             new ExportFileType("XYData", "TableLarge", "dat"),
+
             new ExportFileType("Molecule", "Molecule", "mol2"),
             new ExportFileType("Macrocycle", "Molecule", "mol2"),
+
             new ExportFileType("Viewport", "ChartScatterPlot", "png")
         };
 
