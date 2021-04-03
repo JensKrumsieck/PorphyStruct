@@ -47,7 +47,8 @@ namespace PorphyStruct.ViewModel.IO
                     File.WriteAllText(path + "_analysis.md", viewModel.Analysis.Properties?.ExportString());
                     break;
                 case "png":
-                    viewModel.Analysis.Properties?.ExportSummaryPlot(path + "_analysis.png");
+                case "svg":
+                    viewModel.Analysis.Properties?.ExportSummaryPlot(path + "_analysis", extension);
                     break;
             }
         }

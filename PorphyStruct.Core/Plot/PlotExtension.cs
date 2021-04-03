@@ -6,6 +6,7 @@ using OxyPlot.SkiaSharp;
 using PorphyStruct.Core.Analysis.Properties;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace PorphyStruct.Core.Plot
@@ -126,8 +127,24 @@ namespace PorphyStruct.Core.Plot
             }
         }
 
-        public static void ExportSummaryPlot(this MacrocycleProperties props, string filename) => PngExporter.Export(
-            props.PrepareSummaryPlot(), filename, (int)Settings.Instance.ExportWidth, (int)Settings.Instance.ExportHeight,
-            (int)Settings.Instance.ExportDPI);
+        public static void ExportSummaryPlot(this MacrocycleProperties props, string filename, string extension)
+        {
+            switch (extension)
+            {
+                case "png":
+                    PngExporter.Export(
+                        props.PrepareSummaryPlot(), filename + ".png", (int)Settings.Instance.ExportWidth, (int)Settings.Instance.ExportHeight,
+                        (int)Settings.Instance.ExportDPI);
+                    break;
+                case "svg":
+                    new SvgExporter
+                    {
+                        Height = Settings.Instance.ExportHeight,
+                        Width = Settings.Instance.ExportWidth,
+                        Dpi = Settings.Instance.ExportDPI
+                    }.Export(props.PrepareSummaryPlot(), File.Create(filename + ".svg"));
+                    break;
+            }
+        }
     }
 }
