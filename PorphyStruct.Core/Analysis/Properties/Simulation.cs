@@ -1,4 +1,5 @@
-﻿using ChemSharp.Mathematics;
+﻿using System;
+using ChemSharp.Mathematics;
 using ChemSharp.Molecules.DataProviders;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
@@ -61,10 +62,17 @@ namespace PorphyStruct.Core.Analysis.Properties
         public double[] Simulate(double[] data)
         {
             SimulationResult.Clear();
-            var result = ReferenceMatrix.QR().Solve(DenseVector.OfArray(data)).ToArray();
+            var matrix = ReferenceMatrix;
+            if (Type == MacrocycleType.Porphyrin)
+            {
+                matrix = matrix.RemoveRow(matrix.RowCount - 1);
+                data = data.RemoveLast().ToArray();
+            }
+
+            var result = matrix.QR().Solve(DenseVector.OfArray(data)).ToArray();
 
             for (var i = 0; i < UsedModes.Count; i++) SimulationResult.Add(new KeyValueProperty { Key = UsedModes[i], Value = result[i], Unit = "Å" });
-            OutOfPlaneParameter.Value = ConformationY.Length();
+            OutOfPlaneParameter.Value = Type == MacrocycleType.Porphyrin ? ConformationY.RemoveLast().Length(): ConformationY.Length();
             return result;
         }
 
@@ -79,6 +87,7 @@ namespace PorphyStruct.Core.Analysis.Properties
         /// Build Displacement Matrix from Array of Paths (in Resources)
         /// </summary>
         /// <param name="res"></param>
+        /// <param name="type"></param>
         /// <returns></returns>
         public static async Task<Matrix<double>> DisplacementMatrix(IEnumerable<string> res, MacrocycleType type)
         {

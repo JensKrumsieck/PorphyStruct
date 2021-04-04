@@ -29,7 +29,8 @@ namespace PorphyStruct.Core.Analysis.Properties
         {
             var thisPlane = Plane.CreateFromVertices(Atom1.Location, Atom2.Location, Atom3.Location);
             var otherPlane = Plane.CreateFromVertices(angle2.Atom1.Location, angle2.Atom2.Location, angle2.Atom3.Location);
-            return MathV.Angle(thisPlane, otherPlane);
+            var angle = MathV.Angle(thisPlane, otherPlane);
+            return double.IsNaN(angle) ? 0 : angle;
         }
     }
 }

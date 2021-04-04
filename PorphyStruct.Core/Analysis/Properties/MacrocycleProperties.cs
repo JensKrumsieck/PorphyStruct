@@ -89,7 +89,7 @@ namespace PorphyStruct.Core.Analysis.Properties
         {
             Simulation ??= await Simulation.CreateAsync(Analysis.GetAnalysisType());
             if (Analysis.DataPoints.Any()) Simulation?.Simulate(Analysis.DataPoints.OrderBy(s => s.X).Select(s => s.Y).ToArray());
-            OutOfPlaneParameter.Value = Analysis.DataPoints.OrderBy(s => s.X).DisplacementValue();
+            OutOfPlaneParameter.Value = Analysis.GetAnalysisType() == MacrocycleType.Porphyrin ? Analysis.DataPoints.OrderBy(s => s.X).RemoveLast().DisplacementValue() : Analysis.DataPoints.OrderBy(s => s.X).DisplacementValue();
 
             RebuildDihedrals();
             RebuildAngles();

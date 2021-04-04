@@ -46,5 +46,17 @@ namespace PorphyStruct.Core.Extension
                 if (seenKeys.Add(selector(item))) yield return item;
             }
         }
+
+        /// <summary>
+        /// Returns source without last element
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="src"></param>
+        /// <returns></returns>
+        public static IEnumerable<TSource> RemoveLast<TSource>(this IEnumerable<TSource> src)
+        {
+            var list = src.ToList();
+            return list.Take(list.Count - 1);
+        }
     }
 }
