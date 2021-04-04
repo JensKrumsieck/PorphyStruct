@@ -1,15 +1,20 @@
+
+<p align="center">
+  
 [![Maintainability](https://api.codeclimate.com/v1/badges/cbc210753b3ef4d72b50/maintainability)](https://codeclimate.com/github/JensKrumsieck/PorphyStruct/maintainability)
 [![.NET](https://github.com/JensKrumsieck/PorphyStruct/actions/workflows/dotnet.yml/badge.svg)](https://github.com/JensKrumsieck/PorphyStruct/actions/workflows/dotnet.yml)
 ![GitHub repo size](https://img.shields.io/github/repo-size/JensKrumsieck/PorphyStruct)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/JensKrumsieck/PorphyStruct)
 ![GitHub Pre-Releases](https://img.shields.io/github/downloads-pre/JensKrumsieck/PorphyStruct/latest/total)
 
+ </p>
+
 <p align="center">
-  <img src="https://github.com/JensKrumsieck/PorphyStruct/blob/master/PorphyStruct.WPF/Resources/porphystruct.png" alt="logo" width="128"/>
-  <h3 align="center">PorphyStruct</h3>
-  <h4 align="center">Structual Analysis of Porphyrinoids</h4>
-  <br />
-    <br />
+    <img src="https://github.com/JensKrumsieck/PorphyStruct/blob/master/PorphyStruct.WPF/Resources/porphystruct.png" alt="logo" width="256"/>
+    <h1 align="center">PorphyStruct</h1>
+    <h3 align="center">Structual Analysis of Porphyrinoids</h3>
+</p>
+ <p align="center">
     <a href="https://github.com/JensKrumsieck/PorphyStruct/releases/latest">Download</a>
     ·
     <a href="https://github.com/JensKrumsieck/PorphyStruct/issues">Report Bug</a>
@@ -19,7 +24,7 @@
 <img src="https://github.com/JensKrumsieck/PorphyStruct/blob/master/.github/porphystruct.gif" alt="Screenshot" width="480"/>
 </p>
 
-# PorphyStruct
+## PorphyStruct
 Structural Analysis of Porphyrinoids
 _PorphyStruct_, a new digital tool for the analysis of non-planar distortion modes of different porphyrinoids - The program makes use of the normal-coordinate structure decomposition technique (NSD) and employs sets of normal modes equivalent to those established for porphyrins in order to describe the out-of-plane dislocation pattern of perimeter atoms from corroles, norcorroles, porphycenes and other porphyrinoids quantitatively and in analogy to the established terminology.
 
