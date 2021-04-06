@@ -1,4 +1,5 @@
-﻿using ChemSharp.Mathematics;
+﻿using System;
+using ChemSharp.Mathematics;
 using ChemSharp.Molecules.Mathematics;
 using PorphyStruct.Core.Extension;
 using System.Collections.Generic;
@@ -119,19 +120,23 @@ namespace PorphyStruct.Core.Analysis.Properties
             {
                 case PorphyrinAnalysis _:
                 case CorroleAnalysis _:
-                    Dihedrals.AddRange(PorphyrinoidDihedrals.Select(s => new Dihedral(Analysis.FindAtomByTitle(s[0]),
-                        Analysis.FindAtomByTitle(s[1]), Analysis.FindAtomByTitle(s[2]), Analysis.FindAtomByTitle(s[3]))));
+                    BuildDihedrals(PorphyrinoidDihedrals);
                     break;
                 case CorrphyceneAnalysis _:
-                    Dihedrals.AddRange(CorrphyceneDihedrals.Select(s => new Dihedral(Analysis.FindAtomByTitle(s[0]),
-                        Analysis.FindAtomByTitle(s[1]), Analysis.FindAtomByTitle(s[2]), Analysis.FindAtomByTitle(s[3]))));
+                   BuildDihedrals(CorrphyceneDihedrals);
                     break;
                 case PorphyceneAnalysis _:
-                    Dihedrals.AddRange(PorphyceneDihedrals.Select(s => new Dihedral(Analysis.FindAtomByTitle(s[0]),
-                        Analysis.FindAtomByTitle(s[1]), Analysis.FindAtomByTitle(s[2]), Analysis.FindAtomByTitle(s[3]))));
+                   BuildDihedrals(PorphyceneDihedrals);
                     break;
             }
         }
+
+        /// <summary>
+        /// Business logic for <see cref="RebuildTypeSpecificDihedrals"/>
+        /// </summary>
+        /// <param name="list"></param>
+        private void BuildDihedrals(IEnumerable<string[]> list) => Dihedrals.AddRange(list.Select(s => new Dihedral(Analysis.FindAtomByTitle(s[0]),
+                Analysis.FindAtomByTitle(s[1]), Analysis.FindAtomByTitle(s[2]), Analysis.FindAtomByTitle(s[3]))));
 
         /// <summary>
         /// Rebuilds Angles
