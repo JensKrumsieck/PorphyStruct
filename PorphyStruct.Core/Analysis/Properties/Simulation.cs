@@ -1,9 +1,9 @@
-﻿using System;
-using ChemSharp.Mathematics;
+﻿using ChemSharp.Mathematics;
 using ChemSharp.Molecules.DataProviders;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 using PorphyStruct.Core.Extension;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -72,7 +72,7 @@ namespace PorphyStruct.Core.Analysis.Properties
             var result = matrix.QR().Solve(DenseVector.OfArray(data)).ToArray();
 
             for (var i = 0; i < UsedModes.Count; i++) SimulationResult.Add(new KeyValueProperty { Key = UsedModes[i], Value = result[i], Unit = "Å" });
-            OutOfPlaneParameter.Value = Type == MacrocycleType.Porphyrin ? ConformationY.RemoveLast().Length(): ConformationY.Length();
+            OutOfPlaneParameter.Value = Type == MacrocycleType.Porphyrin ? ConformationY.RemoveLast().Length() : ConformationY.Length();
             return result;
         }
 

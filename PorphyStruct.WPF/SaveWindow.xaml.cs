@@ -56,7 +56,7 @@ namespace PorphyStruct.WPF
         }
 
         private void SaveWindow_OnLoaded(object sender, RoutedEventArgs e) =>
-            SelectItems(new[] {0, 1, 2, 3, 4, 5, 6}); //select recommended indices
+            SelectItems(new[] { 0, 1, 2, 3, 4, 5, 6 }); //select recommended indices
 
         private void Cancel_OnClick(object sender, RoutedEventArgs e) => Close();
 

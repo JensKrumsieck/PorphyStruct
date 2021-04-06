@@ -1,5 +1,4 @@
-﻿using System;
-using ChemSharp.Mathematics;
+﻿using ChemSharp.Mathematics;
 using ChemSharp.Molecules.Mathematics;
 using PorphyStruct.Core.Extension;
 using System.Collections.Generic;
@@ -123,10 +122,10 @@ namespace PorphyStruct.Core.Analysis.Properties
                     BuildDihedrals(PorphyrinoidDihedrals);
                     break;
                 case CorrphyceneAnalysis _:
-                   BuildDihedrals(CorrphyceneDihedrals);
+                    BuildDihedrals(CorrphyceneDihedrals);
                     break;
                 case PorphyceneAnalysis _:
-                   BuildDihedrals(PorphyceneDihedrals);
+                    BuildDihedrals(PorphyceneDihedrals);
                     break;
             }
         }
