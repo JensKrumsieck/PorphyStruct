@@ -212,7 +212,7 @@ namespace PorphyStruct.Core.Analysis
             var current = Neighbors(C1).First(s => !cavity.Contains(s) && Beta.Contains(s));
             current.Title = "C2";
             //add C1&C2 to visited
-            visited.UnionWith(new HashSet<Atom>() { current, C1 });
+            visited.UnionWith(new HashSet<Atom> { current, C1 });
             //get carbon atoms
             var carbons = RingAtoms.Where(s => s.Contains("C")).OrderBy(s => int.Parse(s.Replace("C", ""))).ToList();
             var i = 2;
@@ -227,7 +227,6 @@ namespace PorphyStruct.Core.Analysis
                     i++;
                 }
             }
-
             //set up identifiers for nitrogens
             for (var j = 1; j <= 4; j++)
             {
