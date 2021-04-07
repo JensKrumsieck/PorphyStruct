@@ -1,4 +1,5 @@
 ﻿using ChemSharp.Molecules;
+using ChemSharp.Molecules.Properties;
 using PorphyStruct.Core.Extension;
 
 namespace PorphyStruct.Core.Analysis.Properties
