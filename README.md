@@ -6,7 +6,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/JensKrumsieck/PorphyStruct)](https://github.com/JensKrumsieck/PorphyStruct/issues)
 ![GitHub repo size](https://img.shields.io/github/repo-size/JensKrumsieck/PorphyStruct)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/JensKrumsieck/PorphyStruct)
-![GitHub Pre-Releases](https://img.shields.io/github/downloads-pre/JensKrumsieck/PorphyStruct/latest/total)
+[![GitHub Pre-Releases](https://img.shields.io/github/downloads-pre/JensKrumsieck/PorphyStruct/latest/total)](https://github.com/JensKrumsieck/PorphyStruct/releases/latest)
 
  </p>
 
