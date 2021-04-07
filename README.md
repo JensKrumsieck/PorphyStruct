@@ -25,7 +25,6 @@
 </p>
 
 ## PorphyStruct
-Structural Analysis of Porphyrinoids
 _PorphyStruct_, a new digital tool for the analysis of non-planar distortion modes of different porphyrinoids - The program makes use of the normal-coordinate structure decomposition technique (NSD) and employs sets of normal modes equivalent to those established for porphyrins in order to describe the out-of-plane dislocation pattern of perimeter atoms from corroles, norcorroles, porphycenes and other porphyrinoids quantitatively and in analogy to the established terminology.
 
 
