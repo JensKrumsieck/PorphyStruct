@@ -1,12 +1,12 @@
 ﻿using ChemSharp.Mathematics;
 using ChemSharp.Molecules.Mathematics;
+using ChemSharp.Molecules.Properties;
 using PorphyStruct.Core.Extension;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using ChemSharp.Molecules.Properties;
 
 namespace PorphyStruct.Core.Analysis.Properties
 {

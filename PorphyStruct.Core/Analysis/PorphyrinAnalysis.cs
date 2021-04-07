@@ -1,7 +1,7 @@
 ﻿#nullable enable
 using ChemSharp.Mathematics;
 using ChemSharp.Molecules;
-using PorphyStruct.Core.Analysis.Properties;
+using ChemSharp.Molecules.Properties;
 using PorphyStruct.Core.Plot;
 using System;
 using System.Collections.Generic;

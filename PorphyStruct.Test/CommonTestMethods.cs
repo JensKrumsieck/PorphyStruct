@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using ChemSharp.Molecules.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PorphyStruct.Core;
 using PorphyStruct.Core.Analysis;
 using PorphyStruct.ViewModel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using ChemSharp.Molecules.Properties;
-using PorphyStruct.Core.Analysis.Properties;
 
 namespace PorphyStruct.Test
 {
@@ -42,10 +41,27 @@ namespace PorphyStruct.Test
             await viewModel.Analyze();
             var part = viewModel.Macrocycle.DetectedParts[0];
             Assert.IsNotNull(part.Properties);
-            foreach (var property in part.Properties.Simulation.SimulationResult)
+            var simSum = simulations.Sum(s => Math.Abs(s.Value));
+            var expSum = part.Properties.Simulation.SimulationResult.Sum(s => Math.Abs(s.Value));
+
+            var simSumWav = SumWav(simulations);
+            var expSumWav = SumWav(part.Properties.Simulation.SimulationResult);
+
+            foreach (var property in part.Properties.Simulation.SimulationResult.Where(s => !s.Key.Contains("Waving")))
             {
-                Assert.AreEqual(property.Value, simulations.First(s => s.Key == property.Key).Value, 0.01);
+                var percentageExp = 100d * Math.Abs(property.Value) / expSum;
+                var percentageSim = 100d * Math.Abs(simulations.First(s => s.Key == property.Key).Value) / simSum;
+                //threshold 3%
+                Assert.AreEqual(Math.Abs(percentageSim - percentageExp), 0, 3);
             }
+
+            //compare wav by abs sum
+            var wavPercentageExp = 100d * Math.Abs(expSumWav) / expSum;
+            var wavPercentageSim = 100d * Math.Abs(simSumWav) / simSum;
+            Assert.AreEqual(Math.Abs(wavPercentageSim - wavPercentageExp), 0, 3);
+
         }
+
+        private static double SumWav(IEnumerable<KeyValueProperty> props) => props.Where(s => s.Key.Contains("Waving")).Sum(s => Math.Abs(s.Value));
     }
 }

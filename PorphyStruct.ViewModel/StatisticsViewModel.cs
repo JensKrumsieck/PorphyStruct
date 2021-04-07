@@ -1,10 +1,10 @@
 ﻿using ChemSharp.Molecules.DataProviders;
+using ChemSharp.Molecules.Properties;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Legends;
 using OxyPlot.Series;
 using PorphyStruct.Core;
-using PorphyStruct.Core.Analysis.Properties;
 using PorphyStruct.Core.Extension;
 using PorphyStruct.Core.Plot;
 using PorphyStruct.ViewModel.Utility;

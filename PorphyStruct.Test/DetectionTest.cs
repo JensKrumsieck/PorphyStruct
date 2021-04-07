@@ -1,6 +1,6 @@
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PorphyStruct.Core.Analysis;
+using System.Threading.Tasks;
 
 namespace PorphyStruct.Test
 {

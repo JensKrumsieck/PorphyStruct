@@ -1,4 +1,4 @@
-﻿using PorphyStruct.Core.Analysis.Properties;
+﻿using ChemSharp.Molecules.Properties;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 

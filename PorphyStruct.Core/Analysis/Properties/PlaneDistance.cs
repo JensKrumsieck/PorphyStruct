@@ -1,7 +1,7 @@
 ﻿using ChemSharp.Mathematics;
 using ChemSharp.Molecules;
-using System.Numerics;
 using ChemSharp.Molecules.Properties;
+using System.Numerics;
 
 namespace PorphyStruct.Core.Analysis.Properties
 {
