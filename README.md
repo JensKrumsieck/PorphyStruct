@@ -50,6 +50,7 @@ Due to the large number of correlations found for porphyrins, a transfer of this
 
 ### References
 [1]	W. Jentzen, J.-G. Ma, J. A. Shelnutt, _Biophys. J._ **1998**, _74_, 753–763; W. Jentzen, X.-Z. Song, J. A. Shelnutt, _J. Phys. Chem. B_ **1997**, _101_, 1684–1699.
+
 [2] a) M. O. Senge, S. A. MacGowan, J. M. O'Brien, _Chem. Commun._ **2015**, _51_, 17031–17063; M. O. Senge, _Chem. Commun._ **2006**, 243–256 b) J. Takeda, T. Ohya, M. Sato, _Inorg. Chem._ **1992**, _31_, 2877–2880.
 
 [3] 	A. B. Alemayehu, E. Gonzalez, L. K. Hansen, A. Ghosh, _Inorg. Chem._, **2009**, _48_, 7794.
