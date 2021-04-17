@@ -4,7 +4,6 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/cbc210753b3ef4d72b50/maintainability)](https://codeclimate.com/github/JensKrumsieck/PorphyStruct/maintainability)
 [![.NET](https://github.com/JensKrumsieck/PorphyStruct/actions/workflows/dotnet.yml/badge.svg)](https://github.com/JensKrumsieck/PorphyStruct/actions/workflows/dotnet.yml)
 [![GitHub issues](https://img.shields.io/github/issues/JensKrumsieck/PorphyStruct)](https://github.com/JensKrumsieck/PorphyStruct/issues)
-![GitHub repo size](https://img.shields.io/github/repo-size/JensKrumsieck/PorphyStruct)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/JensKrumsieck/PorphyStruct)
 [![GitHub Pre-Releases](https://img.shields.io/github/downloads-pre/JensKrumsieck/PorphyStruct/latest/total)](https://github.com/JensKrumsieck/PorphyStruct/releases/latest)
 [![GitHub Releases](https://img.shields.io/github/downloads-pre/JensKrumsieck/PorphyStruct/total)](https://github.com/JensKrumsieck/PorphyStruct/releases/latest)
