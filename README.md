@@ -7,7 +7,8 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/JensKrumsieck/PorphyStruct)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/JensKrumsieck/PorphyStruct)
 [![GitHub Pre-Releases](https://img.shields.io/github/downloads-pre/JensKrumsieck/PorphyStruct/latest/total)](https://github.com/JensKrumsieck/PorphyStruct/releases/latest)
-
+[![GitHub Releases](https://img.shields.io/github/downloads-pre/JensKrumsieck/PorphyStruct/total)](https://github.com/JensKrumsieck/PorphyStruct/releases/latest)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/jenskrumsieck/porphystruct)
  </p>
 
 <p align="center">
