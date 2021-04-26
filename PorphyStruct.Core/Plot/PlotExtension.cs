@@ -100,8 +100,8 @@ namespace PorphyStruct.Core.Plot
             var min = props.Simulation.SimulationResult.Min(s => s.Value);
             var max = props.Simulation.SimulationResult.Max(s => s.Value);
             model.XAxis.Zoom(
-                Settings.Instance.UseExtendedBasis ? Math.Min(-.5, min * 1.5) : -.1,
-                Math.Max(.5, max * 1.5));
+                Settings.Instance.UseExtendedBasis ? Math.Min(-1, min * 2) : -.1,
+                Math.Max(1, max * 2));
 
             PrepareYAxisAnnotations(ref model);
             return model;
