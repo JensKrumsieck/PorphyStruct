@@ -16,7 +16,7 @@
     <h3 align="center">Structual Analysis of Porphyrinoids</h3>
 </p>
  <p align="center">
-    <a href="https://github.com/JensKrumsieck/PorphyStruct/releases/latest">Download</a>
+  <a href="https://github.com/JensKrumsieck/PorphyStruct/releases/latest"><strong>Download</strong></a>
     ·
     <a href="https://github.com/JensKrumsieck/PorphyStruct/issues">Report Bug</a>
 </p>
