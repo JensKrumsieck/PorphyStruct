@@ -20,11 +20,12 @@ namespace PorphyStruct.Test
         /// <param name="macrocycleType"></param>
         /// <param name="expectedParts"></param>
         /// <returns></returns>
-        public static async Task RunDetection(string path, MacrocycleType macrocycleType, int expectedParts)
+        public static async Task<MacrocycleAnalysis> RunDetection(string path, MacrocycleType macrocycleType, int expectedParts)
         {
             var cycle = new Macrocycle(path) { MacrocycleType = macrocycleType };
             await cycle.Detect();
             Assert.AreEqual(expectedParts, cycle.DetectedParts.Count);
+            return cycle.DetectedParts[0];
         }
 
         /// <summary>
@@ -35,7 +36,7 @@ namespace PorphyStruct.Test
         /// <param name="macrocycleType"></param>
         /// <param name="simulations"></param>
         /// <returns></returns>
-        public static async Task RunAnalysis(string path, MacrocycleType macrocycleType, IEnumerable<KeyValueProperty> simulations)
+        public static async Task RunAnalysis(string path, MacrocycleType macrocycleType, IEnumerable<KeyValueProperty> simulations, double threshold = 3d)
         {
             var viewModel = new MacrocycleViewModel(path) { Macrocycle = { MacrocycleType = macrocycleType } };
             await viewModel.Analyze();
@@ -52,13 +53,13 @@ namespace PorphyStruct.Test
                 var percentageExp = 100d * Math.Abs(property.Value) / expSum;
                 var percentageSim = 100d * Math.Abs(simulations.First(s => s.Key == property.Key).Value) / simSum;
                 //threshold 3%
-                Assert.AreEqual(Math.Abs(percentageSim - percentageExp), 0, 3);
+                Assert.AreEqual(Math.Abs(percentageSim - percentageExp), 0, threshold);
             }
 
             //compare wav by abs sum
             var wavPercentageExp = 100d * Math.Abs(expSumWav) / expSum;
             var wavPercentageSim = 100d * Math.Abs(simSumWav) / simSum;
-            Assert.AreEqual(Math.Abs(wavPercentageSim - wavPercentageExp), 0, 3);
+            Assert.AreEqual(Math.Abs(wavPercentageSim - wavPercentageExp), 0, threshold);
 
         }
 

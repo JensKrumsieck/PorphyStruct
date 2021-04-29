@@ -35,6 +35,9 @@
     <None Update="testfiles\NiOETPP_MeOH.cif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="testfiles\oriluy.cif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="testfiles\Zn%28py%29TNPCP.cif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
