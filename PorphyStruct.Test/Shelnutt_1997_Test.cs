@@ -21,7 +21,7 @@ namespace PorphyStruct.Test
             "testfiles/Zn(py)TNPCP.cif"
         };
 
-        private static List<KeyValueProperty> CuHETMP = new List<KeyValueProperty>
+        private static readonly List<KeyValueProperty> CuHETMP = new List<KeyValueProperty>
         {
             new KeyValueProperty{ Key = "Doming", Value = 0.293},
             new KeyValueProperty {Key = "Saddling", Value = -0.182},
@@ -31,7 +31,7 @@ namespace PorphyStruct.Test
             new KeyValueProperty {Key = "Propellering", Value = -0.024}
         };
 
-        private static List<KeyValueProperty> NidPTETMP = new List<KeyValueProperty>
+        private static readonly List<KeyValueProperty> NidPTETMP = new List<KeyValueProperty>
         {
             new KeyValueProperty{ Key = "Doming", Value = 0},
             new KeyValueProperty {Key = "Saddling", Value = -1.192},
@@ -41,7 +41,7 @@ namespace PorphyStruct.Test
             new KeyValueProperty {Key = "Propellering", Value = 0}
         };
 
-        private static List<KeyValueProperty> ZnTPCP = new List<KeyValueProperty>
+        private static readonly List<KeyValueProperty> ZnTPCP = new List<KeyValueProperty>
         {
             new KeyValueProperty{ Key = "Doming", Value = 0.669},
             new KeyValueProperty {Key = "Saddling", Value = 0.126},
@@ -51,7 +51,7 @@ namespace PorphyStruct.Test
             new KeyValueProperty {Key = "Propellering", Value = 0.008}
         };
 
-        private static List<KeyValueProperty>[] SimulationData = new List<KeyValueProperty>[]
+        private static readonly List<KeyValueProperty>[] SimulationData =
         {
             CuHETMP,
             NidPTETMP,
