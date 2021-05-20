@@ -40,6 +40,13 @@ namespace PorphyStruct.Core.Analysis
             Atoms = atoms;
             Bonds = bonds;
             _guid = Guid.NewGuid();
+            //set special atoms
+            _cachedNeighbors = AtomUtil.BuildNeighborCache(Atoms, Bonds);
+            Alpha = Atoms.Where(IsAlpha).ToList();
+            Beta = Atoms.Where(s => Neighbors(s).Count == 2 && Neighbors(s).Count(IsAlpha) == 1).ToList();
+            N4Cavity = Atoms.Where(s => Neighbors(s).Where(IsAlpha).Count(n => DFSUtil.BackTrack(n, s, Neighbors, 5).Count == 5) == 2)
+                .ToList();
+            Meso = Atoms.Except(Alpha).Except(Beta).Except(N4Cavity).ToList();
         }
 
         /// <summary>
@@ -77,12 +84,15 @@ namespace PorphyStruct.Core.Analysis
         /// </summary>
         public Plane MeanPlane => MathV.MeanPlane(Atoms.Select(s => s.Location).ToList());
 
+
+        private Dictionary<Atom, List<Atom>>? _cachedNeighbors;
         /// <summary>
         /// Returns Neighbors in context of analysis
         /// </summary>
         /// <param name="a"></param>
         /// <returns></returns>
-        public IEnumerable<Atom> Neighbors(Atom a) => AtomUtil.Neighbors(a, Bonds);
+        public List<Atom> Neighbors(Atom a) =>
+            _cachedNeighbors != null ? _cachedNeighbors[a] : AtomUtil.Neighbors(a, Bonds).ToList();
 
         /// <summary>
         /// Generates DataPoints
@@ -128,7 +138,7 @@ namespace PorphyStruct.Core.Analysis
         /// <summary>
         /// An overrideable Method to get C1 Atom. 
         /// In a Porphyrin it does not care which alpha atom is C1, so return any of them...
-        /// override this methode in any other class
+        /// override this method in any other class
         /// </summary>
         /// <returns></returns>
         public virtual Atom C1 => Atoms.First(s => DFSUtil.VertexDegree(s, Neighbors) == 3);
@@ -136,24 +146,22 @@ namespace PorphyStruct.Core.Analysis
         /// <summary>
         /// Lists N4 Cavity
         /// </summary>
-        public List<Atom> N4Cavity =>
-            Atoms.Where(s => DFSUtil.VertexDegree(s, a => Neighbors(a).Where(IsAlpha).Where(n => DFSUtil.BackTrack(n, a, Neighbors, 5).Count == 5)) == 2).ToList();
+        public List<Atom> N4Cavity;
 
         /// <summary>
         /// Lists all Beta Atoms
         /// </summary>
-        public List<Atom> Beta => Atoms.Where(s =>
-            DFSUtil.VertexDegree(s, Neighbors) == 2 && Neighbors(s).Count(IsAlpha) == 1).ToList();
+        public List<Atom> Beta;
 
         /// <summary>
         /// Lists all alpha Atoms
         /// </summary>
-        public List<Atom> Alpha => Atoms.Where(IsAlpha).ToList();
+        public List<Atom> Alpha;
 
         /// <summary>
         /// Lists all meso Atoms
         /// </summary>
-        public List<Atom> Meso => Atoms.Except(Alpha).Except(Beta).Except(N4Cavity).ToList();
+        public List<Atom> Meso;
 
         /// <summary>
         /// calculate distance between two atoms (as identifiers are needed this must be in Macrocycle-Class!!)
@@ -200,6 +208,8 @@ namespace PorphyStruct.Core.Analysis
         /// </summary>
         public void NameAtoms()
         {
+            //a lot of renaming will be done, do not use cache here!
+            _cachedNeighbors = null; 
             //cycle valid?
             if (Atoms.Count != RingAtoms.Count) return;
             //track visited atoms
@@ -234,6 +244,8 @@ namespace PorphyStruct.Core.Analysis
                 var nitrogen = cavity.First(s => Neighbors(s).Contains(alpha));
                 nitrogen.Title = "N" + j;
             }
+            //re-enable cache
+            _cachedNeighbors = AtomUtil.BuildNeighborCache(Atoms, Bonds);
         }
 
         /// <summary>
