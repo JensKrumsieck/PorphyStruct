@@ -59,6 +59,7 @@ namespace PorphyStruct.Core
 
                 if (data.Count != RingSize[MacrocycleType] || !unique) continue;
                 var analysis = await MacrocycleAnalysis.CreateAsync(data.ToList(), bonds, MacrocycleType);
+                RebuildCache();
                 var metal = Neighbors(analysis.N4Cavity[0]).FirstOrDefault(s => !s.IsNonCoordinative());
                 if (metal != null) analysis.Metal = metal;
                 DetectedParts.Add(analysis);
