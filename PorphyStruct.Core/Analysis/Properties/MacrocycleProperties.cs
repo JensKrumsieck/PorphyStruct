@@ -13,16 +13,16 @@ namespace PorphyStruct.Core.Analysis.Properties
     public class MacrocycleProperties
     {
         [JsonIgnore]
-        public MacrocycleAnalysis Analysis;
+        public readonly MacrocycleAnalysis Analysis;
 
-        public List<Dihedral> Dihedrals { get; } = new List<Dihedral>();
-        public List<Angle> Angles { get; } = new List<Angle>();
-        public List<Distance> Distances { get; } = new List<Distance>();
-        public List<PlaneDistance> PlaneDistances { get; } = new List<PlaneDistance>();
+        public List<Dihedral> Dihedrals { get; } = new();
+        public List<Angle> Angles { get; } = new();
+        public List<Distance> Distances { get; } = new();
+        public List<PlaneDistance> PlaneDistances { get; } = new();
         public Simulation Simulation { get; private set; }
         public N4Cavity Cavity { get; private set; }
-        public KeyValueProperty InterplanarAngle { get; } = new KeyValueProperty { Unit = "°" };
-        public KeyValueProperty OutOfPlaneParameter { get; } = new KeyValueProperty { Key = "Doop (exp.)", Unit = "Å" };
+        public KeyValueProperty InterplanarAngle { get; } = new() { Unit = "°" };
+        public KeyValueProperty OutOfPlaneParameter { get; } = new() { Key = "Doop (exp.)", Unit = "Å" };
 
         public MacrocycleProperties(MacrocycleAnalysis analysis)
         {
@@ -40,7 +40,7 @@ namespace PorphyStruct.Core.Analysis.Properties
         /// Dihedrals for Corrole, Porphyrin and Norcorrole
         /// </summary>
         [JsonIgnore]
-        internal static IList<string[]> PorphyrinoidDihedrals = new List<string[]>{
+        private static readonly IList<string[]> PorphyrinoidDihedrals = new List<string[]>{
             new[] { "C3", "C4", "C6", "C7" }, //chi1
             new[] { "C2", "C1", "C19", "C18" }, //chi2
             new[] { "C13", "C14", "C16", "C17" }, //chi3 
@@ -54,7 +54,7 @@ namespace PorphyStruct.Core.Analysis.Properties
         };
 
         [JsonIgnore]
-        internal static IList<string[]> CorrphyceneDihedrals = new List<string[]>
+        private static readonly IList<string[]> CorrphyceneDihedrals = new List<string[]>
         {
             new[] { "C3", "C4", "C6", "C7" }, //chi1
             new[] { "C2", "C1", "C20", "C19" }, //chi2
@@ -69,7 +69,7 @@ namespace PorphyStruct.Core.Analysis.Properties
         };
 
         [JsonIgnore]
-        internal static IList<string[]> PorphyceneDihedrals = new List<string[]>
+        private static readonly IList<string[]> PorphyceneDihedrals = new List<string[]>
         {
             new[] { "C3", "C4", "C7", "C8" }, //chi1
             new[] { "C2", "C1", "C20", "C19" }, //chi2
@@ -86,7 +86,7 @@ namespace PorphyStruct.Core.Analysis.Properties
         /// <summary>
         /// Fills all Lists
         /// </summary>
-        public async Task Rebuild()
+        private async Task Rebuild()
         {
             Simulation ??= await Simulation.CreateAsync(Analysis.GetAnalysisType());
             if (Analysis.DataPoints.Any()) Simulation?.Simulate(Analysis.DataPoints.OrderBy(s => s.X).Select(s => s.Y).ToArray());
@@ -154,11 +154,13 @@ namespace PorphyStruct.Core.Analysis.Properties
 
         private void RebuildMetalAngles()
         {
+            InterplanarAngle.Value = 0;
             if (Analysis.Metal == null) return;
             Angles.Add(new Angle(Analysis.FindAtomByTitle("N1"), Analysis.Metal, Analysis.FindAtomByTitle("N4")));
             Angles.Add(new Angle(Analysis.FindAtomByTitle("N2"), Analysis.Metal, Analysis.FindAtomByTitle("N3")));
             InterplanarAngle.Key = $"[N1-{Analysis.Metal?.Title}-N4]x[N2-{Analysis.Metal?.Title}-N3]";
-            InterplanarAngle.Value = Angles[0].PlaneAngle(Angles[1]);
+            var angle = Angles[0].PlaneAngle(Angles[1]);
+            InterplanarAngle.Value = double.IsNaN(angle) ? 0 : angle;
         }
 
         /// <summary>

@@ -17,8 +17,7 @@ namespace PorphyStruct.Core.Analysis.Properties
         [JsonIgnore]
         internal readonly MacrocycleType Type;
 
-        private static readonly List<string> Modes = new List<string>
-            {"Doming", "Saddling", "Ruffling", "WavingX", "WavingY", "Propellering"};
+        private static readonly List<string> Modes = new() { "Doming", "Saddling", "Ruffling", "WavingX", "WavingY", "Propellering" };
 
         private static readonly List<string> ExtendedModes = Modes.Select(s => s + "2").ToList();
         [JsonIgnore]

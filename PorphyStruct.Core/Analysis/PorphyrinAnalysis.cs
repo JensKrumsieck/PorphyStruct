@@ -14,15 +14,15 @@ namespace PorphyStruct.Core.Analysis
         public PorphyrinAnalysis(List<Atom> atoms, IEnumerable<Bond> bonds) : base(atoms, bonds) { }
 #pragma warning disable IDE1006
         //ReSharper disable InconsistentNaming
-        internal static string[] _AlphaAtoms = { "C1", "C4", "C6", "C9", "C11", "C14", "C16", "C19", "C1" };
-        internal static List<string> _RingAtoms = new List<string> { "C1", "C2", "N1", "C3", "C4", "C5", "C6", "C7", "N2", "C8", "C9", "C10", "C11", "C12", "N3", "C13", "C14", "C15", "C16", "C17", "N4", "C18", "C19", "C20" };
-        internal static Dictionary<string, double> _Multiplier => new Dictionary<string, double>
+        private static readonly string[] _AlphaAtoms = { "C1", "C4", "C6", "C9", "C11", "C14", "C16", "C19", "C1" };
+        internal static readonly List<string> _RingAtoms = new() { "C1", "C2", "N1", "C3", "C4", "C5", "C6", "C7", "N2", "C8", "C9", "C10", "C11", "C12", "N3", "C13", "C14", "C15", "C16", "C17", "N4", "C18", "C19", "C20" };
+        internal static Dictionary<string, double> _Multiplier => new()
         {
             { "C1", 0d },
             { "C2", 1 / 3d },
             { "C3", 2 / 3d },
             { "C4", 1d },
-            { "C5",1 / 2d },
+            { "C5", 1 / 2d },
             { "C6", 1d },
             { "C7", 1 / 3d },
             { "C8", 2 / 3d },
@@ -47,7 +47,7 @@ namespace PorphyStruct.Core.Analysis
         /// Add PorphyrinDataPoint and shift all Points because of C20 being first
         /// </summary>
         /// <returns></returns>
-        public override IEnumerable<AtomDataPoint> CalculateDataPoints() => base.CalculateDataPoints().Select(s => s = new AtomDataPoint(s.X + (CalculateDistance("C1", "C19") / 2), s.Y, s.Atom)).Concat(CalculatePorphyrinDataPoints());
+        protected override IEnumerable<AtomDataPoint> CalculateDataPoints() => base.CalculateDataPoints().Select(s => s = new AtomDataPoint(s.X + (CalculateDistance("C1", "C19") / 2), s.Y, s.Atom)).Concat(CalculatePorphyrinDataPoints());
 
         /// <summary>
         /// Calculates PorphyrinDataPoints
@@ -67,7 +67,7 @@ namespace PorphyStruct.Core.Analysis
         /// Calculates Bond DataPoints for Porphyrins
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<(AtomDataPoint a1, AtomDataPoint a2)> PorphyrinBonds()
+        private IEnumerable<(AtomDataPoint a1, AtomDataPoint a2)> PorphyrinBonds()
         {
             yield return (DataPoints.OrderBy(s => s.X).First(), DataPoints.First(s => s.Atom.Title == "C1"));
             yield return (DataPoints.OrderBy(s => s.X).Last(), DataPoints.First(s => s.Atom.Title == "C19"));
@@ -102,10 +102,10 @@ namespace PorphyStruct.Core.Analysis
             }
         }
 
-        public override Atom C1 => (Isoporphyrin ? IsoporphyrinC1 : base.C1) ?? base.C1;
+        protected override Atom C1 => (Isoporphyrin ? IsoporphyrinC1 : base.C1) ?? base.C1;
 
-        public override List<string> RingAtoms => _RingAtoms;
-        public override string[] AlphaAtoms => _AlphaAtoms;
-        public override Dictionary<string, double> Multiplier => _Multiplier;
+        protected override List<string> RingAtoms => _RingAtoms;
+        protected override string[] AlphaAtoms => _AlphaAtoms;
+        protected override Dictionary<string, double> Multiplier => _Multiplier;
     }
 }

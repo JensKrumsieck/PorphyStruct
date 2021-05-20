@@ -52,17 +52,17 @@ namespace PorphyStruct.Core.Analysis
         /// <summary>
         /// RingAtoms by Identifier
         /// </summary>
-        public abstract List<string> RingAtoms { get; }
+        protected abstract List<string> RingAtoms { get; }
 
         /// <summary>
         /// Alpha atoms of Macrocycle by Identifiers
         /// </summary>
-        public abstract string[] AlphaAtoms { get; }
+        protected abstract string[] AlphaAtoms { get; }
 
         /// <summary>
         /// Multipliers for C-Atom positioning
         /// </summary>
-        public abstract Dictionary<string, double> Multiplier { get; }
+        protected abstract Dictionary<string, double> Multiplier { get; }
 
         /// <summary>
         /// A Set of Macrocyclic Properties
@@ -73,11 +73,7 @@ namespace PorphyStruct.Core.Analysis
         /// <summary>
         /// Cached Datapoints
         /// </summary>
-        public IEnumerable<AtomDataPoint> DataPoints
-        {
-            get => _dataPoints ??= CalculateDataPoints();
-            set => _dataPoints = value;
-        }
+        public IEnumerable<AtomDataPoint> DataPoints => _dataPoints ??= CalculateDataPoints();
 
         /// <summary>
         /// Returns Mean Square Plane of Analysis Fragment
@@ -98,7 +94,7 @@ namespace PorphyStruct.Core.Analysis
         /// Generates DataPoints
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerable<AtomDataPoint> CalculateDataPoints()
+        protected virtual IEnumerable<AtomDataPoint> CalculateDataPoints()
         {
             Atoms = Atoms.OrderBy(s => RingAtoms.IndexOf(s.Title)).ToList();
             var dist = 0d;
@@ -141,27 +137,27 @@ namespace PorphyStruct.Core.Analysis
         /// override this method in any other class
         /// </summary>
         /// <returns></returns>
-        public virtual Atom C1 => Atoms.First(s => DFSUtil.VertexDegree(s, Neighbors) == 3);
+        protected virtual Atom C1 => Atoms.First(s => DFSUtil.VertexDegree(s, Neighbors) == 3);
 
         /// <summary>
         /// Lists N4 Cavity
         /// </summary>
-        public List<Atom> N4Cavity;
+        public readonly List<Atom> N4Cavity;
 
         /// <summary>
         /// Lists all Beta Atoms
         /// </summary>
-        public List<Atom> Beta;
+        public readonly List<Atom> Beta;
 
         /// <summary>
         /// Lists all alpha Atoms
         /// </summary>
-        public List<Atom> Alpha;
+        public readonly List<Atom> Alpha;
 
         /// <summary>
         /// Lists all meso Atoms
         /// </summary>
-        public List<Atom> Meso;
+        public readonly List<Atom> Meso;
 
         /// <summary>
         /// calculate distance between two atoms (as identifiers are needed this must be in Macrocycle-Class!!)
@@ -169,7 +165,7 @@ namespace PorphyStruct.Core.Analysis
         /// <param name="id1">Identifier 1</param>
         /// <param name="id2">Identifier 2</param>
         /// <returns>The Vectordistance</returns>
-        public double CalculateDistance(string id1, string id2) => MathV.Distance(FindAtomByTitle(id1)!.Location, FindAtomByTitle(id2)!.Location);
+        protected double CalculateDistance(string id1, string id2) => MathV.Distance(FindAtomByTitle(id1)!.Location, FindAtomByTitle(id2)!.Location);
 
         /// <summary>
         /// Gets DataPoints for Bonds
@@ -206,20 +202,18 @@ namespace PorphyStruct.Core.Analysis
         /// <summary>
         /// Assign the correct Identifiers for a cycle CN-corpus
         /// </summary>
-        public void NameAtoms()
+        private void NameAtoms()
         {
             //a lot of renaming will be done, do not use cache here!
-            _cachedNeighbors = null; 
+            _cachedNeighbors = null;
             //cycle valid?
             if (Atoms.Count != RingAtoms.Count) return;
             //track visited atoms
             var visited = new HashSet<Atom>();
             //set Identifier for C1 Atom
             C1.Title = "C1";
-            //get N4 Cavity, necessary for performance
-            var cavity = N4Cavity;
             //force c2 to be first step
-            var current = Neighbors(C1).First(s => !cavity.Contains(s) && Beta.Contains(s));
+            var current = Neighbors(C1).First(s => !N4Cavity.Contains(s) && Beta.Contains(s));
             current.Title = "C2";
             //add C1&C2 to visited
             visited.UnionWith(new HashSet<Atom> { current, C1 });
@@ -229,7 +223,7 @@ namespace PorphyStruct.Core.Analysis
             //loop through atoms and name them
             while (visited.Count != carbons.Count)
             {
-                foreach (var neighbor in Neighbors(current).Where(s => !visited.Contains(s) && !cavity.Contains(s)))
+                foreach (var neighbor in Neighbors(current).Where(s => !visited.Contains(s) && !N4Cavity.Contains(s)))
                 {
                     //add to visited and assign Identifier
                     neighbor.Title = carbons[i];
@@ -241,7 +235,7 @@ namespace PorphyStruct.Core.Analysis
             for (var j = 1; j <= 4; j++)
             {
                 var alpha = FindAtomByTitle(AlphaAtoms[2 * j - 1]);
-                var nitrogen = cavity.First(s => Neighbors(s).Contains(alpha));
+                var nitrogen = N4Cavity.First(s => Neighbors(s).Contains(alpha!));
                 nitrogen.Title = "N" + j;
             }
             //re-enable cache
