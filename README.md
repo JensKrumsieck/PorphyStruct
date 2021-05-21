@@ -1,7 +1,7 @@
 
 
 <p align="center">
-    <img src="https://github.com/JensKrumsieck/PorphyStruct/blob/master/PorphyStruct.WPF/Resources/porphystruct.png" alt="logo" width="256"/>
+    <img src="https://github.com/JensKrumsieck/PorphyStruct/blob/master/PorphyStruct.WPF/Resources/porphystruct.png" alt="logo" width="200"/>
     <h1 align="center">PorphyStruct</h1>
     <h3 align="center">Structual Analysis of Porphyrinoids</h3>
 </p>
@@ -21,7 +21,7 @@
 
 
 <p align="center">
-<img src="https://github.com/JensKrumsieck/PorphyStruct/blob/master/.github/porphystruct.gif" alt="Screenshot" width="480"/>
+<img src="https://github.com/JensKrumsieck/PorphyStruct/blob/master/.github/porphystruct.gif" alt="Screenshot"/>
 </p>
 
 ## Introduction
