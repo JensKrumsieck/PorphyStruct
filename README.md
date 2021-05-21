@@ -41,17 +41,22 @@ _PorphyStruct_, a new digital tool for the analysis of non-planar distortion mod
 * [Used Libraries](https://github.com/JensKrumsieck/PorphyStruct#used-libraries) 
 
 ## Features 
-_PorphyStruct_ not only allows the generation of **displacement diagrams** (a.k.a cylinder projection) in split seconds but also offers a fast **NSD-type analysis of tetrapyrroles** with different perimeters. All perimeters derived from the following types are supported:
+| | |
+|-|-|
+|<img src="https://github.com/JensKrumsieck/PorphyStruct/blob/master/.github/analysis/751761_graph.png"/>|<img src="https://github.com/JensKrumsieck/PorphyStruct/blob/master/.github/analysis/751761_analysis.png"/>|
 
+_PorphyStruct_ not only allows the generation of **displacement diagrams** (a.k.a cylinder projection) in split seconds but also offers a fast **NSD-type analysis of tetrapyrroles** with different perimeters. Additionally specific Bond distances, dihedrals oder angles such as the interplanar angle, helicity and the size of the N4 Cavity are calculated. 
+All perimeters derived from the following types are supported:
 * **Porphyrins** (Isoporphyrins, Phtalocyanines, N-confused Porphyrins
 * **Corrole** (Isocorroles, Heterocorroles, N-confused Corroles, Corrolazines, Corrins¹)
 * **Norcorrole**
 * **Corrphycene**
 * **Porphycene**
 
-¹ NSD analysis not useful here, but diagrams are still possible.
+¹ NSD-type analysis not useful here, but diagrams are still possible.
 
 Furthermore, the cyclic structures are automatically detected and the analysis is fully automatic for **multiple structures per crystal**. Therefore, **batch processing** and statistical evaluation is also possible.
+<img src="https://github.com/JensKrumsieck/PorphyStruct/blob/master/.github/batch.gif" alt="Screenshot" width="480"/>
 
 ### Features list
 * Generation of Displacement Diagrams for various (**Porphyrin**, **Corrole**, **Norcorrole**, **Porphycene**, **Corrphycene** and related) tetrapyrrolic macrocycles.
@@ -63,7 +68,6 @@ Furthermore, the cyclic structures are automatically detected and the analysis i
 * Ablility to import and export various file types
 * Mode Calculator to visualize certain combinations of vibrational modes
 * Batch processing and statistics (wip)
-<img src="https://github.com/JensKrumsieck/PorphyStruct/blob/master/.github/batch.gif" alt="Screenshot" width="480"/>
 
 ## What is NSD
 **NSD stands for normal-coordinate structural decomposition**. A three-dimensional molecular structure can be described by linear combinations of its vibrational modes. Shelnutt et al. were able to show in the late 1990s with the NSD method not only that all porphyrins can be described as D4h symmetric under the restrictions of the method, regardless of the substitution pattern, but also that exactly 6 vibrational modes are sufficient for the description in the vast majority of cases. These are the 6 energetically lowest vibrational modes of the porphyrin: **Doming** (A2u), **Ruffling** (B2u), **Saddling** (B1u), **Waving (X,Y)** (Eg) and **Propellering**.
@@ -98,7 +102,7 @@ It depends 😉
 The following is available:
 * Displacement diagram (as PNG or SVG).
 * XY data of the deflection diagram for self-plotting (DAT or CSV)
-* Analysis data (as graph (PNG/SVG), "human-readable" MD or "machine-readable" JSON)²
+* Analysis data (as graph (PNG/SVG), "human-readable" MD ² or "machine-readable" JSON)
 * Input file converted to MOL2
 * Cyclic structure converted to MOL2
 * Snapshot of molecule preview
