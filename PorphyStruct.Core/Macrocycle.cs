@@ -74,7 +74,7 @@ namespace PorphyStruct.Core
         {
             var parts = new List<IEnumerable<Atom>>();
             foreach (var fig in DFSUtil.ConnectedFigures(
-                Atoms.Where(s => Neighbors(s).Count() >= 2), NonMetalNonDeadEndNeighbors))
+                Atoms.Where(s => Neighbors(s).Count >= 2), NonMetalNonDeadEndNeighbors))
             {
                 var connectedAtoms = fig.Distinct().ToArray();
                 connectedAtoms = connectedAtoms.Where(s => s.IsNonCoordinative() && s.Symbol != "H").ToArray();
