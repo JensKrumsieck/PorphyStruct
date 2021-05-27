@@ -117,8 +117,7 @@ A preview of an Analysis can be found here: [Markdown export of Structure shown 
 **Structure**: A. B. Alemayehu, E. Gonzalez, L. K. Hansen, A. Ghosh, _Inorg. Chem._, **2009**, _48_, 7794.
 
 ## How to cite
-Manuscript is still with the reviewers. 
-
+Manuscript is accepted in ChemEurJ, Citation info soon.
 Please cite our Article when using PorphyStruct. It is also recommended for further read
 J. Krumsieck, M. Bröring _..._, **2021**, DOI: Soon!
 
