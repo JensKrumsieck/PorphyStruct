@@ -56,6 +56,7 @@ All perimeters derived from the following types are supported:
 ¹ NSD-type analysis not useful here, but diagrams are still possible.
 
 Furthermore, the cyclic structures are automatically detected and the analysis is fully automatic for **multiple structures per crystal**. Therefore, **batch processing** and statistical evaluation is also possible.
+
 <img src="https://github.com/JensKrumsieck/PorphyStruct/blob/master/.github/batch.gif" alt="Screenshot" width="480"/>
 
 ### Features list
