@@ -118,11 +118,10 @@ A preview of an Analysis can be found here: [Markdown export of Structure shown 
 **Structure**: A. B. Alemayehu, E. Gonzalez, L. K. Hansen, A. Ghosh, _Inorg. Chem._, **2009**, _48_, 7794.
 
 ## How to cite
-Manuscript is accepted in ChemEurJ, Citation info soon.
 Please cite our Article when using PorphyStruct. It is also recommended for further read
-J. Krumsieck, M. Bröring _..._, **2021**, DOI: Soon!
 
-When the article is published a link (Mirror) to the Supporting Information will be available here!
+### J. Krumsieck, M. Bröring _Chem. Eur J._, **2021**, DOI: [10.1002/chem.202101243](https://doi.org/10.1002/chem.202101243)
+
 
 ### Further reading
 [1]	W. Jentzen, J.-G. Ma, J. A. Shelnutt, _Biophys. J._ **1998**, _74_, 753–763. https://doi.org/10.1016/S0006-3495(98)74000-7
@@ -132,7 +131,7 @@ When the article is published a link (Mirror) to the Supporting Information will
 [3] C. J. Kingsbury, M. O. Senge, _Coord. Chem. Rev._ **2021**, _431_, 213760. https://doi.org/10.1016/j.ccr.2020.213760
 
 ### System requirements
-Windows 10
+Windows 10 (Windows 7 seems to work, too)
 
 ### Used Libraries
 * [ChemSharp](https://github.com/JensKrumsieck/ChemSharp) by Jens Krumsieck (MIT License)
