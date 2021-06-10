@@ -18,19 +18,19 @@ namespace PorphyStruct.ViewModel
 
         public DefaultPlotModel Model { get; }
 
-        public DefaultScatterSeries ExperimentalSeries { get; } = new DefaultScatterSeries();
+        public DefaultScatterSeries ExperimentalSeries { get; } = new();
 
-        public DefaultScatterSeries SimulationSeries { get; } = new DefaultScatterSeries();
+        public DefaultScatterSeries SimulationSeries { get; } = new();
 
-        public ObservableCollection<BondAnnotation> ExperimentalBonds { get; } = new ObservableCollection<BondAnnotation>();
+        public ObservableCollection<BondAnnotation> ExperimentalBonds { get; } = new();
 
-        public ObservableCollection<BondAnnotation> SimulationBonds { get; } = new ObservableCollection<BondAnnotation>();
+        public ObservableCollection<BondAnnotation> SimulationBonds { get; } = new();
 
-        public ObservableCollection<CompareData> CompareData { get; } = new ObservableCollection<CompareData>();
+        public ObservableCollection<CompareData> CompareData { get; } = new();
 
-        public List<DefaultScatterSeries> ComparisonSeries { get; } = new List<DefaultScatterSeries>();
+        public List<DefaultScatterSeries> ComparisonSeries { get; } = new();
 
-        public ObservableCollection<BondAnnotation> ComparisonBonds { get; } = new ObservableCollection<BondAnnotation>();
+        public ObservableCollection<BondAnnotation> ComparisonBonds { get; } = new();
 
         private bool _simulationVisible;
         /// <summary>
@@ -81,6 +81,8 @@ namespace PorphyStruct.ViewModel
             ExperimentalSeries.ItemsSource = Analysis.DataPoints;
             foreach (var (a1, a2) in Analysis.BondDataPoints())
                 ExperimentalBonds.Add(new BondAnnotation(a1, a2, ExperimentalSeries));
+            Model.XAxis.BindableActualMinimum = Analysis.DataPoints.Min(s => s.X) - .5;
+            Model.XAxis.BindableActualMaximum = Analysis.DataPoints.Max(s => s.X) + .5;
         }
 
         public void SimulationChanged()

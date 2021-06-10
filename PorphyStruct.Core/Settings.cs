@@ -13,8 +13,8 @@ namespace PorphyStruct.Core
         #region Font
 
         public string Font { get; set; } = "Arial";
-        public int FontWeight { get; set; } = 200;
-        public int FontSize { get; set; } = 14;
+        public int FontWeight { get; set; } = 500;
+        public int FontSize { get; set; } = 18;
         #endregion
 
         #region PlotArea
@@ -27,7 +27,7 @@ namespace PorphyStruct.Core
 
         public string AxisFormat { get; set; } = "{0} / {1}";
         public double LabelAngle { get; set; } = -90d;
-        public double LabelPadding { get; set; } = 0;
+        public double LabelPadding { get; set; }
         public double LabelPosition { get; set; } = 0.5d;
         public double AxisThickness { get; set; } = 2d;
         public bool ShowXAxis { get; set; }

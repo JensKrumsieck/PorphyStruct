@@ -1,5 +1,4 @@
-﻿using System.IO;
-using OxyPlot;
+﻿using OxyPlot;
 using OxyPlot.Axes;
 
 namespace PorphyStruct.Core.Plot
@@ -32,7 +31,7 @@ namespace PorphyStruct.Core.Plot
                 FontSize = Settings.Instance.FontSize,
                 Font = Settings.Instance.Font,
                 AxislineThickness = Settings.Instance.AxisThickness,
-                MinorGridlineThickness = Settings.Instance.AxisThickness /2,
+                MinorGridlineThickness = Settings.Instance.AxisThickness / 2,
                 MajorGridlineThickness = Settings.Instance.AxisThickness,
                 MajorTickSize = Settings.Instance.AxisThickness * 3.5,
                 MinorTickSize = Settings.Instance.AxisThickness * 2,
