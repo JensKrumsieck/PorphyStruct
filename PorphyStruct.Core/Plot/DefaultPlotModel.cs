@@ -1,4 +1,5 @@
-﻿using OxyPlot;
+﻿using System.IO;
+using OxyPlot;
 using OxyPlot.Axes;
 
 namespace PorphyStruct.Core.Plot
@@ -27,7 +28,14 @@ namespace PorphyStruct.Core.Plot
                 Position = AxisPosition.Left,
                 Key = "Y",
                 IsAxisVisible = true,
+                FontWeight = Settings.Instance.FontWeight,
+                FontSize = Settings.Instance.FontSize,
+                Font = Settings.Instance.Font,
                 AxislineThickness = Settings.Instance.AxisThickness,
+                MinorGridlineThickness = Settings.Instance.AxisThickness /2,
+                MajorGridlineThickness = Settings.Instance.AxisThickness,
+                MajorTickSize = Settings.Instance.AxisThickness * 3.5,
+                MinorTickSize = Settings.Instance.AxisThickness * 2,
                 TitleFormatString = Settings.Instance.AxisFormat
             };
 
