@@ -65,6 +65,18 @@ namespace PorphyStruct.Core.Plot
                 PlotModel.InvalidatePlot(true);
             }
         }
+
+        private bool _isInverted;
+        public bool IsInverted
+        {
+            get => _isInverted;
+            set
+            {
+                _isInverted = value;
+                OnPropertyChanged();
+                Invert();
+            }
+        }
         #endregion
 
         /// <summary>
@@ -85,6 +97,15 @@ namespace PorphyStruct.Core.Plot
             r.Render(this, pass);
         }
 
+        /// <summary>
+        /// Inverts Axis
+        /// </summary>
+        public void Invert()
+        {
+            StartPosition = IsInverted ? 1 : 0;
+            EndPosition = IsInverted ? 0 : 1;
+            PlotModel.InvalidatePlot(true);
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

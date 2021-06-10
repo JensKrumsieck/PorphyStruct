@@ -1,12 +1,11 @@
 ﻿using OxyPlot;
 using OxyPlot.Axes;
-using BaseLinearAxis = OxyPlot.Axes.LinearAxis;
 
 namespace PorphyStruct.Core.Plot
 {
     public class BasePlotModel : PlotModel
     {
-        public BaseLinearAxis XAxis { get; }
+        public LinearAxis XAxis { get; }
 
         public BasePlotModel()
         {
@@ -16,7 +15,7 @@ namespace PorphyStruct.Core.Plot
             PlotAreaBorderThickness = new OxyThickness(Settings.Instance.BorderThickness);
             Padding = new OxyThickness(Settings.Instance.Padding, Settings.Instance.Padding, Settings.Instance.Padding, Settings.Instance.Padding);
 
-            XAxis = new BaseLinearAxis
+            XAxis = new LinearAxis
             {
                 Title = "X",
                 Unit = "Å",

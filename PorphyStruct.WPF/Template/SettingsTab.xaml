@@ -71,6 +71,13 @@
                                      materialDesign:HintAssist.HelperText="Y Axis Title Angle" KeyUp="BindingOnEnterUp" LostFocus="TextBoxOnLostFocus"/>
                         </StackPanel>
                     </UniformGrid>
+                    <Label Content="X Axis" FontSize="14" FontWeight="SemiBold" Margin="0 15 0 0" />
+                    <UniformGrid Columns="2">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Flip X Axis"/>
+                            <ToggleButton IsChecked="{Binding Model.XAxis.IsInverted}"/>
+                        </StackPanel>
+                    </UniformGrid>
                     <Label Content="Graph" FontSize="14" FontWeight="SemiBold" Margin="0 15 0 0"/>
                     <UniformGrid Columns="2">
                         <StackPanel>
