@@ -81,7 +81,8 @@ namespace PorphyStruct.ViewModel
             ExperimentalSeries.ItemsSource = Analysis.DataPoints;
             foreach (var (a1, a2) in Analysis.BondDataPoints())
                 ExperimentalBonds.Add(new BondAnnotation(a1, a2, ExperimentalSeries));
-            Model.XAxis.BindableActualMinimum = Analysis.DataPoints.Min(s => s.X) - .5;
+            //zoom
+            Model.XAxis.BindableActualMinimum = .5;
             Model.XAxis.BindableActualMaximum = Analysis.DataPoints.Max(s => s.X) + .5;
         }
 
