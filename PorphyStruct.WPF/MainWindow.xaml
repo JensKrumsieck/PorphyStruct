@@ -22,6 +22,7 @@
         Background="{DynamicResource Background}"
         Icon="Resources/porphystruct.ico"
         MinWidth="1300" MinHeight="750"
+        x:Name="Main"
         TitlebarBackground="{DynamicResource TitleBar}" Height="750" Width="1440">
     <commons:DefaultWindow.TitlebarContent>
         <Grid VerticalAlignment="Center" x:Name="TitleGrid">
@@ -83,14 +84,17 @@
                         PorphyStruct
                         <LineBreak/>
                         <Run FontSize="16">
-                            Structural Analysis of Porphyrinoids
+                            Conformational Analysis of Porphyrinoids
                         </Run>
+                        <LineBreak />
+                        <Run FontSize="14">Version</Run>
+                        <Run FontSize="14" Text="{Binding Version, ElementName=Main, Mode=OneTime}" />
                 </TextBlock>
                 <TextBlock FontSize="16" Margin="0 10 0 0">
                         Developed by <Hyperlink NavigateUri="http://jenskrumsieck.de" RequestNavigate="URL_OnClicked"><Run FontWeight="Bold">Jens Krumsieck</Run>.</Hyperlink>
                 </TextBlock>
                 <TextBlock Margin="0 10 0 0">
-                        J. Krumsieck, M. Bröring, manuscript in preparation, 2021.
+                        <Hyperlink NavigateUri="https://doi.org/10.1002/chem.202101243" RequestNavigate="URL_OnClicked">J. Krumsieck, M. Bröring, Chem. Eur J., 2021, DOI: 10.1002/chem.202101243.</Hyperlink>
                         <LineBreak/>
                         Based on the NSD Method of 
                         <LineBreak/>

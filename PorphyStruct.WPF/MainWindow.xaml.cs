@@ -9,6 +9,7 @@ using PorphyStruct.ViewModel.Windows.Visual;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
@@ -23,6 +24,12 @@ namespace PorphyStruct.WPF
     public partial class MainWindow : DefaultWindow
     {
         public MacrocycleViewModel ViewModel { get; private set; }
+
+        /// <summary>
+        /// Should not be null!
+        /// </summary>
+        public string Version => Assembly.GetEntryAssembly()!.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!
+            .InformationalVersion!;
 
         public MainWindow()
         {
