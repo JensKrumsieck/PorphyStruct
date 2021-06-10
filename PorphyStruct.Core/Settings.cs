@@ -1,5 +1,4 @@
 ﻿using OxyPlot;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -92,15 +91,14 @@ namespace PorphyStruct.Core
 
         /// <summary>
         /// Load Settings
-        /// Loads defaults if no path is given...
         /// </summary>
-        /// <param name="path"></param>
-        public void Load(string path = "")
+        public void Load()
         {
             var settings = Instance;
-            if (File.Exists(path))
+            if (!Directory.Exists(Constants.SettingsFolder)) Directory.CreateDirectory(Constants.SettingsFolder);
+            if (File.Exists(Constants.SettingsLocation))
             {
-                var file = File.ReadAllText(path);
+                var file = File.ReadAllText(Constants.SettingsLocation);
                 settings = JsonSerializer.Deserialize<Settings>(file);
             }
 
@@ -117,7 +115,8 @@ namespace PorphyStruct.Core
         public void Save()
         {
             var content = JsonSerializer.Serialize(Instance, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}/settings.json", content);
+            //File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}/settings.json", content);
+            File.WriteAllText(Constants.SettingsLocation, content);
         }
     }
 }

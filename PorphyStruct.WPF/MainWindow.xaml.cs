@@ -26,7 +26,7 @@ namespace PorphyStruct.WPF
 
         public MainWindow()
         {
-            Settings.Instance.Load($"{AppDomain.CurrentDomain.BaseDirectory}/settings.json");
+            Settings.Instance.Load();
             InitializeComponent();
         }
 
