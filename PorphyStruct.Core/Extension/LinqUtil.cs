@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 
 namespace PorphyStruct.Core.Extension
 {
@@ -39,6 +41,26 @@ namespace PorphyStruct.Core.Extension
         {
             var list = src.ToList();
             return list.Take(list.Count - 1);
+        }
+
+        /// <summary>
+        /// Based on https://medium.com/@alex.puiu/parallel-foreach-async-in-c-36756f8ebe62
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="body"></param>
+        /// <param name="maxDegreeOfParallelism"></param>
+        /// <returns></returns>
+        public static async Task AsyncParallelForeach<T>(this IEnumerable<T> src, Action<T> body, int maxDegreeOfParallelism = DataflowBlockOptions.Unbounded)
+        {
+            var options = new ExecutionDataflowBlockOptions
+            {
+                MaxDegreeOfParallelism = maxDegreeOfParallelism
+            };
+            var block = new ActionBlock<T>(body, options);
+            foreach (var item in src) block.Post(item);
+            block.Complete();
+            await block.Completion;
         }
     }
 }

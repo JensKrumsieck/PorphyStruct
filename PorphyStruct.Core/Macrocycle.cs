@@ -5,6 +5,8 @@ using ChemSharp.Molecules.Mathematics;
 using PorphyStruct.Core.Analysis;
 using PorphyStruct.Core.Extension;
 using System;
+using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -48,16 +50,21 @@ namespace PorphyStruct.Core
             DetectedParts.Clear();
             var parts = GetParts();
             var distinct = parts.Distinct(new EnumerableEqualityComparer<Atom>());
-            foreach (var part in distinct)
+            var detected = new ConcurrentStack<HashSet<Atom>>();
+            await distinct.AsyncParallelForeach(part =>
+           {
+               var p = part.ToHashSet();
+               var data = FindCorpus(ref p);
+               var unique = true;
+               foreach (var current in detected)
+                   if (current.ScrambledEquals(data))
+                       unique = false;
+               if (data.Count == RingSize[MacrocycleType] && unique)
+                   detected.Push(data);
+           });
+            foreach (var data in detected)
             {
-                var p = part.ToHashSet();
-                var data = FindCorpus(ref p);
                 var bonds = Bonds.Where(b => data.Count(a => b.Atoms.Contains(a)) == 2);
-                var unique = true;
-                foreach (var current in DetectedParts)
-                    if (current.Atoms.ScrambledEquals(data)) unique = false;
-
-                if (data.Count != RingSize[MacrocycleType] || !unique) continue;
                 var analysis = await MacrocycleAnalysis.CreateAsync(data.ToList(), bonds, MacrocycleType);
                 RebuildCache();
                 var metal = Neighbors(analysis.N4Cavity[0]).FirstOrDefault(s => !s.IsNonCoordinative());
@@ -73,8 +80,9 @@ namespace PorphyStruct.Core
         private IList<IEnumerable<Atom>> GetParts()
         {
             var parts = new List<IEnumerable<Atom>>();
-            foreach (var fig in DFSUtil.ConnectedFigures(
-                Atoms.Where(s => Neighbors(s).Count >= 2), NonMetalNonDeadEndNeighbors))
+            var data = DFSUtil.ConnectedFigures(
+                Atoms.Where(s => Neighbors(s).Count >= 2), NonMetalNonDeadEndNeighbors);
+            foreach (var fig in data)
             {
                 var connectedAtoms = fig.Distinct().ToArray();
                 connectedAtoms = connectedAtoms.Where(s => s.IsNonCoordinative() && s.Symbol != "H").ToArray();
@@ -113,7 +121,8 @@ namespace PorphyStruct.Core
         private HashSet<Atom> FindCorpusFallBack(ref HashSet<Atom> part)
         {
             var corpus = new HashSet<Atom>();
-            foreach (var atom in part.Where(s => s?.IsNonCoordinative() ?? false))
+            var data = part.Where(s => s?.IsNonCoordinative() ?? false);
+            foreach (var atom in data)
             {
                 var p = part;
                 IEnumerable<Atom> Func(Atom s) => p?.Where(a => a.BondToByCovalentRadii(s) && a.IsNonCoordinative());
