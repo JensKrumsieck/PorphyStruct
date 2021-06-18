@@ -8,7 +8,7 @@ namespace PorphyStruct.Core.Plot
     /// <summary>
     /// Inspired by https://github.com/oxyplot/oxyplot/blob/develop/Source/OxyPlot.SkiaSharp/SvgExporter.cs
     /// </summary>
-    public class SvgExporter : IExporter
+    public sealed class SvgExporter : IExporter
     {
         /// <summary>
         /// Gets or sets the height (in user units) of the output area.

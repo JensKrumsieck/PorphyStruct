@@ -164,7 +164,7 @@ namespace PorphyStruct.Core.Analysis
         /// </summary>
         /// <param name="id1">Identifier 1</param>
         /// <param name="id2">Identifier 2</param>
-        /// <returns>The Vectordistance</returns>
+        /// <returns>The Vector Distance</returns>
         protected double CalculateDistance(string id1, string id2) => MathV.Distance(FindAtomByTitle(id1)!.Location, FindAtomByTitle(id2)!.Location);
 
         /// <summary>
@@ -212,11 +212,11 @@ namespace PorphyStruct.Core.Analysis
             var visited = new HashSet<Atom>();
             //set Identifier for C1 Atom
             C1.Title = "C1";
+            visited.Add(C1);
             //force c2 to be first step
             var current = Neighbors(C1).First(s => !N4Cavity.Contains(s) && Beta.Contains(s));
             current.Title = "C2";
-            //add C1&C2 to visited
-            visited.UnionWith(new HashSet<Atom> { current, C1 });
+            visited.Add(current);
             //get carbon atoms
             var carbons = RingAtoms.Where(s => s.Contains("C")).OrderBy(s => int.Parse(s.Replace("C", ""))).ToList();
             var i = 2;

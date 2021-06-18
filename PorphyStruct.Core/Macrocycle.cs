@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace PorphyStruct.Core
 {
-    public class Macrocycle : Molecule
+    public sealed class Macrocycle : Molecule
     {
         /// <summary>
         /// Correlates type to size of ring fragment
@@ -37,7 +37,7 @@ namespace PorphyStruct.Core
         /// <summary>
         /// Contains detected fragment data
         /// </summary>
-        public IList<MacrocycleAnalysis> DetectedParts = new List<MacrocycleAnalysis>();
+        public readonly IList<MacrocycleAnalysis> DetectedParts = new List<MacrocycleAnalysis>();
 
         /// <summary>
         /// Runs a Graph-Theory based Detection algorithm to find Macrocycles in Molecule

@@ -11,12 +11,12 @@ namespace PorphyStruct.ViewModel
         /// <summary>
         /// The Path to open from
         /// </summary>
-        public string Filename { get; set; }
+        public string Filename { get; }
 
         /// <summary>
         /// The opened Macrocycle
         /// </summary>
-        public Macrocycle Macrocycle { get; set; }
+        public Macrocycle Macrocycle { get; }
 
         public MacrocycleViewModel(string path)
         {

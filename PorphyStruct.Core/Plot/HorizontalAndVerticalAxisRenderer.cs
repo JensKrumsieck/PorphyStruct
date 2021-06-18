@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace PorphyStruct.Core.Plot
 {
-    public class HorizontalAndVerticalAxisRenderer : OxyPlot.Axes.HorizontalAndVerticalAxisRenderer
+    public sealed class HorizontalAndVerticalAxisRenderer : OxyPlot.Axes.HorizontalAndVerticalAxisRenderer
     {
         public HorizontalAndVerticalAxisRenderer(IRenderContext rc, PlotModel plot) : base(rc, plot) { }
 

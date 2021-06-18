@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace PorphyStruct.Core.Plot
 {
-    public class AtomDataPoint : ScatterPoint
+    public sealed class AtomDataPoint : ScatterPoint
     {
-        public Atom Atom { get; set; }
+        public Atom Atom { get; private set; }
 
         public AtomDataPoint(double x, double y, Atom atom, double size = double.NaN, double value = double.NaN, object tag = null)
             : base(x, y, size, value, tag)
@@ -22,8 +22,8 @@ namespace PorphyStruct.Core.Plot
             Tag = Atom;
         }
 
-        public DataPoint ToDataPoint() => new DataPoint(X, Y);
+        public DataPoint ToDataPoint() => new(X, Y);
 
-        public static string TrackerFormatString = "{0} \r\n{1}: {2} \r\n{3}: {4} \r\n{Atom}";
+        public const string TrackerFormatString = "{0} \r\n{1}: {2} \r\n{3}: {4} \r\n{Atom}";
     }
 }

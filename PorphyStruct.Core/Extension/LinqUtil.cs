@@ -30,24 +30,6 @@ namespace PorphyStruct.Core.Extension
         }
 
         /// <summary>
-        /// Distinct Method with selector
-        /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="TKey"></typeparam>
-        /// <param name="src"></param>
-        /// <param name="selector"></param>
-        /// <returns></returns>
-        public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> src,
-            Func<TSource, TKey> selector)
-        {
-            var seenKeys = new HashSet<TKey>();
-            foreach (var item in src)
-            {
-                if (seenKeys.Add(selector(item))) yield return item;
-            }
-        }
-
-        /// <summary>
         /// Returns source without last element
         /// </summary>
         /// <typeparam name="TSource"></typeparam>

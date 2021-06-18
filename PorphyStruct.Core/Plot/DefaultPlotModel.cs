@@ -3,7 +3,7 @@ using OxyPlot.Axes;
 
 namespace PorphyStruct.Core.Plot
 {
-    public class DefaultPlotModel : BasePlotModel
+    public sealed class DefaultPlotModel : BasePlotModel
     {
         public LinearAxis YAxis { get; }
 
@@ -112,7 +112,7 @@ namespace PorphyStruct.Core.Plot
         {
             foreach (var annotation in Annotations)
             {
-                if (!(annotation is BondAnnotation b)) continue;
+                if (annotation is not BondAnnotation b) continue;
                 var pInfo = typeof(BondAnnotation).GetProperty(prop);
                 pInfo?.SetValue(b, value);
             }

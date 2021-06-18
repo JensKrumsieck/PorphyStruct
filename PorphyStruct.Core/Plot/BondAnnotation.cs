@@ -7,7 +7,7 @@ namespace PorphyStruct.Core.Plot
     /// BondAnnotation inspired by ArrowAnnotation
     /// https://github.com/oxyplot/oxyplot/blob/develop/Source/OxyPlot/Annotations/ArrowAnnotation.cs
     /// </summary>
-    public class BondAnnotation : TransposableAnnotation
+    public sealed class BondAnnotation : TransposableAnnotation
     {
         private ScreenPoint _screenEndPoint;
         private ScreenPoint _screenStartPoint;

@@ -7,8 +7,8 @@ namespace PorphyStruct.Core.Plot
 {
     public class AtomRangeColorAxis : RangeColorAxis
     {
-        private const double min = 0.25;
-        private const double max = 0.25;
+        private const double Min = 0.25;
+        private const double Max = 0.25;
 
         public AtomRangeColorAxis()
         {
@@ -22,8 +22,8 @@ namespace PorphyStruct.Core.Plot
         private void AddAtomRange(Element e)
         {
             AddRange(
-                e.AtomicNumber - min,
-                e.AtomicNumber + max,
+                e.AtomicNumber - Min,
+                e.AtomicNumber + Max,
                 OxyColor.Parse(e.Color));
         }
     }

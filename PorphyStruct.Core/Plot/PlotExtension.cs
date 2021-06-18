@@ -16,7 +16,7 @@ namespace PorphyStruct.Core.Plot
         /// <summary>
         /// Colors for Bar Series. Use default proposal by mb
         /// </summary>
-        private static readonly Dictionary<string, string> Colors = new Dictionary<string, string>
+        private static readonly Dictionary<string, string> Colors = new()
         {
             {"Doming", "#953735"},
             {"Saddling", "#17375E"},
@@ -27,7 +27,7 @@ namespace PorphyStruct.Core.Plot
         };
 
 
-        private static readonly List<string> Categories = new List<string>
+        private static readonly List<string> Categories = new()
         {
             "Propellering",
             "WavingY",
@@ -68,7 +68,7 @@ namespace PorphyStruct.Core.Plot
 
         public static TitleOverridePlotModel PrepareSummaryPlot(this MacrocycleProperties props)
         {
-            var delta = (props.OutOfPlaneParameter.Value - props.Simulation.OutOfPlaneParameter.Value);
+            var delta = props.OutOfPlaneParameter.Value - props.Simulation.OutOfPlaneParameter.Value;
             var model = new TitleOverridePlotModel()
             {
                 Title = "D_{oop} = " + props.OutOfPlaneParameter.Value.ToString("N3") + " Å",

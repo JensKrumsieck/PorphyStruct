@@ -2,7 +2,7 @@
 
 namespace PorphyStruct.Core.Plot
 {
-    public class TitleOverridePlotModel : BasePlotModel
+    public sealed class TitleOverridePlotModel : BasePlotModel
     {
         protected override void RenderOverride(IRenderContext rc, OxyRect rect)
         {
@@ -22,7 +22,7 @@ namespace PorphyStruct.Core.Plot
             RenderTitle(rc);
         }
 
-        public double SubTitleMargin = 5;
+        private const double SubTitleMargin = 5;
 
         /// <summary>
         /// Override private render method

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace PorphyStruct.Core.Plot
 {
-    public class MarginBarSeries : BarSeries
+    public sealed class MarginBarSeries : BarSeries
     {
         private readonly double _margin;
 
@@ -49,7 +49,7 @@ namespace PorphyStruct.Core.Plot
             rc.DrawRectangle(new OxyRect(new ScreenPoint(tl.X + 10, tl.Y + 5), size), OxyColors.Transparent, OxyColors.Black, 1, EdgeRenderingMode.Adaptive);
         }
 
-        public double GetActualMargin()
+        private double GetActualMargin()
         {
             var zero = this.Transform(0, 0);
             //margin x in Screen point x

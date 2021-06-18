@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace PorphyStruct.Core.Plot
 {
-    public class LinearAxis : OxyPlot.Axes.LinearAxis, INotifyPropertyChanged
+    public sealed class LinearAxis : OxyPlot.Axes.LinearAxis, INotifyPropertyChanged
     {
         private double _titleAngle = Settings.Instance.LabelAngle;
 
@@ -109,7 +109,7 @@ namespace PorphyStruct.Core.Plot
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

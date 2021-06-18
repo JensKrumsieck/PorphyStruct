@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace PorphyStruct.Core.Plot
 {
-    public class DefaultScatterSeries : ScatterSeries
+    public sealed class DefaultScatterSeries : ScatterSeries
     {
         public bool Inverted;
         public byte Opacity { get; set; } = 255;
@@ -112,14 +112,14 @@ namespace PorphyStruct.Core.Plot
             {
                 // Draw the grouped (by color defined in ColorAxis) markers
                 var markerIsStrokedOnly = MarkerType == MarkerType.Plus || MarkerType == MarkerType.Star || MarkerType == MarkerType.Cross;
-                foreach (var group in groupPoints)
+                foreach (var (key, value) in groupPoints)
                 {
-                    var color = ColorAxis.GetColor(group.Key);
+                    var color = ColorAxis.GetColor(key);
                     rc.DrawMarkers(
-                        group.Value,
+                        value,
                         MarkerType,
                         MarkerOutline,
-                        groupSizes[group.Key],
+                        groupSizes[key],
                         OxyColor.FromAColor(Opacity, MarkerFill.GetActualColor(color)),
                         markerIsStrokedOnly ? color : MarkerStroke,
                         MarkerStrokeThickness,
