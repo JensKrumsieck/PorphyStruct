@@ -11,14 +11,12 @@ namespace PorphyStruct.Core
     public sealed class Settings : Singleton<Settings>
     {
         #region Font
-
         public string Font { get; set; } = "Arial";
         public int FontWeight { get; set; } = 500;
         public int FontSize { get; set; } = 18;
         #endregion
 
         #region PlotArea
-
         public double BorderThickness { get; set; }
         public double Padding { get; set; } = 8;
         #endregion
@@ -35,7 +33,6 @@ namespace PorphyStruct.Core
         #endregion
 
         #region Series
-
         public double BondThickness { get; set; } = 2d;
         public string MarkerColor { get; set; } = "#FF000000";
         public string BondColor { get; set; } = "#FF000000";
@@ -46,8 +43,8 @@ namespace PorphyStruct.Core
         public string MarkerBorderColor { get; set; } = "#FF000000";
         public string NotMarkedPoints { get; set; } = "";
         public bool SingleColor { get; set; }
-
         public bool UseExtendedBasis { get; set; }
+        public double NonValidOpacity { get; set; } = .15;
         #endregion
 
         #region Export
@@ -59,7 +56,7 @@ namespace PorphyStruct.Core
         public string DefaultImportPath { get; set; } = "";
         #endregion
 
-        #region Simulation/Comparions
+        #region Simulation/Comparisons
         public string SimulationBondColor { get; set; } = "#FF000000";
         public string SimulationMarkerColor { get; set; } = "#FFFF0000";
         public MarkerType SimulationMarkerType { get; set; } = MarkerType.Circle;

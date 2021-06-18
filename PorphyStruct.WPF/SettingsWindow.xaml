@@ -191,6 +191,10 @@
                             <TextBlock TextWrapping="Wrap" FontSize="9" Margin="5 0 0 0">
                                 Try when Simulation gives weird results. This will add a second set of References.
                             </TextBlock>
+                        </StackPanel>                        
+                        <StackPanel>
+                            <Label Content="3D: non-macrocyclic Opacity" />
+                            <TextBox Text="{Binding NonValidOpacity}" />
                         </StackPanel>
                         <Label FontSize="14" FontWeight="DemiBold" Content="Experimental" Margin="0 25 0 0" />
                         <StackPanel>

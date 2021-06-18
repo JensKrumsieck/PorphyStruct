@@ -2,6 +2,7 @@
 using HelixToolkit.Wpf;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using PorphyStruct.Core;
 
 namespace PorphyStruct.ViewModel.Windows.Visual
 {
@@ -20,10 +21,24 @@ namespace PorphyStruct.ViewModel.Windows.Visual
                 UpdateColor();
             }
         }
+        //start with all true
+        private bool _isValid = true;
+        public bool IsValid
+        {
+            get => _isValid;
+            set
+            {
+                _isValid = value;
+                UpdateColor();
+            }
+        }
+
+        private void UpdateOpacity(Brush brush) => brush.Opacity = IsValid ? 1 : Settings.Instance.NonValidOpacity;
 
         private void UpdateColor()
         {
             var brush = (Brush)new BrushConverter().ConvertFromString(Atom.Color);
+            UpdateOpacity(brush);
             ((GeometryModel3D)Content).Material = MaterialHelper.CreateMaterial(IsSelected ? Brushes.LightGoldenrodYellow : brush, 0, 0);
         }
 

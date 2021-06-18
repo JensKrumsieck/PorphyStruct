@@ -43,6 +43,7 @@ namespace PorphyStruct.ViewModel
         public string MarkerBorderColor { get => Get<string>(); set => Set(value); }
         public string NotMarkedPoints { get => Get<string>(); set => Set(value); }
         public bool SingleColor { get => Get<bool>(); set => Set(value); }
+        public double NonValidOpacity { get => Get<double>(); set => Set(value); }
         #endregion
 
         #region Export
