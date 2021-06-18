@@ -18,12 +18,12 @@ namespace PorphyStruct.Core.Plot
         /// </summary>
         private static readonly Dictionary<string, string> Colors = new()
         {
-            {"Doming", "#953735"},
-            {"Saddling", "#17375E"},
-            {"Ruffling", "#77933C"},
-            {"WavingX", "#E46C0A"},
-            {"WavingY", "#403152"},
-            {"Propellering", "#4A452A"}
+            { "Doming", "#953735" },
+            { "Saddling", "#17375E" },
+            { "Ruffling", "#77933C" },
+            { "WavingX", "#E46C0A" },
+            { "WavingY", "#403152" },
+            { "Propellering", "#4A452A" }
         };
 
 

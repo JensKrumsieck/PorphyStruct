@@ -5,7 +5,6 @@ using ChemSharp.Molecules.Mathematics;
 using PorphyStruct.Core.Analysis;
 using PorphyStruct.Core.Extension;
 using System;
-using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -84,9 +83,8 @@ namespace PorphyStruct.Core
                 Atoms.Where(s => Neighbors(s).Count >= 2), NonMetalNonDeadEndNeighbors);
             foreach (var fig in data)
             {
-                var connectedAtoms = fig.Distinct().ToArray();
-                connectedAtoms = connectedAtoms.Where(s => s.IsNonCoordinative() && s.Symbol != "H").ToArray();
-                if (connectedAtoms.Length >= RingSize[MacrocycleType]) parts.Add(connectedAtoms);
+                var connectedAtoms = fig.Distinct().Where(s => s.IsNonCoordinative() && s.Symbol != "H");
+                if (connectedAtoms.Count() >= RingSize[MacrocycleType]) parts.Add(connectedAtoms);
             }
             return parts;
         }
