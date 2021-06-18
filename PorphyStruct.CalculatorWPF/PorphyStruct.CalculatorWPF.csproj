@@ -17,7 +17,6 @@
 	  <IncludeAllContentForSelfExtract>True</IncludeAllContentForSelfExtract>
 	  <PublishSingleFile>True</PublishSingleFile>
 	  <SelfContained>True</SelfContained>
-	  <PublishTrimmed>True</PublishTrimmed>
 	  <PublishReadyToRun>True</PublishReadyToRun>
 	  <RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	  <PublishReadyToRunShowWarnings>True</PublishReadyToRunShowWarnings>
