@@ -66,8 +66,8 @@
   </ItemGroup>
 	<ItemGroup>
 
-    <PackageReference Include="ChemSharp.Molecules" Version="1.0.8" />
-    <PackageReference Include="ChemSharp" Version="1.0.8" />
+    <PackageReference Include="ChemSharp.Molecules" Version="1.0.9" />
+    <PackageReference Include="ChemSharp" Version="1.0.9" />
     <PackageReference Include="JensKrumsieck.TinyMVVM" Version="1.0.0" />
     <PackageReference Include="OxyPlot.Core" Version="2.1.0-Preview1" />
     <PackageReference Include="OxyPlot.SkiaSharp" Version="2.1.0-Preview1" />
