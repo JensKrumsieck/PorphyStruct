@@ -61,15 +61,20 @@ namespace PorphyStruct.Core
                if (data.Count == RingSize[MacrocycleType] && unique)
                    detected.Push(data);
            });
+            //with rising atom counts caching becomes unfavored vs querying.  
+            //Therefore rebuild cache only once at the end.
+            if (Atoms.Count > 1000) CacheNeighborList = false;
             foreach (var data in detected)
             {
                 var bonds = Bonds.Where(b => data.Count(a => b.Atoms.Contains(a)) == 2);
                 var analysis = await MacrocycleAnalysis.CreateAsync(data.ToList(), bonds, MacrocycleType);
-                RebuildCache();
+                if (CacheNeighborList) RebuildCache();
                 var metal = Neighbors(analysis.N4Cavity[0]).FirstOrDefault(s => !s.IsNonCoordinative());
                 if (metal != null) analysis.Metal = metal;
                 DetectedParts.Add(analysis);
             }
+            if (!CacheNeighborList) RebuildCache();
+            CacheNeighborList = true;
         }
 
         /// <summary>
@@ -141,6 +146,6 @@ namespace PorphyStruct.Core
             var goal = func(atom).FirstOrDefault();
             return goal == null ? new HashSet<Atom>() : DFSUtil.BackTrack(atom, goal, func, size);
         }
-        private IEnumerable<Atom> NonMetalNonDeadEndNeighbors(Atom atom) => NonMetalNeighbors(atom)?.Where(a => !Constants.DeadEnds.Contains(a.Symbol) && a.IsNonCoordinative() && !PDBDataProvider.AminoAcids.ContainsKey(a.Tag??""));
+        private IEnumerable<Atom> NonMetalNonDeadEndNeighbors(Atom atom) => NonMetalNeighbors(atom)?.Where(a => !Constants.DeadEnds.Contains(a.Symbol) && a.IsNonCoordinative() && !PDBDataProvider.AminoAcids.ContainsKey(a.Tag ?? ""));
     }
 }
