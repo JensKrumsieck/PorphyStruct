@@ -62,7 +62,7 @@ Furthermore, the cyclic structures are automatically detected and the analysis i
 ### Features list
 * Generation of Displacement Diagrams for various (**Porphyrin**, **Corrole**, **Norcorrole**, **Porphycene**, **Corrphycene** and related) tetrapyrrolic macrocycles.
 * **Automatic** Recognition of the macrocylic perimeter atoms
-* Analyze multiple structures per crystal (.cif, .mol2, .xyz are supported see <a href="https://github.com/jenskrumsieck/chemsharp">ChemSharp</a>)
+* Analyze multiple structures per crystal (.cif, .mol2, .xyz & .pdb (1.0.1 or later) are supported see <a href="https://github.com/jenskrumsieck/chemsharp">ChemSharp</a>)
 * Simulation of the generated diagrams by linear combination of standard structures based on the vibrational standard modes obtained by DFT calculations (B3LYP/def2-SVP). You can view the .XYZ Files [here](https://github.com/JensKrumsieck/PorphyStruct/tree/master/PorphyStruct.Core/Reference)
 * Calculation of Bond Distances, Angles, Dihedrals, Interplanar angle, Helicity, Cavity size, ...
 * Comparison of Structures and further structural analysis.
