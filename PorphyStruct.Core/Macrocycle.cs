@@ -141,6 +141,6 @@ namespace PorphyStruct.Core
             var goal = func(atom).FirstOrDefault();
             return goal == null ? new HashSet<Atom>() : DFSUtil.BackTrack(atom, goal, func, size);
         }
-        private IEnumerable<Atom> NonMetalNonDeadEndNeighbors(Atom atom) => NonMetalNeighbors(atom)?.Where(a => !Constants.DeadEnds.Contains(a.Symbol) && a.IsNonCoordinative());
+        private IEnumerable<Atom> NonMetalNonDeadEndNeighbors(Atom atom) => NonMetalNeighbors(atom)?.Where(a => !Constants.DeadEnds.Contains(a.Symbol) && a.IsNonCoordinative() && !PDBDataProvider.AminoAcids.ContainsKey(a.Tag??""));
     }
 }
