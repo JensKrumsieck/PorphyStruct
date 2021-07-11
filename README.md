@@ -124,6 +124,9 @@ Please cite our Article when using PorphyStruct. It is also recommended for furt
 
 **Very Important Paper** - [Front Cover](http://doi.org/10.1002/chem.202101992) - [Cover Profile](http://doi.org/10.1002/chem.202101993)
 
+Featured in: 
+  * [ChemistryViews](https://www.chemistryviews.org/details/ezine/11308216/PorphyStruct_Conformational_Analysis_of_Porphyrinoids.html)
+
 ### Further reading
 [1]	W. Jentzen, J.-G. Ma, J. A. Shelnutt, _Biophys. J._ **1998**, _74_, 753–763. https://doi.org/10.1016/S0006-3495(98)74000-7
 
