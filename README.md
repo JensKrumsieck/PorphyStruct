@@ -9,6 +9,8 @@
   <a href="https://github.com/JensKrumsieck/PorphyStruct/releases/latest"><strong>Download</strong></a>
     ·
     <a href="https://github.com/JensKrumsieck/PorphyStruct/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/JensKrumsieck/PorphyStruct/blob/master/.github/stats.md">Statistics</a>
 </p>
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/cbc210753b3ef4d72b50/maintainability)](https://codeclimate.com/github/JensKrumsieck/PorphyStruct/maintainability)
