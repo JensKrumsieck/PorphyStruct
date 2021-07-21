@@ -10,6 +10,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
@@ -35,6 +36,26 @@ namespace PorphyStruct.WPF
         {
             Settings.Instance.Load();
             InitializeComponent();
+            CheckUpdate();
+        }
+
+        /// <summary>
+        /// Checks for new Versions on Startup
+        /// </summary>
+        private void CheckUpdate(bool force = false)
+        {
+            if (!Settings.Instance.AutoUpdate && !force) return;
+            Task.Run(async () =>
+            {
+                (Updater u, bool current) = await Updater.CreateAsync();
+                if (!current)
+                {
+                    u.DownloadLatest();
+                    MessageBox.Show($"A new Version of PorphyStruct ({u.Latest}) is available and will be downloaded into {Core.Constants.SettingsFolder}.\nThe destination folder will now open to copy the file to your desired directory.", "UPDATE!");
+                    Process.Start("explorer.exe", Core.Constants.SettingsFolder);
+                }
+                else if (force) MessageBox.Show("You already have the lastest version");
+            });
         }
 
         /// <summary>
@@ -182,5 +203,7 @@ namespace PorphyStruct.WPF
         private void Batch_OnClick(object sender, RoutedEventArgs e) => new BatchWindow().Show();
 
         private void Isolation_OnClick(object sender, RoutedEventArgs e) => new IsolationWindow(this).ShowDialog();
+
+        private void Update_Click(object sender, RoutedEventArgs e) => CheckUpdate(true);
     }
 }
