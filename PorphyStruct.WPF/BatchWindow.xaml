@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PorphyStruct.WPF"
+        xmlns:core="clr-namespace:PorphyStruct.Core;assembly=PorphyStruct.Core"
         xmlns:controls="clr-namespace:ThemeCommons.Controls;assembly=ThemeCommons"
         xmlns:viewModel="clr-namespace:PorphyStruct.ViewModel;assembly=PorphyStruct.ViewModel"
         mc:Ignorable="d"
@@ -12,7 +13,7 @@
         Icon="Resources/porphystruct.ico"
         Background="{DynamicResource Background}"
         ResizeMode="NoResize"
-        Title="Batch Processing" Height="300" Width="800">
+        Title="Batch Processing" Height="350" Width="800">
     <controls:DefaultWindow.TitlebarContent>
         <Grid VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
@@ -45,6 +46,10 @@
             <StackPanel Orientation="Horizontal">
                 <Label Content="Include Subfolders" Margin="5 15"/>
                 <ToggleButton IsChecked="{Binding IsRecursive}" Margin="15"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Use Extended Basis" Margin="5 15" />
+                <ToggleButton DataContext="{Binding Source={x:Static core:Settings.Instance}}" IsChecked="{Binding UseExtendedBasis}" Margin="15" />
             </StackPanel>
             <StackPanel>
                 <Label Content="Selected Type" FontWeight="DemiBold"/>
