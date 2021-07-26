@@ -79,6 +79,8 @@ namespace PorphyStruct.Core
         public double SimulationOpacity { get; set; } = .5d;
         #endregion
 
+        public bool AutoUpdate { get; set; }
+
         /// <summary>
         /// use for json only!
         /// For accessing settings use <see cref="Singleton.Instance"/>

@@ -36,6 +36,26 @@ namespace PorphyStruct.WPF
         {
             Settings.Instance.Load();
             InitializeComponent();
+            CheckUpdate();
+        }
+
+        /// <summary>
+        /// Checks for new Versions on Startup
+        /// </summary>
+        private void CheckUpdate(bool force = false)
+        {
+            if (!Settings.Instance.AutoUpdate && !force) return;
+            Task.Run(async () =>
+            {
+                (Updater u, bool current) = await Updater.CreateAsync();
+                if (!current)
+                {
+                    u.DownloadLatest();
+                    MessageBox.Show($"A new Version of PorphyStruct ({u.Latest}) is available and will be downloaded into {Core.Constants.SettingsFolder}.\nThe destination folder will now open to copy the file to your desired directory.", "UPDATE!");
+                    Process.Start("explorer.exe", Core.Constants.SettingsFolder);
+                }
+                else if (force) MessageBox.Show("You already have the lastest version");
+            });
         }
 
         /// <summary>
@@ -203,5 +223,7 @@ namespace PorphyStruct.WPF
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void AnalyzeBtn_Click(object sender, RoutedEventArgs e) => AnalyzePopup.IsOpen = true;
+
+        private void Update_Click(object sender, RoutedEventArgs e) => CheckUpdate(true);
     }
 }

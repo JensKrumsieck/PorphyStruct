@@ -9,6 +9,8 @@
   <a href="https://github.com/JensKrumsieck/PorphyStruct/releases/latest"><strong>Download</strong></a>
     ·
     <a href="https://github.com/JensKrumsieck/PorphyStruct/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/JensKrumsieck/PorphyStruct/blob/master/.github/stats.md">Statistics</a>
 </p>
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/cbc210753b3ef4d72b50/maintainability)](https://codeclimate.com/github/JensKrumsieck/PorphyStruct/maintainability)
@@ -123,6 +125,9 @@ Please cite our Article when using PorphyStruct. It is also recommended for furt
 ### J. Krumsieck, M. Bröring _Chem. Eur J._, **2021**, DOI: [10.1002/chem.202101243](https://doi.org/10.1002/chem.202101243)
 
 **Very Important Paper** - [Front Cover](http://doi.org/10.1002/chem.202101992) - [Cover Profile](http://doi.org/10.1002/chem.202101993)
+
+Featured in: 
+  * [ChemistryViews](https://www.chemistryviews.org/details/ezine/11308216/PorphyStruct_Conformational_Analysis_of_Porphyrinoids.html)
 
 ### Further reading
 [1]	W. Jentzen, J.-G. Ma, J. A. Shelnutt, _Biophys. J._ **1998**, _74_, 753–763. https://doi.org/10.1016/S0006-3495(98)74000-7
