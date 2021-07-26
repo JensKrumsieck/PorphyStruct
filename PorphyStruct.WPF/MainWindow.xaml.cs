@@ -10,6 +10,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
@@ -107,7 +108,7 @@ namespace PorphyStruct.WPF
                     MathV.Centroid(ViewModel.SelectedItem.Analysis.Atoms.Select(s => s.Location)).ToPoint3D();
         }
 
-        private async void Analyze_OnClick(object sender, RoutedEventArgs e)
+        private async Task PrepareAnalysis()
         {
             //Block UI interaction during this
             MainGrid.IsEnabled = false;
@@ -115,6 +116,19 @@ namespace PorphyStruct.WPF
             await ViewModel.Analyze();
             MainGrid.IsEnabled = true;
             TitleGrid.IsEnabled = true;
+            AnalyzePopup.IsOpen = false;
+        }
+
+        private async void Analyze_OnClick(object sender, RoutedEventArgs e)
+        {
+            Settings.Instance.UseExtendedBasis = false;
+            await PrepareAnalysis();
+        }
+
+        private async void AnalyzeExt_OnClick(object sender, RoutedEventArgs e)
+        {
+            Settings.Instance.UseExtendedBasis = true;
+            await PrepareAnalysis();
         }
 
         private void Save_OnClick(object sender, RoutedEventArgs e)
@@ -182,5 +196,12 @@ namespace PorphyStruct.WPF
         private void Batch_OnClick(object sender, RoutedEventArgs e) => new BatchWindow().Show();
 
         private void Isolation_OnClick(object sender, RoutedEventArgs e) => new IsolationWindow(this).ShowDialog();
+
+        /// <summary>
+        /// Shows Analyze Popup
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AnalyzeBtn_Click(object sender, RoutedEventArgs e) => AnalyzePopup.IsOpen = true;
     }
 }
