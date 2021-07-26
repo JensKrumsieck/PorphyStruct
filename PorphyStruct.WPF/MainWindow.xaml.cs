@@ -223,7 +223,6 @@ namespace PorphyStruct.WPF
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void AnalyzeBtn_Click(object sender, RoutedEventArgs e) => AnalyzePopup.IsOpen = true;
-
         private void Update_Click(object sender, RoutedEventArgs e) => CheckUpdate(true);
     }
 }
