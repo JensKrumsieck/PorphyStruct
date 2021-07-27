@@ -48,13 +48,15 @@ namespace PorphyStruct.WPF
             Task.Run(async () =>
             {
                 (Updater u, bool current) = await Updater.CreateAsync();
+                if (!current) UpdateMsg.Visibility = Visibility.Visible;
+                else if (force) MessageBox.Show($"You already have the latest Version of PorphyStruct ({u.Latest})");
+
                 if (!current && force)
                 {
                     u.DownloadLatest();
-                    MessageBox.Show($"A new Version of PorphyStruct ({u.Latest}) is available and will be downloaded into {Core.Constants.SettingsFolder}.\nThe destination folder will now open to copy the file to your desired directory.", "UPDATE!");
-                    Process.Start("explorer.exe", Core.Constants.SettingsFolder);
-                }
-                else if (force) MessageBox.Show("You already have the latest version");
+                    MessageBox.Show("Download started!");
+                    Process.Start("explorer.exe", Core.Constants.SettingsLocation);
+                } 
             });
         }
 
