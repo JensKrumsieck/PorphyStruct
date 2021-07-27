@@ -36,7 +36,7 @@ namespace PorphyStruct.WPF
             var client = new HttpClient
             {
                 BaseAddress = new Uri(baseAddr),
-                Timeout = new TimeSpan(0, 0, 1)
+                Timeout = TimeSpan.FromSeconds(1)
             };
             client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("PorphyStruct", version));
             var response = await client.GetAsync(url);
@@ -45,8 +45,10 @@ namespace PorphyStruct.WPF
                 using var responseStream = await response.Content.ReadAsStreamAsync();
                 var res = await JsonSerializer.DeserializeAsync
                     <Dictionary<string, object>>(responseStream);
-                Latest = res["tag_name"].ToString();
-                return Latest == $"v{version}";
+                Latest = res["tag_name"].ToString()[1..];
+                var latest = Version.Parse(Latest);
+                var current = Version.Parse(version);
+                return current >= latest;
             }
             //return true if no response could be made
             return true;

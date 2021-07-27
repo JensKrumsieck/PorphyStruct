@@ -79,7 +79,7 @@ namespace PorphyStruct.Core
         public double SimulationOpacity { get; set; } = .5d;
         #endregion
 
-        public bool AutoUpdate { get; set; }
+        public bool AutoUpdate { get; set; } = true;
 
         /// <summary>
         /// use for json only!
