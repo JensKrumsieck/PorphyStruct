@@ -70,6 +70,7 @@ namespace PorphyStruct.ViewModel
         public bool UseExtendedBasis { get => Get<bool>(); set => Set(value); }
         #endregion
 
+        public bool AutoUpdate { get => Get<bool>(); set => Set(value); }
         public ObservableCollection<OxyColor> ComparisonColors { get; }
 
         public RelayCommand<OxyColor> DeleteColorCommand { get; }

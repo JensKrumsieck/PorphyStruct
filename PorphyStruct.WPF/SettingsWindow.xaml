@@ -296,7 +296,7 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem Header="Export" extension:ControlExtension.AttachedIcon="Folder">
+            <TabItem Header="Export &amp; Update" extension:ControlExtension.AttachedIcon="Folder">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -304,6 +304,7 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <StackPanel Margin="10">
+                        <Label FontSize="14" FontWeight="DemiBold" Content="Export" />
                         <StackPanel>
                             <Label Content="Height" />
                             <StackPanel Orientation="Horizontal">
@@ -338,6 +339,13 @@
                             <TextBlock TextWrapping="Wrap" FontSize="9" Margin="5 0 0 0">
                                 Uses Import path of molecule file if empty (Recommended)
                             </TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="10">
+                        <Label FontSize="14" FontWeight="DemiBold" Content="Updates" />
+                        <StackPanel>
+                            <Label Content="Automatically Check for new Versions" />
+                            <ToggleButton IsChecked="{Binding AutoUpdate}" />
                         </StackPanel>
                     </StackPanel>
                 </Grid>
