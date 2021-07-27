@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace PorphyStruct.WPF
 {
@@ -56,8 +58,16 @@ namespace PorphyStruct.WPF
 
         public void DownloadLatest()
         {
-            var client = new WebClient();
-            client.DownloadFileAsync(new Uri($"https://github.com/JensKrumsieck/PorphyStruct/releases/download/{Latest}/PorphyStruct.exe"), Core.Constants.SettingsFolder + "/PorphyStruct.exe");
+            using (var client = new WebClient())
+            {
+                client.DownloadFileCompleted += Client_DownloadFileCompleted;
+                client.DownloadFileAsync(new Uri($"https://github.com/JensKrumsieck/PorphyStruct/releases/download/v{Latest}/PorphyStruct.exe"), Core.Constants.SettingsFolder + "/PorphyStruct.exe");
+            }
+        }
+        private void Client_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        {
+            MessageBox.Show("Download complete!");
+            Process.Start("explorer.exe", Core.Constants.SettingsFolder);
         }
     }
 }

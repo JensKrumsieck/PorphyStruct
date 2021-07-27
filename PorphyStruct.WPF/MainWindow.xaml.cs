@@ -42,22 +42,18 @@ namespace PorphyStruct.WPF
         /// <summary>
         /// Checks for new Versions on Startup
         /// </summary>
-        private void CheckUpdate(bool force = false)
+        private async void CheckUpdate(bool force = false)
         {
             if (!Settings.Instance.AutoUpdate && !force) return;
-            Task.Run(async () =>
+            (Updater u, bool current) = await Updater.CreateAsync();
+            if (!current) UpdateMsg.Visibility = Visibility.Visible;
+            else if (force) MessageBox.Show($"You already have the latest Version of PorphyStruct ({u.Latest})");
+            if (!current && force)
             {
-                (Updater u, bool current) = await Updater.CreateAsync();
-                if (!current) UpdateMsg.Visibility = Visibility.Visible;
-                else if (force) MessageBox.Show($"You already have the latest Version of PorphyStruct ({u.Latest})");
-
-                if (!current && force)
-                {
-                    u.DownloadLatest();
-                    MessageBox.Show("Download started!");
-                    Process.Start("explorer.exe", Core.Constants.SettingsLocation);
-                } 
-            });
+                MessageBox.Show("Download started!");
+                u.DownloadLatest();
+                UpdateMsg.Visibility = Visibility.Collapsed;
+            }
         }
 
         /// <summary>
