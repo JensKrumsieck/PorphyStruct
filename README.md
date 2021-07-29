@@ -49,7 +49,7 @@ _PorphyStruct_, a new digital tool for the analysis of non-planar distortion mod
 
 _PorphyStruct_ not only allows the generation of **displacement diagrams** (a.k.a cylinder projection) in split seconds but also offers a fast **NSD-type analysis of tetrapyrroles** with different perimeters. Additionally specific Bond distances, dihedrals oder angles such as the interplanar angle, helicity and the size of the N4 Cavity are calculated. 
 All perimeters derived from the following types are supported:
-* **Porphyrins** (Isoporphyrins, Phtalocyanines, N-confused Porphyrins)
+* **Porphyrins** (Isoporphyrins, Phtalocyanines, N-confused Porphyrins, Porphyrazines)
 * **Corrole** (Isocorroles, Heterocorroles, N-confused Corroles, Corrolazines, Corrins¹)
 * **Norcorrole**
 * **Corrphycene**
