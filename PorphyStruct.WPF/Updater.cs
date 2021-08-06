@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Sockets;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -40,18 +41,23 @@ namespace PorphyStruct.WPF
                 BaseAddress = new Uri(baseAddr),
                 Timeout = TimeSpan.FromSeconds(1)
             };
+            
             client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("PorphyStruct", version));
-            var response = await client.GetAsync(url);
-            if (response.IsSuccessStatusCode)
-            {
-                using var responseStream = await response.Content.ReadAsStreamAsync();
-                var res = await JsonSerializer.DeserializeAsync
-                    <Dictionary<string, object>>(responseStream);
-                Latest = res["tag_name"].ToString()[1..];
-                var latest = Version.Parse(Latest);
-                var current = Version.Parse(version);
-                return current >= latest;
+            try {
+                var response = await client.GetAsync(url);           
+            
+                if (response.IsSuccessStatusCode)
+                {
+                    using var responseStream = await response.Content.ReadAsStreamAsync();
+                    var res = await JsonSerializer.DeserializeAsync
+                        <Dictionary<string, object>>(responseStream);
+                    Latest = res["tag_name"].ToString()[1..];
+                    var latest = Version.Parse(Latest);
+                    var current = Version.Parse(version);
+                    return current >= latest;
+                }
             }
+            catch(Exception) { return true; }//no internet => ignore!
             //return true if no response could be made
             return true;
         }
