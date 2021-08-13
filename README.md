@@ -123,7 +123,7 @@ A preview of an Analysis can be found here: [Markdown export of Structure shown 
 ## How to cite
 Please cite our Article when using PorphyStruct.
 
-### J. Krumsieck, M. Bröring _Chem. Eur J._, **2021**, _45_, 11580-11588, DOI: [10.1002/chem.202101243](https://doi.org/10.1002/chem.202101243)
+### J. Krumsieck, M. Bröring _Chem. Eur J._, **2021**, _27_, 11580-11588, DOI: [10.1002/chem.202101243](https://doi.org/10.1002/chem.202101243)
 
 **Very Important Paper** - [Front Cover](http://doi.org/10.1002/chem.202101992) - [Cover Profile](http://doi.org/10.1002/chem.202101993)
 
