@@ -121,9 +121,9 @@ A preview of an Analysis can be found here: [Markdown export of Structure shown 
 **Structure**: A. B. Alemayehu, E. Gonzalez, L. K. Hansen, A. Ghosh, _Inorg. Chem._, **2009**, _48_, 7794.
 
 ## How to cite
-Please cite our Article when using PorphyStruct. It is also recommended for further read
+Please cite our Article when using PorphyStruct.
 
-### J. Krumsieck, M. Bröring _Chem. Eur J._, **2021**, DOI: [10.1002/chem.202101243](https://doi.org/10.1002/chem.202101243)
+### J. Krumsieck, M. Bröring _Chem. Eur J._, **2021**, _45_, 11580-11588, DOI: [10.1002/chem.202101243](https://doi.org/10.1002/chem.202101243)
 
 **Very Important Paper** - [Front Cover](http://doi.org/10.1002/chem.202101992) - [Cover Profile](http://doi.org/10.1002/chem.202101993)
 
