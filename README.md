@@ -129,6 +129,8 @@ Please cite our Article when using PorphyStruct.
 
 Featured in: 
   * [ChemistryViews](https://www.chemistryviews.org/details/ezine/11308216/PorphyStruct_Conformational_Analysis_of_Porphyrinoids.html)
+  * [TU Braunschweig Magazine](https://magazin.tu-braunschweig.de/en/pi-post/digital-tools-for-observing-molecular-gymnastics/) - ([German Version](https://magazin.tu-braunschweig.de/pi-post/digitale-helfer-zur-beobachtung-von-molekuel-gymnastik/))
+
 
 ### Further reading
 [1]	W. Jentzen, J.-G. Ma, J. A. Shelnutt, _Biophys. J._ **1998**, _74_, 753–763. https://doi.org/10.1016/S0006-3495(98)74000-7
