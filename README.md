@@ -140,7 +140,7 @@ Featured in:
 [3] C. J. Kingsbury, M. O. Senge, _Coord. Chem. Rev._ **2021**, _431_, 213760. https://doi.org/10.1016/j.ccr.2020.213760
 
 ### System requirements
-Windows 10 (Windows 7 seems to work, too)
+Windows 11 or Windows 10 (Windows 7 seems to work, too)
 
 ### Used Libraries
 * [ChemSharp](https://github.com/JensKrumsieck/ChemSharp) by Jens Krumsieck (MIT License)
