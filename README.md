@@ -73,6 +73,8 @@ Furthermore, the cyclic structures are automatically detected and the analysis i
 * Batch processing and statistics (wip)
 * Automatic Update (1.0.2+)
 
+[![PorphyStruct](https://img.youtube.com/vi/WdEJJrrPYKg/0.jpg)](https://www.youtube.com/watch?v=WdEJJrrPYKg)
+
 ## What is NSD
 **NSD stands for normal-coordinate structural decomposition**. A three-dimensional molecular structure can be described by linear combinations of its vibrational modes. Shelnutt et al. were able to show in the late 1990s with the NSD method not only that all porphyrins can be described as D4h symmetric under the restrictions of the method, regardless of the substitution pattern, but also that exactly 6 vibrational modes are sufficient for the description in the vast majority of cases. These are the 6 energetically lowest vibrational modes of the porphyrin: **Doming** (A2u), **Ruffling** (B2u), **Saddling** (B1u), **Waving (X,Y)** (Eg) and **Propellering**.
 _PorphyStruct_ uses a modified version of the method to make it available to other macrocyclic frameworks. The modes used are based on those of porphyrin and are not necessarily the lowest energy ones. _PorphyStruct_ provides 2 Doming, 2 Ruffling, 2 Saddling, 4 Waving and 2 Propellering modes for each type of macrocycle (Minimal Basis & Extended Basis).
