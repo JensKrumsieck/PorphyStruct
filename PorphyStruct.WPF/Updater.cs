@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Sockets;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -41,11 +40,12 @@ namespace PorphyStruct.WPF
                 BaseAddress = new Uri(baseAddr),
                 Timeout = TimeSpan.FromSeconds(1)
             };
-            
+
             client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("PorphyStruct", version));
-            try {
-                var response = await client.GetAsync(url);           
-            
+            try
+            {
+                var response = await client.GetAsync(url);
+
                 if (response.IsSuccessStatusCode)
                 {
                     using var responseStream = await response.Content.ReadAsStreamAsync();
@@ -57,18 +57,16 @@ namespace PorphyStruct.WPF
                     return current >= latest;
                 }
             }
-            catch(Exception) { return true; }//no internet => ignore!
+            catch (Exception) { return true; }//no internet => ignore!
             //return true if no response could be made
             return true;
         }
 
         public void DownloadLatest()
         {
-            using (var client = new WebClient())
-            {
-                client.DownloadFileCompleted += Client_DownloadFileCompleted;
-                client.DownloadFileAsync(new Uri($"https://github.com/JensKrumsieck/PorphyStruct/releases/download/v{Latest}/PorphyStruct.exe"), Core.Constants.SettingsFolder + "/PorphyStruct.exe");
-            }
+            using var client = new WebClient();
+            client.DownloadFileCompleted += Client_DownloadFileCompleted;
+            client.DownloadFileAsync(new Uri($"https://github.com/JensKrumsieck/PorphyStruct/releases/download/v{Latest}/PorphyStruct.exe"), Core.Constants.SettingsFolder + "/PorphyStruct.exe");
         }
         private void Client_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
