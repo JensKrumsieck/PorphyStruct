@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -68,7 +67,7 @@ namespace PorphyStruct.WPF
             using var client = new HttpClient();
             using var req = new HttpRequestMessage(HttpMethod.Get, $"https://github.com/JensKrumsieck/PorphyStruct/releases/download/v{Latest}/PorphyStruct.exe");
             using var contentStream = await (await client.SendAsync(req)).Content.ReadAsStreamAsync();
-            using var stream = new FileStream(Core.Constants.SettingsFolder + "/PorphyStruct.exe", FileMode.Create, FileAccess.Write, FileShare.None, 262144 , true);
+            using var stream = new FileStream(Core.Constants.SettingsFolder + "/PorphyStruct.exe", FileMode.Create, FileAccess.Write, FileShare.None, 262144, true);
             await contentStream.CopyToAsync(stream).ContinueWith((_) => Client_DownloadFileCompleted());
         }
         private void Client_DownloadFileCompleted()
