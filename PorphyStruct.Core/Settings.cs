@@ -105,13 +105,13 @@ namespace PorphyStruct.Core
             foreach (var p in properties.Where(s => s.PropertyType != typeof(Settings))) p.SetValue(this, p.GetValue(settings));
 
             //save here to update potential missing settings into file
-            Instance.Save();
+            Save();
         }
 
         /// <summary>
         /// Save Settings
         /// </summary>
-        public void Save()
+        public static void Save()
         {
             var content = JsonSerializer.Serialize(Instance, new JsonSerializerOptions { WriteIndented = true });
             //File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}/settings.json", content);

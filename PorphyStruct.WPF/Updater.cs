@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -62,13 +63,15 @@ namespace PorphyStruct.WPF
             return true;
         }
 
-        public void DownloadLatest()
+        public async void DownloadLatest()
         {
-            using var client = new WebClient();
-            client.DownloadFileCompleted += Client_DownloadFileCompleted;
-            client.DownloadFileAsync(new Uri($"https://github.com/JensKrumsieck/PorphyStruct/releases/download/v{Latest}/PorphyStruct.exe"), Core.Constants.SettingsFolder + "/PorphyStruct.exe");
+            using var client = new HttpClient();
+            using var req = new HttpRequestMessage(HttpMethod.Get, $"https://github.com/JensKrumsieck/PorphyStruct/releases/download/v{Latest}/PorphyStruct.exe");
+            using var contentStream = await (await client.SendAsync(req)).Content.ReadAsStreamAsync();
+            using var stream = new FileStream(Core.Constants.SettingsFolder + "/PorphyStruct.exe", FileMode.Create, FileAccess.Write, FileShare.None, 262144 , true);
+            await contentStream.CopyToAsync(stream).ContinueWith((_) => Client_DownloadFileCompleted());
         }
-        private void Client_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        private void Client_DownloadFileCompleted()
         {
             MessageBox.Show("Download complete!");
             Process.Start("explorer.exe", Core.Constants.SettingsFolder);

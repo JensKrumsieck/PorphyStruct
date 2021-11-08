@@ -7,7 +7,7 @@ namespace PorphyStruct.WPF
 {
     public static class ExportHelper
     {
-        public static void ExportViewport(this AnalysisViewModel viewModel, string path)
+        public static void ExportViewport(this AnalysisViewModel _, string path)
         {
             //get instance of MainWindow
             var main = (MainWindow)Application.Current.MainWindow;

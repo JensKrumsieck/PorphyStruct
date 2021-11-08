@@ -103,8 +103,8 @@ namespace PorphyStruct.Core.Analysis
             foreach (var a in Atoms)
             {
                 var coordX = 1d;
-                if (a.Title.Contains("C")) coordX = fix + dist * Multiplier[a.Title];
-                if (a.Title.Contains("N")) coordX = fix + dist / 2d;
+                if (a.Title.Contains('C')) coordX = fix + dist * Multiplier[a.Title];
+                if (a.Title.Contains('N')) coordX = fix + dist / 2d;
                 //starts with C1 which is alpha per definition, so refresh distance every alpha atom.
                 if (IsAlpha(a) && NextAlpha(a) != null) dist = a.DistanceTo(NextAlpha(a));
                 //alpha atoms are fix-points
@@ -218,7 +218,7 @@ namespace PorphyStruct.Core.Analysis
             current.Title = "C2";
             visited.Add(current);
             //get carbon atoms
-            var carbons = RingAtoms.Where(s => s.Contains("C")).OrderBy(s => int.Parse(s.Replace("C", ""))).ToList();
+            var carbons = RingAtoms.Where(s => s.Contains('C')).OrderBy(s => int.Parse(s.Replace("C", ""))).ToList();
             var i = 2;
             //loop through atoms and name them
             while (visited.Count != carbons.Count)

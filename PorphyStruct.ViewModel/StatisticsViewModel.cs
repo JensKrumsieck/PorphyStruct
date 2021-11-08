@@ -82,14 +82,14 @@ namespace PorphyStruct.ViewModel
             get => _selectedXColumn;
             set => Set(ref _selectedXColumn, value, UpdatePlot);
         }
-        public ObservableCollection<string> SelectedYColumns = new ObservableCollection<string>();
+        public ObservableCollection<string> SelectedYColumns = new();
 
-        private readonly DataTable _table = new DataTable();
+        private readonly DataTable _table = new();
         public DataView Table => _table.DefaultView;
 
         public BasePlotModel PlotModel { get; } = new BasePlotModel();
 
-        public readonly List<JsonPropertyHelper> Data = new List<JsonPropertyHelper>();
+        public readonly List<JsonPropertyHelper> Data = new();
 
         public StatisticsViewModel()
         {

@@ -19,7 +19,7 @@ namespace PorphyStruct.WPF
 
         private void Save_OnClick(object sender, RoutedEventArgs e)
         {
-            Settings.Instance.Save();
+            Settings.Save();
             Close();
         }
         private void Search_OnClick(object sender, RoutedEventArgs e)

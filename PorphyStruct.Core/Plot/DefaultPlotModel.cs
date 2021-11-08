@@ -78,7 +78,7 @@ namespace PorphyStruct.Core.Plot
         /// Builds RangeColorAxis
         /// </summary>
         /// <returns></returns>
-        public static AtomRangeColorAxis ColorAxis => new AtomRangeColorAxis
+        public static AtomRangeColorAxis ColorAxis => new()
         {
             Key = "colors",
             Position = AxisPosition.Bottom,

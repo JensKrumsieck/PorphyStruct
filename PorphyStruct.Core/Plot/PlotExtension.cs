@@ -60,7 +60,7 @@ namespace PorphyStruct.Core.Plot
                 var key = prop.Key.Replace("2", "");
                 var color = OxyColor.Parse(Colors[key]);
                 var value = Settings.Instance.UseExtendedBasis ? prop.Value : Math.Abs(prop.Value);
-                if (prop.Key.Contains("2")) color = OxyColor.FromAColor(200, color);
+                if (prop.Key.Contains('2')) color = OxyColor.FromAColor(200, color);
                 series.Items.Add(new BarItem(value, Categories.IndexOf(key)) { Color = color });
             }
             return series;
@@ -118,7 +118,7 @@ namespace PorphyStruct.Core.Plot
                     FontWeight = (Settings.Instance.FontWeight + 200) % 900,
                     TextColor = OxyColors.Black,
                     TextPosition = new DataPoint(0, i),
-                    Text = Categories[i].Substring(0, 3).ToLower() +
+                    Text = Categories[i][..3].ToLower() +
                            (Categories[i].Contains("Waving") ? " " + Categories[i].Last() : ""),
                     StrokeThickness = 0,
                     Padding = new OxyThickness(0),

@@ -29,7 +29,7 @@ namespace PorphyStruct.WPF
         /// <summary>
         /// Should not be null!
         /// </summary>
-        public string Version => Assembly.GetEntryAssembly()!.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!
+        public static string Version => Assembly.GetEntryAssembly()!.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!
             .InformationalVersion!;
 
         public MainWindow()
