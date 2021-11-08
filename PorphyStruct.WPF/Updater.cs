@@ -70,7 +70,7 @@ namespace PorphyStruct.WPF
             using var stream = new FileStream(Core.Constants.SettingsFolder + "/PorphyStruct.exe", FileMode.Create, FileAccess.Write, FileShare.None, 262144, true);
             await contentStream.CopyToAsync(stream).ContinueWith((_) => Client_DownloadFileCompleted());
         }
-        private void Client_DownloadFileCompleted()
+        private static void Client_DownloadFileCompleted()
         {
             MessageBox.Show("Download complete!");
             Process.Start("explorer.exe", Core.Constants.SettingsFolder);
