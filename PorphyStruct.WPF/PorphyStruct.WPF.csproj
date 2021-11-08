@@ -4,11 +4,11 @@
 	<PackageId>PorphyStruct</PackageId>
 	<Authors>Jens Krumsieck</Authors>
 	<Company>Jens Krumsieck</Company>
-	<Version>1.0.2</Version>
+	<Version>1.0.3</Version>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows10.0.17763.0</TargetFramework>
+    <TargetFramework>net6.0-windows10.0.17763.0</TargetFramework>
     <UseWPF>true</UseWPF>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
 	<PackageProjectUrl>https://github.com/JensKrumsieck/PorphyStruct</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/JensKrumsieck/PorphyStruct</RepositoryUrl>
 	<RepositoryType>git</RepositoryType>
@@ -18,9 +18,9 @@
 	<AssemblyName>PorphyStruct</AssemblyName>
 	<IncludeAllContentForSelfExtract>True</IncludeAllContentForSelfExtract>
 	<PublishSingleFile>True</PublishSingleFile>
-	<SelfContained>True</SelfContained>
+	<!--<SelfContained>True</SelfContained>
+	<RuntimeIdentifier>win-x64</RuntimeIdentifier>-->
 	<PublishReadyToRun>True</PublishReadyToRun>
-	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	<PublishReadyToRunShowWarnings>True</PublishReadyToRunShowWarnings>
   </PropertyGroup>
 
@@ -40,11 +40,4 @@
     <ProjectReference Include="..\PorphyStruct.ViewModel.Windows\PorphyStruct.ViewModel.Windows.csproj" />
     <ProjectReference Include="..\PorphyStruct.ViewModel\PorphyStruct.ViewModel.csproj" />
   </ItemGroup>
-
-	<ItemGroup>
-		<TrimmerRootAssembly Include="System.Runtime" />
-		<TrimmerRootAssembly Include="System.Diagnostics.Debug" />
-		<TrimmerRootAssembly Include="System.Runtime.Extensions" />
-	</ItemGroup>
-
 </Project>
