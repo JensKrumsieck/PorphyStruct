@@ -133,7 +133,7 @@ A preview of an Analysis can be found here: [Markdown export of Structure shown 
 <br/>
 ▶️ <strong>Very Important Paper</strong> - <a href="http://doi.org/10.1002/chem.202101992"><strong>Front Cover</strong></a> - <a href="http://doi.org/10.1002/chem.202101993"><strong>Cover Profile</strong></a>
 </p>
-
+<br/>
 
   #### Featured in: 
   * [ChemistryViews](https://www.chemistryviews.org/details/ezine/11308216/PorphyStruct_Conformational_Analysis_of_Porphyrinoids.html)
