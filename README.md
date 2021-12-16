@@ -123,13 +123,19 @@ A preview of an Analysis can be found here: [Markdown export of Structure shown 
 **Structure**: A. B. Alemayehu, E. Gonzalez, L. K. Hansen, A. Ghosh, _Inorg. Chem._, **2009**, _48_, 7794.
 
 ## How to cite
-Please cite our Article when using PorphyStruct.
 
-### J. Krumsieck, M. Bröring _Chem. Eur J._, **2021**, _27_, 11580-11588, DOI: [10.1002/chem.202101243](https://doi.org/10.1002/chem.202101243)
+<img align="left" src="https://jenskrumsieck.de/_next/image?url=%2F_next%2Fstatic%2Fimage%2Fpublic%2Fimg%2Fps_cover.2db914428ca606479adfad82b4a82f75.jpg&w=1920&q=75" width=120 alt=""/>
+<p>
 
-**Very Important Paper** - [Front Cover](http://doi.org/10.1002/chem.202101992) - [Cover Profile](http://doi.org/10.1002/chem.202101993)
+### PorphyStruct – A Digital Tool for the Quantitative Assignment of Non-Planar Distortion Modes in Four-Membered Porphyrinoids
+    
+<strong>J. Krumsieck</strong>, M. Bröring, <em>Chem. Eur J.</em>, <strong>2021</strong>,  <em>27</em>, 11580-11588, DOI: <a href="https://doi.org/10.1002/chem.202101243">10.1002/chem.202101243</a>
+<br/>
+▶️ <strong>Very Important Paper</strong> - <a href="http://doi.org/10.1002/chem.202101992"><strong>Front Cover</strong></a> - <a href="http://doi.org/10.1002/chem.202101993"><strong>Cover Profile</strong></a>
+</p>
 
-Featured in: 
+
+  #### Featured in: 
   * [ChemistryViews](https://www.chemistryviews.org/details/ezine/11308216/PorphyStruct_Conformational_Analysis_of_Porphyrinoids.html)
   * [TU Braunschweig Magazine](https://magazin.tu-braunschweig.de/en/pi-post/digital-tools-for-observing-molecular-gymnastics/) - ([German Version](https://magazin.tu-braunschweig.de/pi-post/digitale-helfer-zur-beobachtung-von-molekuel-gymnastik/))
 
