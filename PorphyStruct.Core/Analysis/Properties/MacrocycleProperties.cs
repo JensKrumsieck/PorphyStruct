@@ -97,7 +97,7 @@ public class MacrocycleProperties
         var n3 = Analysis.FindAtomByTitle("N3");
         var n4 = Analysis.FindAtomByTitle("N4");
         if (n1 == null | n2 == null | n3 == null | n4 == null) return;
-        Cavity = new N4Cavity(n1!,n2!,n3!,n4!);
+        Cavity = new N4Cavity(n1!, n2!, n3!, n4!);
     }
 
     /// <summary>

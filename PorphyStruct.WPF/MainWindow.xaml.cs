@@ -65,7 +65,7 @@ public partial class MainWindow : DefaultWindow
         {
             if (hit.Visual.GetType() != typeof(Atom3D)) continue;
             var av3d = hit.Visual as Atom3D;
-            if(av3d != null) ViewModel.SelectedAtom = av3d.Atom;
+            if (av3d != null) ViewModel.SelectedAtom = av3d.Atom;
         }
     }
 
