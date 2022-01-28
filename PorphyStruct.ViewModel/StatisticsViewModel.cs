@@ -92,7 +92,7 @@ public class StatisticsViewModel : BaseViewModel
         SelectedYColumns.CollectionChanged += SelectedYColumnsOnCollectionChanged;
     }
 
-    private void SelectedYColumnsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e) =>
+    private void SelectedYColumnsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) =>
         UpdatePlot();
 
     /// <summary>

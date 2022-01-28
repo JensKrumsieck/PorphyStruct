@@ -65,7 +65,7 @@ public partial class MainWindow : DefaultWindow
         {
             if (hit.Visual.GetType() != typeof(Atom3D)) continue;
             var av3d = hit.Visual as Atom3D;
-            ViewModel.SelectedAtom = av3d?.Atom;
+            if(av3d != null) ViewModel.SelectedAtom = av3d.Atom;
         }
     }
 
@@ -79,7 +79,7 @@ public partial class MainWindow : DefaultWindow
     {
         if (!e.Data.GetDataPresent(DataFormats.FileDrop)) return;
         var files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-        OpenFile((files ?? throw new InvalidOperationException()).FirstOrDefault());
+        OpenFile((files ?? throw new InvalidOperationException()).First());
     }
 
     /// <summary>
@@ -116,7 +116,7 @@ public partial class MainWindow : DefaultWindow
         Activate();
     }
 
-    private void ViewModelOnSelectedIndexChanged(object sender, EventArgs e)
+    private void ViewModelOnSelectedIndexChanged(object? sender, EventArgs e)
     {
         if (ViewModel?.SelectedItem != null)
             Viewport3D.CameraController.CameraTarget =

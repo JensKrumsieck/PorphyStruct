@@ -80,14 +80,14 @@ public class SettingsViewModel : BaseViewModel
         Subscribe(ComparisonColors, ComparisonColorPalette, c => c.ToByteString(), c => c.ToByteString());
     }
 
-    public void Set(object value, [CallerMemberName] string propertyName = null)
+    public void Set(object value, [CallerMemberName] string? propertyName = null)
     {
         var pInfo = typeof(Settings).GetProperty(propertyName!);
         pInfo?.SetValue(Settings.Instance, value);
         OnPropertyChanged(propertyName);
     }
 
-    public static T Get<T>([CallerMemberName] string propertyName = null)
+    public static T Get<T>([CallerMemberName] string? propertyName = null)
     {
         var pInfo = typeof(Settings).GetProperty(propertyName!);
         return (T)pInfo?.GetValue(Settings.Instance);

@@ -48,7 +48,8 @@ public class Updater
                 using var responseStream = await response.Content.ReadAsStreamAsync();
                 var res = await JsonSerializer.DeserializeAsync
                     <Dictionary<string, object>>(responseStream);
-                Latest = res["tag_name"].ToString()[1..];
+                if (res == null | res?["tag_name"] == null) return true;
+                Latest = res!["tag_name"].ToString()![1..];
                 var latest = Version.Parse(Latest);
                 var current = Version.Parse(version);
                 return current >= latest;

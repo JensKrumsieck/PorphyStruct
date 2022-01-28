@@ -90,7 +90,8 @@ public class AnalysisViewModel : ListItemViewModel<MacrocycleViewModel, Analysis
         Model.InvalidatePlot(false);
 
         if (!SimulationVisible) return;
-        var simY = Analysis.Properties.Simulation.ConformationY;
+        var simY = Analysis.Properties?.Simulation.ConformationY;
+        if (simY == null) return;
         var src = BuildSimulationData(simY);
         SimulationSeries.ItemsSource = src;
         if (Settings.Instance.SingleColor) SimulationSeries.MarkerFill = OxyColor.Parse(Settings.Instance.SimulationMarkerColor);

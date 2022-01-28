@@ -8,7 +8,7 @@ public sealed class AtomDataPoint : ScatterPoint
 {
     public Atom Atom { get; private set; }
 
-    public AtomDataPoint(double x, double y, Atom atom, double size = double.NaN, double value = double.NaN, object tag = null)
+    public AtomDataPoint(double x, double y, Atom atom, double size = double.NaN, double value = double.NaN, object? tag = null)
         : base(x, y, size, value, tag)
     {
         Atom = atom;

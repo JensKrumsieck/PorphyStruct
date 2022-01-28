@@ -27,6 +27,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Resources\porphystruct.ico" />
     <Resource Include="Resources\porphystruct.png" />
   </ItemGroup>

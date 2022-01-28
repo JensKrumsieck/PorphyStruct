@@ -66,7 +66,7 @@ public static class SaveHandler
     public static void ExportPlot(this AnalysisViewModel viewModel, string path, string extension)
     {
         using var stream = File.Create(path + "_graph." + extension);
-        IExporter exporter = extension switch
+        IExporter? exporter = extension switch
         {
             "svg" => new SvgExporter
             {

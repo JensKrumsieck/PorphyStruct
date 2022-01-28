@@ -44,7 +44,7 @@ public class MacrocycleViewModel : ViewModel.MacrocycleViewModel
         foreach (var part in Macrocycle.DetectedParts)
         {
             foreach (var a3d in part.Atoms.Select(a => Atoms3D.FirstOrDefault(s => s.Atom.Equals(a))).Where(a3d => a3d != null))
-                a3d.IsValid = true;
+                a3d!.IsValid = true;
 
             var validBonds = Bonds3D.Where(bond => part.Atoms.Count(atom => bond.Bond.Atoms.Contains(atom)) == 2);
             foreach (var bond in validBonds)

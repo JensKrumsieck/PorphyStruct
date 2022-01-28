@@ -30,19 +30,19 @@ public class ItemsVisual3D : ModelVisual3D
         AddItems(ItemsSource);
     }
 
-    private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private void OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         switch (e.Action)
         {
             case NotifyCollectionChangedAction.Add:
-                AddItems(e.NewItems);
+                AddItems(e.NewItems!);
                 break;
             case NotifyCollectionChangedAction.Remove:
-                RemoveItems(e.OldItems);
+                RemoveItems(e.OldItems!);
                 break;
             case NotifyCollectionChangedAction.Replace:
-                RemoveItems(e.OldItems);
-                AddItems(e.NewItems);
+                RemoveItems(e.OldItems!);
+                AddItems(e.NewItems!);
                 break;
             case NotifyCollectionChangedAction.Reset:
                 Children.Clear();

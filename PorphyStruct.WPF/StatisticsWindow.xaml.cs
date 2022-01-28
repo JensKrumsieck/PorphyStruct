@@ -46,9 +46,9 @@ public partial class StatisticsWindow : DefaultWindow
     {
         var vm = (StatisticsViewModel)DataContext;
         foreach (var item in e.AddedItems)
-            vm.SelectedYColumns.Add(item.ToString());
+            vm.SelectedYColumns.Add(item.ToString()!);
         foreach (var item in e.RemovedItems)
-            vm.SelectedYColumns.Remove(item.ToString());
+            vm.SelectedYColumns.Remove(item.ToString()!);
     }
 
     private void Save_OnClick(object sender, RoutedEventArgs e)

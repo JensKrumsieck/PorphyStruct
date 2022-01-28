@@ -50,7 +50,7 @@ public class CalculatorViewModel : BaseViewModel
     }
 
 
-    private async void MOnPropertyChanged(object sender, PropertyChangedEventArgs e) =>
+    private async void MOnPropertyChanged(object? sender, PropertyChangedEventArgs e) =>
         await Task.Run(Recalculate);
 
     public async Task Recalculate()
@@ -87,8 +87,9 @@ public class CalculatorViewModel : BaseViewModel
     {
         //Remove Events
         foreach (var m in ModeVector ?? Enumerable.Empty<Mode>()) m.PropertyChanged -= MOnPropertyChanged;
-        ModeVector.ClearAndNotify();
 
+        if (ModeVector == null) return;
+        ModeVector.ClearAndNotify();
         ModeVector.Add(new Mode("Doming", 1d));
         ModeVector.Add(new Mode("Saddling", 0));
         ModeVector.Add(new Mode("Ruffling", 0));

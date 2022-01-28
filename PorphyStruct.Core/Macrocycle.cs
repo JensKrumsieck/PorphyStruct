@@ -124,7 +124,7 @@ public sealed class Macrocycle : Molecule
         foreach (var atom in data)
         {
             var p = part;
-            IEnumerable<Atom> Func(Atom s) => p?.Where(a => a.BondToByCovalentRadii(s) && a.IsNonCoordinative());
+            IEnumerable<Atom> Func(Atom s) => p?.Where(a => a.BondToByCovalentRadii(s) && a.IsNonCoordinative())!;
             corpus = FuncRingPath(atom, RingSize[MacrocycleType] - 8, Func);
             foreach (var n in corpus.SelectMany(Func))
             {
@@ -142,5 +142,5 @@ public sealed class Macrocycle : Molecule
         var goal = func(atom).FirstOrDefault();
         return goal == null ? new HashSet<Atom>() : DFSUtil.BackTrack(atom, goal, func, size);
     }
-    private IEnumerable<Atom> NonMetalNonDeadEndNeighbors(Atom atom) => NonMetalNeighbors(atom)?.Where(a => !Constants.DeadEnds.Contains(a.Symbol) && a.IsNonCoordinative() && !PDBDataProvider.AminoAcids.ContainsKey(a.Tag ?? ""));
+    private IEnumerable<Atom> NonMetalNonDeadEndNeighbors(Atom atom) => NonMetalNeighbors(atom)?.Where(a => !Constants.DeadEnds.Contains(a.Symbol) && a.IsNonCoordinative() && !PDBDataProvider.AminoAcids.ContainsKey(a.Tag ?? ""))!;
 }

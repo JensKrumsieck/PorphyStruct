@@ -11,7 +11,7 @@ public static class LinqUtil
     /// <param name="list1"></param>
     /// <param name="list2"></param>
     /// <returns></returns>
-    public static bool ScrambledEquals<T>(this IEnumerable<T> list1, IEnumerable<T> list2)
+    public static bool ScrambledEquals<T>(this IEnumerable<T> list1, IEnumerable<T> list2) where T : notnull
     {
         var cnt = new Dictionary<T, int>();
         foreach (var s in list1)

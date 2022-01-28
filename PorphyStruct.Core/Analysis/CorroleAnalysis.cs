@@ -14,7 +14,7 @@ public class CorroleAnalysis : MacrocycleAnalysis
     // ReSharper restore InconsistentNaming
 #pragma warning restore IDE1006
 
-    protected override Atom C1 => Alpha.FirstOrDefault(atom => Neighbors(atom).Any(l => Alpha.Contains(l)));
+    protected override Atom C1 => Alpha.FirstOrDefault(atom => Neighbors(atom).Any(l => Alpha.Contains(l)))!;
 
     protected override List<string> RingAtoms => _RingAtoms;
     protected override string[] AlphaAtoms => _AlphaAtoms;

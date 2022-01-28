@@ -45,7 +45,7 @@ public class IsolationViewModel : BaseViewModel
         DeleteCommand = new RelayCommand<Atom>(a => Isolation.Remove(a));
     }
 
-    private void IsolationOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e) => Validate();
+    private void IsolationOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) => Validate();
 
     private void Validate()
     {

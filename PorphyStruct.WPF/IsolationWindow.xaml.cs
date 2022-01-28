@@ -31,13 +31,15 @@ public partial class IsolationWindow : DefaultWindow
         {
             if (hit.Visual.GetType() != typeof(Atom3D)) continue;
             var av3d = hit.Visual as Atom3D;
-            if (!vm.Isolation.Contains(av3d?.Atom)) vm.Isolation.Add(av3d?.Atom);
+            if (av3d == null) continue;
+            if (!vm.Isolation.Contains(av3d!.Atom)) vm.Isolation.Add(av3d!.Atom);
         }
     }
 
     private void Save_OnClick(object sender, RoutedEventArgs e)
     {
         var file = (DataContext as IsolationViewModel)?.Save();
+        if (file == null) return;
         Context.OpenFile(file);
         Close();
     }
