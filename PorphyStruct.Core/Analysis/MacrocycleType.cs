@@ -1,11 +1,10 @@
-﻿namespace PorphyStruct.Core.Analysis
+﻿namespace PorphyStruct.Core.Analysis;
+
+public enum MacrocycleType
 {
-    public enum MacrocycleType
-    {
-        Porphyrin,
-        Corrole,
-        Norcorrole,
-        Porphycene,
-        Corrphycene
-    }
+    Porphyrin,
+    Corrole,
+    Norcorrole,
+    Porphycene,
+    Corrphycene
 }

@@ -9,13 +9,13 @@ using PorphyStruct.ViewModel;
 using PorphyStruct.ViewModel.IO;
 using ThemeCommons.Controls;
 
-namespace PorphyStruct.WPF
-{
-    public partial class SaveWindow : DefaultWindow, INotifyPropertyChanged
-    {
-        public AnalysisViewModel ViewModel;
+namespace PorphyStruct.WPF;
 
-        public static List<ExportFileType> AvailableFileTypes { get; } = new List<ExportFileType>
+public partial class SaveWindow : DefaultWindow, INotifyPropertyChanged
+{
+    public AnalysisViewModel ViewModel;
+
+    public static List<ExportFileType> AvailableFileTypes { get; } = new List<ExportFileType>
         {
             new ExportFileType("Graph", "ChartScatterPlot", "png"), //0
             new ExportFileType("Graph", "ChartScatterPlotHexBin", "svg"), //1
@@ -34,60 +34,59 @@ namespace PorphyStruct.WPF
             new ExportFileType("Viewport", "ChartScatterPlot", "png") //10
         };
 
-        public SaveWindow(AnalysisViewModel viewModel)
+    public SaveWindow(AnalysisViewModel viewModel)
+    {
+        InitializeComponent();
+        CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+        DataContext = ViewModel = viewModel;
+        Filename = InitialDir;
+    }
+
+    private string _filename;
+    public string Filename
+    {
+        get => _filename;
+        set
         {
-            InitializeComponent();
-            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-            DataContext = ViewModel = viewModel;
-            Filename = InitialDir;
+            _filename = value;
+            OnPropertyChanged();
         }
+    }
 
-        private string _filename;
-        public string Filename
+    private void SaveWindow_OnLoaded(object sender, RoutedEventArgs e) =>
+        SelectItems(new[] { 0, 1, 2, 3, 4, 5, 6 }); //select recommended indices
+
+    private void Cancel_OnClick(object sender, RoutedEventArgs e) => Close();
+
+    private void Save_OnClick(object sender, RoutedEventArgs e)
+    {
+        foreach (ExportFileType t in TypeList.SelectedItems)
         {
-            get => _filename;
-            set
-            {
-                _filename = value;
-                OnPropertyChanged();
-            }
+            if (t.Title == "Viewport")
+                ViewModel.ExportViewport(Filename);
+            else ViewModel.Export(t, Filename);
         }
+        Close();
+    }
 
-        private void SaveWindow_OnLoaded(object sender, RoutedEventArgs e) =>
-            SelectItems(new[] { 0, 1, 2, 3, 4, 5, 6 }); //select recommended indices
-
-        private void Cancel_OnClick(object sender, RoutedEventArgs e) => Close();
-
-        private void Save_OnClick(object sender, RoutedEventArgs e)
+    private void Search_OnClick(object sender, RoutedEventArgs e)
+    {
+        var sfd = new SaveFileDialog
         {
-            foreach (ExportFileType t in TypeList.SelectedItems)
-            {
-                if (t.Title == "Viewport")
-                    ViewModel.ExportViewport(Filename);
-                else ViewModel.Export(t, Filename);
-            }
-            Close();
-        }
+            FileName = InitialDir
+        };
+        if (sfd.ShowDialog(this) != true) return;
+        Filename = sfd.FileName;
+    }
 
-        private void Search_OnClick(object sender, RoutedEventArgs e)
-        {
-            var sfd = new SaveFileDialog
-            {
-                FileName = InitialDir
-            };
-            if (sfd.ShowDialog(this) != true) return;
-            Filename = sfd.FileName;
-        }
+    private string InitialDir => string.IsNullOrEmpty(Settings.Instance.DefaultExportPath) ? Path.ChangeExtension(ViewModel.Parent.Filename, null) : Settings.Instance.DefaultExportPath + ViewModel.Title;
+    public event PropertyChangedEventHandler PropertyChanged;
 
-        private string InitialDir => string.IsNullOrEmpty(Settings.Instance.DefaultExportPath) ? Path.ChangeExtension(ViewModel.Parent.Filename, null) : Settings.Instance.DefaultExportPath + ViewModel.Title;
-        public event PropertyChangedEventHandler PropertyChanged;
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-        private void SelectItems(int[] ids)
-        {
-            foreach (var id in ids)
-                TypeList.SelectedItems.Add(TypeList.ItemsSource.Cast<ExportFileType>().ElementAt(id));
-        }
+    private void SelectItems(int[] ids)
+    {
+        foreach (var id in ids)
+            TypeList.SelectedItems.Add(TypeList.ItemsSource.Cast<ExportFileType>().ElementAt(id));
     }
 }
