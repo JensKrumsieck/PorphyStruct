@@ -35,7 +35,6 @@
     <PackageReference Include="ChemSharp.Molecules.HelixToolkit" Version="1.0.15" />
     <PackageReference Include="JensKrumsieck.ThemeCommons.MaterialDesign" Version="1.0.0" />
     <PackageReference Include="OxyPlot.SkiaSharp.Wpf" Version="2.1.0" />
-    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
