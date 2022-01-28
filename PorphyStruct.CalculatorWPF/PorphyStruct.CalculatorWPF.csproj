@@ -24,8 +24,8 @@
 	  <PublishReadyToRunShowWarnings>True</PublishReadyToRunShowWarnings>
   </PropertyGroup>
   <ItemGroup>
-	  <PackageReference Include="JensKrumsieck.ThemeCommons.MaterialDesign" Version="1.0.0-rc1" />
-	  <PackageReference Include="OxyPlot.SkiaSharp.Wpf" Version="2.1.0-Preview1" />
+	  <PackageReference Include="JensKrumsieck.ThemeCommons.MaterialDesign" Version="1.0.0" />
+	  <PackageReference Include="OxyPlot.SkiaSharp.Wpf" Version="2.1.0" />
   </ItemGroup>
 
 	<ItemGroup>

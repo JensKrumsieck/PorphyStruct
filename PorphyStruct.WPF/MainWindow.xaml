@@ -21,7 +21,7 @@
         Title="PorphyStruct"
         Background="{DynamicResource Background}"
         Icon="Resources/porphystruct.ico"
-        MinWidth="1300" MinHeight="750"
+        MinWidth="1250" MinHeight="650"
         x:Name="Main"
         TitlebarBackground="{DynamicResource TitleBar}" Height="750" Width="1440">
     <commons:DefaultWindow.TitlebarContent>
