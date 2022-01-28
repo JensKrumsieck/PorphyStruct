@@ -1,9 +1,8 @@
-﻿using ChemSharp.Molecules.HelixToolkit;
+﻿using System.Windows;
+using System.Windows.Input;
+using ChemSharp.Molecules.HelixToolkit;
 using HelixToolkit.Wpf;
 using PorphyStruct.ViewModel.Windows;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
 using ThemeCommons.Controls;
 using MacrocycleViewModel = PorphyStruct.ViewModel.Windows.MacrocycleViewModel;
 

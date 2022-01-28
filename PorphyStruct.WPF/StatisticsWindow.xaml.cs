@@ -1,11 +1,10 @@
-﻿using Microsoft.Win32;
+﻿using System.IO;
+using System.Windows;
+using System.Windows.Controls;
+using Microsoft.Win32;
 using OxyPlot.SkiaSharp;
 using PorphyStruct.Core;
 using PorphyStruct.ViewModel;
-using System;
-using System.IO;
-using System.Windows;
-using System.Windows.Controls;
 using ThemeCommons.Controls;
 using Path = System.IO.Path;
 using SvgExporter = PorphyStruct.Core.Plot.SvgExporter;

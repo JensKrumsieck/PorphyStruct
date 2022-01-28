@@ -1,7 +1,6 @@
 ﻿using OxyPlot;
 using OxyPlot.SkiaSharp;
 using SkiaSharp;
-using System.IO;
 
 namespace PorphyStruct.Core.Plot
 {

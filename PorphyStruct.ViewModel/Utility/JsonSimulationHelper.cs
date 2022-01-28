@@ -1,5 +1,4 @@
 ﻿using ChemSharp.Molecules.Properties;
-using System.Collections.Generic;
 
 namespace PorphyStruct.ViewModel.Utility
 {

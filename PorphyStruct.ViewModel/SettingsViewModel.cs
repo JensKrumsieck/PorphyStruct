@@ -1,9 +1,7 @@
-﻿using OxyPlot;
-using PorphyStruct.Core;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
+using OxyPlot;
+using PorphyStruct.Core;
 using TinyMVVM;
 using TinyMVVM.Command;
 

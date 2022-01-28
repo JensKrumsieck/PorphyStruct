@@ -1,7 +1,6 @@
-﻿using HelixToolkit.Wpf;
+﻿using System.Windows;
+using HelixToolkit.Wpf;
 using PorphyStruct.ViewModel;
-using System;
-using System.Windows;
 
 namespace PorphyStruct.WPF
 {

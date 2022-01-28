@@ -1,7 +1,6 @@
-﻿using OxyPlot;
+﻿using System.Reflection;
+using OxyPlot;
 using OxyPlot.Axes;
-using System;
-using System.Reflection;
 
 namespace PorphyStruct.Core.Plot
 {

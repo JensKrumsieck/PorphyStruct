@@ -1,5 +1,4 @@
 ﻿using PorphyStruct.Core.Analysis;
-using System;
 
 namespace PorphyStruct.Core.Extension
 {

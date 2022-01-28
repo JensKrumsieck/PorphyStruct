@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using System.Numerics;
 using ChemSharp.Extensions;
 using ChemSharp.Mathematics;
 using ChemSharp.Molecules;
@@ -6,11 +7,6 @@ using ChemSharp.Molecules.Extensions;
 using PorphyStruct.Core.Analysis.Properties;
 using PorphyStruct.Core.Extension;
 using PorphyStruct.Core.Plot;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Threading.Tasks;
 
 namespace PorphyStruct.Core.Analysis
 {

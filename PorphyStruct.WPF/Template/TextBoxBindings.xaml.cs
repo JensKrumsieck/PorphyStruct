@@ -1,8 +1,8 @@
-﻿using OxyPlot.Series;
-using PorphyStruct.Core.Plot;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using OxyPlot.Series;
+using PorphyStruct.Core.Plot;
 
 namespace PorphyStruct.WPF.Template
 {

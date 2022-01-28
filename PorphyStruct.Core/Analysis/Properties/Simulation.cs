@@ -1,14 +1,10 @@
-﻿using ChemSharp.Mathematics;
+﻿using System.Text.Json.Serialization;
+using ChemSharp.Mathematics;
 using ChemSharp.Molecules.DataProviders;
 using ChemSharp.Molecules.Properties;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 using PorphyStruct.Core.Extension;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace PorphyStruct.Core.Analysis.Properties
 {

@@ -1,8 +1,8 @@
-﻿using Microsoft.Win32;
+﻿using System.Windows;
+using System.Windows.Controls;
+using Microsoft.Win32;
 using PorphyStruct.Core.Analysis;
 using PorphyStruct.ViewModel;
-using System.Windows;
-using System.Windows.Controls;
 using ThemeCommons.Controls;
 using Path = System.IO.Path;
 

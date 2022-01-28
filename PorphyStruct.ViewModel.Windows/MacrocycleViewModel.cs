@@ -1,8 +1,7 @@
-﻿using ChemSharp.Molecules;
-using ChemSharp.Molecules.HelixToolkit;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Media;
+using ChemSharp.Molecules;
+using ChemSharp.Molecules.HelixToolkit;
 
 namespace PorphyStruct.ViewModel.Windows
 {

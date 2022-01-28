@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace PorphyStruct.Core.Extension
+﻿namespace PorphyStruct.Core.Extension
 {
     public sealed class EnumerableEqualityComparer<T> : IEqualityComparer<IEnumerable<T>> where T : IEquatable<T>
     {

@@ -1,7 +1,6 @@
 ﻿using ChemSharp.Molecules;
 using OxyPlot;
 using OxyPlot.Series;
-using System.Linq;
 
 namespace PorphyStruct.Core.Plot
 {

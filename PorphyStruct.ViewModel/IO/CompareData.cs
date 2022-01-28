@@ -1,10 +1,7 @@
-﻿using ChemSharp.Extensions;
+﻿using System.Text.RegularExpressions;
+using ChemSharp.Extensions;
 using ChemSharp.Molecules;
 using PorphyStruct.Core.Plot;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace PorphyStruct.ViewModel.IO
 {

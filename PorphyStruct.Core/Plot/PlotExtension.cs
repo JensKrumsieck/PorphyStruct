@@ -4,10 +4,6 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 using OxyPlot.SkiaSharp;
 using PorphyStruct.Core.Analysis.Properties;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace PorphyStruct.Core.Plot
 {

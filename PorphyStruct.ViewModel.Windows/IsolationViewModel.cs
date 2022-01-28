@@ -1,12 +1,11 @@
-﻿using ChemSharp.Molecules;
+﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.IO;
+using System.Windows.Media;
+using ChemSharp.Molecules;
 using ChemSharp.Molecules.Export;
 using ChemSharp.Molecules.HelixToolkit;
 using PorphyStruct.Core;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.IO;
-using System.Linq;
-using System.Windows.Media;
 using TinyMVVM;
 using TinyMVVM.Command;
 

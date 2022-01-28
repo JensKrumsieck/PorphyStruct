@@ -1,14 +1,10 @@
-﻿using ChemSharp.Extensions;
+﻿using System.Collections.Concurrent;
+using ChemSharp.Extensions;
 using ChemSharp.Molecules;
 using ChemSharp.Molecules.DataProviders;
 using ChemSharp.Molecules.Mathematics;
 using PorphyStruct.Core.Analysis;
 using PorphyStruct.Core.Extension;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PorphyStruct.Core
 {

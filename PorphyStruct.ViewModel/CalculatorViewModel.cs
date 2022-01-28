@@ -1,16 +1,12 @@
-﻿using ChemSharp.Molecules.DataProviders;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using ChemSharp.Molecules.DataProviders;
 using MathNet.Numerics.LinearAlgebra.Double;
 using PorphyStruct.Core;
 using PorphyStruct.Core.Analysis;
 using PorphyStruct.Core.Analysis.Properties;
 using PorphyStruct.Core.Extension;
 using PorphyStruct.Core.Plot;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
 using TinyMVVM;
 using TinyMVVM.Utility;
 

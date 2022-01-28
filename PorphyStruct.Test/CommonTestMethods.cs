@@ -3,10 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PorphyStruct.Core;
 using PorphyStruct.Core.Analysis;
 using PorphyStruct.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PorphyStruct.Test
 {

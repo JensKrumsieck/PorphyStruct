@@ -1,6 +1,5 @@
-﻿using ChemSharp.Molecules.Properties;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+using ChemSharp.Molecules.Properties;
 
 namespace PorphyStruct.ViewModel.Utility
 {

@@ -1,6 +1,4 @@
 ﻿using ChemSharp.Molecules;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace PorphyStruct.Core.Analysis
 {

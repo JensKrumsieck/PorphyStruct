@@ -1,4 +1,9 @@
-﻿using ChemSharp.Mathematics;
+﻿using System.Diagnostics;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Navigation;
+using ChemSharp.Mathematics;
 using ChemSharp.Molecules.HelixToolkit;
 using HelixToolkit.Wpf;
 using Microsoft.Win32;
@@ -6,14 +11,6 @@ using PorphyStruct.Core;
 using PorphyStruct.Core.Analysis;
 using PorphyStruct.ViewModel;
 using PorphyStruct.ViewModel.IO;
-using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Navigation;
 using ThemeCommons.Controls;
 using MacrocycleViewModel = PorphyStruct.ViewModel.Windows.MacrocycleViewModel;
 

@@ -1,4 +1,10 @@
-﻿using ChemSharp.Molecules.DataProviders;
+﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Data;
+using System.Text;
+using System.Text.Json;
+using System.Text.RegularExpressions;
+using ChemSharp.Molecules.DataProviders;
 using ChemSharp.Molecules.Properties;
 using OxyPlot;
 using OxyPlot.Axes;
@@ -8,16 +14,6 @@ using PorphyStruct.Core;
 using PorphyStruct.Core.Extension;
 using PorphyStruct.Core.Plot;
 using PorphyStruct.ViewModel.Utility;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Text.RegularExpressions;
 using TinyMVVM;
 using Element = ChemSharp.Molecules.Element;
 

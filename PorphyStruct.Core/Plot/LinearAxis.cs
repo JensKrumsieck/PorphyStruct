@@ -1,7 +1,7 @@
-﻿using OxyPlot;
-using OxyPlot.Axes;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using OxyPlot;
+using OxyPlot.Axes;
 
 namespace PorphyStruct.Core.Plot
 {
