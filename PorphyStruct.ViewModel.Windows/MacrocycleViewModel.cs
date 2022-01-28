@@ -1,5 +1,5 @@
 ﻿using ChemSharp.Molecules;
-using PorphyStruct.ViewModel.Windows.Visual;
+using ChemSharp.Molecules.HelixToolkit;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Media;
@@ -24,16 +24,16 @@ namespace PorphyStruct.ViewModel.Windows
         /// <summary>
         /// 3D Representation of Atoms
         /// </summary>
-        public ObservableCollection<AtomVisual3D> Atoms3D { get; }
+        public ObservableCollection<Atom3D> Atoms3D { get; }
         /// <summary>
         /// 3D Representation of Bonds
         /// </summary>
-        public ObservableCollection<BondVisual3D> Bonds3D { get; }
+        public ObservableCollection<Bond3D> Bonds3D { get; }
 
         public MacrocycleViewModel(string path) : base(path)
         {
-            Atoms3D = new ObservableCollection<AtomVisual3D>(Macrocycle.Atoms.Select(s => new AtomVisual3D(s) { IsSelected = s.Equals(SelectedAtom) }));
-            Bonds3D = new ObservableCollection<BondVisual3D>(Macrocycle.Bonds.Select(s => new BondVisual3D(s)));
+            Atoms3D = new ObservableCollection<Atom3D>(Macrocycle.Atoms.Select(s => new Atom3D(s) { IsSelected = s.Equals(SelectedAtom) }));
+            Bonds3D = new ObservableCollection<Bond3D>(Macrocycle.Bonds.Select(s => new Bond3D(s)));
         }
 
         protected override void Validate()

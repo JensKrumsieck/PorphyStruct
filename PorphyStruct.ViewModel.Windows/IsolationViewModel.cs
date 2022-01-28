@@ -1,7 +1,7 @@
 ﻿using ChemSharp.Molecules;
 using ChemSharp.Molecules.Export;
+using ChemSharp.Molecules.HelixToolkit;
 using PorphyStruct.Core;
-using PorphyStruct.ViewModel.Windows.Visual;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
@@ -18,11 +18,11 @@ namespace PorphyStruct.ViewModel.Windows
         /// <summary>
         /// 3D Representation of Atoms
         /// </summary>
-        public ObservableCollection<AtomVisual3D> Atoms3D { get; }
+        public ObservableCollection<Atom3D> Atoms3D { get; }
         /// <summary>
         /// 3D Representation of Bonds
         /// </summary>
-        public ObservableCollection<BondVisual3D> Bonds3D { get; }
+        public ObservableCollection<Bond3D> Bonds3D { get; }
 
         private readonly string _path;
 
@@ -40,8 +40,8 @@ namespace PorphyStruct.ViewModel.Windows
             if (string.IsNullOrEmpty(_path)) _path = cycle.Title;
 
             DataObject = cycle;
-            Atoms3D = new ObservableCollection<AtomVisual3D>(DataObject.Atoms.Select(s => new AtomVisual3D(s)));
-            Bonds3D = new ObservableCollection<BondVisual3D>(DataObject.Bonds.Select(s => new BondVisual3D(s)));
+            Atoms3D = new ObservableCollection<Atom3D>(DataObject.Atoms.Select(s => new Atom3D(s)));
+            Bonds3D = new ObservableCollection<Bond3D>(DataObject.Bonds.Select(s => new Bond3D(s)));
             Isolation.CollectionChanged += IsolationOnCollectionChanged;
             DeleteCommand = new RelayCommand<Atom>(a => Isolation.Remove(a));
         }

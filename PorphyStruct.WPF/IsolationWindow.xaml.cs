@@ -1,6 +1,6 @@
-﻿using HelixToolkit.Wpf;
+﻿using ChemSharp.Molecules.HelixToolkit;
+using HelixToolkit.Wpf;
 using PorphyStruct.ViewModel.Windows;
-using PorphyStruct.ViewModel.Windows.Visual;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -30,8 +30,8 @@ namespace PorphyStruct.WPF
             var hits = Viewport3D.Viewport.FindHits(e.GetPosition(Viewport3D));
             foreach (var hit in hits.OrderBy(s => s.Distance))
             {
-                if (hit.Visual.GetType() != typeof(AtomVisual3D)) continue;
-                var av3d = hit.Visual as AtomVisual3D;
+                if (hit.Visual.GetType() != typeof(Atom3D)) continue;
+                var av3d = hit.Visual as Atom3D;
                 if (!vm.Isolation.Contains(av3d?.Atom)) vm.Isolation.Add(av3d?.Atom);
             }
         }
