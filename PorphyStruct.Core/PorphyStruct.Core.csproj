@@ -68,6 +68,6 @@
     <PackageReference Include="ChemSharp.Molecules" Version="1.0.15" />
     <PackageReference Include="JensKrumsieck.TinyMVVM" Version="1.0.0" />
     <PackageReference Include="OxyPlot.Core" Version="2.1.0" />
-    <PackageReference Include="OxyPlot.SkiaSharp" Version="2.1.0-Preview1" />
+    <PackageReference Include="OxyPlot.SkiaSharp" Version="2.1.0" />
   </ItemGroup>
 </Project>
