@@ -90,7 +90,7 @@ public class SettingsViewModel : BaseViewModel
     public static T Get<T>([CallerMemberName] string? propertyName = null)
     {
         var pInfo = typeof(Settings).GetProperty(propertyName!);
-        return (T)pInfo?.GetValue(Settings.Instance);
+        return (T)pInfo!.GetValue(Settings.Instance)!;
     }
 
     private void DeleteColor(OxyColor col) => ComparisonColors.Remove(col);

@@ -42,6 +42,6 @@ public sealed class HorizontalAndVerticalAxisRenderer : OxyPlot.Axes.HorizontalA
     private static T ReflectionHack<T>(string propertyName, Axis owner)
     {
         var pInfo = typeof(Axis).GetProperty(propertyName, BindingFlags.Instance | BindingFlags.NonPublic);
-        return (T)pInfo?.GetValue(owner);
+        return (T)pInfo!.GetValue(owner)!; // will not be null if used properly (line 27)
     }
 }
