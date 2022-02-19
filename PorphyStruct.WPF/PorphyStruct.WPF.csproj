@@ -20,8 +20,8 @@
 	<AssemblyName>PorphyStruct</AssemblyName>
 	<IncludeAllContentForSelfExtract>True</IncludeAllContentForSelfExtract>
 	<PublishSingleFile>True</PublishSingleFile>
-	<!--<SelfContained>True</SelfContained>
-	<RuntimeIdentifier>win-x64</RuntimeIdentifier>-->
+	<SelfContained>True</SelfContained>
+	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	<PublishReadyToRun>True</PublishReadyToRun>
 	<PublishReadyToRunShowWarnings>True</PublishReadyToRunShowWarnings>
   </PropertyGroup>
