@@ -1,0 +1,103 @@
+﻿@page "/"
+@using ChemSharp.Molecules.Properties
+@using PorphyStruct.Core.Plot
+
+<PageTitle>PorphyStruct</PageTitle>
+<div>
+    <div class="align-middle d-inline-block rounded-circle bg-white p-2 shadow-md">
+        <img class="align-middle" src="porphystruct.svg" alt="LOGO" style="width: 32px; height:32px;"/>
+    </div>
+    <div class="d-inline-block align-middle">
+        <h1 class="d-inline align-middle font-weight-light text-white">PorphyStruct</h1>
+        <h2 class="text-white small font-weight-lighter" style="font-size: 0.85rem; margin-top: -.5em">Structural Analysis of Porphyrinoids</h2>
+    </div>
+    <div class="align-top rz-fileupload-choose rz-button rz-button-md btn-light text-center btn-open">
+        <InputFile OnChange="OnFileChange" />
+        <RadzenIcon Icon="folder" style="font-size: 1.5rem"/>
+        <small class="d-block">Open</small>
+    </div>    
+</div>
+<RadzenCard class="mt-3">
+@if(DataContext != null) 
+{
+    <div class="row analysis-row">
+        <div class="col-md-8">
+            @if (DataContext.Items.Any())
+            {
+               <RadzenTabs>
+                    <Tabs>
+                        @foreach(var analysis in DataContext.Items)
+                        {
+                            var properties = analysis.Analysis.Properties;
+                            <RadzenTabsItem Text=@analysis.Analysis.AnalysisColor>
+                                <PlotView Model=analysis.Model style="height: 30vh;"/>
+                                @if (properties != null)
+                                {
+                                    <ul class="list-unstyled">
+                                        @foreach (var param in properties.Simulation.SimulationResult)
+                                        {
+                                            <li>
+                                                <div class="row">
+                                                    <span class="col col-sm-6 col-md-4">@param.Key</span>
+                                                    @{var styling = param.Value < 0 ? "margin-left: -.4rem;" : "";}
+                                                    <span class="col" style=@styling  >@param.Value.ToString("N4") Å</span>
+                                                    <span class="col-md-4">
+                                                        <RadzenProgressBar 
+                                                                Value=@(Math.Round(properties.Simulation.SimulationResultPercentage.First(s => s.Key == param.Key).Value,1)) />
+                                                    </span>
+                                                </div>
+                                            </li>
+                                        }
+                                        <li>
+                                             <div class="row">
+                                               <span class="col col-sm-6 col-md-4">D<sub>oop</sub> (exp.)</span>
+                                               <span class="col">@properties.OutOfPlaneParameter.Value.ToString("N4") Å</span>
+                                             </div>
+                                        </li>
+                                        <li>                                            
+                                             <div class="row">
+                                               <span class="col col-sm-6 col-md-4">D<sub>oop</sub> (sim.)</span>
+                                               <span class="col">@properties.Simulation.OutOfPlaneParameter.Value.ToString("N4") Å</span>
+                                             </div>
+                                        </li>
+                                        <li>
+                                            <div class="row">
+                                               <span class="col col-sm-6 col-md-4">δ<sub>oop</sub></span>
+                                               <span class="col">@((Math.Abs(properties.OutOfPlaneParameter.Value - properties.Simulation.OutOfPlaneParameter.Value)/properties.OutOfPlaneParameter.Value*100).ToString("N2")) %</span>
+                                             </div>
+                                        </li>
+                                    </ul>
+                                }
+                            </RadzenTabsItem>
+                        }
+                    </Tabs>
+                </RadzenTabs>
+            }
+        </div>
+        <div class="col-md-4">
+            <RadzenRadioButtonList @bind-value=DataContext.Macrocycle.MacrocycleType TValue=MacrocycleType class="mt-4" Orientation="Orientation.Vertical">
+                <Items>
+                    @foreach (MacrocycleType value in Enum.GetValues(typeof(MacrocycleType)))
+                    {
+                        <RadzenRadioButtonListItem Text=@value.ToString() Value=value/>
+                    }
+                </Items>
+            </RadzenRadioButtonList>
+            <div>        
+                <em class="mt-3 align-bottom">Use Extended Basis</em>
+                <RadzenSwitch @bind-Value=Settings.Instance.UseExtendedBasis />
+            </div>
+            <br/>
+            <RadzenButton IsBusy=@busy Click=@OnAnalyzeClick Text="Analyze" />
+            <BlazorMolecule Molecule="DataContext.Macrocycle" style="height: 50vh;" />
+        </div>
+    </div>
+} else{
+    <div class="text-center">
+        <img src="porphystruct.svg" alt="LOGO" style="width: 128px; height: 128px;"/>
+        <p>
+            <small>Open .cif, .mol, .mol2, .xyz or .pdb file to start!</small>
+        </p>
+    </div>
+}
+</RadzenCard>

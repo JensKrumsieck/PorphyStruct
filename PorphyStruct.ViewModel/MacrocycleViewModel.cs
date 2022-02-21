@@ -22,6 +22,11 @@ public class MacrocycleViewModel : ListingViewModel<AnalysisViewModel>
         Macrocycle = new Macrocycle(Filename);
     }
 
+    public MacrocycleViewModel(Macrocycle cycle)
+    {
+        Macrocycle = cycle;
+        Filename = cycle.Title;
+    }
     public override string Title => Path.GetFileNameWithoutExtension(Filename);
 
     /// <summary>

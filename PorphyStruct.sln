@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PorphyStruct.ViewModel.Wind
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PorphyStruct.Test", "PorphyStruct.Test\PorphyStruct.Test.csproj", "{326E6FCB-7738-4F16-9591-991348B3D07E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PorphyStruct.Web", "PorphyStruct.Web\PorphyStruct.Web.csproj", "{C5FD966A-141D-4C18-AB9D-64D2098BFE2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,14 @@ Global
 		{326E6FCB-7738-4F16-9591-991348B3D07E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{326E6FCB-7738-4F16-9591-991348B3D07E}.Release|x64.ActiveCfg = Release|x64
 		{326E6FCB-7738-4F16-9591-991348B3D07E}.Release|x64.Build.0 = Release|x64
+		{C5FD966A-141D-4C18-AB9D-64D2098BFE2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5FD966A-141D-4C18-AB9D-64D2098BFE2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5FD966A-141D-4C18-AB9D-64D2098BFE2A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C5FD966A-141D-4C18-AB9D-64D2098BFE2A}.Debug|x64.Build.0 = Debug|Any CPU
+		{C5FD966A-141D-4C18-AB9D-64D2098BFE2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5FD966A-141D-4C18-AB9D-64D2098BFE2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5FD966A-141D-4C18-AB9D-64D2098BFE2A}.Release|x64.ActiveCfg = Release|Any CPU
+		{C5FD966A-141D-4C18-AB9D-64D2098BFE2A}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
