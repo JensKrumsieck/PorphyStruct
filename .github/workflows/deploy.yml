@@ -1,0 +1,31 @@
+name: Deploy on Vercel
+
+on:
+  push:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: wasm-tooling
+      run: dotnet workload install wasm-tools
+    - name: publish
+      run: |
+            cd PorphyStruct.Web
+            dotnet publish -c Release
+    - name: vercel_json
+      run: |
+            cp ./PorphyStruct.Web/vercel.json ./PorphyStruct.Web/bin/Release/net6.0/publish/wwwroot
+    - uses: amondnet/vercel-action@v20.0.0
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        vercel-org-id: ${{ secrets.ORGID}}
+        vercel-project-id: ${{ secrets.PROJECTID}}
+        vercel-args: '--prod --confirm'
+        working-directory: ./PorphyStruct.Web/bin/Release/net6.0/publish/wwwroot
