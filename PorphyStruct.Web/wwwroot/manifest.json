@@ -1,6 +1,6 @@
 {
-  "name": "PorphyStruct.Web",
-  "short_name": "PorphyStruct.Web",
+  "name": "PorphyStruct",
+  "short_name": "PorphyStruct",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",

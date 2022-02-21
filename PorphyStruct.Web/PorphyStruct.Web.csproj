@@ -8,7 +8,6 @@
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
      <RunAOTCompilation>true</RunAOTCompilation>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="ChemSharp.Molecules.Blazor" Version="1.0.15" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.1" />
