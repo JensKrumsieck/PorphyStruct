@@ -91,6 +91,9 @@ a, .btn-link {
     background-color: #1b6ec2;
     border-color: #1861ac;
 }
+.btn-git{
+    display:none;
+}
 @media screen and (min-width: 768px) {
     .btn-open {
         padding: .25em .75em;
