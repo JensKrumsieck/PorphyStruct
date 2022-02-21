@@ -23,7 +23,8 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x      
-    
+    - name: wasm-tooling
+      run: dotnet workload install wasm-tools
     - name: Clean
       run: dotnet clean && dotnet nuget locals all --clear
     - name: Restore dependencies
