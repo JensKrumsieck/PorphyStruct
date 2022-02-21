@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>PorphyStruct - Structural Analysis of Porphyrinoids</title>
+    <base href="/" />
+    <link rel="stylesheet" href="_content/Radzen.Blazor/css/default.css">
+    <link href="css/app.css" rel="stylesheet" />
+    <link href="PorphyStruct.Web.styles.css" rel="stylesheet" />
+    <link href="manifest.json" rel="manifest" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
+</head>
+
+<body>
+    <div id="app">
+        <div class="center d-flex rounded-circle bg-white shadow-md" style="height: 35vh; width: 35vh; justify-content: center;">
+            <img class="center" src="porphystruct.svg" style="height: 30vh; width: 30vh; vertical-align: middle; text-align: center;" />
+            <p class="center text-white" style="top: 120%; font-size: 2rem;">Loading...</p>
+        </div>
+        
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
+    <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+    <script src="_content/ChemSharp.Molecules.Blazor/chemsharp.bundle.js"></script>
+</body>
+
+</html>

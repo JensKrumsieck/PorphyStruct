@@ -80,6 +80,20 @@ public class Simulation
     public KeyValueProperty OutOfPlaneParameter { get; set; } = new KeyValueProperty { Key = "Doop (sim.)", Unit = "Å" };
 
     /// <summary>
+    /// Gets Parameters as Percentage
+    /// </summary>
+    public List<KeyValueProperty> SimulationResultPercentage
+    {
+        get => SimulationResult.Select(s =>
+                                new KeyValueProperty()
+                                {
+                                    Value = Math.Abs(s.Value) / SimulationResult.Sum(v => Math.Abs(v.Value)) * 100,
+                                    Key = s.Key,
+                                    Unit = " %"
+                                }).ToList();
+    }
+
+    /// <summary>
     /// Build Displacement Matrix from Array of Paths (in Resources)
     /// </summary>
     /// <param name="res"></param>
