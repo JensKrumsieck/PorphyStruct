@@ -74,7 +74,8 @@
                 </RadzenTabs>
             }
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4">            
+            <BlazorMolecule Molecule="DataContext.Macrocycle" style="height: 50vh;" />
             <RadzenRadioButtonList @bind-value=DataContext.Macrocycle.MacrocycleType TValue=MacrocycleType class="mt-4" Orientation="Orientation.Vertical">
                 <Items>
                     @foreach (MacrocycleType value in Enum.GetValues(typeof(MacrocycleType)))
@@ -89,7 +90,6 @@
             </div>
             <br/>
             <RadzenButton IsBusy=@busy Click=@OnAnalyzeClick Text="Analyze" />
-            <BlazorMolecule Molecule="DataContext.Macrocycle" style="height: 50vh;" />
         </div>
     </div>
 } else{
