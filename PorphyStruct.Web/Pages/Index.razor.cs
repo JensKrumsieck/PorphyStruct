@@ -9,6 +9,12 @@ public partial class Index
 {
     public MacrocycleViewModel? DataContext;
     bool busy;
+
+    protected override void OnInitialized()
+    {
+        Settings.Instance.Font = "Montserrat";
+        base.OnInitialized();
+    }
     async Task OnFileChange(InputFileChangeEventArgs args)
     {
         var file = args.File;

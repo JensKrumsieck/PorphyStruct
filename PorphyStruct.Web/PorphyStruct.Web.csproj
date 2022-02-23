@@ -8,11 +8,53 @@
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
      <RunAOTCompilation>true</RunAOTCompilation>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Montserrat-Black.ttf" />
+    <None Remove="Resources\Montserrat-BlackItalic.ttf" />
+    <None Remove="Resources\Montserrat-Bold.ttf" />
+    <None Remove="Resources\Montserrat-BoldItalic.ttf" />
+    <None Remove="Resources\Montserrat-ExtraBold.ttf" />
+    <None Remove="Resources\Montserrat-ExtraBoldItalic.ttf" />
+    <None Remove="Resources\Montserrat-ExtraLight.ttf" />
+    <None Remove="Resources\Montserrat-ExtraLightItalic.ttf" />
+    <None Remove="Resources\Montserrat-Italic.ttf" />
+    <None Remove="Resources\Montserrat-Light.ttf" />
+    <None Remove="Resources\Montserrat-LightItalic.ttf" />
+    <None Remove="Resources\Montserrat-Medium.ttf" />
+    <None Remove="Resources\Montserrat-MediumItalic.ttf" />
+    <None Remove="Resources\Montserrat-Regular.ttf" />
+    <None Remove="Resources\Montserrat-SemiBold.ttf" />
+    <None Remove="Resources\Montserrat-SemiBoldItalic.ttf" />
+    <None Remove="Resources\Montserrat-Thin.ttf" />
+    <None Remove="Resources\Montserrat-ThinItalic.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Montserrat-Black.ttf" />
+    <EmbeddedResource Include="Resources\Montserrat-BlackItalic.ttf" />
+    <EmbeddedResource Include="Resources\Montserrat-Bold.ttf" />
+    <EmbeddedResource Include="Resources\Montserrat-BoldItalic.ttf" />
+    <EmbeddedResource Include="Resources\Montserrat-ExtraBold.ttf" />
+    <EmbeddedResource Include="Resources\Montserrat-ExtraBoldItalic.ttf" />
+    <EmbeddedResource Include="Resources\Montserrat-ExtraLight.ttf" />
+    <EmbeddedResource Include="Resources\Montserrat-ExtraLightItalic.ttf" />
+    <EmbeddedResource Include="Resources\Montserrat-Italic.ttf" />
+    <EmbeddedResource Include="Resources\Montserrat-Light.ttf" />
+    <EmbeddedResource Include="Resources\Montserrat-LightItalic.ttf" />
+    <EmbeddedResource Include="Resources\Montserrat-Medium.ttf" />
+    <EmbeddedResource Include="Resources\Montserrat-MediumItalic.ttf" />
+    <EmbeddedResource Include="Resources\Montserrat-Regular.ttf" />
+    <EmbeddedResource Include="Resources\Montserrat-SemiBold.ttf" />
+    <EmbeddedResource Include="Resources\Montserrat-SemiBoldItalic.ttf" />
+    <EmbeddedResource Include="Resources\Montserrat-Thin.ttf" />
+    <EmbeddedResource Include="Resources\Montserrat-ThinItalic.ttf" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ChemSharp.Molecules.Blazor" Version="1.0.15" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.1" PrivateAssets="all" />
-    <PackageReference Include="OxyPlot.SkiaSharp.Blazor" Version="1.0.0-beta.1" />
+    <PackageReference Include="OxyPlot.SkiaSharp.Blazor" Version="1.0.0-beta.2" />
     <PackageReference Include="Radzen.Blazor" Version="3.15.5" />
   </ItemGroup>
 
