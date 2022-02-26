@@ -31,7 +31,7 @@ public sealed class MarginBarSeries : BarSeries
             ActualBarRectangles.Add(rect);
 
             RenderItem(rc, topValue, categoryValue, actualBarWidth, item, rect);
-            RenderLabel(rc, item, x, topValue, categoryValue, categoryValue + actualBarWidth);
+            RenderLabel(rc, item, x - (Math.Sign(value) * actualBarWidth), topValue, categoryValue, categoryValue + actualBarWidth);
             Manager.IncreaseCurrentBarOffset(categoryIndex, actualBarWidth);
         }
         RenderSpacing(rc, actualMargin / 2, ValidItems);

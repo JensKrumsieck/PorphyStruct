@@ -18,7 +18,7 @@ public partial class Index
     async Task OnFileChange(InputFileChangeEventArgs args)
     {
         var file = args.File;
-        var molecule = await BlazorMoleculeFactory.CreateAsync(file);
+        var molecule = await BlazorMoleculeFactory.CreateAsync(file, 81920000L);
         var cycle = new Macrocycle(molecule.AtomDataProvider);
         DataContext = new(cycle);
     }
