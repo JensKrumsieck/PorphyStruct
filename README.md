@@ -7,6 +7,8 @@
 </p>
 <p align="center">
   <a href="https://github.com/JensKrumsieck/PorphyStruct/releases/latest"><strong>Download</strong></a>
+    ·    
+    <a href="https://porphystruct.org/docs">Documentation</a>
     ·
     <a href="https://github.com/JensKrumsieck/PorphyStruct/issues">Report Bug</a>
     ·
@@ -30,6 +32,12 @@
 _PorphyStruct_, a new digital tool for the analysis of non-planar distortion modes of different porphyrinoids - The program makes use of the normal-coordinate structure decomposition technique (NSD) and employs sets of normal modes equivalent to those established for porphyrins in order to describe the out-of-plane dislocation pattern of perimeter atoms from corroles, norcorroles, porphycenes and other porphyrinoids quantitatively and in analogy to the established terminology.
 
 <a href="https://github.com/JensKrumsieck/PorphyStruct/releases/latest"><strong>Download Now!</strong></a>
+
+<a href="https://app.porphystruct.org">Web Version (Beta)</a>
+
+<a href="https://porphystruct.org/docs">Documentation</a>
+
+<a href="https://porphystruct.org">Website</a>
 
 ## Table Of Contents
 * [Introduction](https://github.com/JensKrumsieck/PorphyStruct#introduction)
