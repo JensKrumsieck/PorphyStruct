@@ -90,7 +90,7 @@
             <StackPanel Margin="10">
                 <Image Source="Resources/porphystruct.png" Width="120"/>
                 <TextBlock FontSize="40" TextAlignment="Center" FontWeight="Light" Margin="0 10 0 0">
-                        PorphyStruct
+                        <Hyperlink NavigateUri="http://porphystruct.org" RequestNavigate="URL_OnClicked">PorphyStruct</Hyperlink>
                         <LineBreak/>
                         <Run FontSize="16">
                             Conformational Analysis of Porphyrinoids
