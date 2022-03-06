@@ -1,0 +1,25 @@
+{
+  "name": "porphystruct-web",
+  "version": "1.0.0",
+  "main": "index.js",
+  "description": "",
+  "scripts": {
+    "build:Debug": "webpack --stats-error-details && postcss Styles.scss -o ..\\wwwroot\\css\\app.min.css --watch",
+    "build:Release": "webpack && postcss Styles.scss -o ..\\wwwroot\\css\\app.min.css"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@fontsource/source-sans-pro": "^4.5.3",
+    "autoprefixer": "^10.4.2",
+    "babel-loader": "^8.2.3",
+    "css-loader": "^6.7.0",
+    "postcss": "^8.4.7",
+    "postcss-cli": "^9.1.0",
+    "style-loader": "^3.3.1",
+    "tailwindcss": "^3.0.23",
+    "ts-loader": "^9.2.6",
+    "webpack": "^5.64.2",
+    "webpack-cli": "^4.9.1"
+  }
+}

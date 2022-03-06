@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PorphyStruct.ViewModel.Wind
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PorphyStruct.Test", "PorphyStruct.Test\PorphyStruct.Test.csproj", "{326E6FCB-7738-4F16-9591-991348B3D07E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PorphyStruct.Web", "PorphyStruct.Web\PorphyStruct.Web.csproj", "{C5FD966A-141D-4C18-AB9D-64D2098BFE2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PorphyStruct.Web", "PorphyStruct.Web\PorphyStruct.Web.csproj", "{C5FD966A-141D-4C18-AB9D-64D2098BFE2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -4,8 +4,8 @@ public sealed class EnumerableEqualityComparer<T> : IEqualityComparer<IEnumerabl
 {
     public bool Equals(IEnumerable<T>? x, IEnumerable<T>? y)
     {
-        if(x == null && y == null) return true;
-        if(x == null || y == null) return false;
+        if (x == null && y == null) return true;
+        if (x == null || y == null) return false;
         return x.ScrambledEquals(y);
     }
 

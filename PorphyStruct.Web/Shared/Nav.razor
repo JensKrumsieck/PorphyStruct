@@ -1,0 +1,14 @@
+﻿<div class="bg-dark px-2">
+    <nav class="container mx-auto flex flex-wrap justify-between">
+        <div class="logo py-3 flex">
+            <img src="/porphystruct.svg" width="42"/>
+            <span class="font-semibold text-3xl ml-2 self-center text-white">PorphyStruct</span>
+        </div>
+        @ChildContent
+    </nav>
+</div>
+
+@code {
+  [Parameter]
+  public RenderFragment ChildContent { get; set; }
+}

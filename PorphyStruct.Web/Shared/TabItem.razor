@@ -1,0 +1,23 @@
+﻿<div class="@(Parent.ActivePage == this? "": "hidden")">
+    @ChildContent
+</div>
+
+@code{
+
+    [CascadingParameter]
+    private TabControl Parent { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string Header { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (Parent == null)
+            throw new ArgumentNullException(nameof(Parent));
+        base.OnInitialized();
+        Parent.AddPage(this);
+    }
+}

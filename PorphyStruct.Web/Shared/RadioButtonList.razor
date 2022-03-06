@@ -1,0 +1,27 @@
+﻿@using System.Diagnostics
+@typeparam TValue where TValue: struct, IConvertible
+
+<div class="flex flex-wrap gap-8">
+@foreach (TValue value in Enum.GetValues(typeof(TValue)))
+{
+     <label for="radio-@value" class="inline-flex items-center mt-3">
+         <input name="radio-@Id" id="radio-@value" value=@value checked=@(Value.Equals(value)) type="radio" class="form-radio h-5 w-5 text-gray" @onchange="OnChangeHandler"/>
+         <span class="ml-2 text-gray">@value</span>
+    </label>
+}
+</div>
+@code{
+    Guid Id = Guid.NewGuid();
+
+    [Parameter] 
+    public TValue Value { get; set; }
+
+    [Parameter]
+    public EventCallback<TValue> ValueChanged { get; set; }
+
+    async Task OnChangeHandler(ChangeEventArgs args)
+    {
+        Enum.TryParse<TValue>((string)args.Value, out var NewValue);
+        await ValueChanged.InvokeAsync(NewValue);
+    }
+}

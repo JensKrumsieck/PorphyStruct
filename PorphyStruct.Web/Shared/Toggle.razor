@@ -1,0 +1,26 @@
+﻿<label for="toggle-@Id" class="flex items-center cursor-pointer relative mb-4">
+    <input type="checkbox" id="toggle-@Id" value=@Value class="sr-only" @onchange=OnChangeHandler />
+    <div class="toggle-bg bg-gray border-2 border-gray h-6 w-11 rounded-full"></div>
+    <span class="whitespace-nowrap ml-3 text-sm font-medium @(DarkMode ? "text-white" : "text-dark")">@Label</span>
+</label>
+
+@code{
+    [Parameter]
+    public string Label { get; set; }
+
+    [Parameter] 
+    public bool Value { get; set; }
+
+    [Parameter]
+    public bool DarkMode { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> ValueChanged { get; set; }
+
+    string Id => Label.Replace(' ', '-');
+
+    async Task OnChangeHandler(ChangeEventArgs args)
+    {
+        await ValueChanged.InvokeAsync((bool)(args.Value??false));
+    }
+}

@@ -1,0 +1,33 @@
+﻿<div class="tab-control">
+    <ul class="flex justify-start items-center my-4">
+    @foreach(var item in Pages)
+    {
+        <li class="cursor-pointer py-2 px-4 text-gray border-b-8 @(item == ActivePage ? "border-blue font-bold" : "border-off-white")" @onclick="() => ActivatePage(item)">
+            @item.Header
+        </li>
+    }
+    </ul>
+    <CascadingValue Value="this">
+      @ChildContent
+    </CascadingValue>
+</div>
+@code{
+
+    public TabItem ActivePage { get; private set; }
+    List<TabItem> Pages = new List<TabItem>();
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    public void AddPage(TabItem tabPage)
+    {
+        Pages.Add(tabPage);
+        if (Pages.Count == 1)
+            ActivePage = tabPage;
+        StateHasChanged();
+    }
+
+    void ActivatePage(TabItem Page) {
+        ActivePage = Page;    
+    }
+}

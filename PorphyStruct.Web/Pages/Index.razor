@@ -3,101 +3,63 @@
 @using PorphyStruct.Core.Plot
 
 <PageTitle>PorphyStruct - Structural Analysis of Porphyrinoids</PageTitle>
-<div>
-    <div class="align-middle d-inline-block rounded-circle bg-white p-2 shadow-md">
-        <img class="align-middle" src="porphystruct.svg" alt="LOGO" style="width: 32px; height:32px;"/>
-    </div>
-    <div class="d-inline-block align-middle">
-        <h1 class="d-inline align-middle font-weight-light text-white">PorphyStruct</h1>
-        <h2 class="text-white small font-weight-lighter" style="font-size: 0.85rem; margin-top: -.5em">Structural Analysis of Porphyrinoids</h2>
-    </div>
-    <div class="align-top rz-fileupload-choose rz-button rz-button-md btn-light text-center btn-open">
-        <InputFile OnChange="OnFileChange" />
-        <RadzenIcon Icon="folder" style="font-size: 1.5rem"/>
-        <small class="d-block">Open</small>
-    </div>    
-</div>
-<RadzenCard class="mt-3">
-@if(DataContext != null) 
-{
-    <div class="row analysis-row">
-        <div class="col-md-8">
-            @if (DataContext.Items.Any())
-            {
-               <RadzenTabs>
-                    <Tabs>
-                        @foreach(var analysis in DataContext.Items)
+<Nav>
+        <ul class="mt-4 flex h-10 items-between gap-8 md:mb-0 mb-4">
+        @if (DataContext != null)
+        {
+            <li class="pt-2 px-4 text-white text-sm bg-dark-blue rounded">@DataContext.Filename</li>
+        }
+            <li class="pt-2">
+                <Toggle @bind-Value=Settings.Instance.UseExtendedBasis Label="Use Extended Basis" DarkMode/>
+            </li>
+            <li class="relative w-36">
+                <Button>
+                    <svg fill="#FFF" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
+                    </svg>
+                    <span class="ml-2">Open File</span>
+                </Button>
+                <InputFile OnChange="OnFileChange" class="top-0 cursor-pointer absolute block opacity-0 pin-r pin-t w-full h-full"/>
+            </li>
+        </ul>
+</Nav>
+
+<div class="container mx-auto px-2">  
+    @if(DataContext != null)
+    {
+        <RadioButtonList TValue=MacrocycleType @bind-Value=DataContext.Macrocycle.MacrocycleType/>
+        <Button IsBusy=@busy Click="@OnAnalyzeClick">Analyze</Button>
+        <div class="flex flex-wrap-reverse">
+            <div class="w-full md:w-1/2">
+                @if (DataContext.Items.Any())
+                {            
+                    <TabControl>
+                        @foreach(var item in DataContext.Items)
                         {
-                            var properties = analysis.Analysis.Properties;
-                            <RadzenTabsItem Text=@analysis.Analysis.AnalysisColor>
-                                <PlotView Model=analysis.Model style="height: 30vh;"/>
-                                @if (properties != null)
-                                {
-                                    <ul class="list-unstyled">
-                                        @foreach (var param in properties.Simulation.SimulationResult)
-                                        {
-                                            <li>
-                                                <div class="row">
-                                                    <span class="col col-sm-6 col-md-4">@param.Key</span>
-                                                    @{var styling = param.Value < 0 ? "margin-left: -.4rem;" : "";}
-                                                    <span class="col" style=@styling  >@param.Value.ToString("N4") Å</span>
-                                                    <span class="col-md-4">
-                                                        <RadzenProgressBar 
-                                                                Value=@(Math.Round(properties.Simulation.SimulationResultPercentage.First(s => s.Key == param.Key).Value,1)) />
-                                                    </span>
-                                                </div>
-                                            </li>
-                                        }
-                                        <li>
-                                             <div class="row">
-                                               <span class="col col-sm-6 col-md-4">D<sub>oop</sub> (exp.)</span>
-                                               <span class="col">@properties.OutOfPlaneParameter.Value.ToString("N4") Å</span>
-                                             </div>
+                            var properties = item.Analysis.Properties;
+                            <TabItem Header=@item.Analysis.AnalysisColor>
+                               <PlotView Model=item.Model style="height: 30vh;"/>
+                               <ul> 
+                                    @foreach (var param in properties.Simulation.SimulationResult)
+                                    {
+                                        <li class="grid grid-cols-2 gap-4">
+                                            <p class="w-auto">@param.Key @param.Value.ToString("N4") Å</p>
+                                            @{
+                                                var value = Math.Round(properties.Simulation.SimulationResultPercentage.First(s => s.Key == param.Key).Value, 2);
+                                            }
+                                            <Progress Value=@value />
                                         </li>
-                                        <li>                                            
-                                             <div class="row">
-                                               <span class="col col-sm-6 col-md-4">D<sub>oop</sub> (sim.)</span>
-                                               <span class="col">@properties.Simulation.OutOfPlaneParameter.Value.ToString("N4") Å</span>
-                                             </div>
-                                        </li>
-                                        <li>
-                                            <div class="row">
-                                               <span class="col col-sm-6 col-md-4">δ<sub>oop</sub></span>
-                                               <span class="col">@((Math.Abs(properties.OutOfPlaneParameter.Value - properties.Simulation.OutOfPlaneParameter.Value)/properties.OutOfPlaneParameter.Value*100).ToString("N2")) %</span>
-                                             </div>
-                                        </li>
-                                    </ul>
-                                }
-                            </RadzenTabsItem>
+                                    }
+                               </ul>
+                            </TabItem>    
                         }
-                    </Tabs>
-                </RadzenTabs>
-            }
-        </div>
-        <div class="col-md-4">            
-            <BlazorMolecule Molecule="DataContext.Macrocycle" style="height: 50vh;" />
-            <RadzenRadioButtonList @bind-value=DataContext.Macrocycle.MacrocycleType TValue=MacrocycleType class="mt-4" Orientation="Orientation.Vertical">
-                <Items>
-                    @foreach (MacrocycleType value in Enum.GetValues(typeof(MacrocycleType)))
-                    {
-                        <RadzenRadioButtonListItem Text=@value.ToString() Value=value/>
-                    }
-                </Items>
-            </RadzenRadioButtonList>
-            <div>        
-                <em class="mt-3 align-bottom">Use Extended Basis</em>
-                <RadzenSwitch @bind-Value=Settings.Instance.UseExtendedBasis />
+                    </TabControl>
+                }
             </div>
-            <br/>
-            <RadzenButton IsBusy=@busy Click=@OnAnalyzeClick Text="Analyze" />
+            <div class="w-full md:w-1/2">
+                <BlazorMolecule Molecule="DataContext.Macrocycle" style="height: 50vh;" />
+            </div>
         </div>
-    </div>
-} else{
-    <div class="text-center">
-        <img src="porphystruct.svg" alt="LOGO" style="width: 128px; height: 128px;"/>
-        <p>
-            <small>Open .cif, .mol, .mol2, .xyz or .pdb file to start!</small>
-        </p>
-    </div>
-}
-</RadzenCard>
+    }
+</div>

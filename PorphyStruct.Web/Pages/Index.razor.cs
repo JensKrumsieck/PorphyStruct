@@ -19,7 +19,7 @@ public partial class Index
     {
         var file = args.File;
         var molecule = await BlazorMoleculeFactory.CreateAsync(file, 81920000L);
-        var cycle = new Macrocycle(molecule.AtomDataProvider);
+        var cycle = new Macrocycle(molecule.AtomDataProvider) { Title = file.Name };
         DataContext = new(cycle);
     }
 

@@ -1,0 +1,16 @@
+﻿<div class="w-full bg-gray rounded-full h-5 relative">
+    <div class="bg-blue rounded-full h-5" style="width: @(Math.Round(Value,0))%;">
+    </div>
+    @if (ShowValue)
+    {
+        <div class="absolute text-white text-center w-full z-2 text-sm top-0 h-5">@Value %</div>    
+    }
+</div>
+
+@code{
+    [Parameter] 
+    public double Value { get; set; }
+
+    [Parameter]
+    public bool ShowValue { get; set; } = true;
+}
