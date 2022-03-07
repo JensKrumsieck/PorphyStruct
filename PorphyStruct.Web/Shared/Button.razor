@@ -1,7 +1,15 @@
-﻿<button class="py-2 px-4 w-full inline-flex items-center rounded bg-blue hover:bg-dark-blue text-white cursor-pointer" @onclick="@OnClick">
+﻿<button class="py-2 px-4 inline-flex text-white items-center rounded bg-blue hover:bg-dark-blue cursor-pointer w-36" @onclick="@OnClick">
     @if (IsBusy)
     {
-        <p>...</p>
+       <div class="inline-flex place-content-center">
+           <div class="animate-spin mr-2 h-5 w-5 self-center">
+               <svg class="text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" >
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+           </div>
+           <span class="self-center">Processing...</span>
+       </div>
     }
     else
     {
@@ -10,6 +18,7 @@
 </button>
 
 @code{
+
     [Parameter]
     public RenderFragment ChildContent { get; set; }
 
@@ -18,24 +27,24 @@
 
     [Parameter]
     public bool IsBusy { get; set; }
-    
-    bool clicking;
-    public async Task OnClick(MouseEventArgs args)
-        {
-            if (clicking)
-            {
-                return;
-            }
 
-            try
-            {
-                clicking = true;
-                await Click.InvokeAsync(args);
-            }
-            finally
-            {
-                clicking = false;
-            }
+    public async Task OnClick(MouseEventArgs args)
+    {
+        if (IsBusy)
+        {
+            return;
         }
+        try
+        {
+            IsBusy = true;
+            StateHasChanged();
+            await Task.Delay(1);
+            await Click.InvokeAsync(args);
+         }
+        finally
+        {            
+            IsBusy = false;
+        }
+     }
 
 }

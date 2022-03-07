@@ -4,6 +4,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="PorphyStruct, Analysis, Conformation, Corrole, Porphyrin, Corrphycene, Norcorrole, Porphycene, Isoporphyrin" />
+    <meta name="description" content="Webversion of PorphyStruct - a new digital tool for the analysis of non-planar distortion modes of different porphyrinoids"/>
+    <meta name="og:site_name" content="PorphyStruct - Structural Analysis of Porphyrinoids"/>
+    <link rel="canonical" href="https://app.porphystruct.org"/>
     <title>PorphyStruct - Structural Analysis of Porphyrinoids</title>
     <base href="/" />
     <link href="css/app.min.css" rel="stylesheet" />
@@ -15,11 +19,10 @@
 
 <body>
     <div id="app">
-        <div class="flex center" style="height: 35vh; width: 35vh; justify-content: center;">
-            <img class="center" src="porphystruct.svg" style="height: 30vh; width: 30vh; vertical-align: middle; text-align: center;" />
-            <p class="center text-white" style="top: 120%; font-size: 2rem;">Loading...</p>
+        <div>
+            <img class="animate-bounce text-center h-[50vh] max-w-full mx-auto mt-16" src="porphystruct.svg" />
+            <p class="text-center text-4xl mx-auto">Loading...</p>
         </div>
-
     </div>
 
     <div id="blazor-error-ui">
@@ -29,7 +32,6 @@
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
-    <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
     <script src="_content/ChemSharp.Molecules.Blazor/chemsharp.bundle.js"></script>
     <script src="font/font.js"></script>
 </body>

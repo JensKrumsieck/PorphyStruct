@@ -8,7 +8,6 @@ namespace PorphyStruct.Web.Pages;
 public partial class Index
 {
     public MacrocycleViewModel? DataContext;
-    bool busy;
 
     protected override void OnInitialized()
     {
@@ -23,10 +22,5 @@ public partial class Index
         DataContext = new(cycle);
     }
 
-    async Task OnAnalyzeClick()
-    {
-        busy = true;
-        await DataContext?.Analyze()!;
-        busy = false;
-    }
+    async Task OnAnalyzeClick() => await DataContext?.Analyze()!;
 }
