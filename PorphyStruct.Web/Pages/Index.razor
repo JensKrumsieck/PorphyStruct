@@ -13,14 +13,18 @@
                 <Toggle @bind-Value=Settings.Instance.UseExtendedBasis Label="Use Extended Basis" DarkMode/>
             </li>
             <li class="relative w-36">
-                <Button>
+                <Button IsBusy=@uploadBusy>
                     <svg fill="#FFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0 0h24v24H0z" fill="none"/>
                         <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
                     </svg>
                     <span class="ml-2">Open File</span>
                 </Button>
-                <InputFile OnChange="OnFileChange" class="top-0 cursor-pointer absolute block opacity-0 pin-r pin-t w-full h-full"/>
+                <Progress Value=@(Math.Round((double)UploadValue, 1)) 
+                    Class=@((UploadValue < 99 && UploadValue != 0 ? "" : "hidden")) 
+                    ShowValue=false 
+                    Style="height: 2px; margin-top: 0.25rem;"/>
+                <input type="file" @ref=inputFile @onchange="OnFileChange" class="top-0 cursor-pointer absolute block opacity-0 pin-r pin-t w-full h-full" />
             </li>
         </ul>
 </Nav>

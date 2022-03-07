@@ -1,9 +1,9 @@
-﻿<div class="w-full bg-gray rounded-full h-5 relative">
-    <div class="bg-blue rounded-full h-5" style="width: @(Math.Round(Value,0))%;">
+﻿<div class="w-full bg-gray rounded-full h-5 relative @Class" style=@Style>
+    <div class="bg-blue rounded-full h-full" style="width: @(Math.Round(Value,0))%;">
     </div>
     @if (ShowValue)
     {
-        <div class="absolute text-white text-center w-full z-2 text-sm top-0 h-5">@Value %</div>    
+        <div class="absolute text-white text-center w-full z-2 text-sm top-0 h-full">@Value %</div>    
     }
 </div>
 
@@ -13,4 +13,10 @@
 
     [Parameter]
     public bool ShowValue { get; set; } = true;
+
+    [Parameter]
+    public string Class { get; set; }
+
+    [Parameter]
+    public string Style { get; set; }
 }
