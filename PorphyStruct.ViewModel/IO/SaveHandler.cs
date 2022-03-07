@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.IO;
 using ChemSharp.Molecules;
 using ChemSharp.Molecules.Export;
 using OxyPlot;
