@@ -48,7 +48,7 @@ public partial class Index
             };
             using MemoryStream memoryStream = await file.CreateMemoryStreamAsync(4096);
             molecule = await MoleculeFactory.CreateFromStreamAsync(memoryStream, "cif");
-            var cycle = new Macrocycle(molecule.AtomDataProvider) { Title = fileInfo.Name};            
+            var cycle = new Macrocycle(molecule.AtomDataProvider) { Title = fileInfo.Name };
             DataContext = new(cycle);
             break; //stop on first
         }
