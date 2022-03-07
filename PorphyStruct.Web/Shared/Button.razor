@@ -1,4 +1,4 @@
-﻿<button class="py-2 px-4 inline-flex text-white items-center rounded bg-blue hover:bg-dark-blue cursor-pointer w-36" @onclick="@OnClick">
+﻿<button class="py-2 px-4 inline-flex text-white items-center rounded bg-blue hover:bg-dark-blue cursor-pointer w-36 @Class" @onclick="@OnClick" title=@Title>
     @if (IsBusy)
     {
        <div class="inline-flex place-content-center">
@@ -27,6 +27,12 @@
 
     [Parameter]
     public bool IsBusy { get; set; }
+    
+    [Parameter]
+    public string Class { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
 
     public async Task OnClick(MouseEventArgs args)
     {

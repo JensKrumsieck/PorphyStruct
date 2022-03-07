@@ -4,17 +4,17 @@
 
 <PageTitle>PorphyStruct - Structural Analysis of Porphyrinoids</PageTitle>
 <Nav>
-        <ul class="mt-4 flex h-10 items-between gap-8 md:mb-0 mb-4">
         @if (DataContext != null)
         {
-            <li class="pt-2 px-4 text-white text-sm bg-dark-blue rounded">@DataContext.Filename</li>
+            <div class="pt-2 px-4 text-white text-sm bg-dark-blue rounded h-10 mt-4">@DataContext.Filename</div>
         }
+        <ul class="mt-4 flex flex-wrap items-between gap-8 md:mb-0 mb-4">        
             <li class="pt-2">
                 <Toggle @bind-Value=Settings.Instance.UseExtendedBasis Label="Use Extended Basis" DarkMode/>
             </li>
             <li class="relative w-36">
                 <Button>
-                    <svg fill="#FFF" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+                    <svg fill="#FFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0 0h24v24H0z" fill="none"/>
                         <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
                     </svg>
@@ -25,7 +25,7 @@
         </ul>
 </Nav>
 
-<div class="container mx-auto px-2">  
+<div class="container mx-auto px-2 overflow-x-hidden">  
     @if(DataContext != null)
     {
         <RadioButtonList TValue=MacrocycleType @bind-Value=DataContext.Macrocycle.MacrocycleType/>
@@ -45,23 +45,46 @@
             <div class="w-full md:w-1/2">
                 @if (DataContext.Items.Any())
                 {            
-                    <TabControl>
+                    <TabControl @ref=Tabs>
                         @foreach(var item in DataContext.Items)
                         {
                             var properties = item.Analysis.Properties;
                             <TabItem Header=@item.Analysis.AnalysisColor>
-                               <PlotView Model=item.Model style="height: 30vh;"/>
+                               <div class="relative">
+                                   <PlotView Model=item.Model class="h-[50vh]" />                               
+                                   <Button Click=@DownloadImage Class="absolute top-2 right-2 z-20 w-auto px-2 rounded-full" Title="Download as PNG">
+                                        <svg  style="display: block; transform: scale(1,-1)" fill="#FFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
+                                        </svg>
+                                   </Button>
+                               </div>
                                <ul> 
                                     @foreach (var param in properties.Simulation.SimulationResult)
                                     {
-                                        <li class="grid grid-cols-2 gap-4">
-                                            <p class="w-auto">@param.Key @param.Value.ToString("N4") Å</p>
+                                        <li class="grid grid-cols-4 gap-4 mt-2">
+                                            <p class="col-auto">@param.Key</p>
+                                            <p class="col-auto">@param.Value.ToString("N4") Å</p>
                                             @{
                                                 var value = Math.Round(properties.Simulation.SimulationResultPercentage.First(s => s.Key == param.Key).Value, 2);
                                             }
-                                            <Progress Value=@value />
+                                            <div class="col-span-2">
+                                                <Progress Value=@value/>
+                                            </div>
                                         </li>
                                     }
+                                    <li class="grid grid-cols-4 gap-4 mt-2">
+                                        <p class="col-auto">D<sub>oop</sub> (exp.)</p>
+                                        <p class="col-auto">@properties.OutOfPlaneParameter.Value.ToString("N4") Å</p>
+                                    </li>
+                                    <li class="grid grid-cols-4 gap-4 mt-2">
+                                        <p class="col-auto">D<sub>oop</sub> (sim.)</p>
+                                        <p class="col-auto">@properties.Simulation.OutOfPlaneParameter.Value.ToString("N4") Å</p>
+                                    </li>
+                                    <li class="grid grid-cols-4 gap-4 mt-2">
+                                        <p class="col-auto">δ<sub>oop</sub> (sim.)</p>
+                                        <p class="col-auto">@((Math.Abs(properties.OutOfPlaneParameter.Value - properties.Simulation.OutOfPlaneParameter.Value)/properties.OutOfPlaneParameter.Value*100).ToString("N2")) %</p>
+                                    </li>
                                </ul>
                             </TabItem>    
                         }
@@ -69,8 +92,16 @@
                 }
             </div>
             <div class="w-full md:w-1/2">
-                <BlazorMolecule Molecule="DataContext.Macrocycle" style="height: 50vh;" />
+                <BlazorMolecule Molecule="DataContext.Macrocycle" class="h-[30vh] md:h-[60vh]" />
             </div>
+        </div>
+    }
+    else
+    {
+        <div class="place-content-center self-center text-center py-4 my-8">
+            <img src="/porphystruct.svg" width="128" class="mx-auto"/>
+            <h1 class="mt2 font-bold text-4xl flex justify-center place-content-center">PorphyStruct <span class="ml-2 rounded-full bg-green text-lg py-1 px-2 self-center">WebVersion</span></h1>
+            <p class="mt-2">Start by opening a .cif, .mol2, .pdb, .xyz or .mol File!</p>
         </div>
     }
 </div>
