@@ -47,8 +47,7 @@ public partial class MainWindow : DefaultWindow
         else if (force) MessageBox.Show($"You already have the latest Version of PorphyStruct ({u.Latest})");
         if (!current && force)
         {
-            MessageBox.Show("Download started!");
-            u.DownloadLatest();
+            Process.Start(new ProcessStartInfo("http://github.com/jenskrumsieck/porphystruct/releases/latest") { UseShellExecute = true });
             UpdateMsg.Visibility = Visibility.Collapsed;
         }
     }

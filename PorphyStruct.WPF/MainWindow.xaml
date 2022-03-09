@@ -233,7 +233,7 @@
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             <StackPanel x:Name="UpdateMsg" Visibility="Collapsed" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="5 5 20 5" Orientation="Horizontal" HorizontalAlignment="Right">
-                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="Update available" />
+                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="Update available" MouseDown="Update_Click" />
                 <Button Style="{DynamicResource RoundedIconButton}" Content="&#xECC5;" ToolTip="Download Update" Click="Update_Click"/>
             </StackPanel>
             <TabControl Grid.RowSpan="2" ItemsSource="{Binding Items}" Grid.Row="0" Grid.Column="0" Margin="0" BorderThickness="0" Padding="0"

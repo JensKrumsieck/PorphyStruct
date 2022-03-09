@@ -4,13 +4,13 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text.Json;
-using System.Windows;
 
 namespace PorphyStruct.WPF;
 
 public class Updater
 {
-    public string Latest = "v0.0.0";
+    public string Latest = "0.0.0";
+
 
     /// <summary>
     /// Returns Instance asynchronously
@@ -58,19 +58,5 @@ public class Updater
         catch (Exception) { return true; }//no internet => ignore!
                                           //return true if no response could be made
         return true;
-    }
-
-    public async void DownloadLatest()
-    {
-        using var client = new HttpClient();
-        using var req = new HttpRequestMessage(HttpMethod.Get, $"https://github.com/JensKrumsieck/PorphyStruct/releases/download/v{Latest}/PorphyStruct.exe");
-        using var contentStream = await (await client.SendAsync(req)).Content.ReadAsStreamAsync();
-        using var stream = new FileStream(Core.Constants.SettingsFolder + "/PorphyStruct.exe", FileMode.Create, FileAccess.Write, FileShare.None, 262144, true);
-        await contentStream.CopyToAsync(stream).ContinueWith((_) => Client_DownloadFileCompleted());
-    }
-    private static void Client_DownloadFileCompleted()
-    {
-        MessageBox.Show("Download complete!");
-        Process.Start("explorer.exe", Core.Constants.SettingsFolder);
     }
 }
