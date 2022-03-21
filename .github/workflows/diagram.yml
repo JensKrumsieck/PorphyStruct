@@ -16,7 +16,7 @@ jobs:
         with:
           output_file: ".github/diagram.svg"
           artifact_name: "my-diagram"
-          excluded_paths: "ignore,.github,PorphyStruct.Test/testfiles"
+          excluded_paths: "ignore,.github,PorphyStruct.Test/testfiles,PorphyStruct.Web/assets/package-lock.json"
           should_push: false
           max_depth: 15
       - name: Get artifact
