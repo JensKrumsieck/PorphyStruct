@@ -55,7 +55,7 @@ public static class PlotExtension
         {
             var key = prop.Key.Replace("2", "");
             var color = OxyColor.Parse(Colors[key]);
-            var value = Settings.Instance.UseExtendedBasis ? prop.Value : Math.Abs(prop.Value);
+            var value = (Settings.Instance.FlipResult ? -1 : 1) * (Settings.Instance.UseExtendedBasis ? prop.Value : Math.Abs(prop.Value));
             if (prop.Key.Contains('2')) color = OxyColor.FromAColor(200, color);
             series.Items.Add(new BarItem(value, Categories.IndexOf(key)) { Color = color });
         }
@@ -93,12 +93,11 @@ public static class PlotExtension
         model.PlotAreaBorderThickness = new OxyThickness(0);
         yAxis.TickStyle = TickStyle.None;
         model.XAxis.IsAxisVisible = false;
-        var min = props.Simulation.SimulationResult.Min(s => s.Value);
-        var max = props.Simulation.SimulationResult.Max(s => s.Value);
+        var min = series.Items.Min(s => s.Value);
+        var max = series.Items.Max(s => s.Value);
         model.XAxis.Zoom(
-            Settings.Instance.UseExtendedBasis ? Math.Min(-1, min * 2) : -.1,
-            Math.Max(1, max * 2));
-
+                         Settings.Instance.UseExtendedBasis ? Math.Min(-1, min * 2) : -.1,
+                         Math.Max(1, max * 2));
         PrepareYAxisAnnotations(ref model);
         return model;
     }

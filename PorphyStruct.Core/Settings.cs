@@ -51,6 +51,8 @@ public sealed class Settings : Singleton<Settings>
     public float ExportDPI { get; set; } = 300f;
     public string DefaultExportPath { get; set; } = "";
     public string DefaultImportPath { get; set; } = "";
+
+    public bool FlipResult { get; set; } 
     #endregion
 
     #region Simulation/Comparisons

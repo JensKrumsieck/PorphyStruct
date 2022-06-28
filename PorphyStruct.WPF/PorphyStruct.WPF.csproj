@@ -19,7 +19,7 @@
 	<Product>PorphyStruct</Product>
 	<AssemblyName>PorphyStruct</AssemblyName>
 	<IncludeAllContentForSelfExtract>True</IncludeAllContentForSelfExtract>
-	<PublishSingleFile>True</PublishSingleFile>
+	  <PublishSingleFile Condition="'$(Configuration)' == 'Release'">true</PublishSingleFile>
 	<SelfContained>True</SelfContained>
 	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	<PublishReadyToRun>True</PublishReadyToRun>
