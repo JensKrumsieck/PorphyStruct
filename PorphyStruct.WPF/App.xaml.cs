@@ -15,8 +15,9 @@ public partial class App : Application
     /// <param name="e"></param>
     private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
-        MessageBox.Show("An unexpected exception has occurred. Shutting down the application. \nMessage: " + e.Exception.Message, "Unhandled Exception",
-            MessageBoxButton.OK, MessageBoxImage.Error);
+        MessageBox.Show($"An unexpected exception has occurred. Shutting down the application. \nMessage: {e.Exception.Message}\n{e.Exception.StackTrace}",
+                        "Unhandled Exception",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
         // Prevent default unhandled exception processing
         e.Handled = true;
         Environment.Exit(0);
