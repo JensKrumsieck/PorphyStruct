@@ -1,0 +1,14 @@
+<Project>
+    <PropertyGroup>
+        <Version>1.0.4</Version>
+        <Product>PorphyStruct</Product>
+        <Copyright>Jens Krumsieck</Copyright>
+        <Authors>Jens Krumsieck</Authors>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <PackageProjectUrl>https://github.com/JensKrumsieck/PorphyStruct</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/JensKrumsieck/PorphyStruct</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+    </PropertyGroup>
+</Project>

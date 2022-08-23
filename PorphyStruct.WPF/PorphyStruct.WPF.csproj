@@ -2,24 +2,14 @@
 
   <PropertyGroup>
 	<PackageId>PorphyStruct</PackageId>
-	<Authors>Jens Krumsieck</Authors>
-	<Company>Jens Krumsieck</Company>
-	<Version>1.0.3</Version>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows10.0.17763.0</TargetFramework>
     <UseWPF>true</UseWPF>
-    <LangVersion>10.0</LangVersion>
-	  <Nullable>enable</Nullable>
-	<ImplicitUsings>enable</ImplicitUsings>
-	<PackageProjectUrl>https://github.com/JensKrumsieck/PorphyStruct</PackageProjectUrl>
-	<RepositoryUrl>https://github.com/JensKrumsieck/PorphyStruct</RepositoryUrl>
-	<RepositoryType>git</RepositoryType>
 	<ApplicationIcon>Resources\porphystruct.ico</ApplicationIcon>
 	<PackageIcon>Resources\porphystruct.ico</PackageIcon>
-	<Product>PorphyStruct</Product>
 	<AssemblyName>PorphyStruct</AssemblyName>
 	<IncludeAllContentForSelfExtract>True</IncludeAllContentForSelfExtract>
-	  <PublishSingleFile Condition="'$(Configuration)' == 'Release'">true</PublishSingleFile>
+      <PublishSingleFile Condition="'$(Configuration)' == 'Release'">true</PublishSingleFile>
 	<SelfContained>True</SelfContained>
 	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	<PublishReadyToRun>True</PublishReadyToRun>
