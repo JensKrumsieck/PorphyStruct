@@ -1,8 +1,5 @@
-﻿using ChemSharp.Molecules.Properties;
-using CommandDotNet;
-using CommandDotNet.Diagnostics;
+﻿using CommandDotNet;
 using CommandDotNet.Spectre;
-using MathNet.Numerics;
 using PorphyStruct.Core;
 using PorphyStruct.Core.Analysis;
 using PorphyStruct.ViewModel;

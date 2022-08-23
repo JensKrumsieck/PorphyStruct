@@ -1,9 +1,7 @@
-﻿using System.Collections.ObjectModel;
-using PorphyStruct.Core.Analysis;
+﻿using PorphyStruct.Core.Analysis;
 using PorphyStruct.Core.Analysis.Properties;
 using PorphyStruct.ViewModel;
 using Spectre.Console;
-using Spectre.Console.Rendering;
 
 namespace PorphyStruct.CLI;
 
