@@ -10,10 +10,12 @@
 
     <ItemGroup>
       <PackageReference Include="CommandDotNet" Version="7.0.1" />
+      <PackageReference Include="ConsoleTables" Version="2.4.2" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\PorphyStruct.Core\PorphyStruct.Core.csproj" />
+      <ProjectReference Include="..\PorphyStruct.ViewModel\PorphyStruct.ViewModel.csproj" />
     </ItemGroup>
 
 </Project>
