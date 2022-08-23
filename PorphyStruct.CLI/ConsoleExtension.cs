@@ -9,22 +9,16 @@ public static class ConsoleExtension
     public static readonly Dictionary<string, Color> Colors = new()
     {
         ["Doming"] = Color.Red1,
-        ["Doming1"] = Color.Red1,
         ["Doming2"] = Color.Red3,
         ["Saddling"] = Color.Blue1,
-        ["Saddling1"] = Color.Blue1,
         ["Saddling2"] = Color.Blue3,
         ["Ruffling"] = Color.Green1,
-        ["Ruffling1"] = Color.Green1,
         ["Ruffling2"] = Color.Green3,
         ["WavingX"] = Color.Orange1,
-        ["WavingX1"] = Color.Orange1,
         ["WavingX2"] = Color.Orange3,
         ["WavingY"] = Color.Purple_1,
-        ["WavingY1"] = Color.Purple_1,
         ["WavingY2"] = Color.Purple3,
         ["Propellering"] = Color.RosyBrown,
-        ["Propellering1"] = Color.RosyBrown,
         ["Propellering2"] = Color.SandyBrown
     };
 
