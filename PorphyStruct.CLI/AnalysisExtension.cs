@@ -24,13 +24,14 @@ public static class AnalysisExtension
         console.MarkupLine(
             $"[invert][{analysis.AnalysisColor}]Analysis-Id: \t[bold]{analysis.AnalysisColor}[/][/][/]");
         console.Margin();
-        
+
         console.RenderDoop(props);
         console.DrawTable(props.Simulation.SimulationResult);
         console.Margin();
         console.DrawChart(props.Simulation.SimulationResultPercentage);
         console.Margin(2);
     }
+
     private static void RenderDoop(this IAnsiConsole console, MacrocycleProperties properties)
     {
         var Dexp = new Panel(

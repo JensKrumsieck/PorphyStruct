@@ -30,10 +30,10 @@ public static class ConsoleExtension
 
     public static void Margin(this IAnsiConsole console, int count = 1)
     {
-        for (var i = 0; i < count; i++) 
+        for (var i = 0; i < count; i++)
             console.WriteLine(); //add margin
     }
-    
+
     internal static void DrawChart(this IAnsiConsole console, List<KeyValueProperty> items)
     {
         console.Write(new BreakdownChart().Compact().ShowPercentage().AddItems(items, (item) => new BreakdownChartItem(
@@ -50,6 +50,7 @@ public static class ConsoleExtension
         {
             table.AddRow($"[bold]{mode.Key}[/]", $"{mode.Value:N4} {mode.Unit}");
         }
+
         console.Write(table);
     }
 }

@@ -25,7 +25,8 @@ public class Program
         IAnsiConsole console,
         [Positional(Description = "Input file to analyze. Can be of type .cif, .mol, .mol2, .pdb or .xyz")]
         string file,
-        [Option('t', "type", Description = "Choose Macrocyclic Type: Porphyrin, Corrole, Norcorrole, Corrphycene or Porphycene")]
+        [Option('t', "type",
+            Description = "Choose Macrocyclic Type: Porphyrin, Corrole, Norcorrole, Corrphycene or Porphycene")]
         string rawType,
         [Named('x', "extended", Description = "Use Extended Basis")]
         bool extendedBasis,
@@ -40,15 +41,14 @@ public class Program
             MacrocycleType = type
         };
         var viewModel = new MacrocycleViewModel(macrocycle);
-        
+
         console.Write(new Rule(file));
-        console.Write(new Rule($"Using [invert]{type}[/] with [invert]{(extendedBasis ? "extended Basis" : "minimal Basis")}[/]"));
-        
-        await console.Status().StartAsync("Analyzing", async ctx =>{
-            await viewModel.Analyze();
-        });
+        console.Write(new Rule(
+            $"Using [invert]{type}[/] with [invert]{(extendedBasis ? "extended Basis" : "minimal Basis")}[/]"));
+
+        await console.Status().StartAsync("Analyzing", async ctx => { await viewModel.Analyze(); });
         console.RenderAnalysis(viewModel.Items);
-        if(!doNotExport) Export(file, viewModel);
+        if (!doNotExport) Export(file, viewModel);
     }
 
     private static void Export(string file, MacrocycleViewModel viewModel)
