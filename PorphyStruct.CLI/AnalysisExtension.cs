@@ -32,11 +32,11 @@ public static class AnalysisExtension
 
     private static void RenderDoop(this IAnsiConsole console, MacrocycleProperties properties)
     {
-        var Dexp = new Panel(
+        var dexp = new Panel(
             $"[b]{properties.OutOfPlaneParameter.Key}:[/] {properties.OutOfPlaneParameter.Value:N4}{properties.OutOfPlaneParameter.Unit}");
-        var Dsim = new Panel(
+        var dsim = new Panel(
             $"[b]{properties.Simulation.OutOfPlaneParameter.Key}:[/] {properties.Simulation.OutOfPlaneParameter.Value:N4}{properties.Simulation.OutOfPlaneParameter.Unit}");
-        var DErr = new Panel($"Delta: {properties.Delta:N4} - Error {properties.Error:P1}");
-        console.Write(new Columns(Dexp, Dsim, DErr));
+        var derr = new Panel($"Delta: {properties.Delta:N4} - Error {properties.Error:P1}");
+        console.Write(new Columns(dexp, dsim, derr));
     }
 }

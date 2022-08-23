@@ -6,7 +6,7 @@ namespace PorphyStruct.CLI;
 
 public static class ConsoleExtension
 {
-    public static readonly Dictionary<string, Color> Colors = new()
+    private static readonly Dictionary<string, Color> Colors = new()
     {
         ["Doming"] = Color.Red1,
         ["Doming2"] = Color.Red3,
