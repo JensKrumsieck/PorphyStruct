@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using CommandDotNet;
-using CommandDotNet.TestTools;
+﻿using CommandDotNet.TestTools;
 using FluentAssertions;
 using Xunit;
 
@@ -11,10 +9,9 @@ public class CLITests
     [Fact]
     public void Analyze_ShouldNotThrow()
     {
-        var result = new AppRunner<Program>()
+        var result = Program.AppRunner
             .RunInMem(
                 "analyze testfiles/oriluy.cif -t Porphyrin");
         result.ExitCode.Should().Be(0);
-        Debug.Write(result.Console.Out);
     }
 }

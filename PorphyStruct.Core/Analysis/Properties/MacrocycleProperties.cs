@@ -12,6 +12,12 @@ public class MacrocycleProperties
     [JsonIgnore]
     public readonly MacrocycleAnalysis Analysis;
 
+    [JsonIgnore] 
+    public double Delta => Math.Abs(OutOfPlaneParameter.Value - Simulation.OutOfPlaneParameter.Value);
+        
+    [JsonIgnore]
+    public double Error => Delta / OutOfPlaneParameter.Value;
+    
     public List<Dihedral> Dihedrals { get; } = new();
     public List<Angle> Angles { get; } = new();
     public List<Distance> Distances { get; } = new();

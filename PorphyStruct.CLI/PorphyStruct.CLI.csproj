@@ -10,7 +10,7 @@
 
     <ItemGroup>
       <PackageReference Include="CommandDotNet" Version="7.0.1" />
-      <PackageReference Include="ConsoleTables" Version="2.4.2" />
+      <PackageReference Include="CommandDotNet.Spectre" Version="3.0.1" />
     </ItemGroup>
 
     <ItemGroup>

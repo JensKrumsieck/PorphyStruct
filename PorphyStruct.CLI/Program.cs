@@ -1,47 +1,64 @@
-﻿using CommandDotNet;
+﻿using ChemSharp.Molecules.Properties;
+using CommandDotNet;
 using CommandDotNet.Diagnostics;
-using ConsoleTables;
+using CommandDotNet.Spectre;
+using MathNet.Numerics;
 using PorphyStruct.Core;
 using PorphyStruct.Core.Analysis;
 using PorphyStruct.ViewModel;
+using PorphyStruct.ViewModel.IO;
+using Spectre.Console;
 
 namespace PorphyStruct.CLI;
 
 public class Program
 {
-    static int Main(string[] args)
-    {
-        Debugger.AttachIfDebugDirective(args);
-        return new AppRunner<Program>().Run(args);
-    }
+    public static AppRunner AppRunner =>
+        new AppRunner<Program>()
+            .UseSpectreAnsiConsole()
+            .UseSpectreArgumentPrompter();
+
+    private static int Main(string[] args) => AppRunner.Run(args);
 
     [Command("analyze")]
-    public void Analyze(
-        IConsole console,
-        [Positional(Description = "Input file to analyze")]
+    public async Task Analyze(
+        IAnsiConsole console,
+        [Positional(Description = "Input file to analyze. Can be of type .cif, .mol, .mol2, .pdb or .xyz")]
         string file,
-        [Option('t', "type", Description = "Macrocyclic Type")]
-        string rawType)
+        [Option('t', "type", Description = "Choose Macrocyclic Type: Porphyrin, Corrole, Norcorrole, Corrphycene or Porphycene")]
+        string rawType,
+        [Named('x', "extended", Description = "Use Extended Basis")]
+        bool extendedBasis,
+        [Named("no-export", Description = "Do not write any files!")]
+        bool doNotExport
+    )
     {
-        var type = (MacrocycleType)Enum.Parse(typeof(MacrocycleType), rawType);
+        Settings.Instance.UseExtendedBasis = extendedBasis;
+        var type = (MacrocycleType) Enum.Parse(typeof(MacrocycleType), rawType);
         var macrocycle = new Macrocycle(file)
         {
             MacrocycleType = type
         };
         var viewModel = new MacrocycleViewModel(macrocycle);
-        Task.Run(async () =>
-        {
+        
+        console.Write(new Rule(file));
+        console.Write(new Rule($"Using [invert]{type}[/] with [invert]{(extendedBasis ? "extended Basis" : "minimal Basis")}[/]"));
+        
+        await console.Status().StartAsync("Analyzing", async ctx =>{
             await viewModel.Analyze();
-            console.WriteLine($"{viewModel.Items.Count} {type}s found!");
-            foreach (var item in viewModel.Items)
-            {
-                var result = item.Analysis.Properties?.Simulation.SimulationResult;
-                var headers = result?.Select(s => s.Key).ToArray();
-                var values = result?.Select(s => s.Value).ToArray();
-                var table = new ConsoleTable(headers);
-                table.AddRow(values);
-                table.Write();
-            }
         });
+        console.RenderAnalysis(viewModel.Items);
+        if(!doNotExport) Export(file, viewModel);
+    }
+
+    private static void Export(string file, MacrocycleViewModel viewModel)
+    {
+        foreach (var analysisViewModel in viewModel.Items)
+        {
+            var path = Path.ChangeExtension(file, null);
+            if (viewModel.Items.Count > 1) path += $"_{analysisViewModel.Analysis.AnalysisColor}";
+            analysisViewModel.ExportSimulation(path, "md");
+            analysisViewModel.ExportSimulation(path, "json");
+        }
     }
 }
