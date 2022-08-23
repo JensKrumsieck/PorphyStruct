@@ -6,6 +6,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>preview</LangVersion>
+        <IncludeAllContentForSelfExtract>True</IncludeAllContentForSelfExtract>
+        <SelfContained>True</SelfContained>
+        <PublishSingleFile>True</PublishSingleFile>
+        <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+        <PublishReadyToRun>True</PublishReadyToRun>
+        <PublishTrimmed>True</PublishTrimmed>
+        <TrimMode>Link</TrimMode>
     </PropertyGroup>
 
     <ItemGroup>
