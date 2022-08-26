@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>preview</LangVersion>
+        <IncludeAllContentForSelfExtract>True</IncludeAllContentForSelfExtract>
+        <SelfContained>True</SelfContained>
+        <PublishSingleFile>True</PublishSingleFile>
+        <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+        <PublishReadyToRun>True</PublishReadyToRun>
+        <PublishTrimmed>True</PublishTrimmed>
+        <TrimMode>Link</TrimMode>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommandDotNet" Version="7.0.1"/>
+        <PackageReference Include="CommandDotNet.Spectre" Version="3.0.1"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\PorphyStruct.Core\PorphyStruct.Core.csproj"/>
+        <ProjectReference Include="..\PorphyStruct.ViewModel\PorphyStruct.ViewModel.csproj"/>
+    </ItemGroup>
+
+</Project>
