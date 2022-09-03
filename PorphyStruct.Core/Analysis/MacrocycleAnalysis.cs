@@ -162,7 +162,7 @@ public abstract class MacrocycleAnalysis
     /// <param name="id1">Identifier 1</param>
     /// <param name="id2">Identifier 2</param>
     /// <returns>The Vector Distance</returns>
-    protected double CalculateDistance(string id1, string id2) => MathV.Distance(FindAtomByTitle(id1)!.Location, FindAtomByTitle(id2)!.Location);
+    protected double CalculateDistance(string id1, string id2) => Vector3.Distance(FindAtomByTitle(id1)!.Location, FindAtomByTitle(id2)!.Location);
 
     /// <summary>
     /// Gets DataPoints for Bonds
