@@ -37,8 +37,6 @@ public abstract class MacrocycleAnalysis
     {
         Molecule = mol;
         _guid = Guid.NewGuid();
-        //set special atoms
-        _cachedNeighbors = AtomUtil.BuildNeighborCache(Atoms, Bonds);
         Alpha = Atoms.Where(IsAlpha).ToList();
         Beta = Atoms.Where(s => Neighbors(s).Count == 2 && Neighbors(s).Count(IsAlpha) == 1).ToList();
         N4Cavity = Atoms.Where(s => Neighbors(s).Where(IsAlpha).Count(n => Backtracking.BackTrack(n, s, Neighbors, 5).Count == 5) == 2)
@@ -75,17 +73,14 @@ public abstract class MacrocycleAnalysis
     /// <summary>
     /// Returns Mean Square Plane of Analysis Fragment
     /// </summary>
-    public Plane MeanPlane => MathV.MeanPlane(Atoms.Select(s => s.Location).ToList());
+    public Plane MeanPlane => Atoms.Select(s => s.Location).ToList().MeanPlane();
 
-
-    private Dictionary<Atom, List<Atom>>? _cachedNeighbors;
     /// <summary>
     /// Returns Neighbors in context of analysis
     /// </summary>
     /// <param name="a"></param>
     /// <returns></returns>
-    public List<Atom> Neighbors(Atom a) =>
-        _cachedNeighbors != null ? _cachedNeighbors[a] : AtomUtil.Neighbors(a, Bonds).ToList();
+    public List<Atom> Neighbors(Atom a) => Molecule.Neighbors(a);
 
     /// <summary>
     /// Generates DataPoints
@@ -177,11 +172,10 @@ public abstract class MacrocycleAnalysis
     /// <summary>
     /// Creates Analysis Type
     /// </summary>
-    /// <param name="atoms"></param>
-    /// <param name="bonds"></param>
+    /// <param name="mol"></param>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static async Task<MacrocycleAnalysis> CreateAsync(Molecule mol, MacrocycleType type)
+    public static MacrocycleAnalysis Create(Molecule mol, MacrocycleType type)
     {
         MacrocycleAnalysis analysis = type switch
         {
@@ -192,53 +186,9 @@ public abstract class MacrocycleAnalysis
             MacrocycleType.Corrphycene => new CorrphyceneAnalysis(mol),
             _ => throw new InvalidOperationException()
         };
-        await Task.Run(analysis.NameAtoms);
         return analysis;
     }
-
-    /// <summary>
-    /// Assign the correct Identifiers for a cycle CN-corpus
-    /// </summary>
-    private void NameAtoms()
-    {
-        //a lot of renaming will be done, do not use cache here!
-        _cachedNeighbors = null;
-        //cycle valid?
-        if (Atoms.Count != RingAtoms.Count) return;
-        //track visited atoms
-        var visited = new HashSet<Atom>();
-        //set Identifier for C1 Atom
-        C1.Title = "C1";
-        visited.Add(C1);
-        //force c2 to be first step
-        var current = Neighbors(C1).First(s => !N4Cavity.Contains(s) && Beta.Contains(s));
-        current.Title = "C2";
-        visited.Add(current);
-        //get carbon atoms
-        var carbons = RingAtoms.Where(s => s.Contains('C')).OrderBy(s => int.Parse(s.Replace("C", ""))).ToList();
-        var i = 2;
-        //loop through atoms and name them
-        while (visited.Count != carbons.Count)
-        {
-            foreach (var neighbor in Neighbors(current).Where(s => !visited.Contains(s) && !N4Cavity.Contains(s)))
-            {
-                //add to visited and assign Identifier
-                neighbor.Title = carbons[i];
-                visited.Add(current = neighbor);
-                i++;
-            }
-        }
-        //set up identifiers for nitrogens
-        for (var j = 1; j <= 4; j++)
-        {
-            var alpha = FindAtomByTitle(AlphaAtoms[2 * j - 1]);
-            var nitrogen = N4Cavity.First(s => Neighbors(s).Contains(alpha!));
-            nitrogen.Title = "N" + j;
-        }
-        //re-enable cache
-        _cachedNeighbors = AtomUtil.BuildNeighborCache(Atoms, Bonds);
-    }
-
+    
     /// <summary>
     /// Finds atom by Title
     /// </summary>

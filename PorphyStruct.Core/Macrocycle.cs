@@ -75,8 +75,10 @@ public sealed class Macrocycle : Molecule
                         && !Constants.DeadEnds.Contains(a.Symbol));
         foreach (var data in parts.SelectMany(p => p.GetSubgraphs(reference)))
         {
-            var analysis = await MacrocycleAnalysis.CreateAsync(data, MacrocycleType);
+            for (var i = 0; i < data.Atoms.Count; i++)
+                data.Atoms[i].Title = reference.Atoms[i].Title;
             RebuildCache();
+            var analysis = MacrocycleAnalysis.Create(data, MacrocycleType);
             var metal = Neighbors(analysis.N4Cavity[0]).FirstOrDefault(s => !s.IsNonCoordinative());
             if (metal != null) analysis.Metal = metal;
             DetectedParts.Add(analysis);
