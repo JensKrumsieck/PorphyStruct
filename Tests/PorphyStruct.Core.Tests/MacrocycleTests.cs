@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using PorphyStruct.Core.Analysis;
+using PorphyStruct.Core.Analysis.Properties;
 using Xunit;
 
 namespace PorphyStruct.Core.Tests;
@@ -47,7 +48,11 @@ public class MacrocycleTests
         await cycle.Detect();
         cycle.DetectedParts.Should().HaveCountGreaterThan(0);
         foreach (var p in cycle.DetectedParts)
+        {
+            p.Properties ??= await MacrocycleProperties.CreateAsync(p);
             p.Atoms.Should().HaveCount(RingSize[type]);
+            p.Properties.Should().NotBeNull();
+        }
     }
 
     [Fact]

@@ -1,4 +1,5 @@
 ﻿using ChemSharp.Molecules;
+using ChemSharp.Molecules.Export;
 using ChemSharp.Molecules.Extensions;
 using Nodo.Search;
 using PorphyStruct.Core.Analysis;
@@ -24,6 +25,7 @@ public sealed class Macrocycle : Molecule
     {
         Atoms.AddRange(mol.Atoms);
         Bonds.AddRange(mol.Bonds);
+        Title = mol.Title;
     }
     
     public Macrocycle(Stream stream, string extension)
@@ -65,7 +67,7 @@ public sealed class Macrocycle : Molecule
             .ToMolecules().ToList();
         
         //load matching macrocycle type
-        var resourceName = $"PorphyStruct.Core.Reference.{MacrocycleType}.Doming.xyz";
+        var resourceName = $"PorphyStruct.Core.Reference.{MacrocycleType}.Doming.mol2";
         var reference = FromStream(
                 ResourceUtil.LoadResource(resourceName)!,
                 resourceName.Split('.').Last())

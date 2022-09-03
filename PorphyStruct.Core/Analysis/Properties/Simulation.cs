@@ -46,7 +46,7 @@ public class Simulation
     {
         var sim = new Simulation(type);
         var typePrefix = $"PorphyStruct.Core.Reference.{sim.Type}.";
-        sim.ReferenceMatrix = await DisplacementMatrix(sim.UsedModes.Select(s => typePrefix + s + ".xyz"), type);
+        sim.ReferenceMatrix = await DisplacementMatrix(sim.UsedModes.Select(s => typePrefix + s + ".mol2"), type);
         return sim;
     }
 
@@ -105,7 +105,7 @@ public class Simulation
         foreach (var s in res)
         {
             var stream = ResourceUtil.LoadResource(s);
-            var cycle = new Macrocycle(stream!, "xyz") { MacrocycleType = type };
+            var cycle = new Macrocycle(stream!, s.Split('.').Last()) { MacrocycleType = type };
             await Task.Run(cycle.Detect);
             var part = cycle.DetectedParts[0];
             var data = part.DataPoints.OrderBy(d => d.X).Select(d => d.Y).ToArray();
