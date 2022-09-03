@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PorphyStruct.Core\PorphyStruct.Core.csproj" />
-    <ProjectReference Include="..\PorphyStruct.ViewModel\PorphyStruct.ViewModel.csproj" />
+    <ProjectReference Include="..\..\PorphyStruct.Core\PorphyStruct.Core.csproj" />
+    <ProjectReference Include="..\..\PorphyStruct.ViewModel\PorphyStruct.ViewModel.csproj" />
   </ItemGroup>
 
   <ItemGroup>

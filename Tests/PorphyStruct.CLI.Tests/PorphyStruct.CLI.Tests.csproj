@@ -24,7 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PorphyStruct.CLI\PorphyStruct.CLI.csproj" />
+      <ProjectReference Include="..\..\PorphyStruct.CLI\PorphyStruct.CLI.csproj" />
     </ItemGroup>
 
     <ItemGroup>
