@@ -1,9 +1,9 @@
 ﻿#nullable enable
 using System.Numerics;
-using ChemSharp.Extensions;
 using ChemSharp.Mathematics;
 using ChemSharp.Molecules;
 using ChemSharp.Molecules.Extensions;
+using Nodo.Pathfinding;
 using PorphyStruct.Core.Analysis.Properties;
 using PorphyStruct.Core.Extension;
 using PorphyStruct.Core.Plot;
@@ -12,15 +12,17 @@ namespace PorphyStruct.Core.Analysis;
 
 public abstract class MacrocycleAnalysis
 {
+    internal Molecule Molecule { get; }
+
     /// <summary>
     /// Selected Atoms for Analysis
     /// </summary>
-    public List<Atom> Atoms { get; set; }
+    public List<Atom> Atoms => Molecule.Atoms;
 
     /// <summary>
     /// Selected Bonds for Analysis
     /// </summary>
-    public IEnumerable<Bond> Bonds { get; set; }
+    public IEnumerable<Bond> Bonds => Molecule.Bonds;
 
     private readonly Guid _guid;
 
@@ -31,16 +33,15 @@ public abstract class MacrocycleAnalysis
     /// </summary>
     public string AnalysisColor => _guid.HexStringFromGuid();
 
-    protected MacrocycleAnalysis(List<Atom> atoms, IEnumerable<Bond> bonds)
+    protected MacrocycleAnalysis(Molecule mol)
     {
-        Atoms = atoms;
-        Bonds = bonds;
+        Molecule = mol;
         _guid = Guid.NewGuid();
         //set special atoms
         _cachedNeighbors = AtomUtil.BuildNeighborCache(Atoms, Bonds);
         Alpha = Atoms.Where(IsAlpha).ToList();
         Beta = Atoms.Where(s => Neighbors(s).Count == 2 && Neighbors(s).Count(IsAlpha) == 1).ToList();
-        N4Cavity = Atoms.Where(s => Neighbors(s).Where(IsAlpha).Count(n => DFSUtil.BackTrack(n, s, Neighbors, 5).Count == 5) == 2)
+        N4Cavity = Atoms.Where(s => Neighbors(s).Where(IsAlpha).Count(n => Backtracking.BackTrack(n, s, Neighbors, 5).Count == 5) == 2)
             .ToList();
         Meso = Atoms.Except(Alpha).Except(Beta).Except(N4Cavity).ToList();
     }
@@ -92,11 +93,11 @@ public abstract class MacrocycleAnalysis
     /// <returns></returns>
     protected virtual IEnumerable<AtomDataPoint> CalculateDataPoints()
     {
-        Atoms = Atoms.OrderBy(s => RingAtoms.IndexOf(s.Title)).ToList();
+        var atoms = Atoms.OrderBy(s => RingAtoms.IndexOf(s.Title)).ToList();
         var dist = 0d;
         var fix = 1d;
 
-        foreach (var a in Atoms)
+        foreach (var a in atoms)
         {
             var coordX = 1d;
             if (a.Title.Contains('C')) coordX = fix + dist * Multiplier[a.Title];
@@ -105,7 +106,7 @@ public abstract class MacrocycleAnalysis
             if (IsAlpha(a) && NextAlpha(a) != null) dist = a.DistanceTo(NextAlpha(a));
             //alpha atoms are fix-points
             if (IsAlpha(a)) fix = coordX;
-            yield return new AtomDataPoint(coordX, MathV.Distance(MeanPlane, a.Location), a);
+            yield return new AtomDataPoint(coordX, MeanPlane.Distance(a.Location), a);
         }
     }
 
@@ -114,7 +115,7 @@ public abstract class MacrocycleAnalysis
     /// </summary>
     /// <param name="a"></param>
     /// <returns>boolean</returns>
-    private bool IsAlpha(Atom a) => DFSUtil.VertexDegree(a, Neighbors) == 3;
+    private bool IsAlpha(Atom a) => Neighbors(a).Count == 3;
 
     /// <summary>
     /// gets next alpha position for distance measuring
@@ -133,7 +134,7 @@ public abstract class MacrocycleAnalysis
     /// override this method in any other class
     /// </summary>
     /// <returns></returns>
-    protected virtual Atom C1 => Atoms.First(s => DFSUtil.VertexDegree(s, Neighbors) == 3);
+    protected virtual Atom C1 => Atoms.First(a => Neighbors(a).Count == 3);
 
     /// <summary>
     /// Lists N4 Cavity
@@ -180,15 +181,15 @@ public abstract class MacrocycleAnalysis
     /// <param name="bonds"></param>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static async Task<MacrocycleAnalysis> CreateAsync(List<Atom> atoms, IEnumerable<Bond> bonds, MacrocycleType type)
+    public static async Task<MacrocycleAnalysis> CreateAsync(Molecule mol, MacrocycleType type)
     {
         MacrocycleAnalysis analysis = type switch
         {
-            MacrocycleType.Porphyrin => new PorphyrinAnalysis(atoms, bonds),
-            MacrocycleType.Corrole => new CorroleAnalysis(atoms, bonds),
-            MacrocycleType.Norcorrole => new NorcorroleAnalysis(atoms, bonds),
-            MacrocycleType.Porphycene => new PorphyceneAnalysis(atoms, bonds),
-            MacrocycleType.Corrphycene => new CorrphyceneAnalysis(atoms, bonds),
+            MacrocycleType.Porphyrin => new PorphyrinAnalysis(mol),
+            MacrocycleType.Corrole => new CorroleAnalysis(mol),
+            MacrocycleType.Norcorrole => new NorcorroleAnalysis(mol),
+            MacrocycleType.Porphycene => new PorphyceneAnalysis(mol),
+            MacrocycleType.Corrphycene => new CorrphyceneAnalysis(mol),
             _ => throw new InvalidOperationException()
         };
         await Task.Run(analysis.NameAtoms);

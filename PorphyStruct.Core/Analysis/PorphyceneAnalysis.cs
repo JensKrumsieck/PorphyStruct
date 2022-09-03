@@ -4,7 +4,7 @@ namespace PorphyStruct.Core.Analysis;
 
 public class PorphyceneAnalysis : MacrocycleAnalysis
 {
-    public PorphyceneAnalysis(List<Atom> atoms, IEnumerable<Bond> bonds) : base(atoms, bonds) { }
+    public PorphyceneAnalysis(Molecule mol) : base(mol) { }
 
 #pragma warning disable IDE1006
     //ReSharper disable InconsistentNaming

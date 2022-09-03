@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using ChemSharp.Molecules;
 using ChemSharp.Molecules.DataProviders;
 using MathNet.Numerics.LinearAlgebra.Double;
 using PorphyStruct.Core;
@@ -77,8 +78,7 @@ public class CalculatorViewModel : BaseViewModel
     public MacrocycleAnalysis LoadSample()
     {
         var stream = ResourceUtil.LoadResource($"PorphyStruct.Core.Reference.{CycleType}.Doming.xyz");
-        var xyz = new XYZDataProvider(stream);
-        var cycle = new Macrocycle(xyz) { MacrocycleType = CycleType };
+        var cycle = new Macrocycle(stream!, "xyz")  { MacrocycleType = CycleType };
         Task.Run(cycle.Detect).Wait(1500);
         return cycle.DetectedParts[0];
     }

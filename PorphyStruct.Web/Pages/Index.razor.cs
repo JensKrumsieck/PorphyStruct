@@ -13,47 +13,44 @@ public partial class Index
 {
     public MacrocycleViewModel? DataContext;
     public TabControl Tabs;
-    private ElementReference inputFile;
-    private bool uploadBusy;
+    private ElementReference _inputFile;
+    private bool _uploadBusy;
 
-    [Inject]
-    IJSRuntime JSRuntime { get; set; }
+    [Inject] private IJSRuntime JsRuntime { get; set; }
 
-    [Inject]
-    IFileReaderService fileReaderService { get; set; }
+    [Inject] private IFileReaderService FileReaderService { get; set; }
 
-    private decimal UploadValue;
+    private decimal _uploadValue;
 
     protected override void OnInitialized()
     {
         Settings.Instance.Font = "Montserrat";
         base.OnInitialized();
     }
-    async Task OnFileChange()
+
+    private async Task OnFileChange()
     {
-        UploadValue = 0;
-        uploadBusy = true;
-        Molecule molecule;
+        _uploadValue = 0;
+        _uploadBusy = true;
         DataContext = null;
 
-        foreach (var file in await fileReaderService.CreateReference(inputFile).EnumerateFilesAsync())
+        foreach (var file in await FileReaderService.CreateReference(_inputFile).EnumerateFilesAsync())
         {
             var fileInfo = await file.ReadFileInfoAsync();
             fileInfo.PositionInfo.PositionChanged += (s, e) =>
             {
                 if (e.PercentageDeltaSinceAcknowledge < 2) return;
-                UploadValue = e.Percentage;
+                _uploadValue = e.Percentage;
                 InvokeAsync(StateHasChanged);
                 e.Acknowledge();
             };
-            using MemoryStream memoryStream = await file.CreateMemoryStreamAsync(4096);
-            molecule = await MoleculeFactory.CreateFromStreamAsync(memoryStream, Path.GetExtension(fileInfo.Name)[1..]);
-            var cycle = new Macrocycle(molecule.AtomDataProvider) { Title = fileInfo.Name };
-            DataContext = new(cycle);
+            using var memoryStream = await file.CreateMemoryStreamAsync(4096);
+            var cycle = new Macrocycle(memoryStream, Path.GetExtension(fileInfo.Name)[1..]) { Title = fileInfo.Name };
+            DataContext = new MacrocycleViewModel(cycle);
             break; //stop on first
         }
-        uploadBusy = false;
-        await fileReaderService.CreateReference(inputFile).ClearValue();
+        _uploadBusy = false;
+        await FileReaderService.CreateReference(_inputFile).ClearValue();
     }
 
     async Task OnAnalyzeClick() => await DataContext?.Analyze()!;
@@ -68,6 +65,6 @@ public partial class Index
         var item = DataContext.Items[itemIndex];
         item.ExportPlot(stream, "png");
         var file = stream.ToArray();
-        await JSRuntime.InvokeVoidAsync("BlazorDownloadFile", DataContext.Title + "_graph.png", "application/octet-stream", file);
+        await JsRuntime.InvokeVoidAsync("BlazorDownloadFile", DataContext.Title + "_graph.png", "application/octet-stream", file);
     }
 }

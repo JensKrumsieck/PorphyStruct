@@ -4,7 +4,7 @@ namespace PorphyStruct.Core.Analysis;
 
 public class CorroleAnalysis : MacrocycleAnalysis
 {
-    public CorroleAnalysis(List<Atom> atoms, IEnumerable<Bond> bonds) : base(atoms, bonds) { }
+    public CorroleAnalysis(Molecule mol) : base(mol) { }
 
 #pragma warning disable IDE1006
     //ReSharper disable InconsistentNaming

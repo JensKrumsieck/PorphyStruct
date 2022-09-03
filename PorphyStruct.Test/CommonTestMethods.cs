@@ -36,6 +36,7 @@ public static class CommonTestMethods
     {
         var viewModel = new MacrocycleViewModel(path) { Macrocycle = { MacrocycleType = macrocycleType } };
         await viewModel.Analyze();
+        Assert.AreNotEqual(0,viewModel.Macrocycle.DetectedParts.Count);
         var part = viewModel.Macrocycle.DetectedParts[0];
         Assert.IsNotNull(part.Properties);
         var simSum = simulations.Sum(s => Math.Abs(s.Value));

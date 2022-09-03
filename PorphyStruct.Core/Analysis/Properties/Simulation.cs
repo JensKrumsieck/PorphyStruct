@@ -105,8 +105,7 @@ public class Simulation
         foreach (var s in res)
         {
             var stream = ResourceUtil.LoadResource(s);
-            var xyz = new XYZDataProvider(stream);
-            var cycle = new Macrocycle(xyz) { MacrocycleType = type };
+            var cycle = new Macrocycle(stream!, "xyz") { MacrocycleType = type };
             await Task.Run(cycle.Detect);
             var part = cycle.DetectedParts[0];
             var data = part.DataPoints.OrderBy(d => d.X).Select(d => d.Y).ToArray();

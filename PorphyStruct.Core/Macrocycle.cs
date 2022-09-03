@@ -1,8 +1,6 @@
-﻿using System.Collections.Concurrent;
-using ChemSharp.Extensions;
-using ChemSharp.Molecules;
-using ChemSharp.Molecules.DataProviders;
-using ChemSharp.Molecules.Mathematics;
+﻿using ChemSharp.Molecules;
+using ChemSharp.Molecules.Extensions;
+using Nodo.Search;
 using PorphyStruct.Core.Analysis;
 using PorphyStruct.Core.Extension;
 
@@ -22,10 +20,24 @@ public sealed class Macrocycle : Molecule
         { MacrocycleType.Corrphycene, 24 }
     };
 
-    public Macrocycle(string path) : base(MoleculeFactory.CreateProvider(path)) { }
+    private void Init(Molecule mol)
+    {
+        Atoms.AddRange(mol.Atoms);
+        Bonds.AddRange(mol.Bonds);
+    }
+    
+    public Macrocycle(Stream stream, string extension)
+    {
+        var mol = FromStream(stream, extension);
+        Init(mol);
+    }
 
-    public Macrocycle(IAtomDataProvider provider) : base(provider) { }
-
+    public Macrocycle(string file)
+    {
+        var mol = FromFile(file);
+        Init(mol);
+    }
+    
     /// <summary>
     /// Gets or Sets the Macrocycle Type
     /// </summary>
@@ -43,104 +55,29 @@ public sealed class Macrocycle : Molecule
     public async Task Detect()
     {
         DetectedParts.Clear();
-        var parts = GetParts();
-        var distinct = parts.Distinct(new EnumerableEqualityComparer<Atom>());
-        var detected = new ConcurrentStack<HashSet<Atom>>();
-        await distinct.AsyncParallelForeach(part =>
-       {
-           var p = part.ToHashSet();
-           var data = FindCorpus(ref p);
-           var unique = true;
-           foreach (var current in detected)
-               if (current.ScrambledEquals(data))
-                   unique = false;
-           if (data.Count == RingSize[MacrocycleType] && unique)
-               detected.Push(data);
-       });
-        //with rising atom counts caching becomes unfavored vs querying.  
-        //Therefore rebuild cache only once at the end.
-        if (Atoms.Count > 1000) CacheNeighborList = false;
-        foreach (var data in detected)
+        //create a subset without dead ends and metals
+        var parts = this.Where(
+                a => a.IsNonCoordinative()
+                     && !Constants.DeadEnds.Contains(a.Symbol)
+                     && !ChemSharp.Constants.AminoAcids.ContainsKey(a.Residue)
+            ).ConnectedFigures()
+            .Where(a => a.Count >= RingSize[MacrocycleType])
+            .ToMolecules().ToList();
+        
+        //load matching macrocycle type
+        var resourceName = $"PorphyStruct.Core.Reference.{MacrocycleType}.Doming.xyz";
+        var reference = FromStream(
+                ResourceUtil.LoadResource(resourceName)!,
+                resourceName.Split('.').Last())
+            .Where(a => a.IsNonCoordinative()
+                        && !Constants.DeadEnds.Contains(a.Symbol));
+        foreach (var data in parts.SelectMany(p => p.GetSubgraphs(reference)))
         {
-            var bonds = Bonds.Where(b => data.Count(a => b.Atoms.Contains(a)) == 2);
-            var analysis = await MacrocycleAnalysis.CreateAsync(data.ToList(), bonds, MacrocycleType);
-            if (CacheNeighborList) RebuildCache();
+            var analysis = await MacrocycleAnalysis.CreateAsync(data, MacrocycleType);
+            RebuildCache();
             var metal = Neighbors(analysis.N4Cavity[0]).FirstOrDefault(s => !s.IsNonCoordinative());
             if (metal != null) analysis.Metal = metal;
             DetectedParts.Add(analysis);
         }
-        if (!CacheNeighborList) RebuildCache();
-        CacheNeighborList = true;
     }
-
-    /// <summary>
-    /// Returns connected figures
-    /// </summary>
-    /// <returns></returns>
-    private IList<IEnumerable<Atom>> GetParts()
-    {
-        var parts = new List<IEnumerable<Atom>>();
-        var data = DFSUtil.ConnectedFigures(
-            Atoms.Where(s => Neighbors(s).Count >= 2), NonMetalNonDeadEndNeighbors);
-        foreach (var fig in data)
-        {
-            var connectedAtoms = fig.Distinct().Where(s => s.IsNonCoordinative() && s.Symbol != "H");
-            if (connectedAtoms.Count() >= RingSize[MacrocycleType]) parts.Add(connectedAtoms);
-        }
-        return parts;
-    }
-
-    /// <summary>
-    /// Finds Macrocycles in part
-    /// </summary>
-    /// <param name="part"></param>
-    /// <returns></returns>
-    private HashSet<Atom> FindCorpus(ref HashSet<Atom> part)
-    {
-        HashSet<Atom> corpus;
-        foreach (var atom in part.Where(s => s.IsNonCoordinative()))
-        {
-            corpus = RingPath(atom, RingSize[MacrocycleType] - 8);
-            foreach (var a in corpus.SelectMany(NonMetalNonDeadEndNeighbors))
-            {
-                var outer = RingPath(a, RingSize[MacrocycleType] - 4);
-                outer.UnionWith(corpus);
-                if (outer.Count == RingSize[MacrocycleType]) return outer;
-            }
-        }
-        corpus = FindCorpusFallBack(ref part);
-        return corpus;
-    }
-
-    /// <summary>
-    /// Fallback Method for Detection e.g. when bonds are not set correctly
-    /// </summary>
-    /// <param name="part"></param>
-    /// <returns></returns>
-    private HashSet<Atom> FindCorpusFallBack(ref HashSet<Atom> part)
-    {
-        var corpus = new HashSet<Atom>();
-        var data = part.Where(s => s?.IsNonCoordinative() ?? false);
-        foreach (var atom in data)
-        {
-            var p = part;
-            IEnumerable<Atom> Func(Atom s) => p?.Where(a => a.BondToByCovalentRadii(s) && a.IsNonCoordinative())!;
-            corpus = FuncRingPath(atom, RingSize[MacrocycleType] - 8, Func);
-            foreach (var n in corpus.SelectMany(Func))
-            {
-                var outer = FuncRingPath(n, RingSize[MacrocycleType] - 4, Func);
-                outer.UnionWith(corpus);
-                if (outer.Count == RingSize[MacrocycleType]) return outer;
-            }
-        }
-        return corpus;
-    }
-
-    private HashSet<Atom> RingPath(Atom atom, int size) => FuncRingPath(atom, size, NonMetalNonDeadEndNeighbors);
-    private static HashSet<Atom> FuncRingPath(Atom atom, int size, Func<Atom, IEnumerable<Atom>> func)
-    {
-        var goal = func(atom).FirstOrDefault();
-        return goal == null ? new HashSet<Atom>() : DFSUtil.BackTrack(atom, goal, func, size);
-    }
-    private IEnumerable<Atom> NonMetalNonDeadEndNeighbors(Atom atom) => NonMetalNeighbors(atom)?.Where(a => !Constants.DeadEnds.Contains(a.Symbol) && a.IsNonCoordinative() && !PDBDataProvider.AminoAcids.ContainsKey(a.Tag ?? ""))!;
 }
