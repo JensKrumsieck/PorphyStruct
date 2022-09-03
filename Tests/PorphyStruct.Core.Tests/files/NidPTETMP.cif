@@ -1,0 +1,165 @@
+####################################################################### 
+# 
+# This file contains crystal structure data downloaded from the 
+# Cambridge Structural Database (CSD) hosted by the Cambridge 
+# Crystallographic Data Centre (CCDC).
+# 
+# Full information about CCDC data access policies and citation 
+# guidelines are available at http://www.ccdc.cam.ac.uk/access/V1 
+# 
+# Audit and citation data items may have been added by the CCDC. 
+# Please retain this information to preserve the provenance of 
+# this file and to allow appropriate attribution of the data. 
+# 
+#######################################################################
+
+data_RIHWAG
+#This CIF has been generated from an entry in the Cambridge Structural Database
+_database_code_depnum_ccdc_archive 'CCDC 1249913'
+_database_code_CSD               RIHWAG
+loop_
+_citation_id
+_citation_doi
+_citation_year
+1 10.1021/ic961156w 1997
+_audit_creation_method           'Created from the CSD'
+_audit_update_record             
+;
+2020-03-30 downloaded from the CCDC.
+;
+_database_code_NBS               678949
+_chemical_formula_moiety         'C44 H44 N4 Ni1'
+_chemical_name_systematic        
+(5,15-Diphenyl-2,8,12,18-tetraethyl-3,7,13,17-tetramethylporphyrinato)-nickel(ii)
+_chemical_absolute_configuration unk
+_diffrn_ambient_temperature      126
+_exptl_crystal_density_diffrn    1.353
+#These two values have been output from a single CSD field.
+_refine_ls_R_factor_gt           0.072
+_refine_ls_wR_factor_gt          0.072
+_diffrn_radiation_probe          x-ray
+_symmetry_cell_setting           monoclinic
+_symmetry_space_group_name_H-M   'C 2/c'
+_symmetry_Int_Tables_number      15
+_space_group_name_Hall           '-C 2yn'
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+1 x,y,z
+2 -x,y,1/2-z
+3 1/2+x,1/2+y,z
+4 1/2-x,1/2+y,1/2-z
+5 -x,-y,-z
+6 x,-y,1/2+z
+7 1/2-x,1/2-y,-z
+8 1/2+x,1/2-y,1/2+z
+_cell_length_a                   17.778(7)
+_cell_length_b                   19.922(12)
+_cell_length_c                   10.517(5)
+_cell_angle_alpha                90
+_cell_angle_beta                 115.03(3)
+_cell_angle_gamma                90
+_cell_volume                     3375.03
+_exptl_crystal_colour            red
+_cell_formula_units_Z            4
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Ni1 Ni 0.0000 0.0702(1) 0.2500
+N1 N -0.0605(2) 0.0024(1) 0.1094(3)
+N2 N -0.0692(2) 0.1379(1) 0.1169(3)
+C1 C -0.0452(2) -0.0654(1) 0.1257(4)
+C2 C -0.0925(2) -0.1012(2) -0.0018(3)
+C3 C -0.0852(2) -0.1761(2) -0.0164(3)
+C4 C -0.1388(2) -0.2170(2) 0.0367(4)
+C5 C -0.1414(2) -0.0560(2) -0.0958(4)
+C6 C -0.2010(2) -0.0733(1) -0.2439(4)
+C7 C -0.1231(2) 0.0090(2) -0.0262(3)
+C8 C -0.1637(2) 0.0688(1) -0.0793(4)
+C9 C -0.2407(2) 0.0669(1) -0.2154(4)
+C10 C -0.3174(2) 0.0544(2) -0.2136(3)
+C11 C -0.3890(2) 0.0537(2) -0.3382(4)
+C12 C -0.3858(2) 0.0648(2) -0.4646(4)
+C13 C -0.3086(2) 0.0774(2) -0.4660(4)
+C14 C -0.2384(2) 0.0785(2) -0.3449(4)
+C15 C -0.1377(2) 0.1297(1) -0.0111(3)
+C16 C -0.1735(2) 0.1954(2) -0.0664(3)
+C17 C -0.2473(2) 0.2138(2) -0.1999(3)
+C18 C -0.1249(2) 0.2418(2) 0.0252(3)
+C19 C -0.1302(2) 0.3168(2) 0.0100(3)
+C20 C -0.0889(2) 0.3427(2) -0.0806(4)
+C21 C -0.0613(2) 0.2062(1) 0.1391(3)
+C22 C 0.0000 0.2374(2) 0.2500
+C23 C 0.0000 -0.0968(2) 0.2500
+H1 H -0.0282 -0.1892 0.0341
+H2 H -0.1017 -0.1863 -0.1137
+H3 H -0.1323 -0.2641 0.0244
+H4 H -0.1218 -0.2076 0.1346
+H5 H -0.1961 -0.2047 -0.0148
+H6 H -0.1983 -0.1205 -0.2602
+H7 H -0.2562 -0.0619 -0.2563
+H8 H -0.1873 -0.0483 -0.3092
+H9 H -0.3196 0.0469 -0.1251
+H10 H -0.4422 0.0449 -0.3385
+H11 H -0.4354 0.0637 -0.5505
+H12 H -0.3067 0.0853 -0.5545
+H13 H -0.1854 0.0872 -0.3456
+H14 H -0.2547 0.2616 -0.2054
+H15 H -0.2379 0.1984 -0.2784
+H16 H -0.2963 0.1928 -0.2014
+H17 H -0.1039 0.3371 0.1012
+H18 H -0.1875 0.3301 -0.0313
+H19 H -0.0931 0.3907 -0.0889
+H20 H -0.0315 0.3299 -0.0385
+H21 H -0.1158 0.3228 -0.1721
+H22 H 0.0000 0.2856 0.2500
+H23 H 0.0000 -0.1450 0.2500
+N1A N 0.0605(2) 0.0024(1) 0.3906(3)
+C1A C 0.0452(2) -0.0654(1) 0.3743(4)
+C2A C 0.0925(2) -0.1012(2) 0.5018(3)
+C3A C 0.0852(2) -0.1761(2) 0.5164(3)
+C4A C 0.1388(2) -0.2170(2) 0.4633(4)
+H3A H 0.1323 -0.2641 0.4756
+H4A H 0.1218 -0.2076 0.3654
+H5A H 0.1961 -0.2047 0.5148
+H1A H 0.0282 -0.1892 0.4659
+H2A H 0.1017 -0.1863 0.6137
+C5A C 0.1414(2) -0.0560(2) 0.5958(4)
+C6A C 0.2010(2) -0.0733(1) 0.7439(4)
+H6A H 0.1983 -0.1205 0.7602
+H7A H 0.2562 -0.0619 0.7563
+H8A H 0.1873 -0.0483 0.8092
+C7A C 0.1231(2) 0.0090(2) 0.5262(3)
+C8A C 0.1637(2) 0.0688(1) 0.5793(4)
+C9A C 0.2407(2) 0.0669(1) 0.7154(4)
+C10A C 0.3174(2) 0.0544(2) 0.7136(3)
+C11A C 0.3890(2) 0.0537(2) 0.8382(4)
+C12A C 0.3858(2) 0.0648(2) 0.9646(4)
+C13A C 0.3086(2) 0.0774(2) 0.9660(4)
+C14A C 0.2384(2) 0.0785(2) 0.8449(4)
+H13A H 0.1854 0.0872 0.8456
+H12A H 0.3067 0.0853 1.0545
+H11A H 0.4354 0.0637 1.0505
+H10A H 0.4422 0.0449 0.8385
+H9A H 0.3196 0.0469 0.6251
+C15A C 0.1377(2) 0.1297(1) 0.5111(3)
+N2A N 0.0692(2) 0.1379(1) 0.3831(3)
+C21A C 0.0613(2) 0.2062(1) 0.3609(3)
+C18A C 0.1249(2) 0.2418(2) 0.4748(3)
+C16A C 0.1735(2) 0.1954(2) 0.5664(3)
+C17A C 0.2473(2) 0.2138(2) 0.6999(3)
+H14A H 0.2547 0.2616 0.7054
+H15A H 0.2379 0.1984 0.7784
+H16A H 0.2963 0.1928 0.7014
+C19A C 0.1302(2) 0.3168(2) 0.4900(3)
+C20A C 0.0889(2) 0.3427(2) 0.5806(4)
+H19A H 0.0931 0.3907 0.5889
+H20A H 0.0315 0.3299 0.5385
+H21A H 0.1158 0.3228 0.6721
+H17A H 0.1039 0.3371 0.3988
+H18A H 0.1875 0.3301 0.5313
+
+#END

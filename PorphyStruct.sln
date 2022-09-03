@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PorphyStruct.CLI.Tests", "T
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{85EACF84-C20E-4174-9EF7-916B653931B3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PorphyStruct.Core.Tests", "Tests\PorphyStruct.Core.Tests\PorphyStruct.Core.Tests.csproj", "{2C82278B-FD0C-4554-9E2B-949EED322CB9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,14 @@ Global
 		{713B4D67-4DD8-466F-AEA0-5B1139414947}.Release|Any CPU.Build.0 = Release|Any CPU
 		{713B4D67-4DD8-466F-AEA0-5B1139414947}.Release|x64.ActiveCfg = Release|Any CPU
 		{713B4D67-4DD8-466F-AEA0-5B1139414947}.Release|x64.Build.0 = Release|Any CPU
+		{2C82278B-FD0C-4554-9E2B-949EED322CB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C82278B-FD0C-4554-9E2B-949EED322CB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C82278B-FD0C-4554-9E2B-949EED322CB9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2C82278B-FD0C-4554-9E2B-949EED322CB9}.Debug|x64.Build.0 = Debug|Any CPU
+		{2C82278B-FD0C-4554-9E2B-949EED322CB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C82278B-FD0C-4554-9E2B-949EED322CB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C82278B-FD0C-4554-9E2B-949EED322CB9}.Release|x64.ActiveCfg = Release|Any CPU
+		{2C82278B-FD0C-4554-9E2B-949EED322CB9}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -121,5 +131,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{713B4D67-4DD8-466F-AEA0-5B1139414947} = {85EACF84-C20E-4174-9EF7-916B653931B3}
 		{326E6FCB-7738-4F16-9591-991348B3D07E} = {85EACF84-C20E-4174-9EF7-916B653931B3}
+		{2C82278B-FD0C-4554-9E2B-949EED322CB9} = {85EACF84-C20E-4174-9EF7-916B653931B3}
 	EndGlobalSection
 EndGlobal
