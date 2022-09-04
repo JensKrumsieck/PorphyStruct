@@ -13,11 +13,11 @@ public sealed class Macrocycle : Molecule
     /// </summary>
     private static readonly Dictionary<MacrocycleType, int> RingSize = new()
     {
-        { MacrocycleType.Porphyrin, 24 },
-        { MacrocycleType.Corrole, 23 },
-        { MacrocycleType.Norcorrole, 22 },
-        { MacrocycleType.Porphycene, 24 },
-        { MacrocycleType.Corrphycene, 24 }
+        {MacrocycleType.Porphyrin, 24},
+        {MacrocycleType.Corrole, 23},
+        {MacrocycleType.Norcorrole, 22},
+        {MacrocycleType.Porphycene, 24},
+        {MacrocycleType.Corrphycene, 24}
     };
 
     private void Init(Molecule mol)
@@ -26,7 +26,7 @@ public sealed class Macrocycle : Molecule
         Bonds.AddRange(mol.Bonds);
         Title = mol.Title;
     }
-    
+
     public Macrocycle(Stream stream, string extension)
     {
         var mol = FromStream(stream, extension);
@@ -38,7 +38,7 @@ public sealed class Macrocycle : Molecule
         var mol = FromFile(file);
         Init(mol);
     }
-    
+
     /// <summary>
     /// Gets or Sets the Macrocycle Type
     /// </summary>
@@ -57,6 +57,7 @@ public sealed class Macrocycle : Molecule
     {
         DetectedParts.Clear();
         //create a subset without dead ends and metals
+        //clever pruning of the source graph
         var parts = this.Where(
                 a => a.IsNonCoordinative()
                      && !Constants.DeadEnds.Contains(a.Symbol)
@@ -64,14 +65,8 @@ public sealed class Macrocycle : Molecule
             ).ConnectedFigures()
             .Where(a => a.Count >= RingSize[MacrocycleType])
             .ToMolecules().ToList();
-        
-        //load matching macrocycle type
-        var resourceName = $"PorphyStruct.Core.Reference.{MacrocycleType}.Doming.mol2";
-        var reference = FromStream(
-                ResourceUtil.LoadResource(resourceName)!,
-                resourceName.Split('.').Last())
-            .Where(a => a.IsNonCoordinative()
-                        && !Constants.DeadEnds.Contains(a.Symbol));
+
+        var reference = SetUpReference();
         CacheNeighbors = false;
         foreach (var data in parts.SelectMany(p => p.GetSubgraphs(reference)))
         {
@@ -82,7 +77,20 @@ public sealed class Macrocycle : Molecule
             if (metal != null) analysis.Metal = metal;
             DetectedParts.Add(analysis);
         }
+
         RebuildCache();
         CacheNeighbors = true;
+    }
+
+    private Molecule SetUpReference()
+    {
+        //load matching macrocycle type
+        var resourceName = $"PorphyStruct.Core.Reference.{MacrocycleType}.Doming.mol2";
+        var reference = FromStream(
+                ResourceUtil.LoadResource(resourceName)!,
+                resourceName.Split('.').Last())
+            .Where(a => a.IsNonCoordinative()
+                        && !Constants.DeadEnds.Contains(a.Symbol));
+        return reference;
     }
 }
