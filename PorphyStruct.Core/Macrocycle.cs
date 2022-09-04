@@ -72,15 +72,17 @@ public sealed class Macrocycle : Molecule
                 resourceName.Split('.').Last())
             .Where(a => a.IsNonCoordinative()
                         && !Constants.DeadEnds.Contains(a.Symbol));
+        CacheNeighbors = false;
         foreach (var data in parts.SelectMany(p => p.GetSubgraphs(reference)))
         {
             for (var i = 0; i < data.Atoms.Count; i++)
                 data.Atoms[i].Title = reference.Atoms[i].Title;
-            RebuildCache();
             var analysis = MacrocycleAnalysis.Create(data, MacrocycleType);
             var metal = Neighbors(analysis.N4Cavity[0]).FirstOrDefault(s => !s.IsNonCoordinative());
             if (metal != null) analysis.Metal = metal;
             DetectedParts.Add(analysis);
         }
+        RebuildCache();
+        CacheNeighbors = true;
     }
 }

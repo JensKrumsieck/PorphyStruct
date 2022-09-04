@@ -123,14 +123,6 @@ public abstract class MacrocycleAnalysis
     }
 
     /// <summary>
-    /// An overrideable Method to get C1 Atom. 
-    /// In a Porphyrin it does not care which alpha atom is C1, so return any of them...
-    /// override this method in any other class
-    /// </summary>
-    /// <returns></returns>
-    protected virtual Atom C1 => Atoms.First(a => Neighbors(a).Count == 3);
-
-    /// <summary>
     /// Lists N4 Cavity
     /// </summary>
     public readonly List<Atom> N4Cavity;

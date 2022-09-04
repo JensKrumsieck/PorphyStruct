@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using System.Diagnostics;
 using ChemSharp.Mathematics;
 using ChemSharp.Molecules;
 using ChemSharp.Molecules.Properties;
@@ -8,7 +9,46 @@ namespace PorphyStruct.Core.Analysis;
 
 public class PorphyrinAnalysis : MacrocycleAnalysis
 {
-    public PorphyrinAnalysis(Molecule mol) : base(mol) { }
+    public PorphyrinAnalysis(Molecule mol) : base(mol)
+    {
+        //check if is Isoporphyrin and reorder:
+        if (!Isoporphyrin) return;
+        RemapAtoms();
+    }
+
+    private void RemapAtoms()
+    {
+        var isoMeso = _isoCarbon!; //is not null as Isoporphyrin is true!
+        var isoNo = int.Parse(isoMeso.Title[1..]);
+        if (isoNo == 10) return;
+        var delta = isoNo switch
+        {
+            5 => 5,
+            15 => -5,
+            20 => -10,
+            _ => 0 //wtf?
+        };
+        Molecule.CacheNeighbors = false;
+        foreach (var c in Atoms.Where(a => a.Title.StartsWith("C")).OrderBy(a => a.Title))
+        {
+            var no = int.Parse(c.Title[1..]);
+            var newNo = (int) (no + delta - 20 * Math.Floor((no + delta) / 20d));
+            if (newNo == 0) newNo = 20;
+            c.Title = $"C{newNo}";
+        }
+
+        foreach (var n in Atoms.Where(a => a.Title.StartsWith("N")))
+        {
+            var neighbors = Molecule.Neighbors(n);
+            if (neighbors.Any(c => c.Title == "C1")) n.Title = "N1";
+            if (neighbors.Any(c => c.Title == "C6")) n.Title = "N2";
+            if (neighbors.Any(c => c.Title == "C11")) n.Title = "N3";
+            if (neighbors.Any(c => c.Title == "C16")) n.Title = "N4";
+        }
+
+        Molecule.RebuildCache();
+        Molecule.CacheNeighbors = true;
+    }
 #pragma warning disable IDE1006
     //ReSharper disable InconsistentNaming
     private static readonly string[] _AlphaAtoms = { "C1", "C4", "C6", "C9", "C11", "C14", "C16", "C19", "C1" };
@@ -85,21 +125,6 @@ public class PorphyrinAnalysis : MacrocycleAnalysis
         }
     }
     private Atom? _isoCarbon;
-
-    /// <summary>
-    /// Returns C1 for Isoporphyrins which is the neighbor of the sp3 opposing meso carbon 
-    /// </summary>
-    private Atom? IsoporphyrinC1
-    {
-        get
-        {
-            if (_isoCarbon == null) return null;
-            var mesoOpposing = Meso.OrderBy(s => s.DistanceTo(_isoCarbon)).LastOrDefault();
-            return mesoOpposing == null ? null : Neighbors(mesoOpposing).First();
-        }
-    }
-
-    protected override Atom C1 => (Isoporphyrin ? IsoporphyrinC1 : base.C1) ?? base.C1;
 
     protected override List<string> RingAtoms => _RingAtoms;
     protected override string[] AlphaAtoms => _AlphaAtoms;
