@@ -32,7 +32,7 @@ public class ValidationTests
         double wavingX, double wavingY, double propellering, MacrocycleType type)
     {
         var cycle = new Macrocycle(path) {MacrocycleType = type};
-        await cycle.Detect();
+        cycle.Detect();
         var part = cycle.DetectedParts[0];
         part.Properties ??= await MacrocycleProperties.CreateAsync(part);
         var properties = part.Properties;

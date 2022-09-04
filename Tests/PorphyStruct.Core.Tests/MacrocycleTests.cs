@@ -45,7 +45,7 @@ public class MacrocycleTests
     public async Task Macrocycle_CanDetect(string path, MacrocycleType type)
     {
         var cycle = new Macrocycle(path) {MacrocycleType = type};
-        await cycle.Detect();
+        cycle.Detect();
         cycle.DetectedParts.Should().HaveCountGreaterThan(0);
         foreach (var p in cycle.DetectedParts)
         {
@@ -56,10 +56,10 @@ public class MacrocycleTests
     }
 
     [Fact]
-    public async Task All_Corroles_WillBeDetected()
+    public void All_Corroles_WillBeDetected()
     {
         var cycle = new Macrocycle("files/830942.cif") {MacrocycleType = MacrocycleType.Corrole};
-        await cycle.Detect();
+        cycle.Detect();
         cycle.DetectedParts.Should().HaveCount(4);
     }
 }

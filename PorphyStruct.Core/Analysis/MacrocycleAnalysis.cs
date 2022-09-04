@@ -2,7 +2,6 @@
 using System.Numerics;
 using ChemSharp.Mathematics;
 using ChemSharp.Molecules;
-using ChemSharp.Molecules.Extensions;
 using Nodo.Pathfinding;
 using PorphyStruct.Core.Analysis.Properties;
 using PorphyStruct.Core.Extension;

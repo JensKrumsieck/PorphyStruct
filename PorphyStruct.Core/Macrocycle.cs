@@ -1,5 +1,4 @@
 ﻿using ChemSharp.Molecules;
-using ChemSharp.Molecules.Export;
 using ChemSharp.Molecules.Extensions;
 using Nodo.Search;
 using PorphyStruct.Core.Analysis;
@@ -54,7 +53,7 @@ public sealed class Macrocycle : Molecule
     /// Runs a Graph-Theory based Detection algorithm to find Macrocycles in Molecule
     /// </summary>
     /// <returns></returns>
-    public async Task Detect()
+    public void Detect()
     {
         DetectedParts.Clear();
         //create a subset without dead ends and metals
