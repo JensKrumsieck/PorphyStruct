@@ -1,7 +1,10 @@
 ﻿using System.Collections.ObjectModel;
+using System.Reflection.Metadata;
 using System.Windows.Media;
+using ChemSharp;
 using ChemSharp.Molecules;
 using ChemSharp.Molecules.HelixToolkit;
+using PorphyStruct.Core.Extension;
 
 namespace PorphyStruct.ViewModel.Windows;
 
@@ -31,8 +34,27 @@ public class MacrocycleViewModel : ViewModel.MacrocycleViewModel
 
     public MacrocycleViewModel(string path) : base(path)
     {
-        Atoms3D = new ObservableCollection<Atom3D>(Macrocycle.Atoms.Select(s => new Atom3D(s) { IsSelected = s.Equals(SelectedAtom) }));
-        Bonds3D = new ObservableCollection<Bond3D>(Macrocycle.Bonds.Select(s => new Bond3D(s)));
+        //with that number of Atoms it probably is a HUGE protein, so leave out amino acids for performance
+        if (Macrocycle.Atoms.Count > 15000)
+        {
+            var subset = Macrocycle.Atoms
+                                   .Where(s => !Constants.AminoAcids.ContainsKey(s.Residue)).ToList();
+            Atoms3D = new ObservableCollection<Atom3D>(subset.Select(s => new Atom3D(s)
+            {
+                IsSelected = s.Equals(SelectedAtom)
+            }));
+            Bonds3D = new ObservableCollection<Bond3D>(Macrocycle.Bonds
+                                                                 .Where(b => subset.Contains(b.Atom1) && subset.Contains(b.Atom2))
+                                                                 .Select(s => new Bond3D(s)));
+        }
+        else
+        {
+            Atoms3D = new ObservableCollection<Atom3D>(Macrocycle.Atoms.Select(s => new Atom3D(s)
+            {
+                IsSelected = s.Equals(SelectedAtom)
+            }));
+            Bonds3D = new ObservableCollection<Bond3D>(Macrocycle.Bonds.Select(s => new Bond3D(s)));
+        }
     }
 
     protected override void Validate()
