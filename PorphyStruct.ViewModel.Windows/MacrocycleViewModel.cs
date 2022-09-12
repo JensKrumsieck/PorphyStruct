@@ -60,9 +60,10 @@ public class MacrocycleViewModel : ViewModel.MacrocycleViewModel
         {
             Path = new Point3DCollection(spline),
             IsPathClosed = false,
-            Diameter = .25,
-            ThetaDiv = 20,
-            Material = Materials.Green
+            Diameter = .75,
+            ThetaDiv = 12,
+            Material = MaterialHelper.CreateMaterial(Colors.Green, .5d),
+            BackMaterial = null
         };
         Tubes.Add(tube);
     }
