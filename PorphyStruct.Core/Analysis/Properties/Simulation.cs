@@ -77,7 +77,7 @@ public class Simulation
     /// </summary>
     public List<double> ConformationY => (ReferenceMatrix * DenseVector.OfEnumerable(SimulationResult.Select(s => s.Value))).ToList();
 
-    public KeyValueProperty OutOfPlaneParameter { get; set; } = new KeyValueProperty { Key = "Doop (sim.)", Unit = "Å" };
+    public KeyValueProperty OutOfPlaneParameter { get; set; } = new() { Key = "Doop (sim.)", Unit = "Å" };
 
     /// <summary>
     /// Gets Parameters as Percentage

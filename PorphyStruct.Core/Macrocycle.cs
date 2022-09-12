@@ -27,17 +27,8 @@ public sealed class Macrocycle : Molecule
         Title = mol.Title;
     }
 
-    public Macrocycle(Stream stream, string extension)
-    {
-        var mol = FromStream(stream, extension);
-        Init(mol);
-    }
-
-    public Macrocycle(string file)
-    {
-        var mol = FromFile(file);
-        Init(mol);
-    }
+    public Macrocycle(Stream stream, string extension) => Init(FromStream(stream, extension));
+    public Macrocycle(string file) =>  Init(FromFile(file));
 
     /// <summary>
     /// Gets or Sets the Macrocycle Type
