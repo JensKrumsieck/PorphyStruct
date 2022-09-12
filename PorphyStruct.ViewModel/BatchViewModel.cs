@@ -82,7 +82,7 @@ public class BatchViewModel : BaseViewModel
                  }
                  foreach (var analysis in cycle.DetectedParts)
                  {
-                     analysis.Properties = MacrocycleProperties.CreateAsync(analysis).Result;
+                     analysis.Properties = new MacrocycleProperties(analysis);
                      var folder = Path.GetDirectoryName(Files[CurrentIndex - 1]);
                      var file = Path.GetFileNameWithoutExtension(Files[CurrentIndex - 1]);
                      var filename = cycle.DetectedParts.Count == 1

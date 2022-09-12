@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using ChemSharp.Mathematics;
+using ChemSharp.Molecules;
 using ChemSharp.Molecules.DataProviders;
 using ChemSharp.Molecules.Properties;
 using MathNet.Numerics.LinearAlgebra;
@@ -28,7 +29,7 @@ public class Simulation
     /// <summary>
     /// Result of Simulation, may be empty
     /// </summary>
-    public List<KeyValueProperty> SimulationResult { get; } = new List<KeyValueProperty>();
+    public List<KeyValueProperty> SimulationResult { get; } = new();
 
     /// <summary>
     /// Creates a Simulation Object for given Type
@@ -39,15 +40,8 @@ public class Simulation
         UsedModes = Settings.Instance.UseExtendedBasis ? Modes.Concat(ExtendedModes).ToList() : Modes;
         if (type == MacrocycleType.Porphyrin || type == MacrocycleType.Norcorrole) UsedModes.Remove("WavingY2");//Por: WavingX2 = -WavingY2 -> linear dependent! //Nor: Only one Waving2 Mode could be found
         Type = type;
-
-    }
-
-    public static async Task<Simulation> CreateAsync(MacrocycleType type)
-    {
-        var sim = new Simulation(type);
-        var typePrefix = $"PorphyStruct.Core.Reference.{sim.Type}.";
-        sim.ReferenceMatrix = await DisplacementMatrix(sim.UsedModes.Select(s => typePrefix + s + ".mol2"), type);
-        return sim;
+        var typePrefix = $"PorphyStruct.Core.Reference.{Type}.";
+        ReferenceMatrix = DisplacementMatrix(UsedModes.Select(s => typePrefix + s + ".mol2"), type);
     }
 
     /// <summary>
@@ -99,14 +93,17 @@ public class Simulation
     /// <param name="res"></param>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static async Task<Matrix<double>> DisplacementMatrix(IEnumerable<string> res, MacrocycleType type)
+    public static Matrix<double> DisplacementMatrix(IEnumerable<string> res, MacrocycleType type)
     {
         var mat = new List<double[]>();
         foreach (var s in res)
         {
             var stream = ResourceUtil.LoadResource(s);
             var cycle = new Macrocycle(stream!, s.Split('.').Last()) { MacrocycleType = type };
-            await Task.Run(cycle.Detect);
+            var atoms = cycle.Atoms.Where(a => a.IsNonCoordinative()).ToList();
+            var bonds = cycle.Bonds.Where(b => atoms.Contains(b.Atom1) && atoms.Contains(b.Atom2));
+            //await Task.Run(cycle.Detect);
+            cycle.DetectedParts.Add(MacrocycleAnalysis.Create(new Molecule(atoms, bonds), type));
             var part = cycle.DetectedParts[0];
             var data = part.DataPoints.OrderBy(d => d.X).Select(d => d.Y).ToArray();
             mat.Add(data.Normalize());

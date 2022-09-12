@@ -7,7 +7,7 @@ using PorphyStruct.Core.Extension;
 
 namespace PorphyStruct.Core.Analysis.Properties;
 
-public class MacrocycleProperties
+public sealed class MacrocycleProperties
 {
     [JsonIgnore]
     public readonly MacrocycleAnalysis Analysis;
@@ -22,7 +22,7 @@ public class MacrocycleProperties
     public List<Angle> Angles { get; } = new();
     public List<Distance> Distances { get; } = new();
     public List<PlaneDistance> PlaneDistances { get; } = new();
-    public Simulation Simulation { get; private set; }
+    public Simulation? Simulation { get; private set; }
     public N4Cavity Cavity { get; private set; }
     public KeyValueProperty InterplanarAngle { get; } = new() { Unit = "°" };
     public KeyValueProperty OutOfPlaneParameter { get; } = new() { Key = "Doop (exp.)", Unit = "Å" };
@@ -30,13 +30,7 @@ public class MacrocycleProperties
     public MacrocycleProperties(MacrocycleAnalysis analysis)
     {
         Analysis = analysis;
-    }
-
-    public static async Task<MacrocycleProperties> CreateAsync(MacrocycleAnalysis analysis)
-    {
-        var props = new MacrocycleProperties(analysis);
-        await props.Rebuild();
-        return props;
+        Rebuild();
     }
 
     /// <summary>
@@ -89,9 +83,9 @@ public class MacrocycleProperties
     /// <summary>
     /// Fills all Lists
     /// </summary>
-    private async Task Rebuild()
+    private void Rebuild()
     {
-        Simulation ??= await Simulation.CreateAsync(Analysis.GetAnalysisType());
+        Simulation ??= new Simulation(Analysis.GetAnalysisType());
         if (Analysis.DataPoints.Any()) Simulation?.Simulate(Analysis.DataPoints.OrderBy(s => s.X).Select(s => s.Y).ToArray());
         OutOfPlaneParameter.Value = Analysis.GetAnalysisType() == MacrocycleType.Porphyrin ? Analysis.DataPoints.OrderBy(s => s.X).RemoveLast().DisplacementValue() : Analysis.DataPoints.OrderBy(s => s.X).DisplacementValue();
 

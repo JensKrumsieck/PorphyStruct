@@ -11,30 +11,30 @@ public class ValidationTests
     [InlineData("files/CuHETMP.cif", 0.293, -.182, 1.692, -.137, .028, -.024)]
     [InlineData("files/NidPTETMP.cif", 0, -1.192, 0, .154, .154, 0)]
     [InlineData("files/Zn(py)TNPCP.cif", .669, .126, .041, .086, -.057, .008)]
-    public async Task Verify_ShelnuttData(string path, double doming, double saddling, double ruffling, double wavingX,
-        double wavingY, double propellering) => await RunTestWithMinimalBasis(path, doming, saddling, ruffling, wavingX,
+    public void Verify_ShelnuttData(string path, double doming, double saddling, double ruffling, double wavingX,
+        double wavingY, double propellering) => RunTestWithMinimalBasis(path, doming, saddling, ruffling, wavingX,
         wavingY, propellering, MacrocycleType.Porphyrin);
 
     [Theory]
     [InlineData("files/oriluy.cif", 0.088, 0.962, .32, 0, .29, .026)]
-    public async Task Verify_IsoporphyrinData(string path, double doming, double saddling, double ruffling,
+    public void Verify_IsoporphyrinData(string path, double doming, double saddling, double ruffling,
         double wavingX, double wavingY, double propellering)
     {
-        var cycle = await RunTestWithMinimalBasis(path, doming, saddling, ruffling, wavingX, wavingY, propellering,
+        var cycle = RunTestWithMinimalBasis(path, doming, saddling, ruffling, wavingX, wavingY, propellering,
             MacrocycleType.Porphyrin);
         if (cycle.DetectedParts[0] is PorphyrinAnalysis analysis)
             analysis.Isoporphyrin.Should().BeTrue();
         else Assert.True(false); //throw
     }
 
-    private static async Task<Macrocycle> RunTestWithMinimalBasis(string path, double doming, double saddling,
+    private static Macrocycle RunTestWithMinimalBasis(string path, double doming, double saddling,
         double ruffling,
         double wavingX, double wavingY, double propellering, MacrocycleType type)
     {
         var cycle = new Macrocycle(path) {MacrocycleType = type};
         cycle.Detect();
         var part = cycle.DetectedParts[0];
-        part.Properties ??= await MacrocycleProperties.CreateAsync(part);
+        part.Properties ??= new MacrocycleProperties(part);
         var properties = part.Properties;
         properties.Should().NotBeNull();
 
