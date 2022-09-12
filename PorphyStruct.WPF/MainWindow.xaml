@@ -255,6 +255,7 @@
                 <h:DirectionalHeadLight/>
                 <controls:ItemsVisual3D ItemsSource="{Binding Atoms3D}"/>
                 <controls:ItemsVisual3D ItemsSource="{Binding Bonds3D}"/>
+                <controls:ItemsVisual3D ItemsSource="{Binding Tubes}"/>
             </h:HelixViewport3D>
             <TabControl Grid.Row="1" Grid.Column="1" Background="Transparent" TabStripPlacement="Left" ItemContainerStyle="{DynamicResource SideTabHeaderStyle}" 
                         Padding="0" BorderThickness="0" ContentTemplateSelector="{DynamicResource TemplateByTypeSelector}">
