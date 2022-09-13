@@ -68,8 +68,6 @@ public sealed class Macrocycle : Molecule
             if (metal != null) analysis.Metal = metal;
             DetectedParts.Add(analysis);
         }
-
-        RebuildCache();
         CacheNeighbors = true;
     }
 
