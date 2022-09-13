@@ -9,7 +9,7 @@
 	  <Product>PorphyStruct Mode Calculator</Product>
 	  <AssemblyName>PorphyStructCalculator</AssemblyName>
 	  <IncludeAllContentForSelfExtract>True</IncludeAllContentForSelfExtract>
-	  <PublishSingleFile>True</PublishSingleFile>
+	  <PublishSingleFile Condition="'$(Configuration)' == 'Release'">true</PublishSingleFile>
 	  <SelfContained>True</SelfContained>
 	  <PublishReadyToRun>True</PublishReadyToRun>
 	  <RuntimeIdentifier>win-x64</RuntimeIdentifier>

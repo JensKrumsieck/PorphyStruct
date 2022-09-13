@@ -48,6 +48,7 @@ public class CalculatorViewModel : BaseViewModel
 
         //Build Vector
         BuildModeVector();
+        Recalculate();
     }
 
 
@@ -78,9 +79,11 @@ public class CalculatorViewModel : BaseViewModel
     public MacrocycleAnalysis LoadSample()
     {
         var stream = ResourceUtil.LoadResource($"PorphyStruct.Core.Reference.{CycleType}.Doming.mol2");
-        var cycle = new Macrocycle(stream!, "xyz");
-        Task.Run(cycle.Detect).Wait(1500);
-        return cycle.DetectedParts[0];
+        var cycle = new Macrocycle(stream!, "mol2");
+        var analysis =
+            MacrocycleAnalysis.Create(new Molecule(cycle.Atoms.Where(a => a.IsNonCoordinative() && a.Symbol != "H")),
+                CycleType);
+        return analysis;
     }
 
     private void BuildModeVector()
