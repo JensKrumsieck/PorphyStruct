@@ -14,7 +14,7 @@ public sealed class AtomDataPoint : ScatterPoint
         Atom = atom;
         Value = atom.AtomicNumber;
         if (Settings.Instance.UseAtomRadiusMarkerSize)
-            Size = Settings.Instance.MarkerSize * (Atom.CovalentRadius ?? 77) / 77d;
+            Size = Settings.Instance.MarkerSize * Atom.CovalentRadius / 77d;
         if (Settings.Instance.NotMarkedPoints.Split(",").Contains(atom.Title) ||
             Settings.Instance.NotMarkedPoints.Split(",").Contains(atom.Symbol))
             Size = 0;

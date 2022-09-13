@@ -5,32 +5,20 @@
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
      <RunAOTCompilation>true</RunAOTCompilation>
   </PropertyGroup>
-	
-	 <ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="ChemSharp.Molecules.Blazor" Version="2.0.0-alpha.3-ci.463" />
+    <PackageReference Include="Microsoft.AspNetCore.ClientAssets" Version="0.1.0-alpha.21528.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.2" PrivateAssets="all" />
+    <PackageReference Include="OxyPlot.SkiaSharp.Blazor" Version="1.0.0-beta.2" />
+    <PackageReference Include="Tewr.Blazor.FileReader" Version="3.3.1.21360" />
+    <ProjectReference Include="..\PorphyStruct.ViewModel\PorphyStruct.ViewModel.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <SupportedPlatform Include="browser" />
     <Content Update="assets\**" Pack="false" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="assets\index.ts" />
-    <None Remove="Resources\Montserrat-Black.ttf" />
-    <None Remove="Resources\Montserrat-BlackItalic.ttf" />
-    <None Remove="Resources\Montserrat-Bold.ttf" />
-    <None Remove="Resources\Montserrat-BoldItalic.ttf" />
-    <None Remove="Resources\Montserrat-ExtraBold.ttf" />
-    <None Remove="Resources\Montserrat-ExtraBoldItalic.ttf" />
-    <None Remove="Resources\Montserrat-ExtraLight.ttf" />
-    <None Remove="Resources\Montserrat-ExtraLightItalic.ttf" />
-    <None Remove="Resources\Montserrat-Italic.ttf" />
-    <None Remove="Resources\Montserrat-Light.ttf" />
-    <None Remove="Resources\Montserrat-LightItalic.ttf" />
-    <None Remove="Resources\Montserrat-Medium.ttf" />
-    <None Remove="Resources\Montserrat-MediumItalic.ttf" />
-    <None Remove="Resources\Montserrat-Regular.ttf" />
-    <None Remove="Resources\Montserrat-SemiBold.ttf" />
-    <None Remove="Resources\Montserrat-SemiBoldItalic.ttf" />
-    <None Remove="Resources\Montserrat-Thin.ttf" />
-    <None Remove="Resources\Montserrat-ThinItalic.ttf" />
   </ItemGroup>
 
   <ItemGroup>
@@ -54,19 +42,6 @@
     <EmbeddedResource Include="Resources\Montserrat-ThinItalic.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ChemSharp.Molecules.Blazor" Version="2.0.0-alpha.2-ci.438" />
-    <PackageReference Include="Microsoft.AspNetCore.ClientAssets" Version="0.1.0-alpha.21528.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.2" PrivateAssets="all" />
-    <PackageReference Include="OxyPlot.SkiaSharp.Blazor" Version="1.0.0-beta.2" />
-    <PackageReference Include="Tewr.Blazor.FileReader" Version="3.3.1.21360" />
-  </ItemGroup>
-
-  <ItemGroup>
-	  <ProjectReference Include="..\PorphyStruct.ViewModel\PorphyStruct.ViewModel.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
   </ItemGroup>
 
@@ -76,21 +51,9 @@
 
   <ItemGroup>
     <ClientAssetsInputs Remove="assets\Styles.scss" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ClientAssetsInputs Remove="assets\index.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
     <TypeScriptCompile Include="assets\index.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ClientAssetsInputs Remove="assets\webpack.config.js" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ClientAssetsInputs Remove="assets\tsconfig.json" />
   </ItemGroup>
 
