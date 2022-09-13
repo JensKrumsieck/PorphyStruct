@@ -1,4 +1,5 @@
 ﻿using ChemSharp.Molecules;
+using ChemSharp.Molecules.Export;
 using ChemSharp.Molecules.Extensions;
 using Nodo.Search;
 using PorphyStruct.Core.Analysis;
@@ -31,11 +32,6 @@ public sealed class Macrocycle : Molecule
     public Macrocycle(string file) =>  Init(FromFile(file));
 
     /// <summary>
-    /// Gets or Sets the Macrocycle Type
-    /// </summary>
-    //public MacrocycleType MacrocycleType { get; set; } = MacrocycleType.Porphyrin;
-
-    /// <summary>
     /// Contains detected fragment data
     /// </summary>
     public readonly IList<MacrocycleAnalysis> DetectedParts = new List<MacrocycleAnalysis>();
@@ -46,7 +42,7 @@ public sealed class Macrocycle : Molecule
     /// <returns></returns>
     public void Detect()
     {
-        const int maximumRingSize = 24;
+        const int minimumRingSize = 22;
         DetectedParts.Clear();
         //create a subset without dead ends and metals
         //clever pruning of the source graph
@@ -55,15 +51,15 @@ public sealed class Macrocycle : Molecule
                      && !Constants.DeadEnds.Contains(a.Symbol)
                      && !ChemSharp.Constants.AminoAcids.ContainsKey(a.Residue)
             ).ConnectedFigures()
-            .Where(a => a.Count >= maximumRingSize)
+            .Where(a => a.Count >= minimumRingSize)
             .ToMolecules().ToList();
-
         var references = SetUpReferences().ToList();
         CacheNeighbors = false;
         foreach (var part in parts)
         {
             foreach (var reference in references)
             {
+                if(part.Atoms.Count < reference.molecule.Atoms.Count) continue;
                 foreach (var data in part.GetSubgraphs(reference.molecule))
                 {
                     for (var i = 0; i < data.Atoms.Count; i++)

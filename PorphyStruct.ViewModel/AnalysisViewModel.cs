@@ -98,7 +98,6 @@ public class AnalysisViewModel : ListItemViewModel<MacrocycleViewModel, Analysis
         if (yMin > -.5) yMin = -.5;
         Model.YAxis.BindableActualMinimum = yMin;
         Model.YAxis.BindableActualMaximum = yMax;
-        Model.YAxis.BindableMajorStep = .2;
     }
 
     public void SimulationChanged()
@@ -108,7 +107,7 @@ public class AnalysisViewModel : ListItemViewModel<MacrocycleViewModel, Analysis
         Model.InvalidatePlot(false);
 
         if (!SimulationVisible) return;
-        var simY = Analysis.Properties?.Simulation.ConformationY;
+        var simY = Analysis.Properties?.Simulation?.ConformationY;
         if (simY == null) return;
         var src = BuildSimulationData(simY);
         SimulationSeries.ItemsSource = src;

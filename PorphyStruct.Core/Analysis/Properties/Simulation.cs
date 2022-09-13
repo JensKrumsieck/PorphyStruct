@@ -81,7 +81,7 @@ public class Simulation
         get => SimulationResult.Select(s =>
                                 new KeyValueProperty()
                                 {
-                                    Value = Math.Abs(s.Value) / SimulationResult.Sum(v => Math.Abs(v.Value)) * 100,
+                                    Value = s.Value != 0 ? Math.Abs(s.Value) / SimulationResult.Sum(v => Math.Abs(v.Value)) * 100 : 0,
                                     Key = s.Key,
                                     Unit = " %"
                                 }).ToList();

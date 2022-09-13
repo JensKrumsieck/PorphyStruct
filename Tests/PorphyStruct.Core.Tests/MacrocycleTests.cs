@@ -25,7 +25,9 @@ public class MacrocycleTests
         yield return new object[] {"files/CuHETMP.cif", MacrocycleType.Porphyrin};
         yield return new object[] {"files/SADZAA.mol2", MacrocycleType.Corrphycene};
         yield return new object[] {"files/YUKJOD.mol2", MacrocycleType.Porphycene};
+        yield return new object[] {"files/ATUVIV.mol2", MacrocycleType.Porphycene};
         yield return new object[] {"files/1544170.cif", MacrocycleType.Corrole};
+        yield return new object[] {"files/XASBEC.mol2", MacrocycleType.Corrole};
         yield return new object[] {"files/EMOWOS.mol2", MacrocycleType.Norcorrole};
     }
 

@@ -89,6 +89,7 @@ public abstract class MacrocycleAnalysis
     /// <returns></returns>
     protected virtual IEnumerable<AtomDataPoint> CalculateDataPoints()
     {
+        Molecule.RebuildCache();
         var atoms = Atoms.OrderBy(s => RingAtoms.IndexOf(s.Title)).ToList();
         var dist = 0d;
         var fix = 1d;
