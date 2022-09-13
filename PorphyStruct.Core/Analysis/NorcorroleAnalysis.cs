@@ -11,4 +11,6 @@ public class NorcorroleAnalysis : CorroleAnalysis
     // ReSharper restore InconsistentNaming
 
     protected override List<string> RingAtoms => _RingAtoms;
+
+    public override MacrocycleType Type => MacrocycleType.Norcorrole;
 }

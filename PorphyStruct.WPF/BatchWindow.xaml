@@ -13,7 +13,7 @@
         Icon="Resources/porphystruct.ico"
         Background="{DynamicResource Background}"
         ResizeMode="NoResize"
-        Title="Batch Processing" Height="350" Width="800">
+        Title="Batch Processing" Height="300" Width="800">
     <controls:DefaultWindow.TitlebarContent>
         <Grid VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
@@ -50,48 +50,6 @@
             <StackPanel Orientation="Horizontal">
                 <Label Content="Use Extended Basis" Margin="5 15" />
                 <ToggleButton DataContext="{Binding Source={x:Static core:Settings.Instance}}" IsChecked="{Binding UseExtendedBasis}" Margin="15" />
-            </StackPanel>
-            <StackPanel>
-                <Label Content="Selected Type" FontWeight="DemiBold"/>
-                <ListBox Style="{DynamicResource MaterialDesignToolToggleListBox}" x:Name="TypeList"
-                         SelectionChanged="TypeList_OnSelectionChanged"
-                         Margin="0 10 0 0"
-                         SelectedIndex="0">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid Columns="5"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="{x:Type ListBoxItem}">
-                            <Setter Property="Width" Value="75"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                        <Border BorderThickness="{TemplateBinding BorderThickness}"
-                                                BorderBrush="{TemplateBinding BorderBrush}" 
-                                                Background="{TemplateBinding Background}"
-                                                CornerRadius="5">
-                                            <ContentPresenter/>
-                                        </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsSelected" Value="true">
-                                                <Setter Property="BorderBrush" Value="{DynamicResource SecondaryHueMidBrush}" />
-                                                <Setter Property="BorderThickness" Value="3" />
-                                                <Setter Property="Background" Value="WhiteSmoke" />
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                    <ListBoxItem  Padding="0" ContentTemplate="{StaticResource Porphyrin}" RenderOptions.BitmapScalingMode="Fant" />
-                    <ListBoxItem Padding="0" ContentTemplate="{StaticResource Corrole}" RenderOptions.BitmapScalingMode="Fant"/>
-                    <ListBoxItem  Padding="0" ContentTemplate="{StaticResource Norcorrole}" RenderOptions.BitmapScalingMode="Fant" />
-                    <ListBoxItem  Padding="0" ContentTemplate="{StaticResource Porphycene}" RenderOptions.BitmapScalingMode="Fant" />
-                    <ListBoxItem  Padding="0" ContentTemplate="{StaticResource Corrphycene}" RenderOptions.BitmapScalingMode="Fant" />
-                </ListBox>
             </StackPanel>
         </StackPanel>
         <StackPanel Grid.Column="1" Margin="5">

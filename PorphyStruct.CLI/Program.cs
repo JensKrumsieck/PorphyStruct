@@ -1,7 +1,6 @@
 ﻿using CommandDotNet;
 using CommandDotNet.Spectre;
 using PorphyStruct.Core;
-using PorphyStruct.Core.Analysis;
 using PorphyStruct.ViewModel;
 using PorphyStruct.ViewModel.IO;
 using Spectre.Console;
@@ -22,9 +21,6 @@ public class Program
         IAnsiConsole console,
         [Positional(Description = "Input file to analyze. Can be of type .cif, .mol, .mol2, .pdb or .xyz")]
         string file,
-        [Option('t', "type",
-            Description = "Choose Macrocyclic Type: Porphyrin, Corrole, Norcorrole, Corrphycene or Porphycene")]
-        string rawType,
         [Named('x', "extended", Description = "Use Extended Basis")]
         bool extendedBasis,
         [Named("no-export", Description = "Do not write any files!")]
@@ -32,16 +28,12 @@ public class Program
     )
     {
         Settings.Instance.UseExtendedBasis = extendedBasis;
-        var type = (MacrocycleType) Enum.Parse(typeof(MacrocycleType), rawType);
-        var macrocycle = new Macrocycle(file)
-        {
-            MacrocycleType = type
-        };
+        var macrocycle = new Macrocycle(file);
         var viewModel = new MacrocycleViewModel(macrocycle);
 
         console.Write(new Rule(file));
         console.Write(new Rule(
-            $"Using [invert]{type}[/] with [invert]{(extendedBasis ? "extended Basis" : "minimal Basis")}[/]"));
+            $"Using [invert]{(extendedBasis ? "extended Basis" : "minimal Basis")}[/]"));
 
         await console.Status().StartAsync("Analyzing", async ctx => { await viewModel.Analyze(); });
         console.RenderAnalysis(viewModel.Items);

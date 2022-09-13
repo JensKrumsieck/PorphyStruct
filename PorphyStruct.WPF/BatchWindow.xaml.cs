@@ -30,12 +30,6 @@ public partial class BatchWindow : DefaultWindow
         PathTextBox.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
     }
 
-    private void TypeList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        var vm = (BatchViewModel)DataContext;
-        vm.Type = (MacrocycleType)TypeList.SelectedIndex;
-    }
-
     private async void Process_OnClick(object sender, RoutedEventArgs e)
     {
         MainGrid.IsEnabled = false;

@@ -32,7 +32,6 @@
 <div class="container mx-auto px-2 overflow-x-hidden">  
     @if(DataContext != null)
     {
-        <RadioButtonList TValue=MacrocycleType @bind-Value=DataContext.Macrocycle.MacrocycleType/>
         <div class="mt-4">           
             <Button Click="@OnAnalyzeClick">                
                 <div class="inline-flex place-content-center">
@@ -63,7 +62,11 @@
                                         </svg>
                                    </Button>
                                </div>
-                               <ul> 
+                                <ul>
+                                    <li class="grid grid-cols-4 gap-4 mt-2 font-bold">
+                                        <p class="col-auto">Macrocycle Type</p>
+                                        <p class="col-auto">@properties.AnalysisType</p>
+                                    </li>
                                     @foreach (var param in properties.Simulation.SimulationResult)
                                     {
                                         <li class="grid grid-cols-4 gap-4 mt-2">
@@ -87,9 +90,9 @@
                                     </li>
                                     <li class="grid grid-cols-4 gap-4 mt-2">
                                         <p class="col-auto">δ<sub>oop</sub> (sim.)</p>
-                                        <p class="col-auto">@((Math.Abs(properties.OutOfPlaneParameter.Value - properties.Simulation.OutOfPlaneParameter.Value)/properties.OutOfPlaneParameter.Value*100).ToString("N2")) %</p>
+                                        <p class="col-auto">@((Math.Abs(properties.OutOfPlaneParameter.Value - properties.Simulation.OutOfPlaneParameter.Value) / properties.OutOfPlaneParameter.Value * 100).ToString("N2")) %</p>
                                     </li>
-                               </ul>
+                                </ul>
                             </TabItem>    
                         }
                     </TabControl>

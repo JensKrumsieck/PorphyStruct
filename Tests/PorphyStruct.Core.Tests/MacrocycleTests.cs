@@ -33,18 +33,17 @@ public class MacrocycleTests
     [MemberData(nameof(GetMacrocycles))]
     public void Macrocycle_CanBeCreated(string path, MacrocycleType type)
     {
-        var cycle = new Macrocycle(path) {MacrocycleType = type};
+        var cycle = new Macrocycle(path);
         cycle.Should().NotBeNull();
         cycle.Atoms.Should().HaveCountGreaterThan(0);
         cycle.Bonds.Should().HaveCountGreaterThan(0);
-        cycle.MacrocycleType.Should().Be(type);
     }
 
     [Theory]
     [MemberData(nameof(GetMacrocycles))]
-    public async Task Macrocycle_CanDetect(string path, MacrocycleType type)
+    public void Macrocycle_CanDetect(string path, MacrocycleType type)
     {
-        var cycle = new Macrocycle(path) {MacrocycleType = type};
+        var cycle = new Macrocycle(path);
         cycle.Detect();
         cycle.DetectedParts.Should().HaveCountGreaterThan(0);
         foreach (var p in cycle.DetectedParts)
@@ -52,13 +51,14 @@ public class MacrocycleTests
             p.Properties ??= new MacrocycleProperties(p);
             p.Atoms.Should().HaveCount(RingSize[type]);
             p.Properties.Should().NotBeNull();
+            p.Properties.Analysis.Type.Should().Be(type);
         }
     }
 
     [Fact]
     public void All_Corroles_WillBeDetected()
     {
-        var cycle = new Macrocycle("files/830942.cif") {MacrocycleType = MacrocycleType.Corrole};
+        var cycle = new Macrocycle("files/830942.cif");
         cycle.Detect();
         cycle.DetectedParts.Should().HaveCount(4);
     }

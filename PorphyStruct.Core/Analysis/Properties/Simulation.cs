@@ -99,7 +99,7 @@ public class Simulation
         foreach (var s in res)
         {
             var stream = ResourceUtil.LoadResource(s);
-            var cycle = new Macrocycle(stream!, s.Split('.').Last()) { MacrocycleType = type };
+            var cycle = new Macrocycle(stream!, s.Split('.').Last());
             var atoms = cycle.Atoms.Where(a => a.IsNonCoordinative()).ToList();
             var bonds = cycle.Bonds.Where(b => atoms.Contains(b.Atom1) && atoms.Contains(b.Atom2));
             //await Task.Run(cycle.Detect);

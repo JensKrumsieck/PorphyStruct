@@ -39,6 +39,7 @@ public class PorphyceneAnalysis : MacrocycleAnalysis
 
     protected virtual Atom C1 => Alpha.FirstOrDefault(atom => Neighbors(atom).Any(l => Alpha.Contains(l)))!;
 
+    public override MacrocycleType Type => MacrocycleType.Porphycene;
     protected override List<string> RingAtoms => _RingAtoms;
     protected override string[] AlphaAtoms => _AlphaAtoms;
     protected override Dictionary<string, double> Multiplier => _Multiplier;

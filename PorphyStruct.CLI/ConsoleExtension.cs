@@ -17,9 +17,9 @@ public static class ConsoleExtension
         ["WavingX"] = Color.Orange1,
         ["WavingX2"] = Color.Orange3,
         ["WavingY"] = Color.Purple_1,
-        ["WavingY2"] = Color.Purple3,
+        ["WavingY2"] = Color.Purple_2,
         ["Propellering"] = Color.RosyBrown,
-        ["Propellering2"] = Color.SandyBrown
+        ["Propellering2"] = Color.Black
     };
 
     public static void Margin(this IAnsiConsole console, int count = 1)

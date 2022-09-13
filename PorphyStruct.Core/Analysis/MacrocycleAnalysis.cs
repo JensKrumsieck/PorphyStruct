@@ -11,6 +11,8 @@ namespace PorphyStruct.Core.Analysis;
 
 public abstract class MacrocycleAnalysis
 {
+    public abstract MacrocycleType Type { get; }
+    
     internal Molecule Molecule { get; }
 
     /// <summary>

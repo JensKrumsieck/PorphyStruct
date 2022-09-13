@@ -109,7 +109,6 @@ public partial class MainWindow : DefaultWindow
     {
         DataContext = ViewModel = new MacrocycleViewModel(path);
         ViewModel.SelectedIndexChanged += ViewModelOnSelectedIndexChanged;
-        TypePopup.Visibility = Visibility.Visible;
         Viewport3D.CameraController.CameraTarget =
             MathV.Centroid(ViewModel.Macrocycle.Atoms.Select(s => s.Location).ToList()).ToPoint3D();
         Activate();
@@ -127,10 +126,10 @@ public partial class MainWindow : DefaultWindow
         //Block UI interaction during this
         MainGrid.IsEnabled = false;
         TitleGrid.IsEnabled = false;
+        AnalyzePopup.IsOpen = false;
         await ViewModel.Analyze();
         MainGrid.IsEnabled = true;
         TitleGrid.IsEnabled = true;
-        AnalyzePopup.IsOpen = false;
     }
 
     private async void Analyze_OnClick(object sender, RoutedEventArgs e)
@@ -150,15 +149,6 @@ public partial class MainWindow : DefaultWindow
         var sw = new SaveWindow(ViewModel.SelectedItem);
         sw.ShowDialog();
     }
-
-    private void TypeSubmit_OnClick(object sender, RoutedEventArgs e)
-    {
-        if (ViewModel == null) return;
-        var type = (MacrocycleType)TypeList.SelectedIndex;
-        ViewModel.Macrocycle.MacrocycleType = type;
-        TogglePopup(TypePopup);
-    }
-
     private void URL_OnClicked(object sender, RequestNavigateEventArgs e) =>
         Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
 

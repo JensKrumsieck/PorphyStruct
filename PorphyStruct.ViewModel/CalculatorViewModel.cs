@@ -59,7 +59,7 @@ public class CalculatorViewModel : BaseViewModel
         Bonds.ClearAndNotify();
         Series.ItemsSource = null;
         var typePrefix = $"PorphyStruct.Core.Reference.{CycleType}.";
-        var matrix = Simulation.DisplacementMatrix(ModeVector.Select(s => typePrefix + s.Key + ".xyz"), CycleType);
+        var matrix = Simulation.DisplacementMatrix(ModeVector.Select(s => typePrefix + s.Key + ".mol2"), CycleType);
         var result = (matrix * DenseVector.OfEnumerable(ModeVector.Select(s => s.Value))).ToList();
 
         var dom = LoadSample();
@@ -77,8 +77,8 @@ public class CalculatorViewModel : BaseViewModel
 
     public MacrocycleAnalysis LoadSample()
     {
-        var stream = ResourceUtil.LoadResource($"PorphyStruct.Core.Reference.{CycleType}.Doming.xyz");
-        var cycle = new Macrocycle(stream!, "xyz")  { MacrocycleType = CycleType };
+        var stream = ResourceUtil.LoadResource($"PorphyStruct.Core.Reference.{CycleType}.Doming.mol2");
+        var cycle = new Macrocycle(stream!, "xyz");
         Task.Run(cycle.Detect).Wait(1500);
         return cycle.DetectedParts[0];
     }

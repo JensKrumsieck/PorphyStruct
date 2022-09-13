@@ -11,7 +11,7 @@ public class CLITests
     {
         var result = Program.AppRunner
             .RunInMem(
-                "analyze testfiles/oriluy.cif -t Porphyrin");
+                "analyze testfiles/oriluy.cif");
         result.ExitCode.Should().Be(0);
     }
 }

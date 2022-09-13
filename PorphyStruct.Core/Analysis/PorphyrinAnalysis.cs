@@ -126,6 +126,7 @@ public class PorphyrinAnalysis : MacrocycleAnalysis
     }
     private Atom? _isoCarbon;
 
+    public override MacrocycleType Type => MacrocycleType.Porphyrin;
     protected override List<string> RingAtoms => _RingAtoms;
     protected override string[] AlphaAtoms => _AlphaAtoms;
     protected override Dictionary<string, double> Multiplier => _Multiplier;

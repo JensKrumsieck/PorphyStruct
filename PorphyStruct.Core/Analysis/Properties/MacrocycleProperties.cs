@@ -9,23 +9,22 @@ namespace PorphyStruct.Core.Analysis.Properties;
 
 public sealed class MacrocycleProperties
 {
-    [JsonIgnore]
-    public readonly MacrocycleAnalysis Analysis;
+    [JsonIgnore] public readonly MacrocycleAnalysis Analysis;
 
-    [JsonIgnore] 
-    public double Delta => Math.Abs(OutOfPlaneParameter.Value - Simulation.OutOfPlaneParameter.Value);
-        
-    [JsonIgnore]
-    public double Error => Delta / OutOfPlaneParameter.Value;
-    
+    [JsonIgnore] public double Delta => Math.Abs(OutOfPlaneParameter.Value - Simulation.OutOfPlaneParameter.Value);
+
+    [JsonIgnore] public double Error => Delta / OutOfPlaneParameter.Value;
+
+    public string AnalysisType => Analysis.Type.ToString();
+    public KeyValueProperty OutOfPlaneParameter { get; } = new() {Key = "Doop (exp.)", Unit = "Å"};
+    public Simulation? Simulation { get; private set; }
     public List<Dihedral> Dihedrals { get; } = new();
     public List<Angle> Angles { get; } = new();
     public List<Distance> Distances { get; } = new();
     public List<PlaneDistance> PlaneDistances { get; } = new();
-    public Simulation? Simulation { get; private set; }
     public N4Cavity Cavity { get; private set; }
-    public KeyValueProperty InterplanarAngle { get; } = new() { Unit = "°" };
-    public KeyValueProperty OutOfPlaneParameter { get; } = new() { Key = "Doop (exp.)", Unit = "Å" };
+    public KeyValueProperty InterplanarAngle { get; } = new() {Unit = "°"};
+
 
     public MacrocycleProperties(MacrocycleAnalysis analysis)
     {
@@ -36,49 +35,47 @@ public sealed class MacrocycleProperties
     /// <summary>
     /// Dihedrals for Corrole, Porphyrin and Norcorrole
     /// </summary>
-    [JsonIgnore]
-    private static readonly IList<string[]> PorphyrinoidDihedrals = new List<string[]>{
-            new[] { "C3", "C4", "C6", "C7" }, //chi1
-            new[] { "C2", "C1", "C19", "C18" }, //chi2
-            new[] { "C13", "C14", "C16", "C17" }, //chi3 
-            new[] { "C8", "C9", "C11", "C12" }, //chi4
-            new[] { "C4", "N1", "N3", "C11" }, //psi1
-            new[] { "C9", "N2", "N4", "C16" }, //psi2
-            new[] { "N1", "C4", "C6", "N2" }, //phi1
-            new[] { "N1", "C1", "C19", "N4" }, //phi2
-            new[] { "N3", "C14", "C16", "N4" }, //phi3
-            new[] { "N2", "C9", "C11", "N3" } //phi4
-        };
+    [JsonIgnore] private static readonly IList<string[]> PorphyrinoidDihedrals = new List<string[]>
+    {
+        new[] {"C3", "C4", "C6", "C7"}, //chi1
+        new[] {"C2", "C1", "C19", "C18"}, //chi2
+        new[] {"C13", "C14", "C16", "C17"}, //chi3 
+        new[] {"C8", "C9", "C11", "C12"}, //chi4
+        new[] {"C4", "N1", "N3", "C11"}, //psi1
+        new[] {"C9", "N2", "N4", "C16"}, //psi2
+        new[] {"N1", "C4", "C6", "N2"}, //phi1
+        new[] {"N1", "C1", "C19", "N4"}, //phi2
+        new[] {"N3", "C14", "C16", "N4"}, //phi3
+        new[] {"N2", "C9", "C11", "N3"} //phi4
+    };
 
-    [JsonIgnore]
-    private static readonly IList<string[]> CorrphyceneDihedrals = new List<string[]>
-        {
-            new[] { "C3", "C4", "C6", "C7" }, //chi1
-            new[] { "C2", "C1", "C20", "C19" }, //chi2
-            new[] { "C14", "C15", "C17", "C18" }, //chi3
-            new[] { "C8", "C9", "C12", "C13" }, //chi4
-            new[] { "C4", "N1", "N3", "C12" }, //psi1
-            new[] { "C9", "N2", "N4", "C17" }, //psi2
-            new[] { "N1", "C4", "C6" , "N2"}, //phi1
-            new[] { "N1", "C1", "C20", "N4"}, //phi2
-            new[] { "N3", "C14", "C17", "N4"}, //phi3
-            new[] { "N2", "C9", "C11", "N3"} //phi4
-        };
+    [JsonIgnore] private static readonly IList<string[]> CorrphyceneDihedrals = new List<string[]>
+    {
+        new[] {"C3", "C4", "C6", "C7"}, //chi1
+        new[] {"C2", "C1", "C20", "C19"}, //chi2
+        new[] {"C14", "C15", "C17", "C18"}, //chi3
+        new[] {"C8", "C9", "C12", "C13"}, //chi4
+        new[] {"C4", "N1", "N3", "C12"}, //psi1
+        new[] {"C9", "N2", "N4", "C17"}, //psi2
+        new[] {"N1", "C4", "C6", "N2"}, //phi1
+        new[] {"N1", "C1", "C20", "N4"}, //phi2
+        new[] {"N3", "C14", "C17", "N4"}, //phi3
+        new[] {"N2", "C9", "C11", "N3"} //phi4
+    };
 
-    [JsonIgnore]
-    private static readonly IList<string[]> PorphyceneDihedrals = new List<string[]>
-        {
-            new[] { "C3", "C4", "C7", "C8" }, //chi1
-            new[] { "C2", "C1", "C20", "C19" }, //chi2
-            new[] { "C13", "C14", "C17", "C18" }, //chi3
-            new[] { "C9", "C10", "C11", "C12" }, //chi4
-            new[] { "C4", "N1", "N3", "C11" }, //psi1
-            new[] { "C10", "N2", "N4", "C17" }, //psi2
-            new[] { "N1", "C4", "C7" , "N2"}, //phi1
-            new[] { "N1", "C1", "C20", "N4"}, //phi2
-            new[] { "N3", "C14", "C17", "N4"}, //phi3
-            new[] { "N2", "C10", "C11", "N3"} //phi4
-        };
+    [JsonIgnore] private static readonly IList<string[]> PorphyceneDihedrals = new List<string[]>
+    {
+        new[] {"C3", "C4", "C7", "C8"}, //chi1
+        new[] {"C2", "C1", "C20", "C19"}, //chi2
+        new[] {"C13", "C14", "C17", "C18"}, //chi3
+        new[] {"C9", "C10", "C11", "C12"}, //chi4
+        new[] {"C4", "N1", "N3", "C11"}, //psi1
+        new[] {"C10", "N2", "N4", "C17"}, //psi2
+        new[] {"N1", "C4", "C7", "N2"}, //phi1
+        new[] {"N1", "C1", "C20", "N4"}, //phi2
+        new[] {"N3", "C14", "C17", "N4"}, //phi3
+        new[] {"N2", "C10", "C11", "N3"} //phi4
+    };
 
     /// <summary>
     /// Fills all Lists
@@ -86,8 +83,11 @@ public sealed class MacrocycleProperties
     private void Rebuild()
     {
         Simulation ??= new Simulation(Analysis.GetAnalysisType());
-        if (Analysis.DataPoints.Any()) Simulation?.Simulate(Analysis.DataPoints.OrderBy(s => s.X).Select(s => s.Y).ToArray());
-        OutOfPlaneParameter.Value = Analysis.GetAnalysisType() == MacrocycleType.Porphyrin ? Analysis.DataPoints.OrderBy(s => s.X).RemoveLast().DisplacementValue() : Analysis.DataPoints.OrderBy(s => s.X).DisplacementValue();
+        if (Analysis.DataPoints.Any())
+            Simulation?.Simulate(Analysis.DataPoints.OrderBy(s => s.X).Select(s => s.Y).ToArray());
+        OutOfPlaneParameter.Value = Analysis.GetAnalysisType() == MacrocycleType.Porphyrin
+            ? Analysis.DataPoints.OrderBy(s => s.X).RemoveLast().DisplacementValue()
+            : Analysis.DataPoints.OrderBy(s => s.X).DisplacementValue();
 
         RebuildDihedrals();
         RebuildAngles();
@@ -107,7 +107,8 @@ public sealed class MacrocycleProperties
     {
         Dihedrals.Clear();
 
-        Dihedrals.Add(new Dihedral(Analysis.FindAtomByTitle("N1"), Analysis.FindAtomByTitle("N2"), Analysis.FindAtomByTitle("N3"), Analysis.FindAtomByTitle("N4")));
+        Dihedrals.Add(new Dihedral(Analysis.FindAtomByTitle("N1"), Analysis.FindAtomByTitle("N2"),
+                                   Analysis.FindAtomByTitle("N3"), Analysis.FindAtomByTitle("N4")));
         RebuildTypeSpecificDihedrals();
     }
 
@@ -136,8 +137,10 @@ public sealed class MacrocycleProperties
     /// Business logic for <see cref="RebuildTypeSpecificDihedrals"/>
     /// </summary>
     /// <param name="list"></param>
-    private void BuildDihedrals(IEnumerable<string[]> list) => Dihedrals.AddRange(list.Select(s => new Dihedral(Analysis.FindAtomByTitle(s[0]),
-            Analysis.FindAtomByTitle(s[1]), Analysis.FindAtomByTitle(s[2]), Analysis.FindAtomByTitle(s[3]))));
+    private void BuildDihedrals(IEnumerable<string[]> list) =>
+        Dihedrals.AddRange(list.Select(s => new Dihedral(Analysis.FindAtomByTitle(s[0]),
+                                                         Analysis.FindAtomByTitle(s[1]), Analysis.FindAtomByTitle(s[2]),
+                                                         Analysis.FindAtomByTitle(s[3]))));
 
     /// <summary>
     /// Rebuilds Angles
@@ -176,16 +179,18 @@ public sealed class MacrocycleProperties
         Distances.Add(new Distance(Analysis.FindAtomByTitle("N2"), Analysis.FindAtomByTitle("N4")));
         if (Analysis.Metal == null) return;
         Distances.AddRange(Analysis.Atoms.Where(s => Analysis.Metal.BondToByCovalentRadii(s))
-            .Select(s => new Distance(Analysis.Metal, s)));
+                                   .Select(s => new Distance(Analysis.Metal, s)));
         PlaneDistances.Add(new PlaneDistance(Analysis.Metal, Analysis.MeanPlane, "Mean Plane"));
-        PlaneDistances.Add(new PlaneDistance(Analysis.Metal, MathV.MeanPlane(Analysis.N4Cavity.Select(s => s.Location).ToList()), "N4 Plane"));
+        PlaneDistances.Add(new PlaneDistance(Analysis.Metal,
+                                             MathV.MeanPlane(Analysis.N4Cavity.Select(s => s.Location).ToList()),
+                                             "N4 Plane"));
     }
 
     /// <summary>
     /// Exports Properties in Machine readable format
     /// </summary>
     /// <returns></returns>
-    public string ExportJson() => JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+    public string ExportJson() => JsonSerializer.Serialize(this, new JsonSerializerOptions {WriteIndented = true});
 
     /// <summary>
     /// Exports Properties in Human readable format
@@ -194,10 +199,17 @@ public sealed class MacrocycleProperties
     public string ExportString()
     {
         var result = "";
-        result += ExportBlock("Simulation", Simulation.SimulationResult.Append(OutOfPlaneParameter).Append(Simulation.OutOfPlaneParameter));
-        result += ExportBlock("Cavity", new[] { Cavity });
-        result += Analysis.Metal != null ? ExportBlock("Distances", Distances.Cast<KeyValueProperty>().Concat(PlaneDistances)) : ExportBlock("Distances", Distances);
-        result += Analysis.Metal != null ? ExportBlock("Angles", Angles.Append(InterplanarAngle)) : ExportBlock("Angles", Angles);
+        result += $"## Macrocycle Type: {AnalysisType}\n";
+        result += ExportBlock("Simulation",
+                              Simulation.SimulationResult.Append(OutOfPlaneParameter)
+                                        .Append(Simulation.OutOfPlaneParameter));
+        result += ExportBlock("Cavity", new[] {Cavity});
+        result += Analysis.Metal != null
+            ? ExportBlock("Distances", Distances.Cast<KeyValueProperty>().Concat(PlaneDistances))
+            : ExportBlock("Distances", Distances);
+        result += Analysis.Metal != null
+            ? ExportBlock("Angles", Angles.Append(InterplanarAngle))
+            : ExportBlock("Angles", Angles);
         result += ExportBlock("Dihedrals", Dihedrals);
         return result;
     }

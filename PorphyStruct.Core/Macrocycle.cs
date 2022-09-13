@@ -33,7 +33,7 @@ public sealed class Macrocycle : Molecule
     /// <summary>
     /// Gets or Sets the Macrocycle Type
     /// </summary>
-    public MacrocycleType MacrocycleType { get; set; } = MacrocycleType.Porphyrin;
+    //public MacrocycleType MacrocycleType { get; set; } = MacrocycleType.Porphyrin;
 
     /// <summary>
     /// Contains detected fragment data
@@ -46,6 +46,7 @@ public sealed class Macrocycle : Molecule
     /// <returns></returns>
     public void Detect()
     {
+        const int maximumRingSize = 24;
         DetectedParts.Clear();
         //create a subset without dead ends and metals
         //clever pruning of the source graph
@@ -54,32 +55,42 @@ public sealed class Macrocycle : Molecule
                      && !Constants.DeadEnds.Contains(a.Symbol)
                      && !ChemSharp.Constants.AminoAcids.ContainsKey(a.Residue)
             ).ConnectedFigures()
-            .Where(a => a.Count >= RingSize[MacrocycleType])
+            .Where(a => a.Count >= maximumRingSize)
             .ToMolecules().ToList();
 
-        var reference = SetUpReference();
+        var references = SetUpReferences().ToList();
         CacheNeighbors = false;
-        foreach (var data in parts.SelectMany(p => p.GetSubgraphs(reference)))
+        foreach (var part in parts)
         {
-            for (var i = 0; i < data.Atoms.Count; i++)
-                data.Atoms[i].Title = reference.Atoms[i].Title;
-            var analysis = MacrocycleAnalysis.Create(data, MacrocycleType);
-            var metal = Neighbors(analysis.N4Cavity[0]).FirstOrDefault(s => !s.IsNonCoordinative());
-            if (metal != null) analysis.Metal = metal;
-            DetectedParts.Add(analysis);
+            foreach (var reference in references)
+            {
+                foreach (var data in part.GetSubgraphs(reference.molecule))
+                {
+                    for (var i = 0; i < data.Atoms.Count; i++)
+                        data.Atoms[i].Title = reference.molecule.Atoms[i].Title;
+                    var analysis = MacrocycleAnalysis.Create(data, reference.type);
+                    var metal = Neighbors(analysis.N4Cavity[0]).FirstOrDefault(s => !s.IsNonCoordinative());
+                    if (metal != null) analysis.Metal = metal;
+                    DetectedParts.Add(analysis);
+                }
+            }
         }
         CacheNeighbors = true;
     }
 
-    private Molecule SetUpReference()
+    private IEnumerable<(MacrocycleType type, Molecule molecule)> SetUpReferences()
     {
+        var types = Enum.GetValues<MacrocycleType>();
         //load matching macrocycle type
-        var resourceName = $"PorphyStruct.Core.Reference.{MacrocycleType}.Doming.mol2";
-        var reference = FromStream(
-                ResourceUtil.LoadResource(resourceName)!,
-                resourceName.Split('.').Last())
-            .Where(a => a.IsNonCoordinative()
-                        && !Constants.DeadEnds.Contains(a.Symbol));
-        return reference;
+        foreach (var type in types)
+        {
+            var resourceName = $"PorphyStruct.Core.Reference.{type}.Doming.mol2";
+            var reference = FromStream(
+                                       ResourceUtil.LoadResource(resourceName)!,
+                                       resourceName.Split('.').Last())
+                .Where(a => a.IsNonCoordinative()
+                            && !Constants.DeadEnds.Contains(a.Symbol));
+            yield return (type,reference);
+        }
     }
 }

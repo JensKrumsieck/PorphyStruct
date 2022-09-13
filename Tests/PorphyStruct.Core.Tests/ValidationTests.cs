@@ -31,7 +31,7 @@ public class ValidationTests
         double ruffling,
         double wavingX, double wavingY, double propellering, MacrocycleType type)
     {
-        var cycle = new Macrocycle(path) {MacrocycleType = type};
+        var cycle = new Macrocycle(path);
         cycle.Detect();
         var part = cycle.DetectedParts[0];
         part.Properties ??= new MacrocycleProperties(part);
