@@ -203,6 +203,8 @@ public sealed class MacrocycleProperties
         result += ExportBlock("Simulation",
                               Simulation.SimulationResult.Append(OutOfPlaneParameter)
                                         .Append(Simulation.OutOfPlaneParameter));
+        result += ExportBlock("Simulation in %",
+                              Simulation.SimulationResultPercentage);
         result += ExportBlock("Cavity", new[] {Cavity});
         result += Analysis.Metal != null
             ? ExportBlock("Distances", Distances.Cast<KeyValueProperty>().Concat(PlaneDistances))
