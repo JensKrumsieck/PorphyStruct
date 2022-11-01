@@ -47,7 +47,7 @@ public sealed class Macrocycle : Molecule
         //create a subset without dead ends and metals
         //clever pruning of the source graph
         var parts = this.Where(
-                a => a.IsNonCoordinative()
+                a => a.CanBeRingMember()
                      && !Constants.DeadEnds.Contains(a.Symbol)
                      && !ChemSharp.Constants.AminoAcids.ContainsKey(a.Residue)
             ).ConnectedFigures()
@@ -65,7 +65,7 @@ public sealed class Macrocycle : Molecule
                     for (var i = 0; i < data.Atoms.Count; i++)
                         data.Atoms[i].Title = reference.molecule.Atoms[i].Title;
                     var analysis = MacrocycleAnalysis.Create(data, reference.type);
-                    var metal = Neighbors(analysis.N4Cavity[0]).FirstOrDefault(s => !s.IsNonCoordinative());
+                    var metal = Neighbors(analysis.N4Cavity[0]).FirstOrDefault(s => s.CanBeCenterAtom());
                     if (metal != null) analysis.Metal = metal;
                     DetectedParts.Add(analysis);
                 }
@@ -84,7 +84,7 @@ public sealed class Macrocycle : Molecule
             var reference = FromStream(
                                        ResourceUtil.LoadResource(resourceName)!,
                                        resourceName.Split('.').Last())
-                .Where(a => a.IsNonCoordinative()
+                .Where(a => a.CanBeRingMember()
                             && !Constants.DeadEnds.Contains(a.Symbol));
             yield return (type,reference);
         }

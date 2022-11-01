@@ -252,7 +252,7 @@ public class StatisticsViewModel : BaseViewModel
     private static string GenericMetal(string input)
     {
         _ = new Element("H"); //ensure class data is loaded
-        var metals = ElementDataProvider.ElementData.Where(s => !s.IsNonCoordinative())
+        var metals = ElementDataProvider.ElementData.Where(s => s.CanBeCenterAtom())
             .Select(s => s.Symbol).ToList();
         if (!metals.Any(input.Contains)) return input;
         input = metals.Aggregate(input, (current, metal) => current.Replace(metal, "M"));

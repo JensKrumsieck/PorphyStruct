@@ -186,21 +186,7 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Margin="10">
                         <Label FontSize="14" FontWeight="DemiBold" Content="General" />
-                        <StackPanel>
-                            <Label Content="Treat Phosphorus as Metal" />
-                            <ToggleButton IsChecked="{Binding HandlePhosphorusMetal}" />
-                            <TextBlock Text="(Turn off for e.g. 10-Phosphacorrole)" FontSize="9" />
-                        </StackPanel>
-                        <StackPanel>
-                            <Label Content="Treat Boron as Metal" />
-                            <ToggleButton IsChecked="{Binding HandleBoronMetal}" />
-                            <TextBlock Text="(Turn off for e.g. 10-Boracorrole)" FontSize="9" />
-                        </StackPanel>
-                        <StackPanel>
-                            <Label Content="Treat Silicon as Metal" />
-                            <ToggleButton IsChecked="{Binding HandleSiliconMetal}" />
-                            <TextBlock Text="(Turn off for e.g. 10-Silacorrole)" FontSize="9" />
-                        </StackPanel>
+                       
                         <StackPanel>
                             <Label Content="Not Marked Points" />
                             <TextBox Text="{Binding NotMarkedPoints}" />

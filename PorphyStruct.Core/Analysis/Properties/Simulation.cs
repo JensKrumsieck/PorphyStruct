@@ -100,7 +100,7 @@ public class Simulation
         {
             var stream = ResourceUtil.LoadResource(s);
             var cycle = new Macrocycle(stream!, s.Split('.').Last());
-            var atoms = cycle.Atoms.Where(a => a.IsNonCoordinative()).ToList();
+            var atoms = cycle.Atoms.Where(a => a.CanBeRingMember()).ToList();
             var bonds = cycle.Bonds.Where(b => atoms.Contains(b.Atom1) && atoms.Contains(b.Atom2));
             //await Task.Run(cycle.Detect);
             cycle.DetectedParts.Add(MacrocycleAnalysis.Create(new Molecule(atoms, bonds), type));

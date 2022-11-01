@@ -71,10 +71,6 @@ public sealed class Settings : Singleton<Settings>
     #endregion
 
     #region Data
-
-    public bool HandlePhosphorusMetal { get; set; } = true;
-    public bool HandleBoronMetal { get; set; } = true;
-    public bool HandleSiliconMetal { get; set; } = false;
     public double SimulationOpacity { get; set; } = .5d;
     #endregion
 
