@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-	  <PackageReference Include="ChemSharp.Molecules.HelixToolkit" Version="2.0.0-alpha.3-ci.463" />
+	  <PackageReference Include="ChemSharp.Molecules.HelixToolkit" Version="2.0.0-beta.1" />
     <ProjectReference Include="..\PorphyStruct.ViewModel\PorphyStruct.ViewModel.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-﻿using ChemSharp.Molecules.DataProviders;
+﻿using ChemSharp.Molecules;
 using OxyPlot;
 using OxyPlot.Axes;
 using Element = ChemSharp.Molecules.Element;

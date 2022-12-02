@@ -4,7 +4,7 @@ using System.Data;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using ChemSharp.Molecules.DataProviders;
+using ChemSharp.Molecules;
 using ChemSharp.Molecules.Properties;
 using OxyPlot;
 using OxyPlot.Axes;

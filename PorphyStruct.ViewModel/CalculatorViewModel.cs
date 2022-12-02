@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using ChemSharp.Molecules;
-using ChemSharp.Molecules.DataProviders;
 using MathNet.Numerics.LinearAlgebra.Double;
 using PorphyStruct.Core;
 using PorphyStruct.Core.Analysis;

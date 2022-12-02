@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ChemSharp.Molecules" Version="2.0.0-alpha.3-ci.463" />
+    <PackageReference Include="ChemSharp.Molecules" Version="2.0.0-beta.1" />
     <PackageReference Include="JensKrumsieck.TinyMVVM" Version="1.0.0" />
     <PackageReference Include="OxyPlot.Core" Version="2.1.0" />
   </ItemGroup>

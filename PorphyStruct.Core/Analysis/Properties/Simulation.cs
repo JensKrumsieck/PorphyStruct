@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using ChemSharp.Mathematics;
 using ChemSharp.Molecules;
-using ChemSharp.Molecules.DataProviders;
+using ChemSharp.Molecules;
 using ChemSharp.Molecules.Properties;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
