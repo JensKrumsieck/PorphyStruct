@@ -56,7 +56,7 @@ public class BatchViewModel : BaseViewModel
     private string _failedItems = "";
     private void LoadFiles()
     {
-        var supported = new[] { "cif", "xyz", "mol2" };
+        var supported = Constants.SupportedFiles;
         if (!Directory.Exists(WorkingDir) || string.IsNullOrEmpty(WorkingDir)) return;
         var filter = new List<string>();
         if (File.Exists(WorkingDir + "/.psignore")) filter.AddRange(File.ReadAllLines(WorkingDir + "/.psignore"));
@@ -72,7 +72,7 @@ public class BatchViewModel : BaseViewModel
         for (CurrentIndex = 1; CurrentIndex < Files.Length + 1; CurrentIndex++)
         {
             var current = Files[CurrentIndex - 1];
-            var cycle = new Macrocycle(current) { MacrocycleType = Type };
+            var cycle = new Macrocycle(current);
             await Task.Run(cycle.Detect).ContinueWith(ts =>
              {
                  if (!cycle.DetectedParts.Any())
@@ -82,7 +82,7 @@ public class BatchViewModel : BaseViewModel
                  }
                  foreach (var analysis in cycle.DetectedParts)
                  {
-                     analysis.Properties = MacrocycleProperties.CreateAsync(analysis).Result;
+                     analysis.Properties = new MacrocycleProperties(analysis);
                      var folder = Path.GetDirectoryName(Files[CurrentIndex - 1]);
                      var file = Path.GetFileNameWithoutExtension(Files[CurrentIndex - 1]);
                      var filename = cycle.DetectedParts.Count == 1

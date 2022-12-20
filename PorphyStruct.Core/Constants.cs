@@ -10,4 +10,6 @@ public static class Constants
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PorphyStruct");
     public static string SettingsLocation =>
         Path.Combine(SettingsFolder, "settings.json");
+    
+    public static readonly string[] SupportedFiles = { "cif", "xyz", "mol2", "mol", "pdb" };
 }

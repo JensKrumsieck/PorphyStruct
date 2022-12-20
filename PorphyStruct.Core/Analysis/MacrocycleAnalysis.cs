@@ -1,9 +1,8 @@
 ﻿#nullable enable
 using System.Numerics;
-using ChemSharp.Extensions;
 using ChemSharp.Mathematics;
 using ChemSharp.Molecules;
-using ChemSharp.Molecules.Extensions;
+using Nodo.Pathfinding;
 using PorphyStruct.Core.Analysis.Properties;
 using PorphyStruct.Core.Extension;
 using PorphyStruct.Core.Plot;
@@ -12,15 +11,19 @@ namespace PorphyStruct.Core.Analysis;
 
 public abstract class MacrocycleAnalysis
 {
+    public abstract MacrocycleType Type { get; }
+    
+    internal Molecule Molecule { get; }
+
     /// <summary>
     /// Selected Atoms for Analysis
     /// </summary>
-    public List<Atom> Atoms { get; set; }
+    public List<Atom> Atoms => Molecule.Atoms;
 
     /// <summary>
     /// Selected Bonds for Analysis
     /// </summary>
-    public IEnumerable<Bond> Bonds { get; set; }
+    public IEnumerable<Bond> Bonds => Molecule.Bonds;
 
     private readonly Guid _guid;
 
@@ -31,16 +34,13 @@ public abstract class MacrocycleAnalysis
     /// </summary>
     public string AnalysisColor => _guid.HexStringFromGuid();
 
-    protected MacrocycleAnalysis(List<Atom> atoms, IEnumerable<Bond> bonds)
+    protected MacrocycleAnalysis(Molecule mol)
     {
-        Atoms = atoms;
-        Bonds = bonds;
+        Molecule = mol;
         _guid = Guid.NewGuid();
-        //set special atoms
-        _cachedNeighbors = AtomUtil.BuildNeighborCache(Atoms, Bonds);
         Alpha = Atoms.Where(IsAlpha).ToList();
         Beta = Atoms.Where(s => Neighbors(s).Count == 2 && Neighbors(s).Count(IsAlpha) == 1).ToList();
-        N4Cavity = Atoms.Where(s => Neighbors(s).Where(IsAlpha).Count(n => DFSUtil.BackTrack(n, s, Neighbors, 5).Count == 5) == 2)
+        N4Cavity = Atoms.Where(s => Neighbors(s).Where(IsAlpha).Count(n => Backtracking.BackTrack(n, s, Neighbors, 5).Count == 5) == 2)
             .ToList();
         Meso = Atoms.Except(Alpha).Except(Beta).Except(N4Cavity).ToList();
     }
@@ -74,17 +74,14 @@ public abstract class MacrocycleAnalysis
     /// <summary>
     /// Returns Mean Square Plane of Analysis Fragment
     /// </summary>
-    public Plane MeanPlane => MathV.MeanPlane(Atoms.Select(s => s.Location).ToList());
+    public Plane MeanPlane => Atoms.Select(s => s.Location).ToList().MeanPlane();
 
-
-    private Dictionary<Atom, List<Atom>>? _cachedNeighbors;
     /// <summary>
     /// Returns Neighbors in context of analysis
     /// </summary>
     /// <param name="a"></param>
     /// <returns></returns>
-    public List<Atom> Neighbors(Atom a) =>
-        _cachedNeighbors != null ? _cachedNeighbors[a] : AtomUtil.Neighbors(a, Bonds).ToList();
+    public List<Atom> Neighbors(Atom a) => Molecule.Neighbors(a);
 
     /// <summary>
     /// Generates DataPoints
@@ -92,11 +89,12 @@ public abstract class MacrocycleAnalysis
     /// <returns></returns>
     protected virtual IEnumerable<AtomDataPoint> CalculateDataPoints()
     {
-        Atoms = Atoms.OrderBy(s => RingAtoms.IndexOf(s.Title)).ToList();
+        Molecule.RebuildCache();
+        var atoms = Atoms.OrderBy(s => RingAtoms.IndexOf(s.Title)).ToList();
         var dist = 0d;
         var fix = 1d;
 
-        foreach (var a in Atoms)
+        foreach (var a in atoms)
         {
             var coordX = 1d;
             if (a.Title.Contains('C')) coordX = fix + dist * Multiplier[a.Title];
@@ -105,7 +103,7 @@ public abstract class MacrocycleAnalysis
             if (IsAlpha(a) && NextAlpha(a) != null) dist = a.DistanceTo(NextAlpha(a));
             //alpha atoms are fix-points
             if (IsAlpha(a)) fix = coordX;
-            yield return new AtomDataPoint(coordX, MathV.Distance(MeanPlane, a.Location), a);
+            yield return new AtomDataPoint(coordX, MeanPlane.Distance(a.Location), a);
         }
     }
 
@@ -114,7 +112,7 @@ public abstract class MacrocycleAnalysis
     /// </summary>
     /// <param name="a"></param>
     /// <returns>boolean</returns>
-    private bool IsAlpha(Atom a) => DFSUtil.VertexDegree(a, Neighbors) == 3;
+    private bool IsAlpha(Atom a) => Neighbors(a).Count == 3;
 
     /// <summary>
     /// gets next alpha position for distance measuring
@@ -126,14 +124,6 @@ public abstract class MacrocycleAnalysis
         var i = Array.IndexOf(AlphaAtoms, a.Title) + 1;
         return AlphaAtoms.Length > i ? FindAtomByTitle(AlphaAtoms[i]) : null;
     }
-
-    /// <summary>
-    /// An overrideable Method to get C1 Atom. 
-    /// In a Porphyrin it does not care which alpha atom is C1, so return any of them...
-    /// override this method in any other class
-    /// </summary>
-    /// <returns></returns>
-    protected virtual Atom C1 => Atoms.First(s => DFSUtil.VertexDegree(s, Neighbors) == 3);
 
     /// <summary>
     /// Lists N4 Cavity
@@ -161,7 +151,7 @@ public abstract class MacrocycleAnalysis
     /// <param name="id1">Identifier 1</param>
     /// <param name="id2">Identifier 2</param>
     /// <returns>The Vector Distance</returns>
-    protected double CalculateDistance(string id1, string id2) => MathV.Distance(FindAtomByTitle(id1)!.Location, FindAtomByTitle(id2)!.Location);
+    protected double CalculateDistance(string id1, string id2) => Vector3.Distance(FindAtomByTitle(id1)!.Location, FindAtomByTitle(id2)!.Location);
 
     /// <summary>
     /// Gets DataPoints for Bonds
@@ -176,68 +166,23 @@ public abstract class MacrocycleAnalysis
     /// <summary>
     /// Creates Analysis Type
     /// </summary>
-    /// <param name="atoms"></param>
-    /// <param name="bonds"></param>
+    /// <param name="mol"></param>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static async Task<MacrocycleAnalysis> CreateAsync(List<Atom> atoms, IEnumerable<Bond> bonds, MacrocycleType type)
+    public static MacrocycleAnalysis Create(Molecule mol, MacrocycleType type)
     {
         MacrocycleAnalysis analysis = type switch
         {
-            MacrocycleType.Porphyrin => new PorphyrinAnalysis(atoms, bonds),
-            MacrocycleType.Corrole => new CorroleAnalysis(atoms, bonds),
-            MacrocycleType.Norcorrole => new NorcorroleAnalysis(atoms, bonds),
-            MacrocycleType.Porphycene => new PorphyceneAnalysis(atoms, bonds),
-            MacrocycleType.Corrphycene => new CorrphyceneAnalysis(atoms, bonds),
+            MacrocycleType.Porphyrin => new PorphyrinAnalysis(mol),
+            MacrocycleType.Corrole => new CorroleAnalysis(mol),
+            MacrocycleType.Norcorrole => new NorcorroleAnalysis(mol),
+            MacrocycleType.Porphycene => new PorphyceneAnalysis(mol),
+            MacrocycleType.Corrphycene => new CorrphyceneAnalysis(mol),
             _ => throw new InvalidOperationException()
         };
-        await Task.Run(analysis.NameAtoms);
         return analysis;
     }
-
-    /// <summary>
-    /// Assign the correct Identifiers for a cycle CN-corpus
-    /// </summary>
-    private void NameAtoms()
-    {
-        //a lot of renaming will be done, do not use cache here!
-        _cachedNeighbors = null;
-        //cycle valid?
-        if (Atoms.Count != RingAtoms.Count) return;
-        //track visited atoms
-        var visited = new HashSet<Atom>();
-        //set Identifier for C1 Atom
-        C1.Title = "C1";
-        visited.Add(C1);
-        //force c2 to be first step
-        var current = Neighbors(C1).First(s => !N4Cavity.Contains(s) && Beta.Contains(s));
-        current.Title = "C2";
-        visited.Add(current);
-        //get carbon atoms
-        var carbons = RingAtoms.Where(s => s.Contains('C')).OrderBy(s => int.Parse(s.Replace("C", ""))).ToList();
-        var i = 2;
-        //loop through atoms and name them
-        while (visited.Count != carbons.Count)
-        {
-            foreach (var neighbor in Neighbors(current).Where(s => !visited.Contains(s) && !N4Cavity.Contains(s)))
-            {
-                //add to visited and assign Identifier
-                neighbor.Title = carbons[i];
-                visited.Add(current = neighbor);
-                i++;
-            }
-        }
-        //set up identifiers for nitrogens
-        for (var j = 1; j <= 4; j++)
-        {
-            var alpha = FindAtomByTitle(AlphaAtoms[2 * j - 1]);
-            var nitrogen = N4Cavity.First(s => Neighbors(s).Contains(alpha!));
-            nitrogen.Title = "N" + j;
-        }
-        //re-enable cache
-        _cachedNeighbors = AtomUtil.BuildNeighborCache(Atoms, Bonds);
-    }
-
+    
     /// <summary>
     /// Finds atom by Title
     /// </summary>

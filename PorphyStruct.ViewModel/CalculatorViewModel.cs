@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using ChemSharp.Molecules.DataProviders;
+using ChemSharp.Molecules;
 using MathNet.Numerics.LinearAlgebra.Double;
 using PorphyStruct.Core;
 using PorphyStruct.Core.Analysis;
@@ -47,18 +47,19 @@ public class CalculatorViewModel : BaseViewModel
 
         //Build Vector
         BuildModeVector();
+        Recalculate();
     }
 
 
     private async void MOnPropertyChanged(object? sender, PropertyChangedEventArgs e) =>
         await Task.Run(Recalculate);
 
-    public async Task Recalculate()
+    public void Recalculate()
     {
         Bonds.ClearAndNotify();
         Series.ItemsSource = null;
         var typePrefix = $"PorphyStruct.Core.Reference.{CycleType}.";
-        var matrix = await Simulation.DisplacementMatrix(ModeVector.Select(s => typePrefix + s.Key + ".xyz"), CycleType);
+        var matrix = Simulation.DisplacementMatrix(ModeVector.Select(s => typePrefix + s.Key + ".mol2"), CycleType);
         var result = (matrix * DenseVector.OfEnumerable(ModeVector.Select(s => s.Value))).ToList();
 
         var dom = LoadSample();
@@ -76,11 +77,12 @@ public class CalculatorViewModel : BaseViewModel
 
     public MacrocycleAnalysis LoadSample()
     {
-        var stream = ResourceUtil.LoadResource($"PorphyStruct.Core.Reference.{CycleType}.Doming.xyz");
-        var xyz = new XYZDataProvider(stream);
-        var cycle = new Macrocycle(xyz) { MacrocycleType = CycleType };
-        Task.Run(cycle.Detect).Wait(1500);
-        return cycle.DetectedParts[0];
+        var stream = ResourceUtil.LoadResource($"PorphyStruct.Core.Reference.{CycleType}.Doming.mol2");
+        var cycle = new Macrocycle(stream!, "mol2");
+        var analysis =
+            MacrocycleAnalysis.Create(new Molecule(cycle.Atoms.Where(a => a.CanBeRingMember() && a.Symbol != "H")),
+                CycleType);
+        return analysis;
     }
 
     private void BuildModeVector()

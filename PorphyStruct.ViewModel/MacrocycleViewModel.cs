@@ -41,7 +41,7 @@ public class MacrocycleViewModel : ListingViewModel<AnalysisViewModel>
         foreach (var part in Macrocycle.DetectedParts)
         {
             var analysis = new AnalysisViewModel(this, part);
-            part.Properties ??= await MacrocycleProperties.CreateAsync(part);
+            part.Properties ??= new MacrocycleProperties(part);
             Items.Add(analysis);
             SelectedIndex = Items.IndexOf(analysis);
         }

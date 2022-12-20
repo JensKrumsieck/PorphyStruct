@@ -50,8 +50,14 @@ public class AnalysisViewModel : ListItemViewModel<MacrocycleViewModel, Analysis
         {
             ExperimentalSeries.Inverted = value;
             SimulationSeries.Inverted = value;
-            Model.InvalidatePlot(true);
+            Invalidate();
         });
+    }
+
+    private void Invalidate()
+    {
+        HandleZoomY();
+        Model.InvalidatePlot(true);
     }
 
     public override string Title => Parent.Title;
@@ -81,6 +87,17 @@ public class AnalysisViewModel : ListItemViewModel<MacrocycleViewModel, Analysis
         //zoom
         Model.XAxis.BindableActualMinimum = .5;
         Model.XAxis.BindableActualMaximum = Analysis.DataPoints.Max(s => s.X) + .5;
+        Invalidate();
+    }
+
+    private void HandleZoomY()
+    {
+        var yMax = Analysis.DataPoints.Max(s => s.Y) + .05;
+        var yMin = Analysis.DataPoints.Min(s => s.Y) - .05;
+        if (yMax < .5) yMax = .5;
+        if (yMin > -.5) yMin = -.5;
+        Model.YAxis.BindableActualMinimum = yMin;
+        Model.YAxis.BindableActualMaximum = yMax;
     }
 
     public void SimulationChanged()
@@ -90,7 +107,7 @@ public class AnalysisViewModel : ListItemViewModel<MacrocycleViewModel, Analysis
         Model.InvalidatePlot(false);
 
         if (!SimulationVisible) return;
-        var simY = Analysis.Properties?.Simulation.ConformationY;
+        var simY = Analysis.Properties?.Simulation?.ConformationY;
         if (simY == null) return;
         var src = BuildSimulationData(simY);
         SimulationSeries.ItemsSource = src;
@@ -98,7 +115,8 @@ public class AnalysisViewModel : ListItemViewModel<MacrocycleViewModel, Analysis
 
         foreach (var (a1, a2) in Analysis.BondDataPoints())
             SimulationBonds.Add(SimulationSeries.CreateBondAnnotation(a1, a2));
-        Model.InvalidatePlot(true);
+        
+        Invalidate();
     }
 
     /// <summary>
@@ -135,6 +153,7 @@ public class AnalysisViewModel : ListItemViewModel<MacrocycleViewModel, Analysis
                 ComparisonBonds.Add(bond);
             }
         }
-        Model.InvalidatePlot(true);
+        
+        Invalidate();
     }
 }

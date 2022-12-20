@@ -4,7 +4,7 @@ namespace PorphyStruct.Core.Analysis;
 
 public class CorrphyceneAnalysis : MacrocycleAnalysis
 {
-    public CorrphyceneAnalysis(List<Atom> atoms, IEnumerable<Bond> bonds) : base(atoms, bonds) { }
+    public CorrphyceneAnalysis(Molecule mol) : base(mol) { }
 
 #pragma warning disable IDE1006
     //ReSharper disable InconsistentNaming
@@ -37,8 +37,9 @@ public class CorrphyceneAnalysis : MacrocycleAnalysis
     // ReSharper restore InconsistentNaming
 #pragma warning restore IDE1006
 
-    protected override Atom C1 => Alpha.FirstOrDefault(atom => Neighbors(atom).Any(l => Alpha.Contains(l)))!;
+    protected virtual Atom C1 => Alpha.FirstOrDefault(atom => Neighbors(atom).Any(l => Alpha.Contains(l)))!;
 
+    public override MacrocycleType Type => MacrocycleType.Corrphycene;
     protected override List<string> RingAtoms => _RingAtoms;
     protected override string[] AlphaAtoms => _AlphaAtoms;
     protected override Dictionary<string, double> Multiplier => _Multiplier;

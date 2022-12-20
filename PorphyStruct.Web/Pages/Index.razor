@@ -13,18 +13,18 @@
                 <Toggle @bind-Value=Settings.Instance.UseExtendedBasis Label="Use Extended Basis" DarkMode/>
             </li>
             <li class="relative w-36">
-                <Button IsBusy=@uploadBusy>
+                <Button IsBusy=@_uploadBusy>
                     <svg fill="#FFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0 0h24v24H0z" fill="none"/>
                         <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
                     </svg>
                     <span class="ml-2">Open File</span>
                 </Button>
-                <Progress Value=@(Math.Round((double)UploadValue, 1)) 
-                    Class=@((UploadValue < 99 && UploadValue != 0 ? "" : "hidden")) 
+                <Progress Value=@(Math.Round((double)_uploadValue, 1)) 
+                    Class=@((_uploadValue < 99 && _uploadValue != 0 ? "" : "hidden")) 
                     ShowValue=false 
                     Style="height: 2px; margin-top: 0.25rem;"/>
-                <input type="file" @ref=inputFile @onchange="OnFileChange" class="top-0 cursor-pointer absolute block opacity-0 pin-r pin-t w-full h-full" />
+                <input type="file" @ref=_inputFile @onchange="OnFileChange" class="top-0 cursor-pointer absolute block opacity-0 pin-r pin-t w-full h-full" />
             </li>
         </ul>
 </Nav>
@@ -32,7 +32,6 @@
 <div class="container mx-auto px-2 overflow-x-hidden">  
     @if(DataContext != null)
     {
-        <RadioButtonList TValue=MacrocycleType @bind-Value=DataContext.Macrocycle.MacrocycleType/>
         <div class="mt-4">           
             <Button Click="@OnAnalyzeClick">                
                 <div class="inline-flex place-content-center">
@@ -63,7 +62,11 @@
                                         </svg>
                                    </Button>
                                </div>
-                               <ul> 
+                                <ul>
+                                    <li class="grid grid-cols-4 gap-4 mt-2 font-bold">
+                                        <p class="col-auto">Macrocycle Type</p>
+                                        <p class="col-auto">@properties.AnalysisType</p>
+                                    </li>
                                     @foreach (var param in properties.Simulation.SimulationResult)
                                     {
                                         <li class="grid grid-cols-4 gap-4 mt-2">
@@ -87,9 +90,9 @@
                                     </li>
                                     <li class="grid grid-cols-4 gap-4 mt-2">
                                         <p class="col-auto">δ<sub>oop</sub> (sim.)</p>
-                                        <p class="col-auto">@((Math.Abs(properties.OutOfPlaneParameter.Value - properties.Simulation.OutOfPlaneParameter.Value)/properties.OutOfPlaneParameter.Value*100).ToString("N2")) %</p>
+                                        <p class="col-auto">@((Math.Abs(properties.OutOfPlaneParameter.Value - properties.Simulation.OutOfPlaneParameter.Value) / properties.OutOfPlaneParameter.Value * 100).ToString("N2")) %</p>
                                     </li>
-                               </ul>
+                                </ul>
                             </TabItem>    
                         }
                     </TabControl>
