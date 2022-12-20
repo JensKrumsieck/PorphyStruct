@@ -28,7 +28,7 @@
   <ItemGroup>
     <PackageReference Include="ChemSharp.Molecules.HelixToolkit" Version="2.0.0-beta.1" />
     <PackageReference Include="JensKrumsieck.ThemeCommons.MaterialDesign" Version="1.0.0" />
-    <PackageReference Include="OxyPlot.SkiaSharp.Wpf" Version="2.1.0" />
+    <PackageReference Include="OxyPlot.SkiaSharp.Wpf" Version="2.1.2" />
   </ItemGroup>
 
   <ItemGroup>
