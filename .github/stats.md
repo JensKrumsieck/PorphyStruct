@@ -10,6 +10,7 @@
 ## Downloads by Release
 |Version|Downloads|
 |-|-|
+|2.0.0 Beta 1 (Current Prerelease)| ![GitHub release (by tag)](https://img.shields.io/github/downloads/jenskrumsieck/porphystruct/v2.0.0-beta.1/total) |
 |1.0.3 (current version) | ![GitHub release (by tag)](https://img.shields.io/github/downloads/jenskrumsieck/porphystruct/v1.0.3/total) |
 |1.0.2 | ![GitHub release (by tag)](https://img.shields.io/github/downloads/jenskrumsieck/porphystruct/v1.0.2/total) |
 |1.0.1 | ![GitHub release (by tag)](https://img.shields.io/github/downloads/jenskrumsieck/porphystruct/v1.0.1/total) |
