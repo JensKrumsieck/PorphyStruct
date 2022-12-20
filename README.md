@@ -19,7 +19,7 @@
 [![.NET](https://github.com/JensKrumsieck/PorphyStruct/actions/workflows/dotnet.yml/badge.svg)](https://github.com/JensKrumsieck/PorphyStruct/actions/workflows/dotnet.yml)
 [![GitHub issues](https://img.shields.io/github/issues/JensKrumsieck/PorphyStruct)](https://github.com/JensKrumsieck/PorphyStruct/issues)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/JensKrumsieck/PorphyStruct)
-[![GitHub Pre-Releases](https://img.shields.io/github/downloads-pre/JensKrumsieck/PorphyStruct/latest/total)](https://github.com/JensKrumsieck/PorphyStruct/releases/latest)
+[![GitHub Pre-Releases](https://img.shields.io/github/downloads/JensKrumsieck/PorphyStruct/latest/total)](https://github.com/JensKrumsieck/PorphyStruct/releases/latest)
 [![GitHub Releases](https://img.shields.io/github/downloads-pre/JensKrumsieck/PorphyStruct/total)](https://github.com/JensKrumsieck/PorphyStruct/releases/latest)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/jenskrumsieck/porphystruct)
 
