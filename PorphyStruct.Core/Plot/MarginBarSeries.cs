@@ -7,10 +7,7 @@ public sealed class MarginBarSeries : BarSeries
 {
     private readonly double _margin;
 
-    public MarginBarSeries(double margin)
-    {
-        _margin = margin;
-    }
+    public MarginBarSeries(double margin) => _margin = margin;
 
     public override void Render(IRenderContext rc)
     {
@@ -31,7 +28,7 @@ public sealed class MarginBarSeries : BarSeries
             ActualBarRectangles.Add(rect);
 
             RenderItem(rc, topValue, categoryValue, actualBarWidth, item, rect);
-            RenderLabel(rc, item, x - (Math.Sign(value) * actualBarWidth), topValue, categoryValue, categoryValue + actualBarWidth);
+            //RenderLabel(rc, item, x, topValue, categoryValue, categoryValue + actualBarWidth);
             Manager.IncreaseCurrentBarOffset(categoryIndex, actualBarWidth);
         }
         RenderSpacing(rc, actualMargin / 2, ValidItems);
@@ -39,6 +36,7 @@ public sealed class MarginBarSeries : BarSeries
 
     private void RenderSpacing(IRenderContext rc, double x, ICollection<BarItem> items)
     {
+        
         var mult = items.Count > 6 ? 2d : 1d;
         var tl = this.Transform(-x, items.Count / mult - .5);
         var br = this.Transform(x, -.5);
