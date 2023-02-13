@@ -28,4 +28,4 @@ jobs:
         vercel-org-id: ${{ secrets.ORGID}}
         vercel-project-id: ${{ secrets.PROJECTID}}
         vercel-args: '--prod --confirm'
-        working-directory: ./PorphyStruct.Web/bin/Release/net6.0/publish/wwwroot
+        working-directory: ./PorphyStruct.Web/bin/Release/net7.0/publish/wwwroot
