@@ -20,7 +20,7 @@ jobs:
             dotnet publish -c Release
     - name: vercel_json
       run: |
-            cp vercel.json ./PorphyStruct.Web/bin/Release/net6.0/publish/wwwroot
+            cp vercel.json ./PorphyStruct.Web/bin/Release/net7.0/publish/wwwroot
     - uses: amondnet/vercel-action@v20.0.0
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
