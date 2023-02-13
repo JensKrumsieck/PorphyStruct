@@ -96,8 +96,8 @@ public static class PlotExtension
         var min = series.Items.Min(s => s.Value);
         var max = series.Items.Max(s => s.Value);
         model.XAxis.Zoom(
-                         Settings.Instance.UseExtendedBasis ? Math.Min(-1, min * 2) : -.25,
-                         Math.Max(1, max * 2));
+                         Settings.Instance.UseExtendedBasis ? Math.Min(-4, min * 2) : -.25,
+                         Math.Max(4, max * 2));
         PrepareYAxisAnnotations(ref model);
         return model;
     }
