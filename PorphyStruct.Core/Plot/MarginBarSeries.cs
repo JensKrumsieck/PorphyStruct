@@ -20,28 +20,34 @@ public sealed class MarginBarSeries : BarSeries
         {
             var categoryIndex = item.CategoryIndex;
             var value = item.Value;
-            var x = actualMargin / 2 * Math.Sign(value);
-            var topValue = x + value;
+            var xStartValue = actualMargin / 2 * Math.Sign(value); //left or right from margin rectangle
+            var topValue = xStartValue + value;
             var categoryValue = categoryIndex - 0.5 + Manager.GetCurrentBarOffset(categoryIndex);
 
-            var rect = new OxyRect(this.Transform(x, categoryValue), this.Transform(topValue, categoryValue + actualBarWidth));
+            var rect = new OxyRect(
+                                   this.Transform(xStartValue, categoryValue),
+                                   this.Transform(topValue, categoryValue + actualBarWidth)
+                                  );
             ActualBarRectangles.Add(rect);
 
             RenderItem(rc, topValue, categoryValue, actualBarWidth, item, rect);
-            //RenderLabel(rc, item, x, topValue, categoryValue, categoryValue + actualBarWidth);
+            var offset = (Math.Sign(value) * categoryValue) + (Math.Abs(value) < 0.5 ? Math.Sign(value) : 0);
+            RenderLabel(rc, item, xStartValue - offset, topValue, categoryValue, categoryValue + actualBarWidth);
             Manager.IncreaseCurrentBarOffset(categoryIndex, actualBarWidth);
         }
+
         RenderSpacing(rc, actualMargin / 2, ValidItems);
     }
 
-    private void RenderSpacing(IRenderContext rc, double x, ICollection<BarItem> items)
+    private void RenderSpacing(IRenderContext rc, double spacing, IList<BarItem> items)
     {
-        
-        var mult = items.Count > 6 ? 2d : 1d;
-        var tl = this.Transform(-x, items.Count / mult - .5);
-        var br = this.Transform(x, -.5);
-        var size = new OxySize(Math.Abs(tl.X - br.X) - 20, Math.Abs(br.Y - tl.Y) - 10);
-        rc.DrawRectangle(new OxyRect(new ScreenPoint(tl.X + 10, tl.Y + 5), size), OxyColors.Transparent, OxyColors.Black, 1, EdgeRenderingMode.Adaptive);
+        var transformXTop = this.Transform(-spacing * (items.Count > 6 ? 1 : .75), 0);
+        var transformXBottom = this.Transform(spacing, 0);
+        var rectangle = new OxyRect(
+                                    new ScreenPoint(transformXTop.X, ActualBarRectangles[0].Bottom),
+                                    new ScreenPoint(transformXBottom.X, ActualBarRectangles[^1].Top)
+                                   );
+        rc.DrawRectangle(rectangle, OxyColors.Transparent, OxyColors.Black, 1, EdgeRenderingMode.Adaptive);
     }
 
     private double GetActualMargin()
