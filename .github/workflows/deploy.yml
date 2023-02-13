@@ -7,9 +7,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup .NET 7
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
     - name: wasm-tooling
@@ -21,7 +21,7 @@ jobs:
     - name: vercel_json
       run: |
             cp vercel.json ./PorphyStruct.Web/bin/Release/net7.0/publish/wwwroot
-    - uses: amondnet/vercel-action@v20.0.0
+    - uses: amondnet/vercel-action@v25
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         vercel-token: ${{ secrets.VERCEL_TOKEN }}
