@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	  <OutputType>WinExe</OutputType>
-	  <TargetFramework>net6.0-windows10.0.17763.0</TargetFramework>
+	  <TargetFramework>net7.0-windows10.0.17763.0</TargetFramework>
 	  <UseWPF>true</UseWPF>
 	  <ApplicationIcon>..\PorphyStruct.WPF\Resources\porphystruct.ico</ApplicationIcon>
 	  <PackageIcon>..\PorphyStruct.WPF\Resources\porphystruct.ico</PackageIcon>

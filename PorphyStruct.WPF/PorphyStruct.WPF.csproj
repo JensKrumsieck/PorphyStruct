@@ -1,38 +1,39 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	<PackageId>PorphyStruct</PackageId>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows10.0.17763.0</TargetFramework>
-    <UseWPF>true</UseWPF>
-	<ApplicationIcon>Resources\porphystruct.ico</ApplicationIcon>
-	<PackageIcon>Resources\porphystruct.ico</PackageIcon>
-	<AssemblyName>PorphyStruct</AssemblyName>
-	<IncludeAllContentForSelfExtract>True</IncludeAllContentForSelfExtract>
-      <PublishSingleFile Condition="'$(Configuration)' == 'Release'">true</PublishSingleFile>
-	<SelfContained>True</SelfContained>
-	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
-	<PublishReadyToRun>True</PublishReadyToRun>
-	<PublishReadyToRunShowWarnings>True</PublishReadyToRunShowWarnings>
-  </PropertyGroup>
+    <PropertyGroup>
+        <PackageId>PorphyStruct</PackageId>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net7.0-windows10.0.17763.0</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <ApplicationIcon>Resources\porphystruct.ico</ApplicationIcon>
+        <PackageIcon>Resources\porphystruct.ico</PackageIcon>
+        <AssemblyName>PorphyStruct</AssemblyName>
+        <IncludeAllContentForSelfExtract>True</IncludeAllContentForSelfExtract>
+        <PublishSingleFile Condition="'$(Configuration)' == 'Release'">true</PublishSingleFile>
+        <SelfContained>True</SelfContained>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+        <PublishReadyToRun>True</PublishReadyToRun>
+        <PublishReadyToRunComposite>false</PublishReadyToRunComposite>
+        <PublishReadyToRunShowWarnings>True</PublishReadyToRunShowWarnings>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Include="..\.editorconfig" Link=".editorconfig"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="Resources\porphystruct.ico" />
-    <Resource Include="Resources\porphystruct.png" />
-  </ItemGroup>
+    <ItemGroup>
+        <Resource Include="Resources\porphystruct.ico"/>
+        <Resource Include="Resources\porphystruct.png"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="ChemSharp.Molecules.HelixToolkit" Version="2.0.0-beta.1" />
-    <PackageReference Include="JensKrumsieck.ThemeCommons.MaterialDesign" Version="1.0.0" />
-    <PackageReference Include="OxyPlot.SkiaSharp.Wpf" Version="2.1.2" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="ChemSharp.Molecules.HelixToolkit" Version="2.0.0-beta.1"/>
+        <PackageReference Include="JensKrumsieck.ThemeCommons.MaterialDesign" Version="1.0.0"/>
+        <PackageReference Include="OxyPlot.SkiaSharp.Wpf" Version="2.1.2"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\PorphyStruct.ViewModel.Windows\PorphyStruct.ViewModel.Windows.csproj" />
-    <ProjectReference Include="..\PorphyStruct.ViewModel\PorphyStruct.ViewModel.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\PorphyStruct.ViewModel.Windows\PorphyStruct.ViewModel.Windows.csproj"/>
+        <ProjectReference Include="..\PorphyStruct.ViewModel\PorphyStruct.ViewModel.csproj"/>
+    </ItemGroup>
 </Project>
