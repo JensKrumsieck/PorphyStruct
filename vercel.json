@@ -8,6 +8,6 @@
     }
   ],
   "github": {
-    "deploymentEnabled": false
+    "enabled": false
   }
 }
