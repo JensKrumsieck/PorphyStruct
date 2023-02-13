@@ -6,8 +6,6 @@
         xmlns:controls="clr-namespace:ThemeCommons.Controls;assembly=ThemeCommons"
         xmlns:viewModel="clr-namespace:PorphyStruct.ViewModel;assembly=PorphyStruct.ViewModel"
         xmlns:extension="clr-namespace:ThemeCommons.MaterialDesign.Extension;assembly=ThemeCommons.MaterialDesign"
-        xmlns:wpf="http://oxyplot.org/skiawpf"
-        xmlns:data="clr-namespace:System.Data;assembly=System.Data.Common"
         mc:Ignorable="d"
         IconSize="24"
         TitlebarBackground="{DynamicResource TitleBar}" 
@@ -25,7 +23,7 @@
                 <LineBreak/>
                 <Run FontSize="9">Structural Analysis of Porphyrinoids</Run>
             </TextBlock>
-            <TextBlock Grid.Column="1" FontSize="14" VerticalAlignment="Center" Text="Statistics"/>
+            <TextBlock Grid.Column="1" FontSize="14" VerticalAlignment="Center" Text="Merge Data"/>
         </Grid>
     </controls:DefaultWindow.TitlebarContent>
     <controls:DefaultWindow.DataContext>
@@ -75,7 +73,7 @@
                           CanUserAddRows="False" CanUserDeleteRows="False" AutoGeneratingColumn="DataGrid_OnAutoGeneratingColumn" 
                           IsReadOnly="True"/>
             </TabItem>
-            <TabItem Header="Visualization" extension:ControlExtension.AttachedIcon="ChartScatterPlot">
+            <!--<TabItem Header="Visualization" extension:ControlExtension.AttachedIcon="ChartScatterPlot">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -111,7 +109,7 @@
                         </StackPanel>
                     </ScrollViewer>
                 </Grid>
-            </TabItem>
+            </TabItem>-->
         </TabControl>
     </Grid>
 </controls:DefaultWindow>

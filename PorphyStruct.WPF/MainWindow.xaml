@@ -68,12 +68,12 @@
                         </ListBox>
                     </ToolBar>
                     <ToolBar>
+                        <Button extension:ControlExtension.AttachedIcon="Console" Content="Batch" Click="Batch_OnClick" />
+                        <Button extension:ControlExtension.AttachedIcon="GraphOutline" Content="Merge Data" Click="Stats_OnClick" />
+                    </ToolBar>   
+                    <ToolBar>
                         <Button extension:ControlExtension.AttachedIcon="SelectionDrag" Content="Isolation" Click="Isolation_OnClick" IsEnabled="{Binding  Converter={converter:NotNullConverter}}" />
                     </ToolBar>
-                    <ToolBar>
-                        <Button extension:ControlExtension.AttachedIcon="GraphOutline" Content="Statistics" Click="Stats_OnClick" />
-                        <Button extension:ControlExtension.AttachedIcon="Console" Content="Batch" Click="Batch_OnClick" />
-                    </ToolBar>   
                     <ToolBar>
                         <Button extension:ControlExtension.AttachedIcon="Cog" Content="Preferences" Click="Settings_OnClick"/>
                         <Button extension:ControlExtension.AttachedIcon="InfoCircle" Content="About" Click="Info_OnClick"/>
