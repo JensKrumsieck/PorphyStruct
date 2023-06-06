@@ -9,18 +9,6 @@ namespace PorphyStruct.Core;
 
 public sealed class Macrocycle : Molecule
 {
-    /// <summary>
-    /// Correlates type to size of ring fragment
-    /// </summary>
-    private static readonly Dictionary<MacrocycleType, int> RingSize = new()
-    {
-        {MacrocycleType.Porphyrin, 24},
-        {MacrocycleType.Corrole, 23},
-        {MacrocycleType.Norcorrole, 22},
-        {MacrocycleType.Porphycene, 24},
-        {MacrocycleType.Corrphycene, 24}
-    };
-
     private void Init(Molecule mol)
     {
         Atoms.AddRange(mol.Atoms);
