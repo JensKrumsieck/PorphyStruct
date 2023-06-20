@@ -18,6 +18,7 @@ public abstract class MacrocycleAnalysis
     
     internal Dictionary<string, Atom> _mapping;
 
+
     /// <summary>
     /// Selected Atoms for Analysis
     /// </summary>
@@ -87,6 +88,12 @@ public abstract class MacrocycleAnalysis
     /// <returns></returns>
     public List<Atom> Neighbors(Atom a) => Molecule.Neighbors(a);
 
+    public int GetMappingIndex(Atom a)
+    {
+        var key = _mapping.FirstOrDefault(m => m.Value == a).Key;
+        if (key == null) return -1;
+        return RingAtoms.IndexOf(key);
+    }
     /// <summary>
     /// Generates DataPoints
     /// </summary>

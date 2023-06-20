@@ -79,7 +79,7 @@ public sealed class DefaultScatterSeries : ScatterSeries
             if (isSelected && IsItemSelected(i))
             {
                 selectedPoints.Add(screenPoint);
-                selectedMarkerSizes.Add(size);
+                selectedMarkerSizes.Add(size * 1.5d);
                 continue;
             }
             

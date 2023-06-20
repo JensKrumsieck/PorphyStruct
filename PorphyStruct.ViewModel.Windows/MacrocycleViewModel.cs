@@ -21,10 +21,20 @@ public class MacrocycleViewModel : ViewModel.MacrocycleViewModel
         {
             foreach (var atom in Atoms3D)
                 atom.IsSelected = atom.Atom.Equals(_selectedAtom);
+            var found = false;
             foreach (var viewModel in Items)
             {
-                viewModel.ExperimentalSeries.SelectItem(5);
+                if (!viewModel.Analysis.Atoms.Contains(_selectedAtom))
+                {
+                    viewModel.ExperimentalSeries.ClearSelection();
+                    viewModel.Model.InvalidatePlot(true);
+                    continue;
+                }
+                SelectedIndex = Items.IndexOf(viewModel);
+                var index = viewModel.Analysis.GetMappingIndex(_selectedAtom);
+                viewModel.ExperimentalSeries.SelectItem(index);
                 viewModel.Model.InvalidatePlot(true);
+                break;
             }
         });
     }
