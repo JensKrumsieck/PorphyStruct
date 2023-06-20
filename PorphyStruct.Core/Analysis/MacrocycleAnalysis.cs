@@ -107,6 +107,12 @@ public abstract class MacrocycleAnalysis
         }
     }
 
+    public void InvertDataPoints()
+    {
+        _dataPoints = _dataPoints!.Invert();
+        Properties!.Rebuild();
+    }
+
     /// <summary>
     /// checks whether it's an alpha atom or not
     /// </summary>

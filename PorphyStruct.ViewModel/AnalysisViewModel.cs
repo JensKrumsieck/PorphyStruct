@@ -50,6 +50,8 @@ public class AnalysisViewModel : ListItemViewModel<MacrocycleViewModel, Analysis
         {
             ExperimentalSeries.Inverted = value;
             SimulationSeries.Inverted = value;
+            Analysis.InvertDataPoints();
+            OnPropertyChanged(nameof(Analysis));
             Invalidate();
         });
     }

@@ -28,4 +28,6 @@ public static class MathUtil
         var sqrt = (a + b + c) * (-a + b + c) * (a - b + c) * (a + b - c);
         return 1f / 4f * MathF.Sqrt(sqrt);
     }
+
+    public static IEnumerable<AtomDataPoint> Invert(this IEnumerable<AtomDataPoint> dataPoints) => dataPoints.Select(datapoint => new AtomDataPoint(datapoint.X, -datapoint.Y, datapoint.Atom, datapoint.Size, datapoint.Value, datapoint.Tag));
 }

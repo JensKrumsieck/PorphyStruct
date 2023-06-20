@@ -80,7 +80,7 @@ public sealed class MacrocycleProperties
     /// <summary>
     /// Fills all Lists
     /// </summary>
-    private void Rebuild()
+    public void Rebuild()
     {
         Simulation ??= new Simulation(Analysis.GetAnalysisType());
         if (Analysis.DataPoints.Any())
