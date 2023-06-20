@@ -13,6 +13,7 @@ public static class SaveHandler
 {
     public static void Export(this AnalysisViewModel viewModel, ExportFileType type, string path)
     {
+        foreach (var series in viewModel.Model.Series) series.ClearSelection();
         switch (type.Title)
         {
             case "Analysis":
