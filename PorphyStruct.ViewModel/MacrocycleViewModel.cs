@@ -42,19 +42,20 @@ public class MacrocycleViewModel : ListingViewModel<AnalysisViewModel>
         foreach (var part in Macrocycle.DetectedParts)
         {
             var analysis = new AnalysisViewModel(this, part);
-            analysis.PropertyChanged += Child_Changed;
             part.Properties ??= new MacrocycleProperties(part);
             Items.Add(analysis);
             SelectedIndex = Items.IndexOf(analysis);
+            analysis.PropertyChanged += Child_Changed;
         }
     }
 
     private void Child_Changed(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName != nameof(SelectedItem.Analysis)) return;
+        var tmp = SelectedIndex;
         SelectedIndex = -1;
         OnSelectedIndexChanged();
-        SelectedIndex = 0;
+        SelectedIndex = tmp;
         OnSelectedIndexChanged();
     }
     protected virtual void Validate() { }

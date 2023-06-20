@@ -194,7 +194,8 @@
                 <Button Style="{DynamicResource RoundedIconButton}" Content="&#xECC5;" ToolTip="Download Update" Click="Update_Click"/>
             </StackPanel>
             <TabControl Grid.RowSpan="2" ItemsSource="{Binding Items}" Grid.Row="0" Grid.Column="0" Margin="0" BorderThickness="0" Padding="0"
-                        SelectedIndex="{Binding SelectedIndex}" Drop="OnFileDrop" ItemContainerStyle="{DynamicResource TabHeaderStyle}">
+                        SelectedIndex="{Binding SelectedIndex}" Drop="OnFileDrop" ItemContainerStyle="{DynamicResource TabHeaderStyle}" 
+						x:Name="MainTabMenu">
                 <TabControl.Background>
                     <ImageBrush ImageSource="/Resources/porphystruct.png" Stretch="None"/>
                 </TabControl.Background>

@@ -119,6 +119,7 @@ public partial class MainWindow : DefaultWindow
         if (ViewModel?.SelectedItem != null)
             Viewport3D.CameraController.CameraTarget =
                 MathV.Centroid(ViewModel.SelectedItem.Analysis.Atoms.Select(s => s.Location)).ToPoint3D();
+        MainTabMenu.Focus();
     }
 
     private async Task PrepareAnalysis()
