@@ -144,10 +144,7 @@ public partial class MainWindow : DefaultWindow
         await PrepareAnalysis();
     }
     
-    private void Rotate_OnClick(object sender, RoutedEventArgs e)
-    {
-        throw new NotImplementedException();
-    }
+    private void Rotate_OnClick(object sender, RoutedEventArgs e) => ViewModel.SelectedItem.Rotate();
 
     private void Save_OnClick(object sender, RoutedEventArgs e)
     {

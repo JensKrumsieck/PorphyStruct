@@ -58,7 +58,23 @@ public class AnalysisViewModel : ListItemViewModel<MacrocycleViewModel, Analysis
 
     public void Rotate()
     {
-        Analysis.RotateDataPoints();
+        switch (Analysis.Type)
+        {
+            case MacrocycleType.Porphyrin:
+                Analysis.RotateDataPoints(5, true);
+                break;
+            case MacrocycleType.Norcorrole:
+            case MacrocycleType.Porphycene:
+                Analysis.RotateDataPoints(10, false);
+                break;
+            case MacrocycleType.Corrole:
+            case MacrocycleType.Corrphycene:
+            default:
+                break;
+        }
+        ExperimentalBonds.ClearAndNotify();
+        foreach (var (a1, a2) in Analysis.BondDataPoints())
+            ExperimentalBonds.Add(new BondAnnotation(a1, a2, ExperimentalSeries));
         OnPropertyChanged(nameof(Analysis));
         if(SimulationVisible) SimulationChanged();
         Invalidate();

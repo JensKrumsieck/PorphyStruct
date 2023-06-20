@@ -18,22 +18,22 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="..\.editorconfig" Link=".editorconfig"/>
+        <None Include="..\.editorconfig" Link=".editorconfig" />
     </ItemGroup>
 
     <ItemGroup>
-        <Resource Include="Resources\porphystruct.ico"/>
-        <Resource Include="Resources\porphystruct.png"/>
+        <Resource Include="Resources\porphystruct.ico" />
+        <Resource Include="Resources\porphystruct.png" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="ChemSharp.Molecules.HelixToolkit" Version="2.0.0"/>
-        <PackageReference Include="JensKrumsieck.ThemeCommons.MaterialDesign" Version="1.0.0"/>
-        <PackageReference Include="OxyPlot.SkiaSharp.Wpf" Version="2.1.2"/>
+        <PackageReference Include="ChemSharp.Molecules.HelixToolkit" Version="2.0.0" />
+        <PackageReference Include="JensKrumsieck.ThemeCommons.MaterialDesign" Version="1.0.0" />
+        <PackageReference Include="OxyPlot.SkiaSharp.Wpf" Version="2.1.2" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\PorphyStruct.ViewModel.Windows\PorphyStruct.ViewModel.Windows.csproj"/>
-        <ProjectReference Include="..\PorphyStruct.ViewModel\PorphyStruct.ViewModel.csproj"/>
+        <ProjectReference Include="..\PorphyStruct.ViewModel.Windows\PorphyStruct.ViewModel.Windows.csproj" />
+        <ProjectReference Include="..\PorphyStruct.ViewModel\PorphyStruct.ViewModel.csproj" />
     </ItemGroup>
 </Project>

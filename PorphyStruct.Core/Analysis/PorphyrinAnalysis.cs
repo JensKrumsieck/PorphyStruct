@@ -31,33 +31,7 @@ public class PorphyrinAnalysis : MacrocycleAnalysis
             20 => -10,
             _ => 0 //wtf?
         };
-
-        Dictionary<string, Atom> newMapping = new();
-        for (var i = 0; i < _mapping.Count; i++)
-        {
-            if (!_mapping.ElementAt(i).Key.StartsWith("C")) continue;
-            var no = int.Parse(_mapping.ElementAt(i).Key[1..]);
-            var newNo = (int) (no + delta - 20 * Math.Floor((no + delta) / 20d));
-            if (newNo == 0) newNo = 20;
-            newMapping["C" + newNo] = _mapping.ElementAt(i).Value;
-        }
-
-        for (var i = 0; i < _mapping.Count; i++)
-        {
-            if (!_mapping.ElementAt(i).Key.StartsWith("N")) continue;
-            var c = _mapping.ElementAt(i).Value;
-            var neighbors = Neighbors(c);
-            foreach (var a in neighbors)
-            {
-                var mapped = newMapping.FirstOrDefault(k => k.Value == a).Key;
-                if (mapped == "C1") newMapping["N1"] = c;
-                if (mapped == "C6") newMapping["N2"] = c;
-                if (mapped == "C11") newMapping["N3"] = c;
-                if (mapped == "C16") newMapping["N4"] = c;
-            }
-        }
-
-        _mapping = newMapping;
+        RotateDataPoints(delta);
     }
 #pragma warning disable IDE1006
     //ReSharper disable InconsistentNaming

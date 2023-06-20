@@ -120,9 +120,37 @@ public abstract class MacrocycleAnalysis
     /// <summary>
     /// Rotates Datapoints for Porphyrin: 90 deg, for Norcorrole and Porphycene 180 deg
     /// </summary>
-    public void RotateDataPoints()
+    public void RotateDataPoints(int delta, bool rebuildProps = false)
     {
+        Dictionary<string, Atom> newMapping = new();
+        for (var i = 0; i < _mapping.Count; i++)
+        {
+            if (!_mapping.ElementAt(i).Key.StartsWith("C")) continue;
+            var no = int.Parse(_mapping.ElementAt(i).Key[1..]);
+            var newNo = (int) (no + delta - 20 * Math.Floor((no + delta) / 20d));
+            if (newNo == 0) newNo = 20;
+            newMapping["C" + newNo] = _mapping.ElementAt(i).Value;
+        }
+
+        for (var i = 0; i < _mapping.Count; i++)
+        {
+            if (!_mapping.ElementAt(i).Key.StartsWith("N")) continue;
+            var c = _mapping.ElementAt(i).Value;
+            var neighbors = Neighbors(c);
+            foreach (var a in neighbors)
+            {
+                var mapped = newMapping.FirstOrDefault(k => k.Value == a).Key;
+                if (mapped == AlphaAtoms[0]) newMapping["N1"] = c;
+                if (mapped == AlphaAtoms[2]) newMapping["N2"] = c;
+                if (mapped == AlphaAtoms[4]) newMapping["N3"] = c;
+                if (mapped == AlphaAtoms[6]) newMapping["N4"] = c;
+            }
+        }
+
+        _mapping = newMapping;
         
+        if(rebuildProps)
+            Properties!.Rebuild();
     }
     
     /// <summary>
