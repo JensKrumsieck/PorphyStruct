@@ -23,8 +23,8 @@ public sealed class DefaultScatterSeries : ScatterSeries
     {
         var src = ItemsSource.Cast<AtomDataPoint>().ToList();
         var annotation = new BondAnnotation(
-                src.FirstOrDefault(s => s.Atom.Title == a1.Atom.Title && Math.Abs(s.X - a1.X) < 1)!,
-                src.FirstOrDefault(s => s.Atom.Title == a2.Atom.Title && Math.Abs(s.X - a2.X) < .51)!,
+                src.FirstOrDefault(s => s.Atom.Title == a1.Atom.Title && Math.Abs(s.X - a1.X) < .1)!,
+                src.FirstOrDefault(s => s.Atom.Title == a2.Atom.Title && Math.Abs(s.X - a2.X) < .1)!,
                 this)
         { Opacity = 255 };
 
