@@ -14,7 +14,8 @@ public class BasePlotModel : PlotModel
         DefaultFont = Settings.Instance.Font;
         PlotAreaBorderThickness = new OxyThickness(Settings.Instance.BorderThickness);
         Padding = new OxyThickness(Settings.Instance.Padding, Settings.Instance.Padding, Settings.Instance.Padding, Settings.Instance.Padding);
-
+        SelectionColor = OxyColors.Pink;
+        
         XAxis = new LinearAxis
         {
             Title = "X",

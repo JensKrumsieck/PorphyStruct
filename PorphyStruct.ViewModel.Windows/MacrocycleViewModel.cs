@@ -21,6 +21,11 @@ public class MacrocycleViewModel : ViewModel.MacrocycleViewModel
         {
             foreach (var atom in Atoms3D)
                 atom.IsSelected = atom.Atom.Equals(_selectedAtom);
+            foreach (var viewModel in Items)
+            {
+                viewModel.ExperimentalSeries.SelectItem(5);
+                viewModel.Model.InvalidatePlot(true);
+            }
         });
     }
     /// <summary>

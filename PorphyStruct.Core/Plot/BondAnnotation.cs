@@ -40,8 +40,8 @@ public sealed class BondAnnotation : TransposableAnnotation
     public override void Render(IRenderContext rc)
     {
         base.Render(rc);
-        var sY = StartPoint.Y * (AssociatedSeries.Inverted ? -1 : 1);
-        var eY = EndPoint.Y * (AssociatedSeries.Inverted ? -1 : 1);
+        var sY = StartPoint.Y;
+        var eY = EndPoint.Y;
         var actualStart = new DataPoint(StartPoint.X, sY);
         var actualEnd = new DataPoint(EndPoint.X, eY);
         _screenEndPoint = Transform(actualEnd);

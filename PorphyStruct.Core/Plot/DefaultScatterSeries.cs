@@ -5,7 +5,6 @@ namespace PorphyStruct.Core.Plot;
 
 public sealed class DefaultScatterSeries : ScatterSeries
 {
-    public bool Inverted;
     public byte Opacity { get; set; } = 255;
 
     public DefaultScatterSeries()
@@ -16,15 +15,8 @@ public sealed class DefaultScatterSeries : ScatterSeries
         MarkerStrokeThickness = Settings.Instance.BorderThickness;
         MarkerStroke = OxyColor.Parse(Settings.Instance.MarkerBorderColor);
         MarkerSize = Settings.Instance.MarkerSize;
-        Mapping = InverseMapping;
         if (Settings.Instance.SingleColor) MarkerFill = OxyColor.Parse(Settings.Instance.MarkerColor);
-    }
-
-    private ScatterPoint InverseMapping(object arg)
-    {
-        var adp = (AtomDataPoint)arg;
-        var y = Inverted ? -adp.Y : adp.Y;
-        return new AtomDataPoint(adp.X, y, adp.Atom);
+        SelectionMode = SelectionMode.Single;
     }
 
     public BondAnnotation CreateBondAnnotation(AtomDataPoint a1, AtomDataPoint a2)
@@ -43,7 +35,7 @@ public sealed class DefaultScatterSeries : ScatterSeries
         annotation.Color = OxyColor.Parse(Settings.Instance.SimulationBondColor);
         return annotation;
     }
-
+    
     /// <inheritdoc/>
     /// see https://github.com/oxyplot/oxyplot/blob/develop/Source/OxyPlot/Series/ScatterSeries%7BT%7D.cs#L322-L460
     public override void Render(IRenderContext rc)
@@ -55,14 +47,17 @@ public sealed class DefaultScatterSeries : ScatterSeries
         var n = actualPoints.Count;
         var allPoints = new List<ScreenPoint>(n);
         var allMarkerSizes = new List<double>(n);
+        var selectedPoints = new List<ScreenPoint>();
+        var selectedMarkerSizes = new List<double>(n);
         var groupPoints = new Dictionary<int, IList<ScreenPoint>>();
         var groupSizes = new Dictionary<int, IList<double>>();
-
+        
+        var isSelected = IsSelected();
+        
         // Transform all points to screen coordinates
         for (var i = 0; i < n; i++)
         {
             var dp = new DataPoint(actualPoints[i].X, actualPoints[i].Y);
-
             // Skip invalid points
             if (!IsValidPoint(dp)) continue;
 
@@ -81,6 +76,13 @@ public sealed class DefaultScatterSeries : ScatterSeries
             // Transform from data to screen coordinates
             var screenPoint = this.Transform(dp.X, dp.Y);
 
+            if (isSelected && IsItemSelected(i))
+            {
+                selectedPoints.Add(screenPoint);
+                selectedMarkerSizes.Add(size);
+                continue;
+            }
+            
             if (ColorAxis != null)
             {
                 if (double.IsNaN(value)) continue;
@@ -138,6 +140,20 @@ public sealed class DefaultScatterSeries : ScatterSeries
             BinSize,
             binOffset);
 
+        // Draw the selected markers
+        rc.DrawMarkers(
+            selectedPoints,
+            MarkerType,
+            MarkerOutline,
+            selectedMarkerSizes,
+            PlotModel.SelectionColor,
+            PlotModel.SelectionColor,
+            MarkerStrokeThickness,
+            EdgeRenderingMode,
+            BinSize,
+            binOffset);
+
+        
         if (LabelFormatString != null) RenderPointLabels(rc, clippingRect);
     }
 }
