@@ -52,13 +52,10 @@ public class MacrocycleViewModel : ListingViewModel<AnalysisViewModel>
     private void Child_Changed(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName != nameof(SelectedItem.Analysis)) return;
-        var tmp = new List<AnalysisViewModel>(Items);
-        var tmpIndex = SelectedIndex;
-        Items.Clear();
-        for(var i = 0; i < tmp.Count; i++) Items.Add(tmp[i]);
         SelectedIndex = -1;
-        SelectedIndex = tmpIndex;
+        OnSelectedIndexChanged();
+        SelectedIndex = 0;
+        OnSelectedIndexChanged();
     }
-    
     protected virtual void Validate() { }
 }

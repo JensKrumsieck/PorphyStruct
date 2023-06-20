@@ -216,9 +216,9 @@
             </h:HelixViewport3D>
             <TabControl Grid.Row="1" Grid.Column="1" Background="Transparent" TabStripPlacement="Left" ItemContainerStyle="{DynamicResource SideTabHeaderStyle}" 
                         Padding="0" BorderThickness="0" ContentTemplateSelector="{DynamicResource TemplateByTypeSelector}">
-                <TabItem Header="Analysis" extension:ControlExtension.AttachedIcon="Flask" DataContext="{Binding SelectedItem.Analysis}" Content="{Binding .}"/>
-                <TabItem Header="Coordinates" extension:ControlExtension.AttachedIcon="Navigation" DataContext="{Binding}" Content="{Binding}"/>
-                <TabItem DataContext="{Binding SelectedItem}" Content="{Binding}" Header="Quick Settings" extension:ControlExtension.AttachedIcon="Cog" VerticalAlignment="Top"/>
+                <TabItem Header="Analysis" extension:ControlExtension.AttachedIcon="Flask" DataContext="{Binding SelectedItem}" Content="{Binding  Analysis}"/>
+                <TabItem Header="Coordinates" extension:ControlExtension.AttachedIcon="Navigation" Content="{Binding .}"/>
+                <TabItem Header="Quick Settings" extension:ControlExtension.AttachedIcon="Cog" Content="{Binding SelectedItem}" VerticalAlignment="Top"/>
             </TabControl>
         </Grid>
     </Grid>
