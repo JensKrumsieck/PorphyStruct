@@ -48,11 +48,22 @@ public class AnalysisViewModel : ListItemViewModel<MacrocycleViewModel, Analysis
         get => _inverted;
         set => Set(ref _inverted, value, () =>
         {
-            ExperimentalSeries.Inverted = value;
-            Analysis.InvertDataPoints();
-            OnPropertyChanged(nameof(Analysis));
-            if(SimulationVisible) SimulationChanged();
-            Invalidate();
+            Analysis.InvertYDataPoints();
+            DataChanged(true);
+        });
+    }
+    
+    private bool _invertedX;
+    /// <summary>
+    /// Indicates whether the series are x flipped
+    /// </summary>
+    public bool InvertedX
+    {
+        get => _invertedX;
+        set => Set(ref _invertedX, value, () =>
+        {
+            Analysis.InvertXDataPoints();
+            DataChanged(true);
         });
     }
 
@@ -65,19 +76,14 @@ public class AnalysisViewModel : ListItemViewModel<MacrocycleViewModel, Analysis
                 break;
             case MacrocycleType.Norcorrole:
             case MacrocycleType.Porphycene:
-                Analysis.RotateDataPoints(10, false);
+                Analysis.RotateDataPoints(10, true);
                 break;
             case MacrocycleType.Corrole:
             case MacrocycleType.Corrphycene:
             default:
                 break;
         }
-        ExperimentalBonds.ClearAndNotify();
-        foreach (var (a1, a2) in Analysis.BondDataPoints())
-            ExperimentalBonds.Add(new BondAnnotation(a1, a2, ExperimentalSeries));
-        OnPropertyChanged(nameof(Analysis));
-        if(SimulationVisible) SimulationChanged();
-        Invalidate();
+        DataChanged();
     }
 
     private void Invalidate()
@@ -145,6 +151,17 @@ public class AnalysisViewModel : ListItemViewModel<MacrocycleViewModel, Analysis
         Invalidate();
     }
 
+    public void DataChanged(bool resetData = false)
+    {
+        if (resetData) 
+            ExperimentalSeries.ItemsSource = Analysis.DataPoints;
+        ExperimentalBonds.ClearAndNotify();
+        foreach (var (a1, a2) in Analysis.BondDataPoints())
+            ExperimentalBonds.Add(new BondAnnotation(a1, a2, ExperimentalSeries));
+        OnPropertyChanged(nameof(Analysis));
+        if(SimulationVisible) SimulationChanged();
+        Invalidate();
+    }    
     /// <summary>
     /// Calculates Conformation
     /// </summary>

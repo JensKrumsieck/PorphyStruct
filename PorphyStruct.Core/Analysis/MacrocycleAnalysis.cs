@@ -111,9 +111,26 @@ public abstract class MacrocycleAnalysis
         }
     }
 
-    public void InvertDataPoints()
+    public void InvertYDataPoints()
     {
         _dataPoints = _dataPoints!.Invert();
+        Properties!.Rebuild();
+    }
+
+    //flips the x axis positions by remapping
+    public void InvertXDataPoints()
+    {
+        Dictionary<string, Atom> newMapping = new();
+        var orderedMap = _mapping.OrderBy(s => RingAtoms.IndexOf(s.Key)).ToList();
+        for (var i = 0; i < orderedMap.Count; i++)
+        {
+            if(Type == MacrocycleType.Porphyrin && orderedMap[i].Key != "C20")
+                newMapping[orderedMap[i].Key] = orderedMap[_mapping.Count - (i+2)].Value;
+            else newMapping[orderedMap[i].Key] = orderedMap[_mapping.Count - (i+1)].Value;
+        }
+        if(Type == MacrocycleType.Porphyrin) 
+            newMapping["C20"] = _mapping["C20"];
+        _mapping = newMapping;
         Properties!.Rebuild();
     }
 

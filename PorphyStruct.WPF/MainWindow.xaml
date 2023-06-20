@@ -21,9 +21,9 @@
         Title="PorphyStruct"
         Background="{DynamicResource Background}"
         Icon="Resources/porphystruct.ico"
-        MinWidth="1250" MinHeight="650"
+        MinWidth="1400" MinHeight="650"
         x:Name="Main"
-        TitlebarBackground="{DynamicResource TitleBar}" Height="750" Width="1440">
+        TitlebarBackground="{DynamicResource TitleBar}" Height="750" Width="1400">
     <commons:DefaultWindow.TitlebarContent>
         <Grid VerticalAlignment="Center" x:Name="TitleGrid">
             <Grid.ColumnDefinitions>
@@ -64,7 +64,8 @@
                         <Separator/>
                         <ListBox SelectionMode="Multiple">
                             <ListBoxItem Style="{DynamicResource ToolbarListItem}" IsSelected="{Binding SelectedItem.SimulationVisible}" extension:ControlExtension.AttachedIcon="Wand" Content="Simulation" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
-                            <ListBoxItem Style="{DynamicResource ToolbarListItem}" IsSelected="{Binding SelectedItem.Inverted}" extension:ControlExtension.AttachedIcon="PlusMinusBox" Content="Invert" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
+                            <ListBoxItem Style="{DynamicResource ToolbarListItem}" IsSelected="{Binding SelectedItem.Inverted}" extension:ControlExtension.AttachedIcon="PlusMinusBox" Content="InvertY" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
+                            <ListBoxItem Style="{DynamicResource ToolbarListItem}" IsSelected="{Binding SelectedItem.InvertedX}" extension:ControlExtension.AttachedIcon="FlipHorizontal" Content="InvertX" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
                         </ListBox>
                         <Button extension:ControlExtension.AttachedIcon="RotateClockwise" Content="Rotate" Click="Rotate_OnClick" IsEnabled="{Binding SelectedItem,  Converter={converterlocal:SufficientSymmetryConverter}}"/>
                     </ToolBar>
