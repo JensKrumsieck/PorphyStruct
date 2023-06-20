@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using System.Numerics;
+using ChemSharp.Extensions;
 using ChemSharp.Mathematics;
 using ChemSharp.Molecules;
 using Nodo.Pathfinding;
@@ -14,6 +15,8 @@ public abstract class MacrocycleAnalysis
     public abstract MacrocycleType Type { get; }
     
     internal Molecule Molecule { get; }
+    
+    internal Dictionary<string, Atom> _mapping;
 
     /// <summary>
     /// Selected Atoms for Analysis
@@ -34,9 +37,10 @@ public abstract class MacrocycleAnalysis
     /// </summary>
     public string AnalysisColor => _guid.HexStringFromGuid();
 
-    protected MacrocycleAnalysis(Molecule mol)
+    protected MacrocycleAnalysis(Molecule mol, Dictionary<string, Atom> mapping)
     {
         Molecule = mol;
+        _mapping = mapping;
         _guid = Guid.NewGuid();
         Alpha = Atoms.Where(IsAlpha).ToList();
         Beta = Atoms.Where(s => Neighbors(s).Count == 2 && Neighbors(s).Count(IsAlpha) == 1).ToList();
@@ -90,20 +94,20 @@ public abstract class MacrocycleAnalysis
     protected virtual IEnumerable<AtomDataPoint> CalculateDataPoints()
     {
         Molecule.RebuildCache();
-        var atoms = Atoms.OrderBy(s => RingAtoms.IndexOf(s.Title)).ToList();
+        var atoms = _mapping.OrderBy(s => RingAtoms.IndexOf(s.Key)).ToList();
         var dist = 0d;
         var fix = 1d;
 
         foreach (var a in atoms)
         {
             var coordX = 1d;
-            if (a.Title.Contains('C')) coordX = fix + dist * Multiplier[a.Title];
-            if (a.Title.Contains('N')) coordX = fix + dist / 2d;
+            if (a.Key.Contains('C')) coordX = fix + dist * Multiplier[a.Key];
+            if (a.Key.Contains('N')) coordX = fix + dist / 2d;
             //starts with C1 which is alpha per definition, so refresh distance every alpha atom.
-            if (IsAlpha(a) && NextAlpha(a) != null) dist = a.DistanceTo(NextAlpha(a));
+            if (IsAlpha(a.Value) && NextAlpha(a.Key) != null) dist = a.Value.DistanceTo(NextAlpha(a.Key)!);
             //alpha atoms are fix-points
-            if (IsAlpha(a)) fix = coordX;
-            yield return new AtomDataPoint(coordX, MeanPlane.Distance(a.Location), a);
+            if (IsAlpha(a.Value)) fix = coordX;
+            yield return new AtomDataPoint(coordX, MeanPlane.Distance(a.Value.Location), a.Value, tag: a.Key);
         }
     }
 
@@ -114,6 +118,14 @@ public abstract class MacrocycleAnalysis
     }
 
     /// <summary>
+    /// Rotates Datapoints for Porphyrin: 90 deg, for Norcorrole and Porphycene 180 deg
+    /// </summary>
+    public void RotateDataPoints()
+    {
+        
+    }
+    
+    /// <summary>
     /// checks whether it's an alpha atom or not
     /// </summary>
     /// <param name="a"></param>
@@ -123,11 +135,11 @@ public abstract class MacrocycleAnalysis
     /// <summary>
     /// gets next alpha position for distance measuring
     /// </summary>
-    /// <param name="a"></param>
+    /// <param name="key"></param>
     /// <returns>Atom</returns>
-    private Atom? NextAlpha(Atom a)
+    private Atom? NextAlpha(string key)
     {
-        var i = Array.IndexOf(AlphaAtoms, a.Title) + 1;
+        var i = Array.IndexOf(AlphaAtoms, key) + 1;
         return AlphaAtoms.Length > i ? FindAtomByTitle(AlphaAtoms[i]) : null;
     }
 
@@ -164,7 +176,7 @@ public abstract class MacrocycleAnalysis
     /// </summary>
     /// <returns></returns>
     public virtual IEnumerable<(AtomDataPoint a1, AtomDataPoint a2)> BondDataPoints() =>
-        from bond in Bonds.Where(s => !s.Atoms.Select(a => a.Title).ScrambledEquals(new[] { RingAtoms.First(), RingAtoms.Last() })) //Do not draw bond between first and last element
+        from bond in Bonds.Where(s => !s.Atoms.ScrambledEquals(new [] {_mapping[RingAtoms.First()], _mapping[RingAtoms.Last()]})) //Do not draw bond between first and last element
         let start = DataPoints.FirstOrDefault(s => s.Atom.Equals(bond.Atom1))
         let end = DataPoints.FirstOrDefault(s => s.Atom.Equals(bond.Atom2))
         select (start, end);
@@ -173,17 +185,18 @@ public abstract class MacrocycleAnalysis
     /// Creates Analysis Type
     /// </summary>
     /// <param name="mol"></param>
+    /// <param name="mapping"></param>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static MacrocycleAnalysis Create(Molecule mol, MacrocycleType type)
+    public static MacrocycleAnalysis Create(Molecule mol, Dictionary<string, Atom> mapping, MacrocycleType type)
     {
         MacrocycleAnalysis analysis = type switch
         {
-            MacrocycleType.Porphyrin => new PorphyrinAnalysis(mol),
-            MacrocycleType.Corrole => new CorroleAnalysis(mol),
-            MacrocycleType.Norcorrole => new NorcorroleAnalysis(mol),
-            MacrocycleType.Porphycene => new PorphyceneAnalysis(mol),
-            MacrocycleType.Corrphycene => new CorrphyceneAnalysis(mol),
+            MacrocycleType.Porphyrin => new PorphyrinAnalysis(mol, mapping),
+            MacrocycleType.Corrole => new CorroleAnalysis(mol, mapping),
+            MacrocycleType.Norcorrole => new NorcorroleAnalysis(mol, mapping),
+            MacrocycleType.Porphycene => new PorphyceneAnalysis(mol, mapping),
+            MacrocycleType.Corrphycene => new CorrphyceneAnalysis(mol, mapping),
             _ => throw new InvalidOperationException()
         };
         return analysis;
@@ -194,5 +207,5 @@ public abstract class MacrocycleAnalysis
     /// </summary>
     /// <param name="title"></param>
     /// <returns></returns>
-    public Atom? FindAtomByTitle(string title) => Atoms.FirstOrDefault(s => s.Title == title) ?? null;
+    public Atom? FindAtomByTitle(string title) => _mapping.TryAndGet(title);
 }

@@ -56,6 +56,14 @@ public class AnalysisViewModel : ListItemViewModel<MacrocycleViewModel, Analysis
         });
     }
 
+    public void Rotate()
+    {
+        Analysis.RotateDataPoints();
+        OnPropertyChanged(nameof(Analysis));
+        if(SimulationVisible) SimulationChanged();
+        Invalidate();
+    }
+
     private void Invalidate()
     {
         HandleZoomY();

@@ -4,7 +4,7 @@ namespace PorphyStruct.Core.Analysis;
 
 public class CorrphyceneAnalysis : MacrocycleAnalysis
 {
-    public CorrphyceneAnalysis(Molecule mol) : base(mol) { }
+    public CorrphyceneAnalysis(Molecule mol, Dictionary<string, Atom> mapping) : base(mol, mapping) { }
 
 #pragma warning disable IDE1006
     //ReSharper disable InconsistentNaming

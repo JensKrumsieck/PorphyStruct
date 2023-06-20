@@ -110,7 +110,10 @@ public class Simulation
             var atoms = cycle.Atoms.Where(a => a.CanBeRingMember()).ToList();
             var bonds = cycle.Bonds.Where(b => atoms.Contains(b.Atom1) && atoms.Contains(b.Atom2));
             //await Task.Run(cycle.Detect);
-            cycle.DetectedParts.Add(MacrocycleAnalysis.Create(new Molecule(atoms, bonds), type));
+            var mapping = new Dictionary<string, Atom>();
+            for (var i = 0; i < atoms.Count; i++) 
+                mapping.Add(atoms[i].Title, atoms[i]);
+            cycle.DetectedParts.Add(MacrocycleAnalysis.Create(new Molecule(atoms, bonds), mapping, type));
             var part = cycle.DetectedParts[0];
             var data = EnforceDirection(part, s);
             mat.Add(data.Normalize());

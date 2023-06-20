@@ -18,10 +18,10 @@ public sealed class AtomDataPoint : ScatterPoint
         if (Settings.Instance.NotMarkedPoints.Split(",").Contains(atom.Title) ||
             Settings.Instance.NotMarkedPoints.Split(",").Contains(atom.Symbol))
             Size = 0;
-        Tag = Atom;
+        Tag = tag;
     }
 
     public DataPoint ToDataPoint() => new(X, Y);
 
-    public const string TrackerFormatString = "{0} \r\n{1}: {2} \r\n{3}: {4} \r\n{Atom}";
+    public const string TrackerFormatString = "{0} \r\n{1}: {2} \r\n{3}: {4} \r\n{Atom} \r\nMapped to {Tag}";
 }

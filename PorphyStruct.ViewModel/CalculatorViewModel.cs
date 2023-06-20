@@ -79,9 +79,13 @@ public class CalculatorViewModel : BaseViewModel
     {
         var stream = ResourceUtil.LoadResource($"PorphyStruct.Core.Reference.{CycleType}.Doming.mol2");
         var cycle = new Macrocycle(stream!, "mol2");
+        
+        var mapping = new Dictionary<string, Atom>();
+        for (var i = 0; i < cycle.Atoms.Count; i++) 
+            mapping.Add(cycle.Atoms[i].Title, cycle.Atoms[i]);
         var analysis =
             MacrocycleAnalysis.Create(new Molecule(cycle.Atoms.Where(a => a.CanBeRingMember() && a.Symbol != "H")),
-                CycleType);
+                mapping, CycleType);
         return analysis;
     }
 

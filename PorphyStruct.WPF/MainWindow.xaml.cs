@@ -8,7 +8,6 @@ using ChemSharp.Molecules.HelixToolkit;
 using HelixToolkit.Wpf;
 using Microsoft.Win32;
 using PorphyStruct.Core;
-using PorphyStruct.Core.Analysis;
 using PorphyStruct.ViewModel;
 using PorphyStruct.ViewModel.IO;
 using ThemeCommons.Controls;
@@ -143,6 +142,11 @@ public partial class MainWindow : DefaultWindow
     {
         Settings.Instance.UseExtendedBasis = true;
         await PrepareAnalysis();
+    }
+    
+    private void Rotate_OnClick(object sender, RoutedEventArgs e)
+    {
+        throw new NotImplementedException();
     }
 
     private void Save_OnClick(object sender, RoutedEventArgs e)

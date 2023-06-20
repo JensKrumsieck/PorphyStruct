@@ -4,7 +4,7 @@ namespace PorphyStruct.Core.Analysis;
 
 public class NorcorroleAnalysis : CorroleAnalysis
 {
-    public NorcorroleAnalysis(Molecule mol): base(mol){}
+    public NorcorroleAnalysis(Molecule mol, Dictionary<string, Atom> mapping): base(mol,mapping){}
 
     //ReSharper disable InconsistentNaming
     private new static readonly List<string> _RingAtoms = CorroleAnalysis._RingAtoms.Except(new List<string> { "C10" }).ToList();

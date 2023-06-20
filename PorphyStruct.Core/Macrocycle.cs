@@ -50,9 +50,10 @@ public sealed class Macrocycle : Molecule
                 if(part.Atoms.Count < reference.molecule.Atoms.Count) continue;
                 foreach (var data in part.GetSubgraphs(reference.molecule))
                 {
+                    var mapping = new Dictionary<string, Atom>();
                     for (var i = 0; i < data.Atoms.Count; i++)
-                        data.Atoms[i].Title = reference.molecule.Atoms[i].Title;
-                    var analysis = MacrocycleAnalysis.Create(data, reference.type);
+                        mapping.Add(reference.molecule.Atoms[i].Title, data.Atoms[i]);
+                    var analysis = MacrocycleAnalysis.Create(data, mapping, reference.type);
                     var metal = Neighbors(analysis.N4Cavity[0]).FirstOrDefault(s => s.CanBeCenterAtom());
                     if (metal != null) analysis.Metal = metal;
                     DetectedParts.Add(analysis);

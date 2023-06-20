@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using System.Diagnostics;
+using System.Formats.Asn1;
 using ChemSharp.Mathematics;
 using ChemSharp.Molecules;
 using ChemSharp.Molecules.Properties;
@@ -9,7 +10,7 @@ namespace PorphyStruct.Core.Analysis;
 
 public class PorphyrinAnalysis : MacrocycleAnalysis
 {
-    public PorphyrinAnalysis(Molecule mol) : base(mol)
+    public PorphyrinAnalysis(Molecule mol, Dictionary<string, Atom> mapping) : base(mol, mapping)
     {
         //check if is Isoporphyrin and reorder:
         if (!Isoporphyrin) return;
@@ -19,7 +20,9 @@ public class PorphyrinAnalysis : MacrocycleAnalysis
     private void RemapAtoms()
     {
         var isoMeso = _isoCarbon!; //is not null as Isoporphyrin is true!
-        var isoNo = int.Parse(isoMeso.Title[1..]);
+        //find in mapping
+        var isoKey = _mapping.FirstOrDefault(s => s.Value == isoMeso).Key;
+        var isoNo = int.Parse(isoKey[1..]);
         if (isoNo == 10) return;
         var delta = isoNo switch
         {
@@ -28,26 +31,33 @@ public class PorphyrinAnalysis : MacrocycleAnalysis
             20 => -10,
             _ => 0 //wtf?
         };
-        Molecule.CacheNeighbors = false;
-        foreach (var c in Atoms.Where(a => a.Title.StartsWith("C")).OrderBy(a => a.Title))
+
+        Dictionary<string, Atom> newMapping = new();
+        for (var i = 0; i < _mapping.Count; i++)
         {
-            var no = int.Parse(c.Title[1..]);
+            if (!_mapping.ElementAt(i).Key.StartsWith("C")) continue;
+            var no = int.Parse(_mapping.ElementAt(i).Key[1..]);
             var newNo = (int) (no + delta - 20 * Math.Floor((no + delta) / 20d));
             if (newNo == 0) newNo = 20;
-            c.Title = $"C{newNo}";
+            newMapping["C" + newNo] = _mapping.ElementAt(i).Value;
         }
 
-        foreach (var n in Atoms.Where(a => a.Title.StartsWith("N")))
+        for (var i = 0; i < _mapping.Count; i++)
         {
-            var neighbors = Molecule.Neighbors(n);
-            if (neighbors.Any(c => c.Title == "C1")) n.Title = "N1";
-            if (neighbors.Any(c => c.Title == "C6")) n.Title = "N2";
-            if (neighbors.Any(c => c.Title == "C11")) n.Title = "N3";
-            if (neighbors.Any(c => c.Title == "C16")) n.Title = "N4";
+            if (!_mapping.ElementAt(i).Key.StartsWith("N")) continue;
+            var c = _mapping.ElementAt(i).Value;
+            var neighbors = Neighbors(c);
+            foreach (var a in neighbors)
+            {
+                var mapped = newMapping.FirstOrDefault(k => k.Value == a).Key;
+                if (mapped == "C1") newMapping["N1"] = c;
+                if (mapped == "C6") newMapping["N2"] = c;
+                if (mapped == "C11") newMapping["N3"] = c;
+                if (mapped == "C16") newMapping["N4"] = c;
+            }
         }
 
-        Molecule.RebuildCache();
-        Molecule.CacheNeighbors = true;
+        _mapping = newMapping;
     }
 #pragma warning disable IDE1006
     //ReSharper disable InconsistentNaming
@@ -84,7 +94,7 @@ public class PorphyrinAnalysis : MacrocycleAnalysis
     /// Add PorphyrinDataPoint and shift all Points because of C20 being first
     /// </summary>
     /// <returns></returns>
-    protected override IEnumerable<AtomDataPoint> CalculateDataPoints() => base.CalculateDataPoints().Select(s => s = new AtomDataPoint(s.X + (CalculateDistance("C1", "C19") / 2), s.Y, s.Atom)).Concat(CalculatePorphyrinDataPoints());
+    protected override IEnumerable<AtomDataPoint> CalculateDataPoints() => base.CalculateDataPoints().Select(s => s = new AtomDataPoint(s.X + (CalculateDistance("C1", "C19") / 2), s.Y, s.Atom, tag:s.Tag)).Concat(CalculatePorphyrinDataPoints());
 
     /// <summary>
     /// Calculates PorphyrinDataPoints
@@ -93,12 +103,14 @@ public class PorphyrinAnalysis : MacrocycleAnalysis
     private IEnumerable<AtomDataPoint> CalculatePorphyrinDataPoints()
     {
         //add c20
-        var c20 = Atoms.FirstOrDefault(s => s.Title == "C20");
+        var c20 = FindAtomByTitle("C20");
         if (c20 != null) yield return new AtomDataPoint(1, MathV.Distance(MeanPlane, c20.Location), c20);
     }
 
     ///<inheritdoc/>
-    public override IEnumerable<(AtomDataPoint a1, AtomDataPoint a2)> BondDataPoints() => base.BondDataPoints().Where(s => s.a1.Atom.Title != "C20" && s.a2.Atom.Title != "C20").Concat(PorphyrinBonds());
+    public override IEnumerable<(AtomDataPoint a1, AtomDataPoint a2)> BondDataPoints() =>
+        base.BondDataPoints().Where(s => (string) s.a1.Tag != "C20" && (string) s.a2.Tag != "C20")
+            .Concat(PorphyrinBonds());
 
     /// <summary>
     /// Calculates Bond DataPoints for Porphyrins
@@ -106,8 +118,8 @@ public class PorphyrinAnalysis : MacrocycleAnalysis
     /// <returns></returns>
     private IEnumerable<(AtomDataPoint a1, AtomDataPoint a2)> PorphyrinBonds()
     {
-        yield return (DataPoints.OrderBy(s => s.X).First(), DataPoints.First(s => s.Atom.Title == "C1"));
-        yield return (DataPoints.OrderBy(s => s.X).Last(), DataPoints.First(s => s.Atom.Title == "C19"));
+        yield return (DataPoints.OrderBy(s => s.X).First(), DataPoints.First(s => (string) s.Tag == "C1"));
+        yield return (DataPoints.OrderBy(s => s.X).Last(), DataPoints.First(s => (string) s.Tag == "C19"));
     }
 
     /// <summary>
