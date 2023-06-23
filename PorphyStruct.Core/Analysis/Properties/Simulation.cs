@@ -139,9 +139,9 @@ public class Simulation
             (mode.Contains("Propellering") && 
              analysis.DataPoints.First(s => s.Atom.Title == "C2").Y < 0)
             ||
-            //fix saddling so than N facing upwards, therefore c2 is lower than n1
+            //fix saddling so than N facing downwards, therefore c2 is higher than n1
             (mode.Contains("Saddling") &&
-             analysis.DataPoints.First(s => s.Atom.Title == "C2").Y > analysis.DataPoints.First(s => s.Atom.Title=="N1").Y)
+             analysis.DataPoints.First(s => s.Atom.Title == "C2").Y < analysis.DataPoints.First(s => s.Atom.Title=="N1").Y)
         )
             return data.Select(i => -i).ToArray();
         return data;
