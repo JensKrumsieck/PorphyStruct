@@ -10,34 +10,6 @@ namespace PorphyStruct.ViewModel.Windows;
 
 public class MacrocycleViewModel : ViewModel.MacrocycleViewModel
 {
-    private Atom _selectedAtom;
-    /// <summary>
-    /// Gets or Sets the selected Atom
-    /// </summary>
-    public Atom SelectedAtom
-    {
-        get => _selectedAtom;
-        set => Set(ref _selectedAtom, value, () =>
-        {
-            foreach (var atom in Atoms3D)
-                atom.IsSelected = atom.Atom.Equals(_selectedAtom);
-            var found = false;
-            foreach (var viewModel in Items)
-            {
-                if (!viewModel.Analysis.Atoms.Contains(_selectedAtom))
-                {
-                    viewModel.ExperimentalSeries.ClearSelection();
-                    viewModel.Model.InvalidatePlot(true);
-                    continue;
-                }
-                SelectedIndex = Items.IndexOf(viewModel);
-                var index = viewModel.Analysis.GetMappingIndex(_selectedAtom);
-                viewModel.ExperimentalSeries.SelectItem(index);
-                viewModel.Model.InvalidatePlot(true);
-                break;
-            }
-        });
-    }
     /// <summary>
     /// 3D Representation of Atoms
     /// </summary>
@@ -101,5 +73,12 @@ public class MacrocycleViewModel : ViewModel.MacrocycleViewModel
                 bond.IsValid = true;
             }
         }
+    }
+
+    public override void HandleAtomSelect(Atom selectedAtom)
+    {
+        base.HandleAtomSelect(selectedAtom);
+        foreach (var atom in Atoms3D)
+            atom.IsSelected = atom.Atom.Equals(selectedAtom);
     }
 }

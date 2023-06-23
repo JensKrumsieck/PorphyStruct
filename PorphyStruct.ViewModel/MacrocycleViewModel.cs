@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using ChemSharp.Molecules;
 using PorphyStruct.Core;
 using PorphyStruct.Core.Analysis.Properties;
 using TinyMVVM;
@@ -12,6 +13,16 @@ public class MacrocycleViewModel : ListingViewModel<AnalysisViewModel>
     /// </summary>
     public string Filename { get; }
 
+    private Atom? _selectedAtom;
+    /// <summary>
+    /// Gets or Sets the selected Atom
+    /// </summary>
+    public Atom? SelectedAtom
+    {
+        get => _selectedAtom;
+        set => Set(ref _selectedAtom, value, () => HandleAtomSelect(_selectedAtom));
+    }
+    
     /// <summary>
     /// The opened Macrocycle
     /// </summary>
@@ -47,6 +58,8 @@ public class MacrocycleViewModel : ListingViewModel<AnalysisViewModel>
             SelectedIndex = Items.IndexOf(analysis);
             analysis.PropertyChanged += Child_Changed;
         }
+
+        SelectedIndexChanged += (sender, args) => SelectedAtom = null;
     }
 
     private void Child_Changed(object? sender, PropertyChangedEventArgs e)
@@ -59,4 +72,22 @@ public class MacrocycleViewModel : ListingViewModel<AnalysisViewModel>
         OnSelectedIndexChanged();
     }
     protected virtual void Validate() { }
+
+    public virtual void HandleAtomSelect(Atom? selectedAtom)
+    {
+        foreach (var viewModel in Items)
+        {
+            if (!viewModel.Analysis.Atoms.Contains(selectedAtom))
+            {
+                viewModel.ExperimentalSeries.ClearSelection();
+                viewModel.Model.InvalidatePlot(true);
+                continue;
+            }
+            SelectedIndex = Items.IndexOf(viewModel);
+            var index = viewModel.Analysis.GetMappingIndex(selectedAtom);
+            viewModel.ExperimentalSeries.SelectItem(index);
+            viewModel.Model.InvalidatePlot(true);
+            break;
+        }
+    }
 }

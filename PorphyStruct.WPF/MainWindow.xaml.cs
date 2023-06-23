@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Navigation;
 using ChemSharp.Mathematics;
 using ChemSharp.Molecules.HelixToolkit;
@@ -31,6 +32,7 @@ public partial class MainWindow : DefaultWindow
     public MainWindow()
     {
         Settings.Instance.Load();
+        Atom3D.SelectionColor = Brushes.Fuchsia;
         InitializeComponent();
         CheckUpdate();
     }

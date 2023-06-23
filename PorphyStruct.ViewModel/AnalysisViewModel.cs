@@ -14,6 +14,8 @@ public class AnalysisViewModel : ListItemViewModel<MacrocycleViewModel, Analysis
     public MacrocycleAnalysis Analysis { get; }
 
     public DefaultPlotModel Model { get; }
+    
+    public PlotController Controller { get; set; }
 
     public DefaultScatterSeries ExperimentalSeries { get; } = new();
 
@@ -99,6 +101,16 @@ public class AnalysisViewModel : ListItemViewModel<MacrocycleViewModel, Analysis
         //Init Object
         Analysis = analysis;
         Model = new DefaultPlotModel();
+        Controller = new PlotController();
+        Controller.BindMouseEnter(PlotCommands.HoverSnapTrack);
+        var handleSelect = new DelegatePlotCommand<OxyMouseDownEventArgs>((v, c, e) =>
+        {
+            var args = new HitTestArguments(e.Position, 10);
+            var result = ExperimentalSeries.HitTest(args);
+            if (result?.Item is not AtomDataPoint point) return;
+            Parent.SelectedAtom = point.Atom;
+        });
+        Controller.Bind(new OxyMouseDownGesture(OxyMouseButton.Left), handleSelect);
         Model.Init();
         Model.Series.Add(ExperimentalSeries);
         Model.Series.Add(SimulationSeries);

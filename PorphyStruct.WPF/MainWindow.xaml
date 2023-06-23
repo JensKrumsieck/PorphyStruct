@@ -67,7 +67,7 @@
                             <ListBoxItem Style="{DynamicResource ToolbarListItem}" IsSelected="{Binding SelectedItem.Inverted}" extension:ControlExtension.AttachedIcon="PlusMinusBox" Content="InvertY" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
                             <ListBoxItem Style="{DynamicResource ToolbarListItem}" IsSelected="{Binding SelectedItem.InvertedX}" extension:ControlExtension.AttachedIcon="FlipHorizontal" Content="InvertX" IsEnabled="{Binding SelectedItem, Converter={converter:NotNullConverter}}"/>
                         </ListBox>
-                        <Button extension:ControlExtension.AttachedIcon="RotateClockwise" Content="Rotate" Click="Rotate_OnClick" IsEnabled="{Binding SelectedItem,  Converter={converterlocal:SufficientSymmetryConverter}}"/>
+                        <Button extension:ControlExtension.AttachedIcon="RotateClockwise" Content="Shift" Click="Rotate_OnClick" IsEnabled="{Binding SelectedItem,  Converter={converterlocal:SufficientSymmetryConverter}}"/>
                     </ToolBar>
                     <ToolBar>
                         <Button extension:ControlExtension.AttachedIcon="Console" Content="Batch" Click="Batch_OnClick" />
@@ -203,11 +203,11 @@
                 </TabControl.Background>
                 <TabControl.ContentTemplate>
                     <DataTemplate DataType="viewModel:AnalysisViewModel">
-                        <wpf:PlotView x:Name="PlotView" Model="{Binding Model}"/>
+                        <wpf:PlotView x:Name="PlotView" Model="{Binding Model}" Controller="{Binding Controller}"/>
                     </DataTemplate>
                 </TabControl.ContentTemplate>
             </TabControl>
-            <h:HelixViewport3D Grid.Column="1" Grid.Row="0" x:Name="Viewport3D"
+            <h:HelixViewport3D Grid.Column="1" Grid.Row="0" x:Name="Viewport3D" Drop="OnFileDrop"
                                MouseLeftButtonDown="Viewport3D_OnMouseLeftButtonDown"
                                ShowViewCube="False" ShowCoordinateSystem="True" 
                                ZoomExtentsWhenLoaded="True" IsHeadLightEnabled="True" >
