@@ -75,9 +75,10 @@ public class MacrocycleViewModel : ViewModel.MacrocycleViewModel
         }
     }
 
-    public override void HandleAtomSelect(Atom selectedAtom)
+    public override void HandleAtomSelect(Atom? selectedAtom)
     {
         base.HandleAtomSelect(selectedAtom);
+        if (selectedAtom == null) return;
         foreach (var atom in Atoms3D)
             atom.IsSelected = atom.Atom.Equals(selectedAtom);
     }

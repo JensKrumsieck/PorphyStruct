@@ -14,6 +14,6 @@ public static class ExportHelper
 
         //try to render current 3d representation
         if (viewPort == null) throw new InvalidOperationException("Viewport not found - can not render properly");
-        viewPort.Viewport.SaveBitmap(path + "_viewport.png", null, 4);
+        viewPort.Viewport.SaveBitmap(path + "_viewport.png", null, 2);
     }
 }
