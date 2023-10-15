@@ -1,4 +1,9 @@
 # .NET Desktop
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)'
+    artifact: 'drop'
+    publishLocation: 'pipeline'
 # Build and run tests for .NET Desktop or Windows classic desktop solutions.
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
@@ -36,9 +41,9 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: true
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+    
+ - task: PublishPipelineArtifact@1
+   inputs:
+     targetPath: '$(Pipeline.Workspace)'
+     artifact: 'drop'
+     publishLocation: 'pipeline'
