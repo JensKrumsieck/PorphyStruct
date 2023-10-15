@@ -41,9 +41,9 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: true
-    
- - task: PublishPipelineArtifact@1
-   inputs:
-     targetPath: '$(Pipeline.Workspace)'
-     artifact: 'drop'
-     publishLocation: 'pipeline'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)'
+    artifact: 'drop'
+    publishLocation: 'pipeline'
