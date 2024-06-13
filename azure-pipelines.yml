@@ -21,8 +21,8 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'custom'
-    custom: 'workload install'
-    arguments: 'wasm-tools-net7'
+    custom: 'workload'
+    arguments: 'install wasm-tools-net7'
 
 - task: NuGetCommand@2
   inputs:
