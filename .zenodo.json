@@ -1,0 +1,26 @@
+{
+   "creators":[
+      {
+         "orcid":"0000-0001-6242-5846",
+         "affiliation":"Technische Universität Braunschweig",
+         "name":"Krumsieck, Jens"
+      }
+   ],
+   "license":"MIT",
+   "title":"PorphyStruct",
+   "keywords":[
+      "Chemistry",
+      "Porphyrins",
+      "Corrole",
+      "NSD",
+      "Tetrapyrrole"
+   ],
+   "related_identifiers":[
+      {
+         "scheme":"doi",
+         "identifier":"10.1002/chem.202101243",
+         "relation":"isDocumentedBy",
+         "resource_type":"publication-article"
+      }
+   ]
+}
