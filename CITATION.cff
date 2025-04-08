@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+title: PorphyStruct
+type: software
+authors:
+  - given-names: Jens
+    family-names: Krumsieck
+    email: mail@jenskrumsieck.de
+    affiliation: Johann Heinrich von Thünen-Institut
+    orcid: 'https://orcid.org/0000-0001-6242-5846'
+  - given-names: Martin
+    family-names: Bröring
+    email: m.broering@tu-bs.de
+    affiliation: Technische Universität Braunschweig
+    orcid: 'https://orcid.org/0000-0001-6807-6579'
+identifiers:
+  - type: doi
+    value: 10.1002/chem.202101243
+    description: The DOI of the encompassing paper.
+repository-code: 'https://github.com/JensKrumsieck/PorphyStruct'
+url: 'https://porphystruct.org/'
+license: MIT
