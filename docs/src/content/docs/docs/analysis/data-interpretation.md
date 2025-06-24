@@ -10,10 +10,10 @@ This chapter shows a few mathematical quantities that might be useful in evaluat
 
 ### Percentage Values
 
-The results of the analysis are given as quantitative parameters `mathd_{\Gamma,m}` of the individual mode symmetries `math\Gamma` in Å (`mathm = 1` for minimal Basis, `mathm = 2` for extended Basis). However, these cannot be interpreted as a percentage of the displacement parameter D<sub>oop</sub> ([see definition](/docs/simulation-method)). To obtain percentage values, the mode absolute values (without sign) must be summed up, the percentage value can be calculated by the ratio of the individual modes to their sum.
+The results of the analysis are given as quantitative parameters $d_{\Gamma,m}$ of the individual mode symmetries $\Gamma$ in Å ($m = 1$ for minimal Basis, $m = 2$ for extended Basis). However, these cannot be interpreted as a percentage of the displacement parameter D<sub>oop</sub> ([see definition](/docs/simulation-method)). To obtain percentage values, the mode absolute values (without sign) must be summed up, the percentage value can be calculated by the ratio of the individual modes to their sum.
 
 ```math
-d_{i}^m [\%] = \frac{|d_{i}^m [\AA]|}{\sum_{\Gamma,m}|d_{\Gamma}^m|}
+d_{i}^m [\%] = \frac{|d_{i}^m|}{\sum_{\Gamma,m}|d_{\Gamma}^m|}
 ```
 
 ### Minimal Basis
@@ -29,7 +29,7 @@ When using the [Extended Basis](/docs/minimal-and-extended-basis#extended-basis)
 #### Euclidean Norm
 
 The Euclidean Norm will provide the overall strength of the two normal mode sets. This ignores the sign of the indiviual modes which can result in bigger values as expected. This is the original formula J. A. Shelnutt et al. used for composition values.
-`mathd_{i}^1` beeing the value of the minimal and `mathd_{i}^2` for the extended basis (`mathd_{i}^m (m=1,2)`).
+$d_{i}^1$ beeing the value of the minimal and $d_{i}^2$ for the extended basis ($d_{i}^m (m=1,2)$).
 
 ```math
 d_{i}^{comp} = \sqrt{{d_{i}^1}^2 + {d_{i}^2}^2}
@@ -37,7 +37,7 @@ d_{i}^{comp} = \sqrt{{d_{i}^1}^2 + {d_{i}^2}^2}
 
 #### Sum of Modes
 
-In some cases the simple sum of the modes from the two sets will give better results than the euclidean norm. This is especially the case when the two modes have high values with opposite signs. `mathd_{i}^1` beeing the value of the minimal and `mathd_{i}^2` for the extended basis (`mathd_{i}^m (m=1,2)`).  
+In some cases the simple sum of the modes from the two sets will give better results than the euclidean norm. This is especially the case when the two modes have high values with opposite signs. $d_{i}^1$ beeing the value of the minimal and $d_{i}^2$ for the extended basis ($d_{i}^m (m=1,2)$).  
 
 ```math
 d_{i}^{comp}= d_{i}^1 + d_i^2
@@ -53,7 +53,7 @@ wav=|wav\ x|+|wav\ y|
 
 ### Quality of Analysis
 
-To estimate the quality of the analysis the D<sub>oop</sub> (sim.) Value is given in the Output. This is the displacement parameter of the simulated conformation. The value has to fit the D<sub>oop</sub> (exp.) value. The deviation can be given as `math\delta_{oop}` in absolute or percentage values (recommended).
+To estimate the quality of the analysis the D<sub>oop</sub> (sim.) Value is given in the Output. This is the displacement parameter of the simulated conformation. The value has to fit the D<sub>oop</sub> (exp.) value. The deviation can be given as $\delta_{oop}$ in absolute or percentage values (recommended).
 
 ```math
 \delta_{oop} [\%] = \frac{D_{oop} (exp.) - D_{oop} (sim.)}{D_{oop}(exp.)}*100

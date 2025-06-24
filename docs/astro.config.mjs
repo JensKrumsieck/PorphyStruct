@@ -4,6 +4,9 @@ import starlight from '@astrojs/starlight';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import starlightSidebarTopics from 'starlight-sidebar-topics'
+import starlightImageZoom from 'starlight-image-zoom'
+import remarkMath from 'remark-math';
+import rehypeMathJax from 'rehype-mathjax';
 
 // https://astro.build/config
 export default defineConfig({
@@ -24,6 +27,7 @@ export default defineConfig({
 				Footer: './src/components/Footer.astro',
 			},
 			plugins: [
+				starlightImageZoom(),
 				starlightSidebarTopics([
 					{
 						label: 'Home',
@@ -57,6 +61,10 @@ export default defineConfig({
 		}),
 		sitemap(),
 	],
+	markdown: {
+		remarkPlugins: [remarkMath],
+		rehypePlugins: [rehypeMathJax],
+	},
 	vite: {
 		plugins: [tailwindcss()],
 	},

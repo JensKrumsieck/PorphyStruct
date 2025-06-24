@@ -3,7 +3,7 @@ title: Simulation Method
 ---
 ### Introduction
 
-The three-dimensional structure of each molecule `mathD_{obs}` is expressed by a linear combination of all `mathm` vibrational modes of symmetries `math\Gamma` with coefficients `mathd`. By rearranging the sum, a separation of the vibrational normal modes into out-of-plane (`mathoop`) and in-plane (`mathip`) symmetries can be made.
+The three-dimensional structure of each molecule $D_{obs}$ is expressed by a linear combination of all $m$ vibrational modes of symmetries $\Gamma$ with coefficients $d$. By rearranging the sum, a separation of the vibrational normal modes into out-of-plane ($oop$) and in-plane ($ip$) symmetries can be made.
 
 ```math
 D_{obs} = \sum_{\Gamma,m}d_m^{\Gamma} D_m^{\Gamma} = \sum_{\Gamma_{oop},m}d_m^{\Gamma_{oop}} D_m^{\Gamma_{oop}} + \sum_{\Gamma_{ip},m}d_m^{\Gamma_{ip}} D_m^{\Gamma_{ip}} = D_{obs}^{oop} + D_{obs}^{ip}
@@ -16,10 +16,10 @@ These modes are used as references when simulating the experimental structure (e
 ```math
 \hat{D}_{oop} = \hat{d}_{oop} * D_{oop}^{mxn}
 ```
-The solution `math\hat{d}_{oop}` beeing the coefficients of the linear combination which correspond to the mode strengths. With these coefficients a simulated distortion is computed by multiplying the coefficients with the normalized references.
+The solution $\hat{d}_{oop}$ beeing the coefficients of the linear combination which correspond to the mode strengths. With these coefficients a simulated distortion is computed by multiplying the coefficients with the normalized references.
 
 #### Displacement parameter
-One important value is the overall displacement parameter `mathD_{oop}` which quantifies the overall out-of-plane distortion by using the euclidean norm of all atom displacements. The value is calculated as follows:
+One important value is the overall displacement parameter $D_{oop}$ which quantifies the overall out-of-plane distortion by using the euclidean norm of all atom displacements. The value is calculated as follows:
 ```math
 D_{oop} = \sqrt{\sum_{i=1}^m(\Delta_i^z)^2}
 ```
@@ -32,11 +32,11 @@ The Porphyrin Macrocycle has 24 perimeter atoms and it's pointgroup is D<sub>4h<
 \Gamma_{oop} = 2A_{1u} + 3A_{2u}+3B_{1u}+3B_{2u}+5E_{g}
 ```
 Each out-of-plane symmetry corresponds to a specific mode:
-* Doming: `mathA_{2u}`
-* Saddling: `mathB_{2u}`
-* Ruffling: `mathB_{1u}`
-* Waving: `mathE_{g}`
-* Propellering: `mathA_{1u}`
+* Doming:       $A_{2u}$
+* Saddling:     $B_{2u}$
+* Ruffling:     $B_{1u}$
+* Waving:       $E_{g}$
+* Propellering: $A_{1u}$
 
 To see the mode representations, [visit this site: Modes.](/docs/modes#porphyrin)
 
@@ -46,11 +46,11 @@ The Corrole Macrocycle has 23 perimeter atoms and it's pointgroup is C<sub>2v</s
 \Gamma_{oop} = 10A_{2} + 10B_{1}
 ```
 Each out-of-plane symmetry corresponds to a specific mode:
-* Doming: `mathB_{1}`
-* Saddling: `mathA_{2}`
-* Ruffling: `mathB_{1}`
-* Waving: `mathB_{1} / A_{2}`
-* Propellering: `mathA_{2}`
+* Doming:       $B_{1}$
+* Saddling:     $A_{2}$
+* Ruffling:     $B_{1}$
+* Waving:       $B_{1} / A_{2}$
+* Propellering: $A_{2}$
 
 To see the mode representations, [visit this site: Modes.](/docs/modes#corrole)
 
@@ -63,11 +63,11 @@ These out-of-plane modes are distributed as follows:
 ```
 
 Each out-of-plane symmetry corresponds to a specific mode:
-* Doming: `mathB_{3u}`
-* Saddling: `mathA_{u}`
-* Ruffling: `mathB_{3u}`
-* Waving: `mathB_{1g} / A_{2g}`
-* Propellering: `mathA_{u}`
+* Doming:       $B_{3u}$
+* Saddling:     $A_{u}$
+* Ruffling:     $B_{3u}$
+* Waving:       $B_{1g} / A_{2g}$
+* Propellering: $A_{u}$
 
 To see the mode representations, [visit this site: Modes.](/docs/modes#norcorrole)
 
@@ -80,11 +80,11 @@ These out-of-plane modes are distributed as follows:
 ```
 
 Each out-of-plane symmetry corresponds to a specific mode:
-* Doming: `mathB_{3u}`
-* Saddling: `mathA_{u}`
-* Ruffling: `mathB_{3u}`
-* Waving: `mathB_{1g} / A_{2g}`
-* Propellering: `mathA_{u}`
+* Doming:       $B_{3u}$
+* Saddling:     $A_{u}$
+* Ruffling:     $B_{3u}$
+* Waving:       $B_{1g} / A_{2g}$
+* Propellering: $A_{u}$
 
 To see the mode representations, [visit this site: Modes.](/docs/modes#porphycene)
 
@@ -94,11 +94,11 @@ The Corrphycene Macrocycle has 24 perimeter atoms and it's pointgroup is C<sub>2
 \Gamma_{oop} = 11A_{2} + 10B_{1}
 ```
 Each out-of-plane symmetry corresponds to a specific mode:
-* Doming: `mathB_{1}`
-* Saddling: `mathA_{2}`
-* Ruffling: `mathB_{1}`
-* Waving: `mathB_{1} / A_{2}`
-* Propellering: `mathA_{2}`
+* Doming:       $B_{1}$
+* Saddling:     $A_{2}$
+* Ruffling:     $B_{1}$
+* Waving:       $B_{1} / A_{2}$
+* Propellering: $A_{2}$
 
 To see the mode representations, [visit this site: Modes.](/docs/modes#corrphycene)
 

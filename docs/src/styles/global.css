@@ -37,3 +37,7 @@
 body {
   overflow-x: hidden;
 }
+
+mjx-container svg {
+  display: inline !important;
+}
