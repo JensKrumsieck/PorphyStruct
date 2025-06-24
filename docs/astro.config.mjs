@@ -41,7 +41,17 @@ export default defineConfig({
 							{ label: 'Advanced Topics', autogenerate: { directory: 'docs/advanced' } },
 							{ label: 'Settings', autogenerate: { directory: 'docs/settings' } },
 						]
-					}
+					},
+					{
+						label: 'Download for Windows',
+						icon: 'seti:windows',
+						link: 'https://github.com/JensKrumsieck/PorphyStruct/releases/latest/',
+					},
+					{
+						label: 'Web Application',
+						icon: 'cloud-download',
+						link: 'https://app.porphystruct.org/',
+					},
 				]),
 			],
 		}),
