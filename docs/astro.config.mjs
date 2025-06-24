@@ -11,6 +11,7 @@ import rehypeMathJax from 'rehype-mathjax';
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://porphystruct.org',
+	output: 'static',
 	integrations: [
 		starlight({
 			title: 'PorphyStruct',
