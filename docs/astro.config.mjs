@@ -12,6 +12,7 @@ export default defineConfig({
 		starlight({
 			title: 'PorphyStruct',
 			customCss: [
+				'@fontsource-variable/roboto',
 				'./src/styles/global.css',
 			],
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/jenskrumsieck/porphystruct' }],
@@ -33,6 +34,7 @@ export default defineConfig({
 			],
 			components: {
 				Hero: './src/components/Hero.astro',
+				Footer: './src/components/Footer.astro',
 			}
 		}),
 		sitemap()

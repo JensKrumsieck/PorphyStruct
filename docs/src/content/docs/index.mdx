@@ -17,21 +17,36 @@ hero:
       variant: minimal
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { CardGrid } from '@astrojs/starlight/components';
 
-## Next steps
+<div class="wrapper">
+	<CardGrid>
+	![](../../assets/analysis.svg)
 
-<CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
-	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
-	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
-	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
-	</Card>
-</CardGrid>
+	<div>
+	## Automated Conformational Analysis
+	The conformation of tetrapyrrolic macrocycles significantly influences the reactivity and the (photo)physical properties. To analyse the conformation by creating displacement diagrams manually is possible, but costs a lot of time. Furthermore, a quantitative analysis is not easily possible. PorphyStruct offers automated creation of displacement diagrams and quantitative conformational Analysis using the NSD-technique.
+	</div>
+
+	</CardGrid>
+
+	<CardGrid>
+	<div>
+	## Batch Processing
+	The automated Analysis of thousands of structures is possible due to the implemented Batch processing feature. The Output will be merged into a csv file for further Analysis in Excel or as a Pandas DataFrame in Python scripts. Did you know? Some python scripts to Play with are available here: [porphystruct-scripts](https://github.com/jenskrumsieck/porphystruct-scripts).
+	</div>
+
+	![](../../assets/screenshot_batch.png)
+	</CardGrid>
+
+	<div>
+	## Supported Macrocyclic Frameworks
+	- Porphyrin (e.g. Isoporphyrins, Phtalocyanines, N-confused Porphyrins, Porphyrazines)
+	- Corrole (e.g. Isocorroles, Heterocorroles, N-confused Corroles, Corrolazines, Corrins¹)
+	- Norcorrole
+	- Corrphycene
+	- Porphycene
+
+	¹ NSD-type analysis not useful for Corrins, but diagrams are still possible.
+	</div>
+</div>

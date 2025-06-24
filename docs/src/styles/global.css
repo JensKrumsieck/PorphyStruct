@@ -4,6 +4,10 @@
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/utilities.css' layer(utilities);
 
+:root {
+  --sl-font: 'Roboto Variable', 'ui-sans-serif', 'system-ui', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
 @theme {
     /* Generated accent color palettes. */
     --color-accent-200: #b5cce1;
@@ -19,4 +23,13 @@
     --color-gray-700: #383838;
     --color-gray-800: #272727;
     --color-gray-900: #181818;
+}
+
+.site-title{
+  color: var(--sl-color-white);
+  font-weight: 900;
+}
+
+.wrapper> *:not(first-child) {
+  padding-top: 5rem;
 }

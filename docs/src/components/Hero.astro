@@ -27,6 +27,7 @@ if (image) {
 }
 ---
 
+<div class="backdrop"></div>
 <div class="hero">
   {
     darkImage && (
@@ -79,6 +80,24 @@ if (image) {
 
 <style>
   @layer starlight.core {
+    .backdrop {
+      position: absolute;
+      inset: 0;
+      background-image: url("../assets/topography.svg");
+      opacity: 0.05;
+      z-index: -1;
+    }
+
+    .backdrop::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0) 20%,
+        white 100%
+      );
+    }
     .hero {
       display: flex;
       flex-direction: column;
@@ -120,10 +139,20 @@ if (image) {
         var(--sl-text-6xl)
       );
       line-height: var(--sl-line-height-headings);
-      font-weight: 600;
+      font-weight: 900;
       color: var(--sl-color-white);
-    }
 
+      .highlight {
+        color: var(--color-accent-600);
+      }
+    }
+    :root[data-theme="dark"] {
+      h1 {
+        .highlight {
+          color: var(--color-accent-200);
+        }
+      }
+    }
     .tagline {
       font-size: clamp(
         var(--sl-text-base),
@@ -138,14 +167,6 @@ if (image) {
       flex-wrap: wrap;
       justify-content: center;
     }
-
-    .highlight {
-      color: var(--color-accent-600);
-    }
-    [data-theme="dark"] .hero .highlight {
-      color: var(--color-accent-200);
-    }
-
     @media (min-width: 50rem) {
       .hero {
         grid-template-columns: 7fr 4fr;
