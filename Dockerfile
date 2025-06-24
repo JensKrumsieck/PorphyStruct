@@ -3,7 +3,11 @@ WORKDIR /src
 COPY ./ ./
 RUN dotnet workload restore
 RUN apt-get update \
-    && apt-get install -y python3.10 python-is-python3
+    && apt-get install -y python3.10 python-is-python3 
+
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs
+
 RUN dotnet restore PorphyStruct.Web/PorphyStruct.Web.csproj
 RUN dotnet build PorphyStruct.Web/PorphyStruct.Web.csproj -c Release -o /app/build
 
