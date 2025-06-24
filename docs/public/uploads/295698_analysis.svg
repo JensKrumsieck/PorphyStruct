@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="3000" height="1500">
+	<defs>
+		<clipPath id="clip_0">
+			<rect x="25" y="166.86401" width="2950" height="1308.136" clip-rule="evenodd"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip_0)">
+		<rect fill="rgb(74,69,42)" stroke="none" x="447.86929" y="1275.1459" width="15.03363" height="181.68555"/>
+	</g>
+	<defs>
+		<clipPath id="clip_1">
+			<rect x="25" y="166.86401" width="2950" height="1308.136" clip-rule="evenodd"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip_1)">
+		<text fill="rgb(0,0,0)" stroke="none" transform="translate(469.153 1365.99)" font-size="56.25" font-family="Arial" x="0" y="19.500732">
+				0.006 Å
+		</text>
+	</g>
+	<defs>
+		<clipPath id="clip_2">
+			<rect x="25" y="166.86401" width="2950" height="1308.136" clip-rule="evenodd"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip_2)">
+		<rect fill="rgb(64,49,82)" stroke="none" x="447.86929" y="1057.1232" width="55.045197" height="181.68567"/>
+	</g>
+	<defs>
+		<clipPath id="clip_3">
+			<rect x="25" y="166.86401" width="2950" height="1308.136" clip-rule="evenodd"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip_3)">
+		<text fill="rgb(0,0,0)" stroke="none" transform="translate(509.164 1147.97)" font-size="56.25" font-family="Arial" x="0" y="19.500732">
+				0.021 Å
+		</text>
+	</g>
+	<defs>
+		<clipPath id="clip_4">
+			<rect x="25" y="166.86401" width="2950" height="1308.136" clip-rule="evenodd"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip_4)">
+		<rect fill="rgb(228,108,10)" stroke="none" x="447.86929" y="839.10052" width="188.78757" height="181.68555"/>
+	</g>
+	<defs>
+		<clipPath id="clip_5">
+			<rect x="25" y="166.86401" width="2950" height="1308.136" clip-rule="evenodd"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip_5)">
+		<text fill="rgb(0,0,0)" stroke="none" transform="translate(642.907 929.943)" font-size="56.25" font-family="Arial" x="0" y="19.500732">
+				0.070 Å
+		</text>
+	</g>
+	<defs>
+		<clipPath id="clip_6">
+			<rect x="25" y="166.86401" width="2950" height="1308.136" clip-rule="evenodd"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip_6)">
+		<rect fill="rgb(119,147,60)" stroke="none" x="447.86929" y="621.07794" width="544.93518" height="181.68555"/>
+	</g>
+	<defs>
+		<clipPath id="clip_7">
+			<rect x="25" y="166.86401" width="2950" height="1308.136" clip-rule="evenodd"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip_7)">
+		<text fill="rgb(0,0,0)" stroke="none" transform="translate(999.054 711.921)" font-size="56.25" font-family="Arial" x="0" y="19.500732">
+				0.203 Å
+		</text>
+	</g>
+	<defs>
+		<clipPath id="clip_8">
+			<rect x="25" y="166.86401" width="2950" height="1308.136" clip-rule="evenodd"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip_8)">
+		<rect fill="rgb(23,55,94)" stroke="none" x="447.86929" y="403.05524" width="278.75009" height="181.68555"/>
+	</g>
+	<defs>
+		<clipPath id="clip_9">
+			<rect x="25" y="166.86401" width="2950" height="1308.136" clip-rule="evenodd"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip_9)">
+		<text fill="rgb(0,0,0)" stroke="none" transform="translate(732.869 493.898)" font-size="56.25" font-family="Arial" x="0" y="19.500732">
+				0.104 Å
+		</text>
+	</g>
+	<defs>
+		<clipPath id="clip_10">
+			<rect x="25" y="166.86401" width="2950" height="1308.136" clip-rule="evenodd"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip_10)">
+		<rect fill="rgb(149,55,53)" stroke="none" x="447.86929" y="185.03258" width="1948.7972" height="181.68556"/>
+	</g>
+	<defs>
+		<clipPath id="clip_11">
+			<rect x="25" y="166.86401" width="2950" height="1308.136" clip-rule="evenodd"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip_11)">
+		<text fill="rgb(0,0,0)" stroke="none" transform="translate(2402.92 275.875)" font-size="56.25" font-family="Arial" x="0" y="19.500732">
+				0.727 Å
+		</text>
+	</g>
+	<defs>
+		<clipPath id="clip_12">
+			<rect x="25" y="166.86401" width="2950" height="1308.136" clip-rule="evenodd"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip_12)">
+		<rect fill="none" stroke="rgb(0,0,0)" stroke-width="3.125" stroke-miterlimit="10" x="169.74431" y="182.48901" width="246.87498" height="1276.886"/>
+	</g>
+	<defs>
+		<clipPath id="clip_13">
+			<rect x="25" y="166.86401" width="2950" height="1308.136" clip-rule="evenodd"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip_13)">
+		<text fill="rgb(0,0,0)" stroke="none" transform="translate(293.182 1365.99)" font-size="56.25" text-anchor="middle" font-weight="600" font-family="Arial" x="0" y="19.500732">
+				pro
+		</text>
+	</g>
+	<defs>
+		<clipPath id="clip_14">
+			<rect x="25" y="166.86401" width="2950" height="1308.136" clip-rule="evenodd"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip_14)">
+		<text fill="rgb(0,0,0)" stroke="none" transform="translate(293.182 1147.97)" font-size="56.25" text-anchor="middle" font-weight="600" font-family="Arial" x="0" y="19.500732">
+				wav Y
+		</text>
+	</g>
+	<defs>
+		<clipPath id="clip_15">
+			<rect x="25" y="166.86401" width="2950" height="1308.136" clip-rule="evenodd"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip_15)">
+		<text fill="rgb(0,0,0)" stroke="none" transform="translate(293.182 929.943)" font-size="56.25" text-anchor="middle" font-weight="600" font-family="Arial" x="0" y="19.500732">
+				wav X
+		</text>
+	</g>
+	<defs>
+		<clipPath id="clip_16">
+			<rect x="25" y="166.86401" width="2950" height="1308.136" clip-rule="evenodd"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip_16)">
+		<text fill="rgb(0,0,0)" stroke="none" transform="translate(293.182 711.921)" font-size="56.25" text-anchor="middle" font-weight="600" font-family="Arial" x="0" y="19.500732">
+				ruf
+		</text>
+	</g>
+	<defs>
+		<clipPath id="clip_17">
+			<rect x="25" y="166.86401" width="2950" height="1308.136" clip-rule="evenodd"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip_17)">
+		<text fill="rgb(0,0,0)" stroke="none" transform="translate(293.182 493.898)" font-size="56.25" text-anchor="middle" font-weight="600" font-family="Arial" x="0" y="19.500732">
+				sad
+		</text>
+	</g>
+	<defs>
+		<clipPath id="clip_18">
+			<rect x="25" y="166.86401" width="2950" height="1308.136" clip-rule="evenodd"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip_18)">
+		<text fill="rgb(0,0,0)" stroke="none" transform="translate(293.182 275.875)" font-size="56.25" text-anchor="middle" font-weight="600" font-family="Arial" x="0" y="19.500732">
+				dom
+		</text>
+	</g>
+	<defs>
+		<clipPath id="clip_19">
+			<rect width="3000" height="1500" clip-rule="evenodd"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip_19)">
+		<text fill="rgb(0,0,0)" stroke="none" transform="translate(1500 25)" font-size="62.5" text-anchor="middle" font-family="Arial" x="0" y="56.57959">
+				
+		</text>
+	</g>
+	<defs>
+		<clipPath id="clip_20">
+			<rect width="3000" height="1500" clip-rule="evenodd"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip_20)">
+		<text fill="rgb(41,49,51)" stroke="none" transform="translate(1500 96.8689)" font-size="50" text-anchor="middle" font-family="Arial" x="0" y="45.263672">
+				
+		</text>
+	</g>
+	<text fill="rgb(0,0,0)" stroke="none" transform="translate(1301.76 25)" font-size="62.5" font-family="Arial" x="0" y="56.57959">
+			D
+	</text>
+	<text fill="rgb(0,0,0)" stroke="none" transform="translate(1346.9 62.5)" font-size="38.75" font-family="Arial" x="0" y="35.079346">
+			oop
+	</text>
+	<text fill="rgb(0,0,0)" stroke="none" transform="translate(1417.8 25)" font-size="62.5" font-family="Arial" x="0" y="56.57959">
+			= 0.769 Å
+	</text>
+	<text fill="rgb(41,49,51)" stroke="none" transform="translate(1227.17 112.494)" font-size="50" font-family="Arial" x="0" y="45.263672">
+			δ
+	</text>
+	<text fill="rgb(41,49,51)" stroke="none" transform="translate(1255 142.494)" font-size="31" font-family="Arial" x="0" y="28.063477">
+			oop 
+	</text>
+	<text fill="rgb(41,49,51)" stroke="none" transform="translate(1330.2 112.494)" font-size="50" font-family="Arial" x="0" y="45.263672">
+			= 0.002 Å — 0.2 %
+	</text>
+</svg>

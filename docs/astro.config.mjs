@@ -2,8 +2,8 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import sitemap from '@astrojs/sitemap';
-
 import tailwindcss from '@tailwindcss/vite';
+import starlightSidebarTopics from 'starlight-sidebar-topics'
 
 // https://astro.build/config
 export default defineConfig({
@@ -19,26 +19,34 @@ export default defineConfig({
 			logo: {
 				src: './src/assets/logo.svg'
 			},
-			sidebar: [
-				{
-					label: 'Home',
-					slug: '',
-				},
-				{	
-					label: 'Documentation',
-					items: [
-						{ label: 'Example Guide', slug: 'docs/example' },
-					],
-				},
-			],
 			components: {
 				Hero: './src/components/Hero.astro',
 				Footer: './src/components/Footer.astro',
-			}
+			},
+			plugins: [
+				starlightSidebarTopics([
+					{
+						label: 'Home',
+						icon: 'puzzle',
+						link: '/',
+					},
+					{
+						label: 'Documentation',
+						icon: 'open-book',
+						link: '/docs/getting-started',
+						items: [
+							{ label: 'Getting Started', autogenerate: { directory: 'docs/getting-started' } },
+							{ label: 'Concepts', autogenerate: { directory: 'docs/concepts' } },
+							{ label: 'Analysis', autogenerate: { directory: 'docs/analysis' } },
+							{ label: 'Advanced Topics', autogenerate: { directory: 'docs/advanced' } },
+							{ label: 'Settings', autogenerate: { directory: 'docs/settings' } },
+						]
+					}
+				]),
+			],
 		}),
-		sitemap()
+		sitemap(),
 	],
-
 	vite: {
 		plugins: [tailwindcss()],
 	},
