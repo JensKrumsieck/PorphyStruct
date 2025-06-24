@@ -4,10 +4,10 @@ import LastUpdated from "@astrojs/starlight/components/LastUpdated.astro";
 import Pagination from "@astrojs/starlight/components/Pagination.astro";
 import config from "virtual:starlight/user-config";
 import { Icon } from "@astrojs/starlight/components";
-import Image from "astro/components/Image.astro";
+import { Image } from "astro:assets";
 import Logo from "../assets/logo.svg";
 
-const isHome = Astro.url.pathname === '/'
+const isHome = Astro.url.pathname === "/";
 ---
 
 <footer class="sl-flex">
@@ -15,7 +15,7 @@ const isHome = Astro.url.pathname === '/'
     <EditLink />
     <LastUpdated />
   </div>
-   {!isHome && <Pagination />}
+  {!isHome && <Pagination />}
   <div
     class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between"
   >
