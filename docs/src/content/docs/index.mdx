@@ -13,11 +13,14 @@ hero:
       icon: seti:windows
     - text: Web Application
       link: https://app.porphystruct.org
+      icon: cloud-download
+    - text: Documentation
+      link: /docs
       icon: external
       variant: minimal
 ---
 
-import { CardGrid } from '@astrojs/starlight/components';
+import { CardGrid, Card, Icon } from '@astrojs/starlight/components';
 
 <div class="wrapper">
 	<CardGrid>
@@ -48,5 +51,34 @@ import { CardGrid } from '@astrojs/starlight/components';
 	- Porphycene
 
 	¹ NSD-type analysis not useful for Corrins, but diagrams are still possible.
+	</div>
+</div>
+
+<div class="mt-15"></div>
+
+<CardGrid>
+	<Card title="Automatic Recognition" icon="rocket">
+		Macrocycles can be detected automatically via a graph theory based algorithm - A wizard for manual Isolation of structures is also available.
+	</Card>
+	<Card title="Import/Export" icon="pen">
+		Structures can be loaded from the industry standard filetypes .cif, .mol, .mol2, .xyz and .pdb. Data can be exported to Markdown (.md), .json, .csv and as Pictures (.png/.svg). 
+	</Card>
+	<Card title="Additional Parameters" icon="seti:config">
+		Other important parameters like e.g. bond lengths, angles, dihedrals, helicity, interplanar angle and the N4-cavity are calculated automatically.
+	</Card>
+	<Card title="Modern Technology" icon="seti:c-sharp">
+		PorphyStruct uses modern Technologies (.NET 7 and C# 11) and is Open Source. The source code is available on [GitHub](https://github.com/JensKrumsieck/PorphyStruct).
+	</Card>
+</CardGrid>
+
+<div class="bg-accent-900 w-screen mt-12" style="margin-left: calc(-50vw + 50%);">
+	<div class="max-w-[var(--sl-content-width)] mx-auto text-white py-12">
+		<h2 class="flex gap-2 text-white">
+		<Icon name="open-book" />
+		<span>Documentation</span>		
+		</h2>
+		<div>
+			Documentation of the main features and concepts is available on our site. This will always be extended with new features or updated with changes. If you still have questions, please use our <a class="text-white hover:text-gray-400" href="https://github.com/JensKrumsieck/PorphyStruct/discussions">discussion function (GitHub)</a>.
+		</div>
 	</div>
 </div>

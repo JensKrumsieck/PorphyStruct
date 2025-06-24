@@ -6,6 +6,8 @@ import config from "virtual:starlight/user-config";
 import { Icon } from "@astrojs/starlight/components";
 import Image from "astro/components/Image.astro";
 import Logo from "../assets/logo.svg";
+
+const isHome = Astro.url.pathname === '/'
 ---
 
 <footer class="sl-flex">
@@ -13,7 +15,8 @@ import Logo from "../assets/logo.svg";
     <EditLink />
     <LastUpdated />
   </div>
-  <Pagination /><div
+   {!isHome && <Pagination />}
+  <div
     class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between"
   >
     <a
