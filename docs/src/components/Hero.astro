@@ -88,6 +88,10 @@ if (image) {
       z-index: -1;
     }
 
+    :root[data-theme="dark"] .backdrop {
+      background-image: url("../assets/topography_white.svg");
+    }
+
     .backdrop::after {
       content: "";
       position: absolute;
@@ -97,6 +101,9 @@ if (image) {
         rgba(255, 255, 255, 0) 20%,
         white 100%
       );
+    }
+    :root[data-theme="dark"] .backdrop::after {
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 20%, black 100%);
     }
     .hero {
       display: flex;
