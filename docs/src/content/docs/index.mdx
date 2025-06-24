@@ -1,0 +1,84 @@
+---
+title: Reveal Hidden Distortions in Porphyrinoids — <span class="highlight">Effortlessly</span>.
+description: Get started building your docs site with Starlight.
+template: splash
+hero:
+  tagline: PorphyStruct is a powerful Application for the Analysis of <strong>non-planar distortions in a variety of Porphyrinoids</strong> using a NSD approach. 
+  image:
+    file: ../../assets/screenshot_hero.png
+    alt: Porphystruct Screenshot
+  actions:
+    - text: Download for Windows
+      link: https://github.com/JensKrumsieck/PorphyStruct/releases/latest
+      icon: seti:windows
+    - text: Web Application
+      link: https://app.porphystruct.org
+      icon: cloud-download
+    - text: Documentation
+      link: /docs/getting-started
+      icon: open-book
+      variant: minimal
+---
+
+import { CardGrid, Card, Icon } from '@astrojs/starlight/components';
+
+<div class="wrapper">
+	<CardGrid>
+	![](../../assets/analysis.svg)
+
+	<div>
+	## Automated Conformational Analysis
+	The conformation of tetrapyrrolic macrocycles significantly influences the reactivity and the (photo)physical properties. To analyse the conformation by creating displacement diagrams manually is possible, but costs a lot of time. Furthermore, a quantitative analysis is not easily possible. PorphyStruct offers automated creation of displacement diagrams and quantitative conformational Analysis using the NSD-technique.
+	</div>
+
+	</CardGrid>
+
+	<CardGrid>
+	<div>
+	## Batch Processing
+	The automated Analysis of thousands of structures is possible due to the implemented Batch processing feature. The Output will be merged into a csv file for further Analysis in Excel or as a Pandas DataFrame in Python scripts. Did you know? Some python scripts to Play with are available here: [porphystruct-scripts](https://github.com/jenskrumsieck/porphystruct-scripts).
+	</div>
+
+	![](../../assets/screenshot_batch.png)
+	</CardGrid>
+
+	<div>
+	## Supported Macrocyclic Frameworks
+	- Porphyrin (e.g. Isoporphyrins, Phtalocyanines, N-confused Porphyrins, Porphyrazines)
+	- Corrole (e.g. Isocorroles, Heterocorroles, N-confused Corroles, Corrolazines, Corrins¹)
+	- Norcorrole
+	- Corrphycene
+	- Porphycene
+
+	¹ NSD-type analysis not useful for Corrins, but diagrams are still possible.
+	</div>
+</div>
+
+<div class="mt-15"></div>
+
+<CardGrid>
+	<Card title="Automatic Recognition" icon="rocket">
+		Macrocycles can be detected automatically via a graph theory based algorithm - A wizard for manual Isolation of structures is also available.
+	</Card>
+	<Card title="Import/Export" icon="pen">
+		Structures can be loaded from the industry standard filetypes .cif, .mol, .mol2, .xyz and .pdb. Data can be exported to Markdown (.md), .json, .csv and as Pictures (.png/.svg). 
+	</Card>
+	<Card title="Additional Parameters" icon="seti:config">
+		Other important parameters like e.g. bond lengths, angles, dihedrals, helicity, interplanar angle and the N4-cavity are calculated automatically.
+	</Card>
+	<Card title="Modern Technology" icon="seti:c-sharp">
+		PorphyStruct uses modern Technologies (.NET 7 and C# 11) and is Open Source. The source code is available on [GitHub](https://github.com/JensKrumsieck/PorphyStruct).
+	</Card>
+</CardGrid>
+
+<div class="bg-accent-900 w-screen mt-12" style="margin-left: calc(-50vw + 50%);">
+	<div class="max-w-[var(--sl-content-width)] mx-auto text-white py-12">
+		<h2 class="flex gap-2 text-white">
+		<Icon name="open-book" />
+		<span>Documentation</span>		
+		</h2>
+		<div>
+			Documentation of the main features and concepts is available on our site. This will always be extended with new features or updated with changes. If you still have questions, please use our <a class="text-white hover:text-gray-400" href="https://github.com/JensKrumsieck/PorphyStruct/discussions">discussion function (GitHub)</a>.
+		</div>
+	</div>
+</div>

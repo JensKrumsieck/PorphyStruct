@@ -1,0 +1,43 @@
+@layer base, starlight, theme, components, utilities;
+
+@import '@astrojs/starlight-tailwind';
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+:root {
+  --sl-font: 'Roboto Variable', 'ui-sans-serif', 'system-ui', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+@theme {
+  /* Generated accent color palettes. */
+  --color-accent-200: #b5cce1;
+  --color-accent-600: #005284;
+  --color-accent-900: #16354e;
+  --color-accent-950: #132635;
+  /* Generated gray color palettes. */
+  --color-gray-100: #f6f6f6;
+  --color-gray-200: #eeeeee;
+  --color-gray-300: #c2c2c2;
+  --color-gray-400: #8b8b8b;
+  --color-gray-500: #585858;
+  --color-gray-700: #383838;
+  --color-gray-800: #272727;
+  --color-gray-900: #181818;
+}
+
+.site-title {
+  color: var(--sl-color-white);
+  font-weight: 900;
+}
+
+.wrapper>*:not(first-child) {
+  padding-top: 5rem;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+mjx-container svg {
+  display: inline !important;
+}

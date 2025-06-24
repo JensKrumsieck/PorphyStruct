@@ -1,0 +1,183 @@
+---
+import { Image } from "astro:assets";
+import { LinkButton } from "@astrojs/starlight/components";
+
+const { data } = Astro.locals.starlightRoute.entry;
+const { title = data.title, tagline, image, actions = [] } = data.hero || {};
+
+const imageAttrs = {
+  loading: "eager" as const,
+  decoding: "async" as const,
+  width: 1600,
+  alt: image?.alt || "",
+};
+
+let darkImage: ImageMetadata | undefined;
+let lightImage: ImageMetadata | undefined;
+let rawHtml: string | undefined;
+if (image) {
+  if ("file" in image) {
+    darkImage = image.file;
+  } else if ("dark" in image) {
+    darkImage = image.dark;
+    lightImage = image.light;
+  } else {
+    rawHtml = image.html;
+  }
+}
+---
+
+<div class="backdrop"></div>
+<div class="hero">
+  {
+    darkImage && (
+      <Image
+        src={darkImage}
+        {...imageAttrs}
+        class:list={{ "light:sl-hidden": Boolean(lightImage) }}
+      />
+    )
+  }
+  {
+    lightImage && (
+      <Image src={lightImage} {...imageAttrs} class="dark:sl-hidden" />
+    )
+  }
+  {rawHtml && <div class="hero-html sl-flex" set:html={rawHtml} />}
+  <div class="sl-flex stack">
+    <div class="sl-flex copy">
+      <h1 id="_top" data-page-title set:html={title} />
+      {tagline && <div class="tagline" set:html={tagline} />}
+    </div>
+    {
+      actions.length > 0 && (
+        <div class="sl-flex actions">
+          {actions.map(
+            ({
+              attrs: { class: className, ...attrs } = {},
+              icon,
+              link: href,
+              text,
+              variant,
+            }) => (
+              <LinkButton
+                {href}
+                {variant}
+                icon={icon?.name}
+                class:list={[className]}
+                {...attrs}
+              >
+                {text}
+                {icon?.html && <Fragment set:html={icon.html} />}
+              </LinkButton>
+            )
+          )}
+        </div>
+      )
+    }
+  </div>
+</div>
+
+<style>
+  @layer starlight.core {
+    .backdrop {
+      position: absolute;
+      inset: 0;
+      background-image: url("../assets/topography.svg");
+      opacity: 0.05;
+      z-index: -1;
+    }
+
+    .backdrop::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0) 20%,
+        white 100%
+      );
+    }
+    .hero {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      align-items: center;
+      padding-bottom: 1rem;
+    }
+
+    .hero > img,
+    .hero > .hero-html {
+      object-fit: contain;
+      order: 2;
+      width: min(80%, 25rem);
+      height: auto;
+      margin-inline: auto;
+    }
+
+    .stack {
+      flex-direction: column;
+      gap: clamp(1.5rem, calc(1.5rem + 1vw), 2rem);
+      text-align: center;
+    }
+
+    .copy {
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+      align-items: center;
+    }
+
+    .copy > * {
+      max-width: 50ch;
+    }
+
+    h1 {
+      font-size: clamp(
+        var(--sl-text-3xl),
+        calc(0.25rem + 5vw),
+        var(--sl-text-6xl)
+      );
+      line-height: var(--sl-line-height-headings);
+      font-weight: 900;
+      color: var(--sl-color-white);
+
+      .highlight {
+        color: var(--color-accent-600);
+      }
+    }
+    :root[data-theme="dark"] {
+      h1 {
+        .highlight {
+          color: var(--color-accent-200);
+        }
+      }
+    }
+    .tagline {
+      font-size: clamp(
+        var(--sl-text-base),
+        calc(0.0625rem + 2vw),
+        var(--sl-text-xl)
+      );
+      color: var(--sl-color-gray-2);
+    }
+
+    .actions {
+      gap: 1rem 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    @media (min-width: 50rem) {
+      .hero {
+        grid-template-columns: 7fr 4fr;
+        gap: 3rem;
+        padding-block: clamp(2.5rem, calc(1rem + 10vmin), 10rem);
+      }
+
+      .hero > img,
+      .hero > .hero-html {
+        width: 100%;
+      }
+    }
+  }
+</style>
