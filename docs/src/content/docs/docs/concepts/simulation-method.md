@@ -12,7 +12,7 @@ For non-linear molecules there are 3N-6 degrees of freedom which results 66 mode
 
 ### Simulation
 #### Simulation Procedure
-These modes are used as references when simulating the experimental structure (extended basis uses second set of modes). Die displacement vectors of each mode are created by calculating the mean square plane deviation for each atom of the reference structure. These 6 (or 12) vectors form the reference matrix `mathD_{oop}^{mxn}`. Using the Matrix QR Algorithm the following equation system is solved:
+These modes are used as references when simulating the experimental structure (extended basis uses second set of modes). Die displacement vectors of each mode are created by calculating the mean square plane deviation for each atom of the reference structure. These 6 (or 12) vectors form the reference matrix $D_{oop}^{mxn}$. Using the Matrix QR Algorithm the following equation system is solved:
 ```math
 \hat{D}_{oop} = \hat{d}_{oop} * D_{oop}^{mxn}
 ```
@@ -23,7 +23,7 @@ One important value is the overall displacement parameter $D_{oop}$ which quanti
 ```math
 D_{oop} = \sqrt{\sum_{i=1}^m(\Delta_i^z)^2}
 ```
-For estimating the goodness of the fit the experimental displacement parameter can be compared to the simulated one. This is often called `math\delta_{oop}`.
+For estimating the goodness of the fit the experimental displacement parameter can be compared to the simulated one. This is often called $\delta_{oop}$.
 
 ### Out-of-Plane Symmetries
 #### Porphyrin (D<sub>4h</sub>)
