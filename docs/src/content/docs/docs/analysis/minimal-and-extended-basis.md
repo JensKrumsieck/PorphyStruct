@@ -11,11 +11,11 @@ Once in a while there will be an structure with a high $\delta_{oop}$ value (abo
 
 ### Minimal Basis
 
-The minimal basis only contains the 6 lowest energy (frequency) vibrational normal modes of the reference structure for simulation ([Simulation process is described here](docs/simulation-method), [Modes are visualized here](docs/modes)). Often this gives a very good fit - especially for symmetric molecules. The minimal basis contains one structure for each characteristic mode: Doming, Saddling, Ruffling, Waving X & Y and Propellering.
+The minimal basis only contains the 6 lowest energy (frequency) vibrational normal modes of the reference structure for simulation ([Simulation process is described here](docs/concepts/simulation-method), [Modes are visualized here](docs/concepts/modes)). Often this gives a very good fit - especially for symmetric molecules. The minimal basis contains one structure for each characteristic mode: Doming, Saddling, Ruffling, Waving X & Y and Propellering.
 
 ### Extended Basis
 
-The extended basis adds another set of reference structures to the simulation. 12 (11 for Porphyrin and Norcorrole) modes are used to simulate the experimental structure. Using the extended basis the error is often negligible. This is also the case for the choosen copper complex. The deviation is 0.001 Å and the simulated structure fits perfectly. The image shows the reason for the bad results with the minimal basis: A huge amount of Saddling2 is present in the structure ([Simulation process is described here](docs/simulation-method), [Modes are visualized here](docs/modes)).
+The extended basis adds another set of reference structures to the simulation. 12 (11 for Porphyrin and Norcorrole) modes are used to simulate the experimental structure. Using the extended basis the error is often negligible. This is also the case for the choosen copper complex. The deviation is 0.001 Å and the simulated structure fits perfectly. The image shows the reason for the bad results with the minimal basis: A huge amount of Saddling2 is present in the structure ([Simulation process is described here](docs/concepts/simulation-method), [Modes are visualized here](docs/concepts/modes)).
 
 ![Analysis with extended Basis](/uploads/extendedsim.png)
 

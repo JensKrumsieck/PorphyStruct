@@ -5,7 +5,7 @@ sidebar:
 ---
 This page gives an overview of which modes are used in the simulation procedure for the respective macrocycles. You can use any image visible on this page for your publications when using (and citing) **PorphyStruct** .
 
-[The simulation procedure is described here.](/docs/simulation-method) [The use of the minimal and extended basis is shown here.](/docs/minimal-and-extended-basis)
+[The simulation procedure is described here.](/docs/concept/simulation-method) [The use of the minimal and extended basis is shown here.](/docs/analysis/minimal-and-extended-basis)
 
 J. Krumsieck, M. Bröring, *Chem. Eur J*., **2021**, *27*, 11580-11588, DOI: [10.1002/chem.202101243](https://doi.org/10.1002/chem.202101243).
 

@@ -5,7 +5,7 @@ sidebar:
 ---
 ### Introduction
 
-Displacement Diagrams, also called Deflection Diagrams, Cylinder Projection or linear displays of atomic dislocations from the mean-squares plane, are an excellent way to showcase the conformation of Porphyrinoids. Displacement Diagrams show the Deviation from the mean square plane of the perimeter atoms (e.g. C<sub>20</sub>N<sub>4</sub> for Porphyrin) so they correspond to the out-of-plane distortion of the Macrocycle. The out-of-plane distortion of Macrocycles has been proven to be the reason for many chemical and physical properties. Displacement Diagrams of the various modes are shown here: [Modes](/docs/modes)
+Displacement Diagrams, also called Deflection Diagrams, Cylinder Projection or linear displays of atomic dislocations from the mean-squares plane, are an excellent way to showcase the conformation of Porphyrinoids. Displacement Diagrams show the Deviation from the mean square plane of the perimeter atoms (e.g. C<sub>20</sub>N<sub>4</sub> for Porphyrin) so they correspond to the out-of-plane distortion of the Macrocycle. The out-of-plane distortion of Macrocycles has been proven to be the reason for many chemical and physical properties. Displacement Diagrams of the various modes are shown here: [Modes](/docs/concepts/modes)
 
 ![Corrole Displacement Diagram](/uploads/295698_graph.svg)
 

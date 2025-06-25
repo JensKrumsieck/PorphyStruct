@@ -20,7 +20,7 @@ Opacity value of non perimeter atoms after detection in 3D representation.
 
 ### Experimental / Simulation / Comparison
 #### Marker Color
-Color of Atoms when option "[Use Single Marker Color](/docs/settings-graph#use-single-marker-color)" is set. For comparisons a list for Marker and Bond Color is given.  
+Color of Atoms when option "[Use Single Marker Color](/docs/settings/settings-graph#use-single-marker-color)" is set. For comparisons a list for Marker and Bond Color is given.  
 
 #### Marker Type
 Switches Shape of the marker (atoms). (default: circle) Image shows result for "Triangle"
