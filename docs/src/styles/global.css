@@ -41,3 +41,13 @@ body {
 mjx-container svg {
   display: inline !important;
 }
+
+.overflow-container {
+  margin-left: calc(-50vw + 50%);
+}
+
+.overflow-container > * {
+  max-width: var(--sl-content-width);
+  margin: 0 auto;
+  padding: calc(var(--spacing) * 12) var(--sl-content-pad-x);
+}
