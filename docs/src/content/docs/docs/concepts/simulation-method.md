@@ -52,7 +52,7 @@ Each out-of-plane symmetry corresponds to a specific mode:
 * Waving:       $B_{1} / A_{2}$
 * Propellering: $A_{2}$
 
-To see the mode representations, [visit this site: Modes.](/docs/concept/modes#corrole)
+To see the mode representations, [visit this site: Modes.](/docs/concepts/modes#corrole)
 
 #### Norcorrole (D<sub>2h</sub>)
 The Norcorrole Macrocycle has 22 perimeter atoms and it's pointgroup is D<sub>2h</sub>. Therefore there are 19 out-of-plane distortions. The D<sub>2h</sub> point group contains 4 symmetries out-of-plane(B<sub>3u</sub>, A<sub>u</sub>, B<sub>1g</sub> and B<sub>2g</sub>).
@@ -69,7 +69,7 @@ Each out-of-plane symmetry corresponds to a specific mode:
 * Waving:       $B_{1g} / A_{2g}$
 * Propellering: $A_{u}$
 
-To see the mode representations, [visit this site: Modes.](/docs/concept/modes#norcorrole)
+To see the mode representations, [visit this site: Modes.](/docs/concepts/modes#norcorrole)
 
 #### Porphycene (D<sub>2h</sub>)
 The Porphycene Macrocycle has 24 perimeter atoms and it's pointgroup is D<sub>2h</sub>. Therefore there are 21 out-of-plane distortions. The D<sub>2h</sub> point group contains 4 symmetries out-of-plane(B<sub>3u</sub>, A<sub>u</sub>, B<sub>1g</sub> and B<sub>2g</sub>).
@@ -86,7 +86,7 @@ Each out-of-plane symmetry corresponds to a specific mode:
 * Waving:       $B_{1g} / A_{2g}$
 * Propellering: $A_{u}$
 
-To see the mode representations, [visit this site: Modes.](/docs/concept/modes#porphycene)
+To see the mode representations, [visit this site: Modes.](/docs/concepts/modes#porphycene)
 
 #### Corrphycene (C<sub>2v</sub>)
 The Corrphycene Macrocycle has 24 perimeter atoms and it's pointgroup is C<sub>2v</sub>. Therefore there are 21 out-of-plane distortions.  The C<sub>2v</sub> point group contains 2 symmetries for each, out-of-plane and in-plane distortions (B<sub>1</sub>, A<sub>2</sub> and A<sub>1</sub>, B<sub>2</sub> respectively). These out-of-plane modes are distributed as follows:
@@ -100,7 +100,7 @@ Each out-of-plane symmetry corresponds to a specific mode:
 * Waving:       $B_{1} / A_{2}$
 * Propellering: $A_{2}$
 
-To see the mode representations, [visit this site: Modes.](/docs/concept/modes#corrphycene)
+To see the mode representations, [visit this site: Modes.](/docs/concepts/modes#corrphycene)
 
 #### Symmetry Table
 
