@@ -17,7 +17,7 @@ Click the items you want to compare to the base plot (a checkmark will indicate 
 
 ### Comparisons - other File
 
-You can also compare Structures of multiple files. Open the compare dialog and hit **Append Data**. Open a [XYData .csv or .dat File](/docs/export-plots-and-data) from a previous analysis to proceed. In this example Copper Corroles from two files are compared.
+You can also compare Structures of multiple files. Open the compare dialog and hit **Append Data**. Open a [XYData .csv or .dat File](/docs/analysis/export-plots-and-data) from a previous analysis to proceed. In this example Copper Corroles from two files are compared.
 
 ![Appended File](/uploads/appended.png)
 

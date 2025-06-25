@@ -28,6 +28,7 @@
 .site-title {
   color: var(--sl-color-white);
   font-weight: 900;
+  font-size: var(--sl-text-h3);
 }
 
 .wrapper>*:not(first-child) {

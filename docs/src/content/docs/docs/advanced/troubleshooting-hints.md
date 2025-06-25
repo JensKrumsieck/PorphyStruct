@@ -7,7 +7,7 @@ This page contains a updating list of errors/misconceptions/hints that you need 
 
 ### Automatic Detection Failed
 
-If the automatic detection fails there is most likely something wrong with the file you choose. Maybe some disorder or duplicated atoms. Try [Structure Isolation](/docs/structure-isolation) first. 
+If the automatic detection fails there is most likely something wrong with the file you choose. Maybe some disorder or duplicated atoms. Try [Structure Isolation](/docs/advanced/structure-isolation) first. 
 
 Sometimes the crystal only includes half of the molecule. In this case you need to open it in e.g. Mercury and save it as completed molecule in .mol2 Format. The analysis will than work.
 

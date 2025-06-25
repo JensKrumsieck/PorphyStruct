@@ -12,7 +12,7 @@ For non-linear molecules there are 3N-6 degrees of freedom which results 66 mode
 
 ### Simulation
 #### Simulation Procedure
-These modes are used as references when simulating the experimental structure (extended basis uses second set of modes). Die displacement vectors of each mode are created by calculating the mean square plane deviation for each atom of the reference structure. These 6 (or 12) vectors form the reference matrix `mathD_{oop}^{mxn}`. Using the Matrix QR Algorithm the following equation system is solved:
+These modes are used as references when simulating the experimental structure (extended basis uses second set of modes). Die displacement vectors of each mode are created by calculating the mean square plane deviation for each atom of the reference structure. These 6 (or 12) vectors form the reference matrix $D_{oop}^{mxn}$. Using the Matrix QR Algorithm the following equation system is solved:
 ```math
 \hat{D}_{oop} = \hat{d}_{oop} * D_{oop}^{mxn}
 ```
@@ -23,7 +23,7 @@ One important value is the overall displacement parameter $D_{oop}$ which quanti
 ```math
 D_{oop} = \sqrt{\sum_{i=1}^m(\Delta_i^z)^2}
 ```
-For estimating the goodness of the fit the experimental displacement parameter can be compared to the simulated one. This is often called `math\delta_{oop}`.
+For estimating the goodness of the fit the experimental displacement parameter can be compared to the simulated one. This is often called $\delta_{oop}$.
 
 ### Out-of-Plane Symmetries
 #### Porphyrin (D<sub>4h</sub>)
@@ -38,7 +38,7 @@ Each out-of-plane symmetry corresponds to a specific mode:
 * Waving:       $E_{g}$
 * Propellering: $A_{1u}$
 
-To see the mode representations, [visit this site: Modes.](/docs/modes#porphyrin)
+To see the mode representations, [visit this site: Modes.](/docs/concepts/modes#porphyrin)
 
 #### Corrole (C<sub>2v</sub>)
 The Corrole Macrocycle has 23 perimeter atoms and it's pointgroup is C<sub>2v</sub>. Therefore there are 20 out-of-plane distortions. The C<sub>2v</sub> point group contains 2 symmetries for each, out-of-plane and in-plane distortions (B<sub>1</sub>, A<sub>2</sub> and A<sub>1</sub>, B<sub>2</sub> respectively). These out-of-plane modes are distributed as follows:
@@ -52,7 +52,7 @@ Each out-of-plane symmetry corresponds to a specific mode:
 * Waving:       $B_{1} / A_{2}$
 * Propellering: $A_{2}$
 
-To see the mode representations, [visit this site: Modes.](/docs/modes#corrole)
+To see the mode representations, [visit this site: Modes.](/docs/concepts/modes#corrole)
 
 #### Norcorrole (D<sub>2h</sub>)
 The Norcorrole Macrocycle has 22 perimeter atoms and it's pointgroup is D<sub>2h</sub>. Therefore there are 19 out-of-plane distortions. The D<sub>2h</sub> point group contains 4 symmetries out-of-plane(B<sub>3u</sub>, A<sub>u</sub>, B<sub>1g</sub> and B<sub>2g</sub>).
@@ -69,7 +69,7 @@ Each out-of-plane symmetry corresponds to a specific mode:
 * Waving:       $B_{1g} / A_{2g}$
 * Propellering: $A_{u}$
 
-To see the mode representations, [visit this site: Modes.](/docs/modes#norcorrole)
+To see the mode representations, [visit this site: Modes.](/docs/concepts/modes#norcorrole)
 
 #### Porphycene (D<sub>2h</sub>)
 The Porphycene Macrocycle has 24 perimeter atoms and it's pointgroup is D<sub>2h</sub>. Therefore there are 21 out-of-plane distortions. The D<sub>2h</sub> point group contains 4 symmetries out-of-plane(B<sub>3u</sub>, A<sub>u</sub>, B<sub>1g</sub> and B<sub>2g</sub>).
@@ -86,7 +86,7 @@ Each out-of-plane symmetry corresponds to a specific mode:
 * Waving:       $B_{1g} / A_{2g}$
 * Propellering: $A_{u}$
 
-To see the mode representations, [visit this site: Modes.](/docs/modes#porphycene)
+To see the mode representations, [visit this site: Modes.](/docs/concepts/modes#porphycene)
 
 #### Corrphycene (C<sub>2v</sub>)
 The Corrphycene Macrocycle has 24 perimeter atoms and it's pointgroup is C<sub>2v</sub>. Therefore there are 21 out-of-plane distortions.  The C<sub>2v</sub> point group contains 2 symmetries for each, out-of-plane and in-plane distortions (B<sub>1</sub>, A<sub>2</sub> and A<sub>1</sub>, B<sub>2</sub> respectively). These out-of-plane modes are distributed as follows:
@@ -100,7 +100,7 @@ Each out-of-plane symmetry corresponds to a specific mode:
 * Waving:       $B_{1} / A_{2}$
 * Propellering: $A_{2}$
 
-To see the mode representations, [visit this site: Modes.](/docs/modes#corrphycene)
+To see the mode representations, [visit this site: Modes.](/docs/concepts/modes#corrphycene)
 
 #### Symmetry Table
 

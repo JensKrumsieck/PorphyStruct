@@ -22,7 +22,7 @@ When using the minimal basis the given signs of the individual modes do not matt
 
 ### Extended Basis
 
-When using the [Extended Basis](/docs/minimal-and-extended-basis#extended-basis), 12 (or 11) values are obtained for the [modes](/docs/modes) Doming, Saddling, Ruffling, Waving X, Waving Y, Propellering, Doming2, Saddling2, Ruffling2, Waving X2, Waving Y2, Propellering2. It is not always necessary to differentiate between the first and second mode set to describe the conformation type. Therefore, the mode sets can be combined in different ways. The percentage values can be calculated as shown above.
+When using the [Extended Basis](/docs/analysis/minimal-and-extended-basis#extended-basis), 12 (or 11) values are obtained for the [modes](/docs/modes) Doming, Saddling, Ruffling, Waving X, Waving Y, Propellering, Doming2, Saddling2, Ruffling2, Waving X2, Waving Y2, Propellering2. It is not always necessary to differentiate between the first and second mode set to describe the conformation type. Therefore, the mode sets can be combined in different ways. The percentage values can be calculated as shown above.
 
 ### Composition of Values
 

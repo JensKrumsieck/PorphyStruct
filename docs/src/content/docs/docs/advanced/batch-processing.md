@@ -15,7 +15,7 @@ In the **Working Directory** field, choose your Structure Directory. The Label "
 
 ### Statistics
 
-After finishing the run, the Statistics window will open telling you that it saved a `PorphyStruct_MergedData.csv` with all your data. In addition the [.json and .md export](/docs/export-plots-and-data) for each Analysis has been done and saved in the same direction as the structure file has been found.
+After finishing the run, the Statistics window will open telling you that it saved a `PorphyStruct_MergedData.csv` with all your data. In addition the [.json and .md export](/docs/analysis/export-plots-and-data) for each Analysis has been done and saved in the same direction as the structure file has been found.
 
 ![](/uploads/finishedbatch.png)
 
