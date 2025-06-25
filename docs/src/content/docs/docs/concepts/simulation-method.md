@@ -38,7 +38,7 @@ Each out-of-plane symmetry corresponds to a specific mode:
 * Waving:       $E_{g}$
 * Propellering: $A_{1u}$
 
-To see the mode representations, [visit this site: Modes.](/docs/modes#porphyrin)
+To see the mode representations, [visit this site: Modes.](/docs/concepts/modes#porphyrin)
 
 #### Corrole (C<sub>2v</sub>)
 The Corrole Macrocycle has 23 perimeter atoms and it's pointgroup is C<sub>2v</sub>. Therefore there are 20 out-of-plane distortions. The C<sub>2v</sub> point group contains 2 symmetries for each, out-of-plane and in-plane distortions (B<sub>1</sub>, A<sub>2</sub> and A<sub>1</sub>, B<sub>2</sub> respectively). These out-of-plane modes are distributed as follows:
