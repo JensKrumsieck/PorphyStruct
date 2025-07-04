@@ -11,9 +11,7 @@
         <PublishSingleFile>True</PublishSingleFile>
         <RuntimeIdentifiers>win-x64;osx-x64;linux-arm;linux-x64</RuntimeIdentifiers>
         <PublishReadyToRun>True</PublishReadyToRun>
-        <PublishTrimmed>True</PublishTrimmed>
-        <TrimMode>Link</TrimMode>
-    </PropertyGroup>
+     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="CommandDotNet" Version="7.0.2" />
