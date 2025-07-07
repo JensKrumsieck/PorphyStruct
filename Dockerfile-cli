@@ -9,4 +9,4 @@ FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-alpine AS runtime
 WORKDIR /app
 COPY --from=build /app/publish .
 
-ENTRYPOINT ["./PorphyStruct.CLI"]
+ENTRYPOINT ["/app/PorphyStruct.CLI"]
