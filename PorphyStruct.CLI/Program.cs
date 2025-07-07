@@ -24,7 +24,9 @@ public class Program
         [Named('x', "extended", Description = "Use Extended Basis")]
         bool extendedBasis,
         [Named("no-export", Description = "Do not write any files!")]
-        bool doNotExport
+        bool doNotExport,
+        [Named('o', "output", Description = "Outputfolder")]
+        string? folder
     )
     {
         Settings.Instance.UseExtendedBasis = extendedBasis;
@@ -37,6 +39,10 @@ public class Program
 
         await console.Status().StartAsync("Analyzing", async ctx => { await viewModel.Analyze(); });
         console.RenderAnalysis(viewModel.Items);
+
+        if (folder != null)
+            file = folder + "/" + Path.GetFileName(file);
+
         if (!doNotExport) Export(file, viewModel);
     }
 
