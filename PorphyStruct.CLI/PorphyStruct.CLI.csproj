@@ -14,11 +14,13 @@
      </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="CommandDotNet" Version="7.0.2" />
+        <PackageReference Include="CommandDotNet" Version="7.0.5" />
         <PackageReference Include="CommandDotNet.Spectre" Version="3.0.2" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.NET.ILLink.Analyzers" Version="7.0.100-1.23401.1" />
+      <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="7.0.100-1.23401.1" />
         <ProjectReference Include="..\PorphyStruct.Core\PorphyStruct.Core.csproj" />
         <ProjectReference Include="..\PorphyStruct.ViewModel\PorphyStruct.ViewModel.csproj" />
     </ItemGroup>
