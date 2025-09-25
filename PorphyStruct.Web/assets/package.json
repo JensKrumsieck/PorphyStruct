@@ -4,8 +4,8 @@
   "main": "index.js",
   "description": "",
   "scripts": {
-    "build:Debug": "webpack --stats-error-details && postcss Styles.scss -o ..\\wwwroot\\css\\app.min.css --watch",
-    "build:Release": "webpack && postcss Styles.scss -o ..\\wwwroot\\css\\app.min.css"
+    "build:Debug": "webpack --stats-error-details && postcss Styles.scss -o ../wwwroot/css/app.min.css --watch",
+    "build:Release": "webpack && postcss Styles.scss -o ../wwwroot/css/app.min.css"
   },
   "author": "",
   "license": "MIT",
