@@ -18,7 +18,7 @@
     "@astrojs/starlight-tailwind": "^4.0.1",
     "@fontsource-variable/roboto": "^5.2.6",
     "@tailwindcss/vite": "^4.1.10",
-    "astro": "5.14.4",
+    "astro": "5.15.6",
     "rehype-mathjax": "^7.1.0",
     "remark-math": "^6.0.0",
     "sharp": "0.34.4",
