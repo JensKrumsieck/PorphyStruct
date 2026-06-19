@@ -24,6 +24,7 @@ export default defineConfig({
 				src: './src/assets/logo.svg'
 			},
 			components: {
+				Head: './src/components/Head.astro',
 				Hero: './src/components/Hero.astro',
 				Footer: './src/components/Footer.astro',
 			},

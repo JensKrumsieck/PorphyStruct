@@ -1,0 +1,12 @@
+---
+import Default from '@astrojs/starlight/components/Head.astro';
+---
+ <script>
+    import * as Swetrix from 'swetrix';
+    Swetrix.init("5wrLARj0GNVn", {
+      apiURL: "https://api.analytics.jenskrumsieck.de/log",
+    });
+    Swetrix.trackViews();
+  </script>
+  
+<Default {...Astro.props}/>
