@@ -51,7 +51,7 @@ public static class PlotExtension
             LabelPlacement = LabelPlacement.Outside,
             LabelFormatString = "{0:N3} Å",
         };
-        foreach (var prop in sim.SimulationResult.ToArray().Reverse())
+        foreach (var prop in Enumerable.Reverse(sim.SimulationResult.ToArray()))
         {
             var key = prop.Key.Replace("2", "");
             var color = OxyColor.Parse(Colors[key]);
