@@ -2,8 +2,10 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ./ ./
 RUN dotnet workload restore
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+RUN rm -rf /var/lib/apt/lists/* \
+    && apt-get clean \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
         python3 \
         python-is-python3 \
         curl \
