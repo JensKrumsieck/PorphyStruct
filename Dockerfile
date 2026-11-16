@@ -3,7 +3,12 @@ WORKDIR /src
 
 COPY . ./
 
-RUN dotnet workload restore
+RUN dotnet workload 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl ca-certificates \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && rm -rf /var/lib/apt/lists/*
 RUN dotnet restore PorphyStruct.Web/PorphyStruct.Web.csproj
 RUN dotnet publish PorphyStruct.Web/PorphyStruct.Web.csproj \
     -c Release \
