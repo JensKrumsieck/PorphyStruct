@@ -3,7 +3,7 @@ WORKDIR /src
 
 COPY . ./
 
-RUN dotnet workload 
+RUN dotnet workload restore
 RUN apt-get update \
     && apt-get install -y --no-install-recommends curl ca-certificates \
     && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
